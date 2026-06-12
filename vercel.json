@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/data/snapshots/(.*)",
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=60" }]
+    }
+  ],
+  "rewrites": [{ "source": "/((?!data/|js/|css/|icons/).*)", "destination": "/index.html" }]
+}

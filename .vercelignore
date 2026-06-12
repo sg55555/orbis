@@ -1,0 +1,10 @@
+collectors/
+scripts/
+tests/
+.github/
+requirements.txt
+playwright.config.js
+package.json
+docs/
+node_modules/
+.superpowers/
