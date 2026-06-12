@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-12T18:27:41Z",
-  "count": 236,
+  "updated": "2026-06-12T18:50:04Z",
+  "count": 239,
   "points": [
+    {
+      "id": "nc75375336",
+      "lon": -122.786834716797,
+      "lat": 38.8325004577637,
+      "depth": 1.45000004768372,
+      "mag": 1.07,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781289495380,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375336"
+    },
+    {
+      "id": "nc75375331",
+      "lon": -122.814666748047,
+      "lat": 38.8343315124512,
+      "depth": 2,
+      "mag": 1.07,
+      "place": "8 km W of Cobb, CA",
+      "time": 1781289188320,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375331"
+    },
     {
       "id": "ci41485280",
       "lon": -117.4855,
@@ -32,6 +52,16 @@
       "place": "12 km NE of Coachella, CA",
       "time": 1781287761630,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485264"
+    },
+    {
+      "id": "uu80142181",
+      "lon": -111.9565,
+      "lat": 40.3886666666667,
+      "depth": -2,
+      "mag": 1.68,
+      "place": "6 km NW of Saratoga Springs, Utah",
+      "time": 1781287263230,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142181"
     },
     {
       "id": "us7000ssit",
@@ -82,6 +112,16 @@
       "place": "5 km ENE of Vallejo, CA",
       "time": 1781286624940,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375316"
+    },
+    {
+      "id": "aka2026lopbsd",
+      "lon": -161.742,
+      "lat": 53.176,
+      "depth": 12.8,
+      "mag": 2.7,
+      "place": "213 km S of King Cove, Alaska",
+      "time": 1781286297449,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lopbsd"
     },
     {
       "id": "aka2026looxdw",
@@ -1734,6 +1774,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci10242134"
     },
     {
+      "id": "av94239388",
+      "lon": -169.877333333333,
+      "lat": 52.8283333333333,
+      "depth": 3.08,
+      "mag": 0.89,
+      "place": "69 km W of Nikolski, Alaska",
+      "time": 1781222429210,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94239388"
+    },
+    {
       "id": "nc75375071",
       "lon": -120.995166666667,
       "lat": 35.6731666666667,
@@ -2314,6 +2364,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41484704"
     },
     {
+      "id": "us7000ssb0",
+      "lon": 122.1577,
+      "lat": 23.259,
+      "depth": 10,
+      "mag": 4.6,
+      "place": "97 km SE of Hualien City, Taiwan",
+      "time": 1781204237611,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssb0"
+    },
+    {
       "id": "nc75374956",
       "lon": -122.750831604004,
       "lat": 38.7949981689453,
@@ -2332,36 +2392,6 @@
       "place": "57 km NW of Toyah, Texas",
       "time": 1781203801338,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lkzjmd"
-    },
-    {
-      "id": "us7000ssav",
-      "lon": 152.8134,
-      "lat": -4.7032,
-      "depth": 75.535,
-      "mag": 4.5,
-      "place": "72 km ESE of Kokopo, Papua New Guinea",
-      "time": 1781203761924,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssav"
-    },
-    {
-      "id": "nc75374951",
-      "lon": -122.752998352051,
-      "lat": 38.7939987182617,
-      "depth": 1.62999999523163,
-      "mag": 1.04,
-      "place": "2 km N of The Geysers, CA",
-      "time": 1781203562320,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75374951"
-    },
-    {
-      "id": "av94238943",
-      "lon": -176.182833333333,
-      "lat": 52.0633333333333,
-      "depth": 1.17,
-      "mag": 0.56,
-      "place": "37 km NE of Adak, Alaska",
-      "time": 1781203030960,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94238943"
     }
   ]
 }
