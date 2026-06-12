@@ -13,7 +13,8 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // データ・タイルは常にネットワーク（鮮度優先）
+  // データ・タイルは常にネットワーク（鮮度優先）。
+  // e.respondWith() を呼ばず return すると、ブラウザが既定のネットワーク取得を行う（キャッシュしない）。
   if (url.pathname.includes('/data/snapshots/') || url.hostname.includes('cartocdn')) return;
   e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request)));
 });
