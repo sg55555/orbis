@@ -1,0 +1,34 @@
+// 地震レイヤー。統一インターフェース { id, label, fetch, toDeckLayer, legend } を実装。
+// 純粋部 buildScatterConfig を分離してテスト可能にする。deck は描画時にグローバル参照。
+import { magnitudeToRadius, magnitudeToColor } from '../lib/geo.js';
+
+export function buildScatterConfig(snapshot) {
+  const data = (snapshot && snapshot.points) ? snapshot.points : [];
+  return {
+    id: 'quakes',
+    data,
+    radiusUnits: 'pixels',
+    pickable: true,
+    getPosition: (p) => [p.lon, p.lat],
+    getRadius: (p) => magnitudeToRadius(p.mag),
+    getFillColor: (p) => [...magnitudeToColor(p.mag), 200],
+  };
+}
+
+export const quakesLayer = {
+  id: 'quakes',
+  label: '地震',
+  legend: [
+    { color: 'rgb(57,208,255)', label: 'M<2' },
+    { color: 'rgb(94,255,166)', label: 'M2–4' },
+    { color: 'rgb(255,176,40)', label: 'M4–6' },
+    { color: 'rgb(255,60,80)', label: 'M6+' },
+  ],
+  async fetch(getSnapshot) {
+    return getSnapshot('quakes');
+  },
+  toDeckLayer(snapshot) {
+    // deck は index.html の CDN によりグローバル提供される
+    return new deck.ScatterplotLayer(buildScatterConfig(snapshot));
+  },
+};
