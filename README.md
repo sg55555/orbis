@@ -8,7 +8,7 @@
 
 ## テスト
 - Python: `python3 -m pytest -q`
-- JS: `node --test tests/`
+- JS: `node --test tests/*.test.js`（または `npm run test:js`）
 - E2E: `npx playwright test`
 
 ## デプロイ（Vercel 静的）
