@@ -8,6 +8,7 @@ const POLL_MS = 60000;
 function renderLegend() {
   const rows = document.getElementById('legend-rows');
   const quakes = layers.find((l) => l.id === 'quakes');
+  if (!quakes) return;
   rows.innerHTML = quakes.legend.map(
     (e) => `<div class="row"><span class="dot" style="color:${e.color};background:${e.color}"></span>${e.label}</div>`
   ).join('');
@@ -30,16 +31,15 @@ function boot() {
   // e2e/デバッグ用フック
   window.__orbis = { map, overlay, lastCount: 0 };
 
+  // マップのロード完了後にポーリング開始（ローディング表示を消してから描画）。
   map.on('load', () => {
     document.getElementById('loading').classList.add('hidden');
-  });
-
-  startPolling(['quakes'], POLL_MS, (snapshots) => {
-    const deckLayers = buildDeckLayers(enabled, snapshots);
-    setDeckLayers(overlay, deckLayers);
-    window.__orbis.lastCount =
-      snapshots.quakes && snapshots.quakes.points ? snapshots.quakes.points.length : 0;
-    updateFreshness();
+    startPolling([...enabled], POLL_MS, (snapshots) => {
+      const deckLayers = buildDeckLayers(enabled, snapshots);
+      setDeckLayers(overlay, deckLayers);
+      window.__orbis.lastCount = snapshots.quakes?.points?.length ?? 0;
+      updateFreshness();
+    });
   });
 }
 
