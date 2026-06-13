@@ -9,6 +9,7 @@ export function buildTradeConfigs(geojson) {
     pathConfig: {
       id: 'trade-routes',
       data: lines,
+      pickable: true,
       getPath: (f) => f.geometry.coordinates,
       getColor: [70, 230, 255, 90],
       widthUnits: 'pixels',
@@ -42,5 +43,9 @@ export const tradeLayer = {
   toDeckLayer(geojson) {
     const { pathConfig, pointConfig } = buildTradeConfigs(geojson);
     return [new deck.PathLayer(pathConfig), new deck.ScatterplotLayer(pointConfig)];
+  },
+  tooltip(o) {
+    if (!o || !o.properties) return null;
+    return o.properties.name || null;
   },
 };

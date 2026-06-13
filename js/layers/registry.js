@@ -23,3 +23,20 @@ export function buildDeckLayers(enabled, snapshots, layersOverride) {
       return Array.isArray(r) ? r : [r];
     });
 }
+
+// toFeedItems を実装するレイヤーだけを返す（フィード対象）。
+export function feedLayers() {
+  return layers.filter((l) => typeof l.toFeedItems === 'function');
+}
+
+// deck レイヤーID → 論理レイヤーID（trade は2つの deck レイヤーに分かれる）。
+const DECK_TO_LAYER = {
+  quakes: 'quakes', flights: 'flights', conflict: 'conflict', protests: 'protests',
+  'trade-routes': 'trade', 'trade-chokepoints': 'trade',
+};
+
+// deck の picking 結果から、レイヤー別フォーマット済みツールチップ文字列を返す。
+export function tooltipFor(deckLayerId, object) {
+  const l = getLayer(DECK_TO_LAYER[deckLayerId]);
+  return (l && l.tooltip) ? l.tooltip(object) : null;
+}

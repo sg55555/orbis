@@ -15,9 +15,19 @@
 <body>
   <div id="app">
     <div id="map-wrap">
+      <canvas id="starfield"></canvas>
       <div id="map"></div>
       <div id="freshness">—</div>
-      <div id="legend"><h4>レイヤー / Layers</h4><div id="legend-rows"></div></div>
+      <div id="panel" class="side-panel">
+        <div class="panel-head"><h4>レイヤー / Layers</h4>
+          <button id="panel-toggle" class="collapse-btn" aria-label="パネル折りたたみ">‹</button></div>
+        <div id="panel-rows"></div>
+      </div>
+      <div id="feed" class="side-panel feed-panel">
+        <div class="panel-head"><h4>イベント / Feed</h4>
+          <button id="feed-toggle" class="collapse-btn" aria-label="フィード折りたたみ">›</button></div>
+        <div id="feed-rows"></div>
+      </div>
       <div id="loading">ORBIS 起動中…</div>
     </div>
   </div>

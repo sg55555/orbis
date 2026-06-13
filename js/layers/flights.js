@@ -36,4 +36,10 @@ export const flightsLayer = {
   legend: [{ color: 'rgb(57,208,255)', label: '航空機（向き=進行方向）' }],
   async fetch(getSnapshot) { return getSnapshot('flights'); },
   toDeckLayer(snapshot) { return new deck.IconLayer(buildIconConfig(snapshot)); },
+  tooltip(o) {
+    if (!o) return null;
+    const alt = (o.on_ground || o.alt == null) ? '地上' : `${Math.round(o.alt)}m`;
+    const spd = `${Math.round(o.velocity || 0)}m/s`;
+    return `${String(o.callsign || '').trim()} · ${alt} · ${spd}`;
+  },
 };
