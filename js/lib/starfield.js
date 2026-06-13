@@ -29,7 +29,9 @@ export function drawStars(canvas, stars) {
   ctx.globalAlpha = 1;
 }
 
-// canvas を要素サイズに合わせ、星を生成して描く。返り値は星配列（リサイズ再描画用）。
+// canvas を要素サイズに合わせ、星を生成して描く。返り値は初期状態の星配列スナップショット
+// （リサイズは内部で自動再描画される）。呼び出し側は canvas ごとに一度だけ呼ぶこと
+// （複数回呼ぶと resize リスナーが重複する）。
 export function mountStarfield(canvas, density = 0.00018) {
   const resize = () => {
     const w = canvas.clientWidth || window.innerWidth;
