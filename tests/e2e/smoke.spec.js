@@ -1,13 +1,15 @@
 import { test, expect } from '@playwright/test';
 
-test('globe boots and all phase-2 layers render', async ({ page }) => {
+test('globe boots, layers render, panel toggles, feed flies', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
+  await expect(page.locator('#starfield')).toBeVisible();
 
-  // 凡例グループが5レイヤー分（quakes/flights/conflict/protests/trade）
-  await expect(page.locator('#legend .legend-group')).toHaveCount(5);
+  // 左パネルに5レイヤー行
+  await expect(page.locator('#panel .layer-row')).toHaveCount(5);
 
+  // データ到着
   await expect.poll(
     async () => page.evaluate(() => window.__orbis?.counts?.quakes ?? 0),
     { timeout: 15000 }
@@ -20,4 +22,21 @@ test('globe boots and all phase-2 layers render', async ({ page }) => {
     async () => page.evaluate(() => window.__orbis?.counts?.trade ?? 0),
     { timeout: 15000 }
   ).toBeGreaterThan(0);
+
+  // トグル: quakes を OFF にするとチェックが外れる
+  await page.locator('.layer-row[data-id="quakes"] .layer-toggle').uncheck();
+  await expect(page.locator('.layer-row[data-id="quakes"] .layer-toggle')).not.toBeChecked();
+
+  // フィード: item が出てクリックで地図中心が変わる
+  await expect(page.locator('#feed .feed-row').first()).toBeVisible({ timeout: 15000 });
+  const before = await page.evaluate(() => window.__orbis.map.getCenter());
+  await page.locator('#feed .feed-row').first().click();
+  await page.waitForTimeout(1800); // flyTo 完了待ち
+  const after = await page.evaluate(() => window.__orbis.map.getCenter());
+  expect(after.lng !== before.lng || after.lat !== before.lat).toBe(true);
+
+  // ズームアウトで低 zoom（球体ビュー）に到達できる
+  await page.evaluate(() => window.__orbis.map.setZoom(0.3));
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => window.__orbis.map.getZoom())).toBeLessThan(1);
 });
