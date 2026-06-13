@@ -46,3 +46,26 @@ def split_events(events):
     protests = [e for e in events if e["root"] in PROTEST_CODES]
     conflict = [e for e in events if e["root"] in CONFLICT_CODES]
     return protests, conflict
+
+
+def _parse_date(s):
+    try:
+        return datetime.strptime(s, "%Y%m%d%H%M%S")
+    except (ValueError, TypeError):
+        return None
+
+
+def merge_rolling(prev, new, now=None, window_hours=WINDOW_HOURS, cap=MAX_PER_LAYER):
+    """前回＋新規を id で重複排除し、直近 window_hours 内に絞り、新しい順に cap 件（純粋）。"""
+    now = now or datetime.utcnow()
+    by_id = {}
+    for e in prev + new:  # new が後勝ち
+        by_id[e["id"]] = e
+    cutoff = now.timestamp() - window_hours * 3600
+    kept = []
+    for e in by_id.values():
+        d = _parse_date(e.get("date", ""))
+        if d is None or d.timestamp() >= cutoff:
+            kept.append(e)
+    kept.sort(key=lambda e: e.get("date", ""), reverse=True)
+    return kept[:cap]

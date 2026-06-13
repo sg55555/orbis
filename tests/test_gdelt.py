@@ -1,6 +1,7 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from collectors.gdelt_events import parse_rows, split_events
+from collectors.gdelt_events import parse_rows, split_events, merge_rolling
+from datetime import datetime
 
 def make_row(eid, root, lat, lon, mentions="3", url="http://x"):
     r = [""] * 61
@@ -30,3 +31,20 @@ def test_split_events_by_category():
     protests, conflict = split_events(evs)
     assert [e["id"] for e in protests] == ["1"]
     assert sorted(e["id"] for e in conflict) == ["2", "3"]
+
+def test_merge_rolling_dedupes_windows_and_caps():
+    now = datetime(2026, 6, 14, 12, 0, 0)
+    prev = [{"id": "old", "date": "20260612120000", "lon": 0, "lat": 0},
+            {"id": "keep", "date": "20260614000000", "lon": 1, "lat": 1}]
+    new = [{"id": "keep", "date": "20260614010000", "lon": 1, "lat": 1},
+           {"id": "fresh", "date": "20260614110000", "lon": 2, "lat": 2}]
+    merged = merge_rolling(prev, new, now=now, window_hours=24, cap=10)
+    ids = sorted(e["id"] for e in merged)
+    assert ids == ["fresh", "keep"]
+
+def test_merge_rolling_caps_to_newest():
+    now = datetime(2026, 6, 14, 12, 0, 0)
+    new = [{"id": str(i), "date": f"202606141{i:01d}0000", "lon": 0, "lat": 0} for i in range(5)]
+    merged = merge_rolling([], new, now=now, window_hours=24, cap=3)
+    assert len(merged) == 3
+    assert merged[0]["id"] == "4"
