@@ -21,7 +21,7 @@ jobs:
       - name: Commit snapshots
         run: |
           git config user.name "orbis-bot"
-          git config user.email "sgograb1411@gmail.com"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
           git add data/snapshots/quakes.json data/snapshots/manifest.json
           if git diff --cached --quiet; then
             echo "no changes"
