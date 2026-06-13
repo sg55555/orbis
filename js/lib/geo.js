@@ -20,3 +20,15 @@ export function formatFreshness(updatedIso, now = Date.now()) {
   if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}時間前`;
   return `${Math.floor(diffSec / 86400)}日前`;
 }
+
+// 方位（北0°時計回り）を deck.gl IconLayer の角度（反時計回り）へ変換。
+export function iconAngle(headingDeg) {
+  const h = Number(headingDeg) || 0;
+  return ((360 - (h % 360)) % 360);
+}
+
+// イベントの言及数から描画半径(px)。floor 5, 上限 18。
+export function eventRadius(mentions) {
+  const m = Number(mentions) || 0;
+  return Math.min(18, Math.round(5 + Math.sqrt(m)));
+}
