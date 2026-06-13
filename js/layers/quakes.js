@@ -35,4 +35,10 @@ export const quakesLayer = {
     if (!o) return null;
     return `M${o.mag} ${o.place}`;
   },
+  toFeedItems(snapshot) {
+    const pts = (snapshot && snapshot.points) ? snapshot.points : [];
+    return pts.map((p) => ({
+      id: p.id, time: p.time, title: `M${p.mag} ${p.place}`, layerId: 'quakes', lon: p.lon, lat: p.lat,
+    }));
+  },
 };

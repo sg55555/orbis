@@ -24,6 +24,11 @@ export function buildDeckLayers(enabled, snapshots, layersOverride) {
     });
 }
 
+// toFeedItems を実装するレイヤーだけを返す（フィード対象）。
+export function feedLayers() {
+  return layers.filter((l) => typeof l.toFeedItems === 'function');
+}
+
 // deck レイヤーID → 論理レイヤーID（trade は2つの deck レイヤーに分かれる）。
 const DECK_TO_LAYER = {
   quakes: 'quakes', flights: 'flights', conflict: 'conflict', protests: 'protests',

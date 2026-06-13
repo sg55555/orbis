@@ -1,5 +1,6 @@
 // 抗議レイヤー（緑）。言及数で半径。
 import { eventRadius, hostnameOf } from '../lib/geo.js';
+import { parseGdeltDate } from '../lib/feed.js';
 
 export function buildProtestsConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
@@ -23,5 +24,12 @@ export const protestsLayer = {
   tooltip(o) {
     if (!o) return null;
     return `${o.place}（${hostnameOf(o.url)}）`;
+  },
+  toFeedItems(snapshot) {
+    const pts = (snapshot && snapshot.points) ? snapshot.points : [];
+    return pts.map((p) => ({
+      id: p.id, time: parseGdeltDate(p.date), title: `抗議 ${p.place}（${hostnameOf(p.url)}）`,
+      layerId: 'protests', lon: p.lon, lat: p.lat,
+    }));
   },
 };
