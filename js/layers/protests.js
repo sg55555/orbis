@@ -34,7 +34,7 @@ export const protestsLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `${o.place}（${hostnameOf(o.url)}）`; // ラベル付き文面は Task 4 で更新
+    return `抗議｜${o.place}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];

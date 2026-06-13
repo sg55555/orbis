@@ -46,6 +46,9 @@ export const tradeLayer = {
   },
   tooltip(o) {
     if (!o || !o.properties) return null;
-    return o.properties.name || null;
+    const name = o.properties.name;
+    if (!name) return null;
+    const isRoute = o.geometry && o.geometry.type === 'LineString';
+    return `${isRoute ? '航路' : '要衝'} ${name}`;
   },
 };

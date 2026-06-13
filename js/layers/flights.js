@@ -39,7 +39,6 @@ export const flightsLayer = {
   tooltip(o) {
     if (!o) return null;
     const alt = (o.on_ground || o.alt == null) ? '地上' : `${Math.round(o.alt)}m`;
-    const spd = `${Math.round(o.velocity || 0)}m/s`;
-    return `${String(o.callsign || '').trim()} · ${alt} · ${spd}`;
+    return `便名 ${String(o.callsign || '').trim()}｜高度 ${alt}｜速度 ${Math.round(o.velocity || 0)}m/s`;
   },
 };

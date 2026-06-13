@@ -33,7 +33,7 @@ export const quakesLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `M${o.mag} ${o.place}`;
+    return `地震 M${o.mag}｜${o.place}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];
