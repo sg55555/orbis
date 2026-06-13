@@ -23,6 +23,7 @@ let motionT = 0;          // 0..1 ループする位相
 let prevIds = {};         // layerId -> Set（前回のid集合。新規検出用）
 let pulses = [];          // { lon, lat, born } 出現パルス
 let _overlay = null;      // rAF ループ用の overlay 参照
+let selected = null;      // フィードで選択中のイベント { lon, lat, title }
 
 async function updateFreshness() {
   try {
@@ -64,7 +65,10 @@ function rebuild(overlay) {
 function refreshFeed() {
   const items = buildFeed(feedLayers(), snapshots, ENABLED);
   renderFeed(document.getElementById('feed-rows'), items, (it) => {
+    selected = { lon: it.lon, lat: it.lat, title: it.title };
+    if (window.__orbis) window.__orbis.selected = selected; // e2e/デバッグ用に露出
     window.__orbis.map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500 });
+    drawAll(window.__orbis.overlay); // マーカーを即時表示
   });
 }
 
@@ -105,6 +109,17 @@ function pulseLayer(now) {
   });
 }
 
+// 選択中イベントのネオンハイライト（持続リング＋中心ドット）。flyTo の着地点を示す。
+function selectedMarkerLayer() {
+  if (!selected) return null;
+  return new deck.ScatterplotLayer({
+    id: 'selected-marker', data: [selected], radiusUnits: 'pixels',
+    stroked: true, filled: true, lineWidthUnits: 'pixels', getLineWidth: 2.5,
+    getPosition: (d) => [d.lon, d.lat], getRadius: 13,
+    getFillColor: [255, 255, 255, 35], getLineColor: [57, 208, 255, 255], pickable: false,
+  });
+}
+
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
 function drawAll(overlay) {
   _overlay = overlay;
@@ -113,6 +128,7 @@ function drawAll(overlay) {
   const extra = [];
   if (ENABLED.has('trade')) { const fp = flowParticlesLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
+  const sm = selectedMarkerLayer(); if (sm) extra.push(sm);
   setDeckLayers(overlay, [...base, ...extra]);
 }
 
