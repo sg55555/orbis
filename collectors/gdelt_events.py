@@ -5,6 +5,8 @@ import json
 import os
 import zipfile
 from datetime import datetime, timezone
+import requests
+from collectors.lib.manifest import update_manifest
 
 LASTUPDATE_URL = "http://data.gdeltproject.org/gdeltv2/lastupdate.txt"
 PROTEST_CODES = {"14"}
@@ -69,3 +71,67 @@ def merge_rolling(prev, new, now=None, window_hours=WINDOW_HOURS, cap=MAX_PER_LA
             kept.append(e)
     kept.sort(key=lambda e: e.get("date", ""), reverse=True)
     return kept[:cap]
+
+
+SNAPSHOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"))
+
+
+def fetch_latest_rows(timeout=40):
+    """lastupdate.txt → 最新 export.CSV.zip を取得し TSV 行配列を返す。"""
+    lu = requests.get(LASTUPDATE_URL, timeout=timeout, headers={"User-Agent": "orbis-collector"})
+    lu.raise_for_status()
+    export_url = None
+    for line in lu.text.splitlines():
+        parts = line.split()
+        if parts and parts[-1].endswith("export.CSV.zip"):
+            export_url = parts[-1]
+            break
+    if not export_url:
+        raise RuntimeError("no export.CSV.zip in lastupdate")
+    z = requests.get(export_url, timeout=timeout, headers={"User-Agent": "orbis-collector"})
+    z.raise_for_status()
+    zf = zipfile.ZipFile(io.BytesIO(z.content))
+    raw = zf.read(zf.namelist()[0]).decode("latin-1")
+    return list(csv.reader(io.StringIO(raw), delimiter="\t"))
+
+
+def _load_prev(path):
+    if os.path.exists(path):
+        try:
+            with open(path, encoding="utf-8") as f:
+                return json.load(f).get("points", [])
+        except Exception:
+            return []
+    return []
+
+
+def _write(path, layer, points, now_iso, manifest_path):
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump({"layer": layer, "updated": now_iso, "count": len(points), "points": points},
+                  f, ensure_ascii=False, separators=(",", ":"))
+    update_manifest(manifest_path, layer, now_iso, len(points))
+
+
+def main():
+    os.makedirs(SNAPSHOT_DIR, exist_ok=True)
+    manifest_path = os.path.join(SNAPSHOT_DIR, "manifest.json")
+    p_path = os.path.join(SNAPSHOT_DIR, "protests.json")
+    c_path = os.path.join(SNAPSHOT_DIR, "conflict.json")
+    now = datetime.now(timezone.utc)
+    now_iso = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        rows = fetch_latest_rows()
+    except Exception as e:
+        print(f"[gdelt] fetch failed: {e}; keeping previous snapshots")
+        return 1
+    protests_new, conflict_new = split_events(parse_rows(rows))
+    protests = merge_rolling(_load_prev(p_path), protests_new, now=now.replace(tzinfo=None))
+    conflict = merge_rolling(_load_prev(c_path), conflict_new, now=now.replace(tzinfo=None))
+    _write(p_path, "protests", protests, now_iso, manifest_path)
+    _write(c_path, "conflict", conflict, now_iso, manifest_path)
+    print(f"[gdelt] protests={len(protests)} conflict={len(conflict)}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

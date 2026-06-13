@@ -7,6 +7,14 @@
     "flights": {
       "updated": "2026-06-13T17:09:11Z",
       "count": 4064
+    },
+    "protests": {
+      "updated": "2026-06-13T17:15:54Z",
+      "count": 12
+    },
+    "conflict": {
+      "updated": "2026-06-13T17:15:54Z",
+      "count": 42
     }
   }
 }
