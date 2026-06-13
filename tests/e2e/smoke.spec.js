@@ -35,6 +35,10 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   const after = await page.evaluate(() => window.__orbis.map.getCenter());
   expect(after.lng !== before.lng || after.lat !== before.lat).toBe(true);
 
+  // フィードクリックで選択が記録される（着地マーカー用）
+  const sel = await page.evaluate(() => window.__orbis.selected);
+  expect(sel && typeof sel.lon === 'number' && typeof sel.lat === 'number').toBe(true);
+
   // ズームアウトで低 zoom（球体ビュー）に到達できる
   await page.evaluate(() => window.__orbis.map.setZoom(0.3));
   await page.waitForTimeout(300);
