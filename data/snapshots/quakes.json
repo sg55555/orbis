@@ -1,8 +1,118 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-13T20:55:49Z",
-  "count": 210,
+  "updated": "2026-06-13T22:12:17Z",
+  "count": 211,
   "points": [
+    {
+      "id": "hv74981027",
+      "lon": -155.325836181641,
+      "lat": 19.2749996185303,
+      "depth": 32.3800010681152,
+      "mag": 1.95,
+      "place": "17 km ENE of Pāhala, Hawaii",
+      "time": 1781388433240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74981027"
+    },
+    {
+      "id": "aka2026lqthgp",
+      "lon": -146.876,
+      "lat": 61.238,
+      "depth": 12.6,
+      "mag": 1.5,
+      "place": "30 km WNW of Valdez, Alaska",
+      "time": 1781387453637,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqthgp"
+    },
+    {
+      "id": "ci41486016",
+      "lon": -117.681666666667,
+      "lat": 35.947,
+      "depth": 4.91,
+      "mag": 0.64,
+      "place": "20 km E of Little Lake, CA",
+      "time": 1781387447360,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486016"
+    },
+    {
+      "id": "nc75375896",
+      "lon": -122.815498352051,
+      "lat": 38.8313331604004,
+      "depth": 1.94000005722046,
+      "mag": 1.03,
+      "place": "8 km NW of The Geysers, CA",
+      "time": 1781387059910,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375896"
+    },
+    {
+      "id": "ci41486008",
+      "lon": -116.852833333333,
+      "lat": 33.879,
+      "depth": 15.5,
+      "mag": 1.1,
+      "place": "6 km SSE of Banning, CA",
+      "time": 1781386794940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486008"
+    },
+    {
+      "id": "nc75375891",
+      "lon": -122.819000244141,
+      "lat": 38.8300018310547,
+      "depth": 1.62999999523163,
+      "mag": 1.56,
+      "place": "8 km NW of The Geysers, CA",
+      "time": 1781386324480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375891"
+    },
+    {
+      "id": "us7000ssr3",
+      "lon": -145.0942,
+      "lat": 58.821,
+      "depth": 10,
+      "mag": 2.7,
+      "place": "195 km S of Cordova, Alaska",
+      "time": 1781386206212,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssr3"
+    },
+    {
+      "id": "aka2026lqsofr",
+      "lon": -149.204,
+      "lat": 64.827,
+      "depth": 8.8,
+      "mag": 2,
+      "place": "25 km N of Four Mile Road, Alaska",
+      "time": 1781386135366,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqsofr"
+    },
+    {
+      "id": "nc75375886",
+      "lon": -122.817497253418,
+      "lat": 38.8294982910156,
+      "depth": 1.60000002384186,
+      "mag": 1.93,
+      "place": "8 km NW of The Geysers, CA",
+      "time": 1781386023020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375886"
+    },
+    {
+      "id": "hv74980982",
+      "lon": -155.441497802734,
+      "lat": 19.155834197998,
+      "depth": 39.3199996948242,
+      "mag": 1.82,
+      "place": "6 km SE of Pāhala, Hawaii",
+      "time": 1781384312040,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74980982"
+    },
+    {
+      "id": "us7000ssqy",
+      "lon": 125.7394,
+      "lat": 5.2843,
+      "depth": 35,
+      "mag": 5,
+      "place": "33 km ESE of Sarangani, Philippines",
+      "time": 1781383915063,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssqy"
+    },
     {
       "id": "nc75375871",
       "lon": -125.045166015625,
@@ -1304,14 +1414,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375531"
     },
     {
-      "id": "us7000ssm8",
-      "lon": -98.0308,
-      "lat": 35.708,
-      "depth": 6.817,
-      "mag": 2.9,
-      "place": "5 km WSW of Okarche, Oklahoma",
-      "time": 1781328323286,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssm8"
+      "id": "ok2026lmft",
+      "lon": -98.04416667,
+      "lat": 35.6965,
+      "depth": 6.85,
+      "mag": 2.46,
+      "place": "6 km WSW of Okarche, Oklahoma",
+      "time": 1781328323329,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ok2026lmft"
     },
     {
       "id": "nc75375526",
@@ -2002,106 +2112,6 @@
       "place": "17 km ESE of Anza, CA",
       "time": 1781302467060,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485496"
-    },
-    {
-      "id": "nc75375391",
-      "lon": -122.749664306641,
-      "lat": 38.7934989929199,
-      "depth": 3,
-      "mag": 0.75,
-      "place": "2 km NNE of The Geysers, CA",
-      "time": 1781301374590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375391"
-    },
-    {
-      "id": "uu80142191",
-      "lon": -111.474333333333,
-      "lat": 38.8391666666667,
-      "depth": 5.94,
-      "mag": 0.97,
-      "place": "21 km WSW of Emery, Utah",
-      "time": 1781300806520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142191"
-    },
-    {
-      "id": "ci41485472",
-      "lon": -115.389833333333,
-      "lat": 32.8371666666667,
-      "depth": 1.29,
-      "mag": 1.36,
-      "place": "3 km NNW of Holtville, CA",
-      "time": 1781300367760,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485472"
-    },
-    {
-      "id": "us7000sskm",
-      "lon": 147.0737,
-      "lat": -5.5439,
-      "depth": 188.114,
-      "mag": 4.2,
-      "place": "130 km N of Lae, Papua New Guinea",
-      "time": 1781300313425,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sskm"
-    },
-    {
-      "id": "nn00920170",
-      "lon": -117.0772,
-      "lat": 38.7057,
-      "depth": 12.964,
-      "mag": 2.02,
-      "place": "55 km S of Kingston, Nevada",
-      "time": 1781299648606,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920170"
-    },
-    {
-      "id": "nc75375386",
-      "lon": -122.432167053223,
-      "lat": 38.4071655273438,
-      "depth": 7,
-      "mag": 2.33,
-      "place": "6 km W of Yountville, CA",
-      "time": 1781298892980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375386"
-    },
-    {
-      "id": "nc75375381",
-      "lon": -121.079002380371,
-      "lat": 35.7158317565918,
-      "depth": 6.76000022888184,
-      "mag": 0.92,
-      "place": "13 km NE of San Simeon, CA",
-      "time": 1781298543330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375381"
-    },
-    {
-      "id": "us7000sskd",
-      "lon": 36.8083,
-      "lat": 37.071,
-      "depth": 10,
-      "mag": 4.3,
-      "place": "12 km SSE of Nurdağı, Turkey",
-      "time": 1781298528538,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sskd"
-    },
-    {
-      "id": "ci41485424",
-      "lon": -119.022166666667,
-      "lat": 35.023,
-      "depth": 18.06,
-      "mag": 1.77,
-      "place": "12 km NW of Grapevine, CA",
-      "time": 1781298165690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485424"
-    },
-    {
-      "id": "aka2026lovmvy",
-      "lon": -166.775,
-      "lat": 51.841,
-      "depth": 7.1,
-      "mag": 2.5,
-      "place": "187 km SE of Nikolski, Alaska",
-      "time": 1781297891295,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lovmvy"
     }
   ]
 }
