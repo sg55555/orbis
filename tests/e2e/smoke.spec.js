@@ -1,23 +1,23 @@
 import { test, expect } from '@playwright/test';
 
-test('globe boots, loading clears, and quake layer renders points', async ({ page }) => {
+test('globe boots and all phase-2 layers render', async ({ page }) => {
   await page.goto('/');
-
-  // ローディングが消える（map load 完了）
   await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
-
-  // canvas（MapLibre）が存在
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
 
-  // 凡例が4バンド描画されている
-  await expect(page.locator('#legend-rows .row')).toHaveCount(4);
+  // 凡例グループが5レイヤー分（quakes/flights/conflict/protests/trade）
+  await expect(page.locator('#legend .legend-group')).toHaveCount(5);
 
-  // ポーリングで地震点が読み込まれる（committed snapshot を読む・件数>0）
   await expect.poll(
-    async () => page.evaluate(() => window.__orbis && window.__orbis.lastCount),
+    async () => page.evaluate(() => window.__orbis?.counts?.quakes ?? 0),
     { timeout: 15000 }
   ).toBeGreaterThan(0);
-
-  // 鮮度表示が更新されている
-  await expect(page.locator('#freshness')).toContainText('地震データ');
+  await expect.poll(
+    async () => page.evaluate(() => window.__orbis?.counts?.flights ?? 0),
+    { timeout: 15000 }
+  ).toBeGreaterThan(0);
+  await expect.poll(
+    async () => page.evaluate(() => window.__orbis?.counts?.trade ?? 0),
+    { timeout: 15000 }
+  ).toBeGreaterThan(0);
 });

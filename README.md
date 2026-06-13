@@ -1,10 +1,12 @@
 # ORBIS — 世界リアルタイム監視ダッシュボード
 
-無料OSINTで世界を近リアルタイム監視するダッシュボード。Phase 1（基盤）: 地球儀 + 地震(USGS)。
+無料OSINTで世界を近リアルタイム監視するダッシュボード。Phase 2: 地球儀 + 地震(USGS) + 航空(OpenSky) + 紛争/抗議(GDELT) + 貿易ルート(静的)。
 
 ## 開発
 - フロント: Vanilla JS (ESM, no build)。`python3 -m http.server 8000` → http://localhost:8000
 - 収集: `python3 -m collectors.quakes`（USGS → data/snapshots/quakes.json + manifest.json）
+- 収集: `python3 -m collectors.flights`（OpenSky → data/snapshots/flights.json）
+- 収集: `python3 -m collectors.gdelt_events`（GDELT → data/snapshots/conflict.json + protests.json）
 
 ## テスト
 - Python: `python3 -m pytest -q`
