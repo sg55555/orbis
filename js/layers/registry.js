@@ -8,9 +8,14 @@ export function getLayer(id) {
 }
 
 // 有効レイヤーの deck レイヤー配列を組み立てる。
-// enabled: Set<string>、snapshots: Record<id, snapshot>
-export function buildDeckLayers(enabled, snapshots) {
-  return layers
+// toDeckLayer は単体または配列を返してよい（配列は flat 化）。
+// layersOverride: テスト用に layers を差し替え可能。
+export function buildDeckLayers(enabled, snapshots, layersOverride) {
+  const ls = layersOverride || layers;
+  return ls
     .filter((l) => enabled.has(l.id) && snapshots[l.id])
-    .map((l) => l.toDeckLayer(snapshots[l.id]));
+    .flatMap((l) => {
+      const r = l.toDeckLayer(snapshots[l.id]);
+      return Array.isArray(r) ? r : [r];
+    });
 }
