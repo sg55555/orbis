@@ -1,10 +1,12 @@
 import { initMap, setDeckLayers } from './map.js';
-import { layers, buildDeckLayers, tooltipFor } from './layers/registry.js';
+import { layers, buildDeckLayers, tooltipFor, feedLayers } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
+import { buildFeed } from './lib/feed.js';
+import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
@@ -32,6 +34,14 @@ function rebuild(overlay) {
     Object.entries(snapshots).map(([k, v]) => [k, (v && (v.points?.length ?? v.features?.length)) ?? 0])
   );
   if (panel) panel.updateCounts();
+  refreshFeed();
+}
+
+function refreshFeed() {
+  const items = buildFeed(feedLayers(), snapshots, ENABLED);
+  renderFeed(document.getElementById('feed-rows'), items, (it) => {
+    window.__orbis.map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500 });
+  });
 }
 
 function boot() {
@@ -49,6 +59,7 @@ function boot() {
     (next) => { ENABLED = next; rebuild(overlay); }
   );
   wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
+  wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));
 
   map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');

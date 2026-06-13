@@ -42,3 +42,13 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .layer-count { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 11px; }
 .side-panel.collapsed #panel-rows { display: none; }
 .side-panel.collapsed { width: auto; }
+.feed-panel { left: auto; right: 12px; width: 260px; }
+.feed-row { display: flex; align-items: center; gap: 7px; padding: 5px 4px; cursor: pointer;
+  border-bottom: 1px solid rgba(28,44,72,.5); }
+.feed-row:hover { background: rgba(57,208,255,.08); }
+.feed-dot { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 6px currentColor; flex: 0 0 auto; }
+.feed-title { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.feed-time { color: var(--muted); font-size: 10px; flex: 0 0 auto; }
+.feed-empty { color: var(--muted); padding: 8px 4px; }
+.feed-panel.collapsed #feed-rows { display: none; }
+.feed-panel.collapsed { width: auto; }
