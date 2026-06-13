@@ -1,34 +1,17 @@
 // MapLibre GL（globe投影）を初期化し、deck.gl の MapboxOverlay を載せる。
 // maplibregl と deck は index.html の CDN によりグローバル提供される。
 
-const DARK_STYLE = {
-  version: 8,
-  // 無料・キー不要の OSS ダークラスタタイル（CARTO dark_all）
-  sources: {
-    carto: {
-      type: 'raster',
-      tiles: [
-        'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-        'https://b.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png',
-      ],
-      tileSize: 256,
-      attribution: '© OpenStreetMap, © CARTO',
-    },
-  },
-  layers: [
-    { id: 'bg', type: 'background', paint: { 'background-color': '#05080f' } },
-    { id: 'carto', type: 'raster', source: 'carto', paint: { 'raster-opacity': 0.85 } },
-  ],
-};
+import { buildBaseStyle } from './style.js';
 
 export function initMap(container, getTooltip) {
   const map = new maplibregl.Map({
     container,
-    style: DARK_STYLE,
+    style: buildBaseStyle(),
     center: [0, 20],
     zoom: 1.2,
     minZoom: 0,
     attributionControl: true,
+    localIdeographFontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
   });
   // 地球儀投影（遠景）。ズームインで平面に近づく。
   map.on('style.load', () => {

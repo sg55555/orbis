@@ -40,3 +40,13 @@ export function tooltipFor(deckLayerId, object) {
   const l = getLayer(DECK_TO_LAYER[deckLayerId]);
   return (l && l.tooltip) ? l.tooltip(object) : null;
 }
+
+// 各レイヤーの1行説明（パネル表示用）。
+const DESCRIPTIONS = {
+  quakes: '直近の地震（USGS・円の大きさ=規模）',
+  flights: '飛行中の航空機（OpenSky・向き=進行方向）',
+  conflict: '紛争関連報道の集中（GDELT・24h・赤い面）',
+  protests: '抗議関連報道の集中（GDELT・24h・緑の面）',
+  trade: '主要な海上貿易ルートと要衝',
+};
+export function descFor(id) { return DESCRIPTIONS[id] || ''; }

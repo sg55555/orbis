@@ -2,39 +2,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { tooltipFor } from '../js/layers/registry.js';
 
-test('quakes tooltip: M{mag} {place}', () => {
-  const o = { mag: 3.6, place: '93 km SSE of Perryville, Alaska' };
-  assert.equal(tooltipFor('quakes', o), 'M3.6 93 km SSE of Perryville, Alaska');
+test('quakes tooltip: ラベル付き', () => {
+  assert.equal(tooltipFor('quakes', { mag: 3.6, place: 'Alaska' }), '地震 M3.6｜Alaska');
 });
-
-test('flights tooltip: callsign + 高度 + 速度（空中）', () => {
-  const o = { callsign: 'RTY484 ', alt: 1821.18, velocity: 56.83, on_ground: false };
-  assert.equal(tooltipFor('flights', o), 'RTY484 · 1821m · 57m/s');
+test('flights tooltip: 便名/高度/速度ラベル（空中）', () => {
+  assert.equal(tooltipFor('flights', { callsign: 'RTY484 ', alt: 1821.18, velocity: 56.83, on_ground: false }),
+    '便名 RTY484｜高度 1821m｜速度 57m/s');
 });
-
-test('flights tooltip: 地上は「地上」表記', () => {
-  const o = { callsign: 'AIC1TA', alt: null, velocity: 7.46, on_ground: true };
-  assert.equal(tooltipFor('flights', o), 'AIC1TA · 地上 · 7m/s');
+test('flights tooltip: 地上', () => {
+  assert.equal(tooltipFor('flights', { callsign: 'AIC1TA', alt: null, velocity: 7.46, on_ground: true }),
+    '便名 AIC1TA｜高度 地上｜速度 7m/s');
 });
-
-test('conflict tooltip: {place}（domain）', () => {
-  const o = { place: 'FR', url: 'https://www.dailymail.com/tv/article-1.html' };
-  assert.equal(tooltipFor('conflict', o), 'FR（dailymail.com）');
+test('conflict/protests tooltip: ラベル付き', () => {
+  assert.equal(tooltipFor('conflict', { place: 'FR', url: 'https://www.dailymail.com/x' }), '紛争｜FR｜出典 dailymail.com');
+  assert.equal(tooltipFor('protests', { place: 'US', url: 'https://www.sacurrent.com/x' }), '抗議｜US｜出典 sacurrent.com');
 });
-
-test('protests tooltip: {place}（domain）', () => {
-  const o = { place: 'US', url: 'https://www.sacurrent.com/news/x' };
-  assert.equal(tooltipFor('protests', o), 'US（sacurrent.com）');
+test('trade tooltip: 要衝/航路ラベル', () => {
+  assert.equal(tooltipFor('trade-chokepoints', { properties: { name: 'Suez Canal' } }), '要衝 Suez Canal');
+  assert.equal(tooltipFor('trade-routes', { geometry: { type: 'LineString' }, properties: { name: 'Trans-Pacific' } }), '航路 Trans-Pacific');
 });
-
-test('trade-chokepoints / trade-routes tooltip: properties.name', () => {
-  const choke = { properties: { name: 'Suez Canal' } };
-  const route = { properties: { name: 'Trans-Pacific' } };
-  assert.equal(tooltipFor('trade-chokepoints', choke), 'Suez Canal');
-  assert.equal(tooltipFor('trade-routes', route), 'Trans-Pacific');
-});
-
-test('tooltipFor: 未知 deckLayerId や null object は null', () => {
+test('tooltipFor: null/未知は null', () => {
   assert.equal(tooltipFor('quakes', null), null);
   assert.equal(tooltipFor('ghost', {}), null);
 });
