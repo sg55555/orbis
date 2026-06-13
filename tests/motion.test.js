@@ -31,6 +31,18 @@ test('pointAlongPath: 退化パス（点1個/空）は始点 or null', () => {
   assert.equal(pointAlongPath([], 0.5), null);
 });
 
+test('pointAlongPath: 辺長が不均一でも累積長で正しく補間', () => {
+  // 辺長 1 / 3 / 1（総長5）。t=0.5 → 距離2.5 = 2辺目の中間 [1,1.5]
+  const uneven = [[0, 0], [1, 0], [1, 3], [2, 3]];
+  const p = pointAlongPath(uneven, 0.5);
+  assert.ok(Math.abs(p[0] - 1) < 1e-9);
+  assert.ok(Math.abs(p[1] - 1.5) < 1e-9);
+  // t=0.8 → 距離4 = 3辺目の始点 [1,3]
+  const q = pointAlongPath(uneven, 0.8);
+  assert.ok(Math.abs(q[0] - 1) < 1e-9);
+  assert.ok(Math.abs(q[1] - 3) < 1e-9);
+});
+
 test('diffNewIds: 前回に無く今回にある id を返す', () => {
   const prev = new Set(['a', 'b']);
   assert.deepEqual(diffNewIds(prev, [{ id: 'b' }, { id: 'c' }, { id: 'd' }]).sort(), ['c', 'd']);
