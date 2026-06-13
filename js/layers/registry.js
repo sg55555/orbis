@@ -2,8 +2,9 @@
 import { quakesLayer } from './quakes.js';
 import { flightsLayer } from './flights.js';
 import { conflictLayer } from './conflict.js';
+import { protestsLayer } from './protests.js';
 
-export const layers = [quakesLayer, flightsLayer, conflictLayer];
+export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer];
 
 export function getLayer(id) {
   return layers.find((l) => l.id === id);
