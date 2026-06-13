@@ -45,7 +45,7 @@ Phase 2 で追加するもの：
 - ポーリング対象IDは「スナップショットを持つレイヤー」（quakes/flights/conflict/protests）。trade は静的fetch。
 
 ### レイヤーモジュール（統一I/F・純粋部を分離してテスト）
-- `js/layers/flights.js`: IconLayer 風（heading で回転）or Scatter。シアン系。`buildFlightsConfig` 純粋。
+- `js/layers/flights.js`: **ズーム連動の進行方向矢印**。IconLayer で `getAngle = heading(true_track)` により機体を進行方向へ回転。サイズはズームに連動（遠景＝小さな点に近い三角、ズームインで明瞭な矢印/機影）。シアン系。`buildFlightsConfig` 純粋（角度・サイズ算出を含む）。
 - `js/layers/conflict.js`: Scatter（赤/マゼンタ、強度=GoldsteinやNumMentionsで半径）。`buildConflictConfig` 純粋。toFeedItems あり。
 - `js/layers/protests.js`: Scatter（グリーン）。`buildProtestsConfig` 純粋。toFeedItems あり。
 - `js/layers/trade.js`: PathLayer（航路）＋ Scatter/Icon（要衝・グロー）。`toDeckLayer` は配列を返す。`buildTradeLayers` 純粋。
@@ -60,6 +60,13 @@ Phase 2 で追加するもの：
 - enabled かつ `toFeedItems` を持つレイヤーのスナップショットから item を集約 → `time` 降順 → 上位N（例100）表示。
 - item クリック → `map.flyTo({center:[lon,lat], zoom:5})`。
 - 折りたたみ可。
+
+### 動的表現の指針（ユーザー方針：動きは何かしらの形で動的に見せる）
+全レイヤーで「動いている感」を出す。Phase 2 では軽量に実現できる範囲で：
+- **航空**: 進行方向の矢印（上記・ズーム連動）。
+- **貿易ルート**: PathLayer に**流れるダッシュ/コメット**を rAF でアニメ（航路の流れ方向を可視化）。
+- **新規イベント（紛争/抗議）**: スナップショットに**新たに出現した**イベントを検出し、出現時に短時間（約1.5〜2s）の**パルス/グロー**でハイライト。
+- 重い snapshot 間の移動補間（船/航空の滑走）は P5。Phase 2 は上記の軽量モーションに留める（描画負荷・モバイル配慮）。
 
 ### 横断
 - パネルは折りたたみ可（地図全画面化）。モバイルは簡易対応（パネルをオフキャンバス/ボトム寄せ）。完全なモバイル最適化は P5。
