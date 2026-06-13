@@ -1,5 +1,5 @@
 // 抗議レイヤー（緑）。言及数で半径。
-import { eventRadius } from '../lib/geo.js';
+import { eventRadius, hostnameOf } from '../lib/geo.js';
 
 export function buildProtestsConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
@@ -20,4 +20,8 @@ export const protestsLayer = {
   legend: [{ color: 'rgb(94,255,166)', label: '抗議イベント（GDELT・24h）' }],
   async fetch(getSnapshot) { return getSnapshot('protests'); },
   toDeckLayer(snapshot) { return new deck.ScatterplotLayer(buildProtestsConfig(snapshot)); },
+  tooltip(o) {
+    if (!o) return null;
+    return `${o.place}（${hostnameOf(o.url)}）`;
+  },
 };

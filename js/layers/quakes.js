@@ -31,4 +31,8 @@ export const quakesLayer = {
     // deck は index.html の CDN によりグローバル提供される
     return new deck.ScatterplotLayer(buildScatterConfig(snapshot));
   },
+  tooltip(o) {
+    if (!o) return null;
+    return `M${o.mag} ${o.place}`;
+  },
 };

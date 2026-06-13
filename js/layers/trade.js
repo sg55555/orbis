@@ -43,4 +43,8 @@ export const tradeLayer = {
     const { pathConfig, pointConfig } = buildTradeConfigs(geojson);
     return [new deck.PathLayer(pathConfig), new deck.ScatterplotLayer(pointConfig)];
   },
+  tooltip(o) {
+    if (!o || !o.properties) return null;
+    return o.properties.name || null;
+  },
 };

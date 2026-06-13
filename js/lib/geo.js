@@ -32,3 +32,10 @@ export function eventRadius(mentions) {
   const m = Number(mentions) || 0;
   return Math.min(18, Math.round(5 + Math.sqrt(m)));
 }
+
+// URL からドメインを抽出（www. 除去）。失敗時は空文字。
+export function hostnameOf(url) {
+  if (!url) return '';
+  try { return new URL(url).hostname.replace(/^www\./, ''); }
+  catch { return ''; }
+}
