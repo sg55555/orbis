@@ -28,3 +28,17 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .legend-group { margin-bottom: 8px; }
 .legend-title { font-size: 10px; letter-spacing: .06em; color: var(--cyan); margin: 4px 0 2px; }
 #legend { max-height: 46vh; overflow-y: auto; }
+.side-panel { position: absolute; left: 12px; top: 12px; z-index: 5; width: 220px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; backdrop-filter: blur(8px); font-size: 12px; max-height: 70vh; overflow-y: auto; }
+.panel-head { display: flex; align-items: center; justify-content: space-between; }
+.side-panel h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); }
+.collapse-btn { background: none; border: 1px solid var(--line); color: var(--muted);
+  border-radius: 6px; cursor: pointer; width: 22px; height: 22px; line-height: 1; }
+.layer-row { display: flex; align-items: center; gap: 7px; margin: 5px 0; cursor: pointer; }
+.layer-row .swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; flex: 0 0 auto; }
+.layer-label { flex: 1; }
+.layer-count { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 11px; }
+.side-panel.collapsed #panel-rows { display: none; }
+.side-panel.collapsed { width: auto; }

@@ -1,24 +1,18 @@
 import { initMap, setDeckLayers } from './map.js';
-import { layers, buildDeckLayers } from './layers/registry.js';
+import { layers, buildDeckLayers, tooltipFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness } from './lib/geo.js';
+import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
+import { renderPanel, wireCollapse } from './ui/panel.js';
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
-const ENABLED = new Set(['quakes', 'flights', 'conflict', 'protests', 'trade']);
+const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade'];
+let ENABLED = loadEnabled(ALL_IDS, readStored());
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
-
-function renderLegend() {
-  const rows = document.getElementById('legend-rows');
-  rows.innerHTML = layers.map((l) => {
-    const items = (l.legend || []).map(
-      (e) => `<div class="row"><span class="dot" style="color:${e.color};background:${e.color}"></span>${e.label}</div>`
-    ).join('');
-    return `<div class="legend-group"><div class="legend-title">${l.label}</div>${items}</div>`;
-  }).join('');
-}
+let panel;
 
 async function updateFreshness() {
   try {
@@ -37,13 +31,24 @@ function rebuild(overlay) {
   window.__orbis.counts = Object.fromEntries(
     Object.entries(snapshots).map(([k, v]) => [k, (v && (v.points?.length ?? v.features?.length)) ?? 0])
   );
+  if (panel) panel.updateCounts();
 }
 
 function boot() {
-  const { map, overlay } = initMap('map');
+  const { map, overlay } = initMap('map', (info) =>
+    (info.object && info.layer) ? tooltipFor(info.layer.id, info.object) : null
+  );
   mountStarfield(document.getElementById('starfield'));
-  renderLegend();
   window.__orbis = { map, overlay, counts: {} };
+
+  panel = renderPanel(
+    document.getElementById('panel-rows'),
+    layers,
+    () => ENABLED,
+    () => window.__orbis.counts,
+    (next) => { ENABLED = next; rebuild(overlay); }
+  );
+  wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
 
   map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');
