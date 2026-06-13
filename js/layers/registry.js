@@ -1,8 +1,9 @@
 // レイヤーの登録と一括描画。Phase 2 以降はここに import を足すだけで拡張できる。
 import { quakesLayer } from './quakes.js';
 import { flightsLayer } from './flights.js';
+import { conflictLayer } from './conflict.js';
 
-export const layers = [quakesLayer, flightsLayer];
+export const layers = [quakesLayer, flightsLayer, conflictLayer];
 
 export function getLayer(id) {
   return layers.find((l) => l.id === id);
