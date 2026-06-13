@@ -2,6 +2,7 @@ import { initMap, setDeckLayers } from './map.js';
 import { layers, buildDeckLayers } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness } from './lib/geo.js';
+import { mountStarfield } from './lib/starfield.js';
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
@@ -40,6 +41,7 @@ function rebuild(overlay) {
 
 function boot() {
   const { map, overlay } = initMap('map');
+  mountStarfield(document.getElementById('starfield'));
   renderLegend();
   window.__orbis = { map, overlay, counts: {} };
 

@@ -21,12 +21,13 @@ const DARK_STYLE = {
   ],
 };
 
-export function initMap(container) {
+export function initMap(container, getTooltip) {
   const map = new maplibregl.Map({
     container,
     style: DARK_STYLE,
     center: [0, 20],
-    zoom: 1.4,
+    zoom: 1.2,
+    minZoom: 0,
     attributionControl: true,
   });
   // 地球儀投影（遠景）。ズームインで平面に近づく。
@@ -34,7 +35,7 @@ export function initMap(container) {
     if (map.setProjection) map.setProjection({ type: 'globe' });
   });
 
-  const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [] });
+  const overlay = new deck.MapboxOverlay({ interleaved: false, layers: [], getTooltip });
   map.addControl(overlay);
 
   return { map, overlay };
