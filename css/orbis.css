@@ -23,3 +23,6 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   align-items: center; justify-content: center; background: var(--bg);
   color: var(--cyan); letter-spacing: .2em; transition: opacity .5s; }
 #loading.hidden { opacity: 0; pointer-events: none; }
+.legend-group { margin-bottom: 8px; }
+.legend-title { font-size: 10px; letter-spacing: .06em; color: var(--cyan); margin: 4px 0 2px; }
+#legend { max-height: 46vh; overflow-y: auto; }

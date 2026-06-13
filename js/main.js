@@ -4,40 +4,58 @@ import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness } from './lib/geo.js';
 
 const POLL_MS = 60000;
+const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
+const ENABLED = new Set(['quakes', 'flights', 'conflict', 'protests', 'trade']);
+
+const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 
 function renderLegend() {
   const rows = document.getElementById('legend-rows');
-  const quakes = layers.find((l) => l.id === 'quakes');
-  if (!quakes) return;
-  rows.innerHTML = quakes.legend.map(
-    (e) => `<div class="row"><span class="dot" style="color:${e.color};background:${e.color}"></span>${e.label}</div>`
-  ).join('');
+  rows.innerHTML = layers.map((l) => {
+    const items = (l.legend || []).map(
+      (e) => `<div class="row"><span class="dot" style="color:${e.color};background:${e.color}"></span>${e.label}</div>`
+    ).join('');
+    return `<div class="legend-group"><div class="legend-title">${l.label}</div>${items}</div>`;
+  }).join('');
 }
 
 async function updateFreshness() {
   try {
     const m = await fetchManifest();
     const q = m.layers && m.layers.quakes;
-    document.getElementById('freshness').textContent =
-      q ? `地震データ：${formatFreshness(q.updated)}（${q.count}件）` : 'データ取得中…';
+    const f = m.layers && m.layers.flights;
+    const parts = [];
+    if (q) parts.push(`地震 ${q.count}（${formatFreshness(q.updated)}）`);
+    if (f) parts.push(`航空 ${f.count}`);
+    document.getElementById('freshness').textContent = parts.length ? parts.join(' / ') : 'データ取得中…';
   } catch { /* noop */ }
+}
+
+function rebuild(overlay) {
+  setDeckLayers(overlay, buildDeckLayers(ENABLED, snapshots));
+  window.__orbis.counts = Object.fromEntries(
+    Object.entries(snapshots).map(([k, v]) => [k, (v && (v.points?.length ?? v.features?.length)) ?? 0])
+  );
 }
 
 function boot() {
   const { map, overlay } = initMap('map');
-  const enabled = new Set(['quakes']);
   renderLegend();
+  window.__orbis = { map, overlay, counts: {} };
 
-  // e2e/デバッグ用フック
-  window.__orbis = { map, overlay, lastCount: 0 };
-
-  // マップのロード完了後にポーリング開始（ローディング表示を消してから描画）。
-  map.on('load', () => {
+  map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');
-    startPolling([...enabled], POLL_MS, (snapshots) => {
-      const deckLayers = buildDeckLayers(enabled, snapshots);
-      setDeckLayers(overlay, deckLayers);
-      window.__orbis.lastCount = snapshots.quakes?.points?.length ?? 0;
+
+    // 静的な貿易ルートを trade レイヤー自身の fetch() で一度だけ読み込む
+    try {
+      const trade = layers.find((l) => l.id === 'trade');
+      if (trade) snapshots.trade = await trade.fetch();
+    } catch { /* noop */ }
+    rebuild(overlay);
+
+    startPolling(POLL_LAYERS, POLL_MS, (polled) => {
+      Object.assign(snapshots, polled);
+      rebuild(overlay);
       updateFreshness();
     });
   });
