@@ -1,5 +1,5 @@
 import { initMap, setDeckLayers } from './map.js';
-import { layers, buildDeckLayers, tooltipFor, feedLayers } from './layers/registry.js';
+import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
@@ -134,7 +134,8 @@ function boot() {
     layers,
     () => ENABLED,
     () => window.__orbis.counts,
-    (next) => { ENABLED = next; rebuild(overlay); }
+    (next) => { ENABLED = next; rebuild(overlay); },
+    descFor
   );
   wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
   wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));
