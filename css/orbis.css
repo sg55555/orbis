@@ -42,7 +42,8 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .layer-count { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 11px; }
 .side-panel.collapsed #panel-rows { display: none; }
 .side-panel.collapsed { width: auto; }
-.feed-panel { left: auto; right: 12px; width: 260px; }
+/* 右上の #freshness（top:12px）と重ならないよう下にオフセット */
+.feed-panel { left: auto; right: 12px; top: 52px; width: 260px; max-height: calc(70vh - 40px); }
 .feed-row { display: flex; align-items: center; gap: 7px; padding: 5px 4px; cursor: pointer;
   border-bottom: 1px solid rgba(28,44,72,.5); }
 .feed-row:hover { background: rgba(57,208,255,.08); }
