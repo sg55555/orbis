@@ -42,7 +42,8 @@ function rebuild(overlay) {
     const snap = snapshots[id];
     if (!snap || !snap.points) continue;
     const newIds = diffNewIds(prevIds[id], snap.points);
-    if (prevIds[id]) {
+    // REDUCED 時はパルスを描かないので、無駄に溜めない（poll 間の蓄積を防ぐ）。
+    if (prevIds[id] && !REDUCED) {
       const byId = new Map(snap.points.map((p) => [p.id, p]));
       for (const nid of newIds) {
         const p = byId.get(nid);
