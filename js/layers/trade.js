@@ -9,6 +9,7 @@ export function buildTradeConfigs(geojson) {
     pathConfig: {
       id: 'trade-routes',
       data: lines,
+      pickable: true,
       getPath: (f) => f.geometry.coordinates,
       getColor: [70, 230, 255, 90],
       widthUnits: 'pixels',
