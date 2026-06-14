@@ -156,14 +156,20 @@ export const currentsLayer = {
   toDeckLayer(geojson, ctx) {
     const cmap = (ctx && ctx.cmap) || DEFAULT_CMAP;
     const mt = (ctx && ctx.motionT) || 0;
-    // 温度フィールド面（加算ブロブ）。広い半径で重ねて面を作り、明るさの波で流れを表す。
+    const flow = (ctx && ctx.flow) || 'chase';
+    const chaseOpts = (ctx && ctx.chase) || {};
+    // 明るさ係数: chase=離散セルの順送り（既定）/ wave=旧 sine 波（?flow=wave 比較用）。
+    const bright = flow === 'wave'
+      ? (d) => waveFactor(d.phase, mt)
+      : (d) => chaseFactor(d.phase, mt, chaseOpts);
+    // 温度フィールド面（加算ブロブ）。淡い水温面を常時見せ、その上をチェイスが走る。
     return [new deck.ScatterplotLayer({
       id: 'currents', data: field(geojson, cmap), pickable: true,
       radiusUnits: 'pixels', stroked: false, filled: true,
       getPosition: (d) => d.position, getRadius: 1,
       radiusMinPixels: 26, radiusMaxPixels: 54,
       getFillColor: (d) => {
-        const a = Math.round(FIELD_ALPHA * waveFactor(d.phase, mt));
+        const a = Math.min(255, Math.round(FIELD_ALPHA * bright(d)));
         return [d.rgb[0], d.rgb[1], d.rgb[2], a];
       },
       updateTriggers: { getFillColor: mt },

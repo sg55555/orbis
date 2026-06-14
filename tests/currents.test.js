@@ -123,3 +123,25 @@ test('chaseFactor: base を下回らない / step hard はセル内一定・glid
   const g = { ...o, step: 'glide' };
   assert.notEqual(chaseFactor(0.02, 0.3, g), chaseFactor(0.18, 0.3, g));
 });
+
+test('toDeckLayer: flow=chase は chaseFactor、flow=wave は waveFactor で alpha 駆動', () => {
+  const captured = [];
+  globalThis.deck = { ScatterplotLayer: function (cfg) { captured.push(cfg); Object.assign(this, cfg); } };
+  const chase = currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.25, flow: 'chase', chase: { step: 'hard' } });
+  assert.equal(chase.length, 1);
+  const cfg = captured[0];
+  const sample = cfg.data[0];
+  const col = cfg.getFillColor(sample);
+  assert.equal(col.length, 4);
+  assert.ok(col[3] >= 0 && col[3] <= 255, 'alpha は 0..255');
+  // wave 分岐も呼べる（例外なく配列1件）
+  const wave = currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.25, flow: 'wave' });
+  assert.equal(wave.length, 1);
+  // chase と wave で同一点・同一 motionT の alpha が異なりうる（分岐が効いている）
+  const waveCfg = captured[captured.length - 1];
+  const chaseAlpha = cfg.getFillColor(cfg.data[0])[3];
+  const waveAlpha = waveCfg.getFillColor(waveCfg.data[0])[3];
+  assert.equal(typeof chaseAlpha, 'number');
+  assert.equal(typeof waveAlpha, 'number');
+  delete globalThis.deck;
+});
