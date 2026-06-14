@@ -61,4 +61,23 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
     return Math.hypot(dp[0] - mp.x, dp[1] - mp.y);
   });
   expect(drift).toBeLessThan(2);
+
+  // 航空=三角(SolidPolygon) が deck に存在（flights は ON のまま）
+  const hasFlights = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    return ((o._props && o._props.layers) || []).some((l) => l.id === 'flights');
+  });
+  expect(hasFlights).toBe(true);
+
+  // 地震を再度 ON にすると地震リング(quakes)が描画される
+  await page.locator('.layer-row[data-id="quakes"] .layer-toggle').check();
+  await page.waitForTimeout(300);
+  const hasQuakes = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    return ((o._props && o._props.layers) || []).some((l) => l.id === 'quakes');
+  });
+  expect(hasQuakes).toBe(true);
+
+  // 航空クリックの進路ライン＋到達点＋ポップアップは canvas ピックが座標依存で
+  // 不安定なため e2e では検証せず、Playwright スクショの目視で担保する（plan Task 11）。
 });

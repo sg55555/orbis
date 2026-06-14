@@ -13,13 +13,13 @@ export function getLayer(id) {
 
 // 有効レイヤーの deck レイヤー配列を組み立てる。
 // toDeckLayer は単体または配列を返してよい（配列は flat 化）。
-// layersOverride: テスト用に layers を差し替え可能。
-export function buildDeckLayers(enabled, snapshots, layersOverride) {
+// layersOverride: テスト用に layers を差し替え可能。ctx: zoom など描画コンテキスト。
+export function buildDeckLayers(enabled, snapshots, layersOverride, ctx) {
   const ls = layersOverride || layers;
   return ls
     .filter((l) => enabled.has(l.id) && snapshots[l.id])
     .flatMap((l) => {
-      const r = l.toDeckLayer(snapshots[l.id]);
+      const r = l.toDeckLayer(snapshots[l.id], ctx);
       return Array.isArray(r) ? r : [r];
     });
 }
@@ -31,7 +31,8 @@ export function feedLayers() {
 
 // deck レイヤーID → 論理レイヤーID（trade は2つの deck レイヤーに分かれる）。
 const DECK_TO_LAYER = {
-  quakes: 'quakes', flights: 'flights', conflict: 'conflict', protests: 'protests',
+  quakes: 'quakes', flights: 'flights', 'flights-dot': 'flights',
+  conflict: 'conflict', protests: 'protests',
   'trade-routes': 'trade', 'trade-chokepoints': 'trade',
 };
 

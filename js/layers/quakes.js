@@ -1,17 +1,15 @@
 // 地震レイヤー。統一インターフェース { id, label, fetch, toDeckLayer, legend } を実装。
-// 純粋部 buildScatterConfig を分離してテスト可能にする。deck は描画時にグローバル参照。
+// 純粋部 buildRingConfig を分離してテスト可能にする。deck は描画時にグローバル参照。
 import { magnitudeToRadius, magnitudeToColor } from '../lib/geo.js';
 
-export function buildScatterConfig(snapshot) {
+export function buildRingConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
   return {
-    id: 'quakes',
-    data,
-    radiusUnits: 'pixels',
-    pickable: true,
+    id: 'quakes', data, radiusUnits: 'pixels', pickable: true,
+    stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1.6,
     getPosition: (p) => [p.lon, p.lat],
     getRadius: (p) => magnitudeToRadius(p.mag),
-    getFillColor: (p) => [...magnitudeToColor(p.mag), 200],
+    getLineColor: (p) => [...magnitudeToColor(p.mag), 230],
   };
 }
 
@@ -29,7 +27,7 @@ export const quakesLayer = {
   },
   toDeckLayer(snapshot) {
     // deck は index.html の CDN によりグローバル提供される
-    return new deck.ScatterplotLayer(buildScatterConfig(snapshot));
+    return new deck.ScatterplotLayer(buildRingConfig(snapshot));
   },
   tooltip(o) {
     if (!o) return null;

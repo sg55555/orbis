@@ -27,17 +27,23 @@ export function iconAngle(headingDeg) {
   return ((360 - (h % 360)) % 360);
 }
 
-// 進行方向(heading: 北=0・東=90, 度)に degLen 度だけ伸ばした終点 [lon,lat]。
-// heading や座標が数値でなければ null（その機は方向線を描かない）。
-export function headingEndpoint(lon, lat, heading, degLen = 0.7) {
-  if (heading == null || lon == null || lat == null) return null;
-  const h = Number(heading);
-  if (!Number.isFinite(h) || !Number.isFinite(Number(lon)) || !Number.isFinite(Number(lat))) return null;
+// 画面上で約 targetPx ピクセルに見える地理度長を、現在ズームから求める。
+// 赤道 metersPerPixel ≈ 156543.03 / 2^zoom、1度 ≈ 111320m。
+export function degLenForZoom(zoom, targetPx = 10) {
+  const mpp = 156543.03 / Math.pow(2, zoom);
+  return (targetPx * mpp) / 111320;
+}
+
+// 現在の heading(度) と velocity(m/s) から minutes 分後の推定到達点 [lon,lat]。
+// OpenSky は目的地を持たないため「推定」であることに注意。欠損/速度0で null。
+export function projectedArrival(p, minutes = 10) {
+  if (!p || p.heading == null || p.velocity == null || p.lon == null || p.lat == null) return null;
+  const h = Number(p.heading), v = Number(p.velocity);
+  if (!Number.isFinite(h) || !Number.isFinite(v) || v <= 0) return null;
+  const degLat = (v * minutes * 60) / 111320;
   const rad = (h * Math.PI) / 180;
-  const dLat = degLen * Math.cos(rad);
-  const cosLat = Math.max(Math.cos((lat * Math.PI) / 180), 0.2); // 高緯度の経度発散を抑制
-  const dLon = (degLen * Math.sin(rad)) / cosLat;
-  return [lon + dLon, lat + dLat];
+  const cosLat = Math.max(Math.cos((p.lat * Math.PI) / 180), 0.2);
+  return [p.lon + (degLat * Math.sin(rad)) / cosLat, p.lat + degLat * Math.cos(rad)];
 }
 
 // イベントの言及数から描画半径(px)。floor 5, 上限 18。
