@@ -7,7 +7,7 @@ import { mountStarfield } from './lib/starfield.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
-import { pointAlongPath, diffNewIds } from './lib/motion.js';
+import { pointAlongPath, diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/selection.js';
 
 const POLL_MS = 60000;
@@ -80,24 +80,25 @@ function refreshFeed() {
   });
 }
 
-// trade スナップショットの LineString 上を流れる粒子レイヤー（1航路あたり数粒子）。
-function flowParticlesLayer() {
+// trade 航路上を流れる発光トレイル（TripsLayer）。粒子のちらつきを避け滑らかに流す。
+// trips は静的データなので一度だけ構築してキャッシュ。
+let tradeTrips = null;
+function tradeFlowLayer() {
   const geo = snapshots.trade;
   if (!geo || !geo.features || REDUCED) return null;
-  const lines = geo.features.filter((f) => f.geometry && f.geometry.type === 'LineString');
-  const PER = 3; // 1航路あたり粒子数（軽量）
-  const pts = [];
-  for (const f of lines) {
-    for (let k = 0; k < PER; k++) {
-      const t = (motionT + k / PER) % 1;
-      const p = pointAlongPath(f.geometry.coordinates, t);
-      if (p) pts.push({ position: p });
-    }
+  if (!tradeTrips) {
+    tradeTrips = geo.features
+      .filter((f) => f.geometry && f.geometry.type === 'LineString')
+      .map((f) => ({ path: f.geometry.coordinates, timestamps: normalizedTimestamps(f.geometry.coordinates) }));
   }
-  return new deck.ScatterplotLayer({
-    id: 'trade-flow', data: pts, radiusUnits: 'pixels',
-    getPosition: (d) => d.position, getRadius: 2.5,
-    getFillColor: [120, 240, 255, 220], pickable: false,
+  if (tradeTrips.length === 0) return null;
+  return new deck.TripsLayer({
+    id: 'trade-flow', data: tradeTrips,
+    getPath: (d) => d.path, getTimestamps: (d) => d.timestamps,
+    getColor: [120, 240, 255], opacity: 0.9,
+    widthUnits: 'pixels', getWidth: 2, widthMinPixels: 2,
+    capRounded: true, jointRounded: true, fadeTrail: true,
+    trailLength: 0.4, currentTime: motionT,
   });
 }
 
@@ -195,7 +196,7 @@ function drawAll(overlay) {
   const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
   const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom });
   const extra = [];
-  if (ENABLED.has('trade')) { const fp = flowParticlesLayer(); if (fp) extra.push(fp); }
+  if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
   extra.push(...selectedMarkerLayers(now));

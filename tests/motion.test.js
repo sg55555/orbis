@@ -1,8 +1,15 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pointAlongPath, diffNewIds } from '../js/lib/motion.js';
+import { pointAlongPath, diffNewIds, normalizedTimestamps } from '../js/lib/motion.js';
 
 const path = [[0, 0], [10, 0], [10, 10]]; // 総長 20（各辺10）
+
+test('normalizedTimestamps: 累積距離を [0,1] に正規化', () => {
+  assert.deepEqual(normalizedTimestamps([[0, 0], [10, 0]]), [0, 1]);
+  assert.deepEqual(normalizedTimestamps([[0, 0], [5, 0], [10, 0]]), [0, 0.5, 1]);
+  assert.deepEqual(normalizedTimestamps([]), []);
+  assert.deepEqual(normalizedTimestamps([[1, 1]]), [0]);
+});
 
 test('pointAlongPath: t=0 は始点、t=1 は終点', () => {
   assert.deepEqual(pointAlongPath(path, 0), [0, 0]);
