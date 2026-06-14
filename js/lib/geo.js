@@ -27,6 +27,19 @@ export function iconAngle(headingDeg) {
   return ((360 - (h % 360)) % 360);
 }
 
+// 進行方向(heading: 北=0・東=90, 度)に degLen 度だけ伸ばした終点 [lon,lat]。
+// heading や座標が数値でなければ null（その機は方向線を描かない）。
+export function headingEndpoint(lon, lat, heading, degLen = 0.7) {
+  if (heading == null || lon == null || lat == null) return null;
+  const h = Number(heading);
+  if (!Number.isFinite(h) || !Number.isFinite(Number(lon)) || !Number.isFinite(Number(lat))) return null;
+  const rad = (h * Math.PI) / 180;
+  const dLat = degLen * Math.cos(rad);
+  const cosLat = Math.max(Math.cos((lat * Math.PI) / 180), 0.2); // 高緯度の経度発散を抑制
+  const dLon = (degLen * Math.sin(rad)) / cosLat;
+  return [lon + dLon, lat + dLat];
+}
+
 // イベントの言及数から描画半径(px)。floor 5, 上限 18。
 export function eventRadius(mentions) {
   const m = Number(mentions) || 0;
