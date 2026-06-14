@@ -34,6 +34,18 @@ export function degLenForZoom(zoom, targetPx = 10) {
   return (targetPx * mpp) / 111320;
 }
 
+// 現在の heading(度) と velocity(m/s) から minutes 分後の推定到達点 [lon,lat]。
+// OpenSky は目的地を持たないため「推定」であることに注意。欠損/速度0で null。
+export function projectedArrival(p, minutes = 10) {
+  if (!p || p.heading == null || p.velocity == null || p.lon == null || p.lat == null) return null;
+  const h = Number(p.heading), v = Number(p.velocity);
+  if (!Number.isFinite(h) || !Number.isFinite(v) || v <= 0) return null;
+  const degLat = (v * minutes * 60) / 111320;
+  const rad = (h * Math.PI) / 180;
+  const cosLat = Math.max(Math.cos((p.lat * Math.PI) / 180), 0.2);
+  return [p.lon + (degLat * Math.sin(rad)) / cosLat, p.lat + degLat * Math.cos(rad)];
+}
+
 // イベントの言及数から描画半径(px)。floor 5, 上限 18。
 export function eventRadius(mentions) {
   const m = Number(mentions) || 0;
