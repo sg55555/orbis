@@ -1,14 +1,14 @@
 import { initMap, setDeckLayers } from './map.js';
 import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
-import { formatFreshness, magnitudeToRadius, magnitudeToColor } from './lib/geo.js';
+import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { pointAlongPath, diffNewIds } from './lib/motion.js';
-import { selectionPopupHtml, buildReticleConfigs } from './lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/selection.js';
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
@@ -26,6 +26,7 @@ let pulses = [];          // { lon, lat, born } 出現パルス
 let _overlay = null;      // rAF ループ用の overlay 参照
 let selected = null;      // フィードで選択中のイベント { lon, lat, title, layerId, at }
 let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
+let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
 
 async function updateFreshness() {
   try {
@@ -140,6 +141,25 @@ function selectedMarkerLayers(now) {
     .map((c) => new deck.ScatterplotLayer(c));
 }
 
+// 選択中の航空機の推定進路（現在地→到達点の線）＋到達点リング。
+function flightProjectionLayers() {
+  if (!selectedFlight || !selectedFlight.arrival) return [];
+  const { point, arrival } = selectedFlight;
+  const src = [point.lon, point.lat];
+  return [
+    new deck.LineLayer({
+      id: 'flight-route', data: [{}], widthUnits: 'pixels', getWidth: 1.6,
+      getSourcePosition: () => src, getTargetPosition: () => arrival,
+      getColor: [80, 220, 255, 180], pickable: false,
+    }),
+    new deck.ScatterplotLayer({
+      id: 'flight-arrival', data: [{}], radiusUnits: 'pixels',
+      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2,
+      getPosition: () => arrival, getRadius: 8, getLineColor: [80, 220, 255, 230], pickable: false,
+    }),
+  ];
+}
+
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
 function drawAll(overlay) {
   _overlay = overlay;
@@ -151,6 +171,7 @@ function drawAll(overlay) {
   const pl = pulseLayer(now); if (pl) extra.push(pl);
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
   extra.push(...selectedMarkerLayers(now));
+  extra.push(...flightProjectionLayers());
   setDeckLayers(overlay, [...base, ...extra]);
 }
 
@@ -161,8 +182,19 @@ function motionLoop() {
 }
 
 function boot() {
-  const { map, overlay } = initMap('map', (info) =>
-    (info.object && info.layer) ? tooltipFor(info.layer.id, info.object) : null
+  const { map, overlay } = initMap(
+    'map',
+    (info) => (info.object && info.layer) ? tooltipFor(info.layer.id, info.object) : null,
+    (info) => {
+      if (!info || !info.object || !info.layer) return;
+      if (info.layer.id === 'flights' || info.layer.id === 'flights-dot') {
+        const p = info.object;
+        const arrival = projectedArrival(p, 10);
+        selectedFlight = { point: p, arrival };
+        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival)).addTo(map);
+        drawAll(overlay);
+      }
+    }
   );
   mountStarfield(document.getElementById('starfield'));
   window.__orbis = { map, overlay, counts: {} };
