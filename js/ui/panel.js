@@ -7,7 +7,7 @@ import { toggleEnabled, writeStored } from '../lib/state.js';
 // 要素は一度だけ生成し、件数更新は updateCounts で textContent だけ差し替える（入力要素を作り直さない）。
 export function renderPanel(root, layers, getEnabled, getCounts, onChange, descFor) {
   root.innerHTML = layers.map((l) => {
-    const sw = (l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)';
+    const sw = l.swatchColor || ((l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)');
     const marker = l.marker || 'dot'; // dot | ring | triangle（マップのマーカー形状に対応）
     const desc = descFor ? descFor(l.id) : '';
     return `<div class="layer-item">

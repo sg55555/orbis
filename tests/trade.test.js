@@ -1,6 +1,20 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildTradeConfigs } from '../js/layers/trade.js';
+import { buildTradeConfigs, tradeLayer } from '../js/layers/trade.js';
+
+test('trade tooltip: 航路は日本語名＋説明', () => {
+  assert.equal(
+    tradeLayer.tooltip({ properties: { name: 'Asia-Europe (Suez)' }, geometry: { type: 'LineString' } }),
+    '主要航路 アジア⇄欧州（スエズ経由）｜海上輸送ルート',
+  );
+});
+
+test('trade tooltip: 要衝は label を使い日本語名＋説明（name=chokepoint バグ修正）', () => {
+  assert.equal(
+    tradeLayer.tooltip({ properties: { name: 'chokepoint', label: 'Malacca' }, geometry: { type: 'Point' } }),
+    '海上要衝 マラッカ海峡（Malacca）｜海運の要所',
+  );
+});
 
 const GEO = {
   type: 'FeatureCollection',

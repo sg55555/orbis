@@ -27,6 +27,21 @@ export function pointAlongPath(coords, t) {
   return coords[coords.length - 1].slice();
 }
 
+// 折れ線の各頂点に、始点からの累積2D距離を [0,1] 正規化したタイムスタンプを与える（TripsLayer 用）。
+export function normalizedTimestamps(coords) {
+  if (!Array.isArray(coords) || coords.length === 0) return [];
+  if (coords.length === 1) return [0];
+  const cum = [0];
+  for (let i = 0; i < coords.length - 1; i++) {
+    const dx = coords[i + 1][0] - coords[i][0];
+    const dy = coords[i + 1][1] - coords[i][1];
+    cum.push(cum[i] + Math.hypot(dx, dy));
+  }
+  const total = cum[cum.length - 1];
+  if (total === 0) return coords.map(() => 0);
+  return cum.map((c) => c / total);
+}
+
 // prevIds(Set|null) に無く curr（{id}配列）にある id 一覧。
 // prev が null/未指定（初回）は新規なし扱い（初回ロードで全件パルスを防ぐ）。
 export function diffNewIds(prevIds, curr) {

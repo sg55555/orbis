@@ -37,7 +37,7 @@ export const protestsLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `抗議｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
+    return `抗議 報道集中｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];

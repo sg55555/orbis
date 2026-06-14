@@ -38,7 +38,7 @@ export const conflictLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `紛争｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
+    return `紛争 報道集中｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];
