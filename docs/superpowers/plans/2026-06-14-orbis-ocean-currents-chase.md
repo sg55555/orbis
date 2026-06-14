@@ -1,5 +1,7 @@
 # 海流チェイス（区切れた面の順送り）Implementation Plan
 
+> **⚠️ 撤回済み（2026-06-14）**: 本プランは実装・本番前の実物比較で **棄却**。ユーザー判断で旧来の「面＋波(waveFactor)」を採用し、チェイス機構は撤去した（commit fce3822）。経緯と最終判断は spec `2026-06-14-orbis-ocean-currents-design.md` の「最終判断」節を参照。本ファイルは履歴として残す。
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** 海流の流れを「離散セル(面)が頭→尾へ順送りに点灯するチェイス」で描き、引き(ズームアウト)でも流れの向きが一目で読めるようにする。
