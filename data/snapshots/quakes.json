@@ -1,8 +1,98 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-14T16:43:51Z",
-  "count": 233,
+  "updated": "2026-06-14T18:03:46Z",
+  "count": 229,
   "points": [
+    {
+      "id": "nc75376511",
+      "lon": -122.809501647949,
+      "lat": 38.814998626709,
+      "depth": 0.970000028610229,
+      "mag": 0.75,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781459668170,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376511"
+    },
+    {
+      "id": "us7000ssvp",
+      "lon": -65.3438,
+      "lat": 19.055,
+      "depth": 35,
+      "mag": 2.7,
+      "place": "83 km N of Culebra, Puerto Rico",
+      "time": 1781459421352,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssvp"
+    },
+    {
+      "id": "us7000ssvm",
+      "lon": -106.7696,
+      "lat": 34.4702,
+      "depth": 10,
+      "mag": 3.8,
+      "place": "0 km S of Las Nutrias, New Mexico",
+      "time": 1781458860829,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssvm"
+    },
+    {
+      "id": "us7000ssvl",
+      "lon": -106.7905,
+      "lat": 34.4579,
+      "depth": 10,
+      "mag": 3.7,
+      "place": "2 km ESE of Abeytas, New Mexico",
+      "time": 1781458689261,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssvl"
+    },
+    {
+      "id": "aka2026lsghti",
+      "lon": -159.691,
+      "lat": 55.961,
+      "depth": 11.2,
+      "mag": 1.8,
+      "place": "14 km WNW of Ivanof Bay, Alaska",
+      "time": 1781457653314,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lsghti"
+    },
+    {
+      "id": "aka2026lsfmvr",
+      "lon": -147.764,
+      "lat": 60.839,
+      "depth": 6.8,
+      "mag": 1.6,
+      "place": "50 km E of Whittier, Alaska",
+      "time": 1781456208523,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lsfmvr"
+    },
+    {
+      "id": "pr71519963",
+      "lon": -66.796,
+      "lat": 17.9651666666667,
+      "depth": 11.63,
+      "mag": 2.22,
+      "place": "4 km SE of Indios, Puerto Rico",
+      "time": 1781455859200,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71519963"
+    },
+    {
+      "id": "ci41486432",
+      "lon": -117.122666666667,
+      "lat": 33.9921666666667,
+      "depth": 8.6,
+      "mag": 0.83,
+      "place": "6 km W of Calimesa, CA",
+      "time": 1781455707500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486432"
+    },
+    {
+      "id": "pr2026165005",
+      "lon": -65.3526,
+      "lat": 19.0716,
+      "depth": 44,
+      "mag": 3.79,
+      "place": "85 km N of Culebra, Puerto Rico",
+      "time": 1781455556390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026165005"
+    },
     {
       "id": "nc75376491",
       "lon": -121.577499389648,
@@ -155,12 +245,12 @@
     },
     {
       "id": "ci41486376",
-      "lon": -117.817166666667,
-      "lat": 35.3056666666667,
-      "depth": 8.25,
+      "lon": -117.814833333333,
+      "lat": 35.3065,
+      "depth": 8.82,
       "mag": 0.87,
       "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781449579380,
+      "time": 1781449579290,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486376"
     },
     {
@@ -175,12 +265,12 @@
     },
     {
       "id": "ci41486344",
-      "lon": -117.418166666667,
-      "lat": 34.1511666666667,
-      "depth": 4.51,
+      "lon": -117.420833333333,
+      "lat": 34.1506666666667,
+      "depth": 3.88,
       "mag": 1.08,
       "place": "7 km NW of Rialto, CA",
-      "time": 1781448825220,
+      "time": 1781448825240,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486344"
     },
     {
@@ -255,12 +345,12 @@
     },
     {
       "id": "ci41486320",
-      "lon": -119.613166666667,
-      "lat": 34.9066666666667,
-      "depth": 10.44,
+      "lon": -119.612833333333,
+      "lat": 34.9105,
+      "depth": 9.57,
       "mag": 0.75,
-      "place": "26 km SW of Maricopa, CA",
-      "time": 1781445640370,
+      "place": "25 km SW of Maricopa, CA",
+      "time": 1781445640360,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486320"
     },
     {
@@ -2202,136 +2292,6 @@
       "place": "2 km S of Cerro de Piedra, Mexico",
       "time": 1781374842423,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssq9"
-    },
-    {
-      "id": "nc75375806",
-      "lon": -122.759330749512,
-      "lat": 38.8250007629395,
-      "depth": 1.5,
-      "mag": 0.94,
-      "place": "3 km W of Cobb, CA",
-      "time": 1781372791100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375806"
-    },
-    {
-      "id": "aka2026lqkzct",
-      "lon": -158.661,
-      "lat": 55.066,
-      "depth": 5,
-      "mag": 2.6,
-      "place": "98 km SSE of Perryville, Alaska",
-      "time": 1781372496069,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqkzct"
-    },
-    {
-      "id": "us7000ssq5",
-      "lon": 118.5375,
-      "lat": -11.4668,
-      "depth": 10,
-      "mag": 4.3,
-      "place": "238 km SSW of Tambolaka, Indonesia",
-      "time": 1781372371968,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssq5"
-    },
-    {
-      "id": "aka2026lqkwqe",
-      "lon": -152.731,
-      "lat": 60.61,
-      "depth": 8,
-      "mag": 0.6,
-      "place": "77 km W of Salamatof, Alaska",
-      "time": 1781372324114,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqkwqe"
-    },
-    {
-      "id": "us7000ssq3",
-      "lon": 15.2833,
-      "lat": 38.9056,
-      "depth": 219.846,
-      "mag": 4.6,
-      "place": "52 km NE of Santa Marina Salina, Italy",
-      "time": 1781371692010,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssq3"
-    },
-    {
-      "id": "us7000ssq2",
-      "lon": -88.6041,
-      "lat": 12.2704,
-      "depth": 10,
-      "mag": 4.4,
-      "place": "112 km S of Puerto El Triunfo, El Salvador",
-      "time": 1781371510386,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssq2"
-    },
-    {
-      "id": "aka2026lqkikl",
-      "lon": -158.826,
-      "lat": 55.101,
-      "depth": 0.9,
-      "mag": 3.5,
-      "place": "92 km SSE of Perryville, Alaska",
-      "time": 1781371341152,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqkikl"
-    },
-    {
-      "id": "aka2026lqkduv",
-      "lon": -148.739,
-      "lat": 64.895,
-      "depth": 7.8,
-      "mag": 0.9,
-      "place": "34 km W of Ester, Alaska",
-      "time": 1781371021935,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lqkduv"
-    },
-    {
-      "id": "tx2026lonqqd",
-      "lon": -102.025,
-      "lat": 32.123,
-      "depth": 3.621,
-      "mag": 0.8,
-      "place": "14 km NNE of Midland, Texas",
-      "time": 1781370850053,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lonqqd"
-    },
-    {
-      "id": "nc75375791",
-      "lon": -122.841835021973,
-      "lat": 38.8209991455078,
-      "depth": 2.16000008583069,
-      "mag": 0.76,
-      "place": "9 km WNW of The Geysers, CA",
-      "time": 1781369779520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375791"
-    },
-    {
-      "id": "ci41485912",
-      "lon": -119.121833333333,
-      "lat": 34.997,
-      "depth": 10.38,
-      "mag": 1.05,
-      "place": "17 km N of Pine Mountain Club, CA",
-      "time": 1781369598360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485912"
-    },
-    {
-      "id": "us7000sspx",
-      "lon": 154.6046,
-      "lat": -6.0167,
-      "depth": 408.997,
-      "mag": 4.4,
-      "place": "102 km WNW of Panguna, Papua New Guinea",
-      "time": 1781369575302,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sspx"
-    },
-    {
-      "id": "pr71519733",
-      "lon": -66.9475,
-      "lat": 17.9913333333333,
-      "depth": 10.66,
-      "mag": 2.33,
-      "place": "3 km W of Fuig, Puerto Rico",
-      "time": 1781369446880,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71519733"
     }
   ]
 }
