@@ -22,9 +22,24 @@ export function buildBaseStyle() {
         paint: { 'fill-color': '#182a47', 'fill-opacity': 0.55 } },
       { id: 'landuse', type: 'fill', source: 'openmaptiles', 'source-layer': 'landuse',
         paint: { 'fill-color': '#182a47', 'fill-opacity': 0.35 } },
-      { id: 'boundary', type: 'line', source: 'openmaptiles', 'source-layer': 'boundary',
-        filter: ['<=', ['get', 'admin_level'], 4],
-        paint: { 'line-color': '#39d0ff', 'line-opacity': 0.4, 'line-width': 0.7, 'line-blur': 0.6 } },
+      // 国内境界（共和国/州 = admin_level 3 以上）: 点線・淡い。「ロシア連邦に属するサハ共和国」
+      // のような従属関係を点線で示す。低zoomでは消し、近づくと現れる。
+      { id: 'boundary-region', type: 'line', source: 'openmaptiles', 'source-layer': 'boundary',
+        filter: ['all', ['>=', ['get', 'admin_level'], 3], ['!=', ['get', 'maritime'], 1]],
+        paint: {
+          'line-color': '#7fc4ec',
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 2, 0.0, 3.5, 0.5, 6, 0.75],
+          'line-width': ['interpolate', ['linear'], ['zoom'], 3, 0.6, 6, 1.3],
+          'line-dasharray': [2, 2.5],
+        } },
+      // 国境（admin_level == 2）: 実線・はっきり。ズームで太くして遠景でも視認可能に。
+      { id: 'boundary-country', type: 'line', source: 'openmaptiles', 'source-layer': 'boundary',
+        filter: ['all', ['==', ['get', 'admin_level'], 2], ['!=', ['get', 'maritime'], 1]],
+        paint: {
+          'line-color': '#5fe6ff',
+          'line-opacity': ['interpolate', ['linear'], ['zoom'], 1, 0.6, 4, 0.9],
+          'line-width': ['interpolate', ['linear'], ['zoom'], 1, 0.7, 4, 1.7, 8, 2.6],
+        } },
       { id: 'place-country', type: 'symbol', source: 'openmaptiles', 'source-layer': 'place',
         filter: ['==', ['get', 'class'], 'country'],
         layout: { 'text-field': jaLabel, 'text-font': ['Noto Sans Regular'],

@@ -33,6 +33,21 @@ export function eventRadius(mentions) {
   return Math.min(18, Math.round(5 + Math.sqrt(m)));
 }
 
+// ヒート風ブロブの半径(px)。言及数が多いほど大きい円を重ね、加算合成で「面」を作る。
+// log スケールで 12〜52px に収める（密集地でも巨大化しすぎない）。
+export function blobRadius(mentions) {
+  const m = Number(mentions) || 1;
+  return Math.round(12 + Math.min(40, Math.log10(m + 1) * 26));
+}
+
+// deck.gl(luma.gl v9) の加算合成パラメータ。半透明の円が重なるほど明るく発色する。
+// HeatmapLayer(globe非対応)の代替として ScatterplotLayer に適用する。
+export const ADDITIVE_BLEND = {
+  blend: true,
+  blendColorOperation: 'add', blendColorSrcFactor: 'src-alpha', blendColorDstFactor: 'one',
+  blendAlphaOperation: 'add', blendAlphaSrcFactor: 'one', blendAlphaDstFactor: 'one',
+};
+
 // URL からドメインを抽出（www. 除去）。失敗時は空文字。
 export function hostnameOf(url) {
   if (!url) return '';

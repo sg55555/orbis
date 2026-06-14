@@ -1,18 +1,21 @@
-// 紛争レイヤー（赤ヒートマップ＋薄い pickable 点）。
-import { hostnameOf } from '../lib/geo.js';
+// 紛争レイヤー（赤の加算合成ブロブ＝globe対応のヒート風の面＋薄い pickable 点）。
+// 注: deck.gl の HeatmapLayer は GPU 集約で globe ビューに非対応（weightsTexture が結べず
+// 面が描画されない）。代わりに半透明・大半径の ScatterplotLayer を加算合成で重ね、
+// 報道が集中するほど明るく発色させて「面」を表現する（[[maplibre-v5-deckgl-globe-version]]）。
+import { hostnameOf, blobRadius, ADDITIVE_BLEND } from '../lib/geo.js';
 import { parseGdeltDate } from '../lib/feed.js';
 
-const RED_RANGE = [
-  [40, 0, 10], [110, 12, 28], [180, 28, 46], [230, 45, 64], [255, 90, 110], [255, 170, 180],
-];
+const RED = [255, 60, 80];
 
-export function buildHeatConfig(snapshot) {
+export function buildBlobConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
   return {
-    id: 'conflict-heat', data,
+    id: 'conflict-heat', data, radiusUnits: 'pixels',
     getPosition: (p) => [p.lon, p.lat],
-    getWeight: (p) => Number(p.mentions) || 1,
-    radiusPixels: 38, intensity: 1, threshold: 0.05, colorRange: RED_RANGE, pickable: false,
+    getRadius: (p) => blobRadius(p.mentions),
+    radiusMinPixels: 10, radiusMaxPixels: 60, stroked: false, pickable: false,
+    getFillColor: () => [RED[0], RED[1], RED[2], 42], // 低alpha＋加算で密集地ほど発色
+    parameters: ADDITIVE_BLEND,
   };
 }
 
@@ -20,7 +23,7 @@ export function buildPickConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
   return {
     id: 'conflict', data, radiusUnits: 'pixels', pickable: true,
-    getPosition: (p) => [p.lon, p.lat], getRadius: () => 4, getFillColor: () => [255, 60, 80, 60],
+    getPosition: (p) => [p.lon, p.lat], getRadius: () => 4, getFillColor: () => [255, 120, 140, 70],
   };
 }
 
@@ -30,7 +33,7 @@ export const conflictLayer = {
   legend: [{ color: 'rgb(255,60,80)', label: '紛争（赤・GDELT 24h）' }],
   async fetch(getSnapshot) { return getSnapshot('conflict'); },
   toDeckLayer(snapshot) {
-    return [new deck.HeatmapLayer(buildHeatConfig(snapshot)), new deck.ScatterplotLayer(buildPickConfig(snapshot))];
+    return [new deck.ScatterplotLayer(buildBlobConfig(snapshot)), new deck.ScatterplotLayer(buildPickConfig(snapshot))];
   },
   tooltip(o) {
     if (!o) return null;
