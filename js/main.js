@@ -8,6 +8,7 @@ import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { pointAlongPath, diffNewIds } from './lib/motion.js';
+import { selectionPopupHtml, buildReticleConfigs } from './lib/selection.js';
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
@@ -23,7 +24,8 @@ let motionT = 0;          // 0..1 ループする位相
 let prevIds = {};         // layerId -> Set（前回のid集合。新規検出用）
 let pulses = [];          // { lon, lat, born } 出現パルス
 let _overlay = null;      // rAF ループ用の overlay 参照
-let selected = null;      // フィードで選択中のイベント { lon, lat, title }
+let selected = null;      // フィードで選択中のイベント { lon, lat, title, layerId, at }
+let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
 
 async function updateFreshness() {
   try {
@@ -65,10 +67,14 @@ function rebuild(overlay) {
 function refreshFeed() {
   const items = buildFeed(feedLayers(), snapshots, ENABLED);
   renderFeed(document.getElementById('feed-rows'), items, (it) => {
-    selected = { lon: it.lon, lat: it.lat, title: it.title };
+    const at = (typeof performance !== 'undefined') ? performance.now() : Date.now();
+    selected = { lon: it.lon, lat: it.lat, title: it.title, layerId: it.layerId, at };
     if (window.__orbis) window.__orbis.selected = selected; // e2e/デバッグ用に露出
-    window.__orbis.map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500 });
-    drawAll(window.__orbis.overlay); // マーカーを即時表示
+    const map = window.__orbis.map;
+    map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500, essential: true });
+    // 着地点に「何が・どこに」を示すポップアップを出す（地図に追従）。
+    if (selPopup) selPopup.setLngLat([it.lon, it.lat]).setHTML(selectionPopupHtml(it)).addTo(map);
+    drawAll(window.__orbis.overlay); // リティクルを即時表示
   });
 }
 
@@ -109,15 +115,11 @@ function pulseLayer(now) {
   });
 }
 
-// 選択中イベントのネオンハイライト（持続リング＋中心ドット）。flyTo の着地点を示す。
-function selectedMarkerLayer() {
-  if (!selected) return null;
-  return new deck.ScatterplotLayer({
-    id: 'selected-marker', data: [selected], radiusUnits: 'pixels',
-    stroked: true, filled: true, lineWidthUnits: 'pixels', getLineWidth: 2.5,
-    getPosition: (d) => [d.lon, d.lat], getRadius: 13,
-    getFillColor: [255, 255, 255, 35], getLineColor: [57, 208, 255, 255], pickable: false,
-  });
+// 選択中イベントの着地リティクル（外周グロー＋明るいリング＋中心ドット＋拡大ピン）。
+// flyTo の着地点を大きく・動きで強調する。config 生成は js/lib/selection.js（純粋）。
+function selectedMarkerLayers(now) {
+  return buildReticleConfigs(selected, now, { reduced: REDUCED })
+    .map((c) => new deck.ScatterplotLayer(c));
 }
 
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
@@ -128,7 +130,7 @@ function drawAll(overlay) {
   const extra = [];
   if (ENABLED.has('trade')) { const fp = flowParticlesLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
-  const sm = selectedMarkerLayer(); if (sm) extra.push(sm);
+  extra.push(...selectedMarkerLayers(now));
   setDeckLayers(overlay, [...base, ...extra]);
 }
 
@@ -144,6 +146,9 @@ function boot() {
   );
   mountStarfield(document.getElementById('starfield'));
   window.__orbis = { map, overlay, counts: {} };
+
+  // 着地点ポップアップ（クリック地点に追従。閉じても再クリックで再表示）。
+  selPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 20, className: 'orbis-popup' });
 
   panel = renderPanel(
     document.getElementById('panel-rows'),

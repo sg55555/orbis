@@ -35,9 +35,13 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   const after = await page.evaluate(() => window.__orbis.map.getCenter());
   expect(after.lng !== before.lng || after.lat !== before.lat).toBe(true);
 
-  // フィードクリックで選択が記録される（着地マーカー用）
+  // フィードクリックで選択が記録される（着地リティクル用）
   const sel = await page.evaluate(() => window.__orbis.selected);
   expect(sel && typeof sel.lon === 'number' && typeof sel.lat === 'number').toBe(true);
+
+  // 着地点ポップアップ（イベント名＋移動ガイド）が表示される
+  await expect(page.locator('.orbis-popup .sel-title')).toBeVisible({ timeout: 3000 });
+  await expect(page.locator('.orbis-popup .sel-hint')).toContainText('移動');
 
   // ズームアウトで低 zoom（球体ビュー）に到達できる
   await page.evaluate(() => window.__orbis.map.setZoom(0.3));
