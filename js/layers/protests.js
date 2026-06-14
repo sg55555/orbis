@@ -3,6 +3,7 @@
 // （詳細は conflict.js / [[maplibre-v5-deckgl-globe-version]]）。
 import { hostnameOf, blobRadius, ADDITIVE_BLEND } from '../lib/geo.js';
 import { parseGdeltDate } from '../lib/feed.js';
+import { fipsToJa } from '../lib/places.js';
 
 const GREEN = [94, 255, 166];
 
@@ -36,12 +37,12 @@ export const protestsLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `抗議｜${o.place}｜出典 ${hostnameOf(o.url)}`;
+    return `抗議｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];
     return pts.map((p) => ({
-      id: p.id, time: parseGdeltDate(p.date), title: `抗議 ${p.place}（${hostnameOf(p.url)}）`,
+      id: p.id, time: parseGdeltDate(p.date), title: `抗議 ${fipsToJa(p.place)}（${hostnameOf(p.url)}）`,
       layerId: 'protests', lon: p.lon, lat: p.lat,
     }));
   },

@@ -4,6 +4,7 @@
 // 報道が集中するほど明るく発色させて「面」を表現する（[[maplibre-v5-deckgl-globe-version]]）。
 import { hostnameOf, blobRadius, ADDITIVE_BLEND } from '../lib/geo.js';
 import { parseGdeltDate } from '../lib/feed.js';
+import { fipsToJa } from '../lib/places.js';
 
 const RED = [255, 60, 80];
 
@@ -37,12 +38,12 @@ export const conflictLayer = {
   },
   tooltip(o) {
     if (!o) return null;
-    return `紛争｜${o.place}｜出典 ${hostnameOf(o.url)}`;
+    return `紛争｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];
     return pts.map((p) => ({
-      id: p.id, time: parseGdeltDate(p.date), title: `紛争 ${p.place}（${hostnameOf(p.url)}）`,
+      id: p.id, time: parseGdeltDate(p.date), title: `紛争 ${fipsToJa(p.place)}（${hostnameOf(p.url)}）`,
       layerId: 'conflict', lon: p.lon, lat: p.lat,
     }));
   },
