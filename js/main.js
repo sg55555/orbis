@@ -1,7 +1,7 @@
 import { initMap, setDeckLayers } from './map.js';
 import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
-import { formatFreshness } from './lib/geo.js';
+import { formatFreshness, magnitudeToRadius, magnitudeToColor } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
@@ -115,6 +115,24 @@ function pulseLayer(now) {
   });
 }
 
+// 規模の大きい地震に、ゆっくり拡大する淡い波紋リング（reduced-motion 時は描かない）。
+function quakeRippleLayer() {
+  const snap = snapshots.quakes;
+  if (REDUCED || !snap || !snap.points) return null;
+  const data = snap.points.filter((p) => Number(p.mag) >= 4.5);
+  if (data.length === 0) return null;
+  const phase = motionT; // 0..1
+  return new deck.ScatterplotLayer({
+    id: 'quake-ripple', data, radiusUnits: 'pixels',
+    stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1,
+    getPosition: (p) => [p.lon, p.lat],
+    getRadius: (p) => magnitudeToRadius(p.mag) + 4 + 22 * phase,
+    getLineColor: (p) => [...magnitudeToColor(p.mag), Math.round(170 * (1 - phase))],
+    updateTriggers: { getRadius: phase, getLineColor: phase },
+    pickable: false,
+  });
+}
+
 // 選択中イベントの着地リティクル（外周グロー＋明るいリング＋中心ドット＋拡大ピン）。
 // flyTo の着地点を大きく・動きで強調する。config 生成は js/lib/selection.js（純粋）。
 function selectedMarkerLayers(now) {
@@ -131,6 +149,7 @@ function drawAll(overlay) {
   const extra = [];
   if (ENABLED.has('trade')) { const fp = flowParticlesLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
+  if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
   extra.push(...selectedMarkerLayers(now));
   setDeckLayers(overlay, [...base, ...extra]);
 }
