@@ -126,7 +126,8 @@ function selectedMarkerLayers(now) {
 function drawAll(overlay) {
   _overlay = overlay;
   const now = (typeof performance !== 'undefined') ? performance.now() : Date.now();
-  const base = buildDeckLayers(ENABLED, snapshots);
+  const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
+  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom });
   const extra = [];
   if (ENABLED.has('trade')) { const fp = flowParticlesLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
@@ -160,6 +161,8 @@ function boot() {
   );
   wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
   wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));
+
+  map.on('zoom', () => drawAll(overlay));
 
   map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');
