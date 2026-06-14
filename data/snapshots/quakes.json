@@ -1,8 +1,418 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-14T02:02:36Z",
+  "updated": "2026-06-14T06:58:11Z",
   "count": 199,
   "points": [
+    {
+      "id": "nc75376106",
+      "lon": -122.794334411621,
+      "lat": 38.7823333740234,
+      "depth": 13.5200004577637,
+      "mag": 1.05,
+      "place": "3 km W of The Geysers, CA",
+      "time": 1781420137000,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376106"
+    },
+    {
+      "id": "tx2026lpnvhf",
+      "lon": -104.386,
+      "lat": 31.612,
+      "depth": 4.4591,
+      "mag": 2.1,
+      "place": "62 km S of Whites City, New Mexico",
+      "time": 1781418250632,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lpnvhf"
+    },
+    {
+      "id": "nc75376101",
+      "lon": -122.763336181641,
+      "lat": 38.8213348388672,
+      "depth": 1.66999995708466,
+      "mag": 1.36,
+      "place": "3 km W of Cobb, CA",
+      "time": 1781418125980,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376101"
+    },
+    {
+      "id": "nc75376096",
+      "lon": -122.810997009277,
+      "lat": 38.814998626709,
+      "depth": 2.98000001907349,
+      "mag": 0.8,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781417755110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376096"
+    },
+    {
+      "id": "ci41486136",
+      "lon": -119.562166666667,
+      "lat": 34.4158333333333,
+      "depth": 14.11,
+      "mag": 0.83,
+      "place": "4 km WNW of Carpinteria, CA",
+      "time": 1781417582100,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486136"
+    },
+    {
+      "id": "aka2026lrjwyl",
+      "lon": -151.502,
+      "lat": 61.655,
+      "depth": 82.8,
+      "mag": 2.3,
+      "place": "37 km S of Skwentna, Alaska",
+      "time": 1781417327319,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrjwyl"
+    },
+    {
+      "id": "ci41486128",
+      "lon": -118.051666666667,
+      "lat": 36.345,
+      "depth": 3.87,
+      "mag": 1.35,
+      "place": "8 km NNW of Olancha, CA",
+      "time": 1781417247120,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486128"
+    },
+    {
+      "id": "nc75376091",
+      "lon": -124.869667053223,
+      "lat": 40.4328346252441,
+      "depth": 1.8400000333786,
+      "mag": 2.56,
+      "place": "51 km WNW of Petrolia, CA",
+      "time": 1781416303470,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376091"
+    },
+    {
+      "id": "us7000sssr",
+      "lon": -106.8766,
+      "lat": 34.5089,
+      "depth": 9.607,
+      "mag": 2.6,
+      "place": "7 km NW of Abeytas, New Mexico",
+      "time": 1781416264731,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sssr"
+    },
+    {
+      "id": "nc75376086",
+      "lon": -123.092666625977,
+      "lat": 39.1834983825684,
+      "depth": 3.1800000667572,
+      "mag": 1.91,
+      "place": "9 km NE of Talmage, CA",
+      "time": 1781415948900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376086"
+    },
+    {
+      "id": "aka2026lrjbot",
+      "lon": -152.08,
+      "lat": 62.146,
+      "depth": 108.8,
+      "mag": 1.8,
+      "place": "39 km WNW of Skwentna, Alaska",
+      "time": 1781415846503,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrjbot"
+    },
+    {
+      "id": "nc75376081",
+      "lon": -122.808670043945,
+      "lat": 38.821834564209,
+      "depth": 0.910000026226044,
+      "mag": 0.71,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781415436740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376081"
+    },
+    {
+      "id": "ci41486120",
+      "lon": -117.894333333333,
+      "lat": 36.0915,
+      "depth": 5.75,
+      "mag": 0.87,
+      "place": "7 km NE of Coso Junction, CA",
+      "time": 1781414709710,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486120"
+    },
+    {
+      "id": "us7000sssl",
+      "lon": -65.3862,
+      "lat": 19.0446,
+      "depth": 49.904,
+      "mag": 4.3,
+      "place": "82 km NNE of Luquillo, Puerto Rico",
+      "time": 1781414670357,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sssl"
+    },
+    {
+      "id": "tx2026lplvli",
+      "lon": -102.239,
+      "lat": 32.115,
+      "depth": 4.1349,
+      "mag": 2,
+      "place": "16 km NE of Gardendale, Texas",
+      "time": 1781414633017,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lplvli"
+    },
+    {
+      "id": "ci41486112",
+      "lon": -116.351166666667,
+      "lat": 33.408,
+      "depth": 9.22,
+      "mag": 0.73,
+      "place": "17 km N of Borrego Springs, CA",
+      "time": 1781413222610,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486112"
+    },
+    {
+      "id": "ci41486104",
+      "lon": -117.145833333333,
+      "lat": 34.0363333333333,
+      "depth": 7.98,
+      "mag": 0.96,
+      "place": "4 km SSW of Mentone, CA",
+      "time": 1781411838890,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486104"
+    },
+    {
+      "id": "aka2026lrgrgk",
+      "lon": -146.965,
+      "lat": 60.973,
+      "depth": 25.7,
+      "mag": 1.8,
+      "place": "19 km NW of Tatitlek, Alaska",
+      "time": 1781411534151,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrgrgk"
+    },
+    {
+      "id": "nc75376071",
+      "lon": -122.811164855957,
+      "lat": 38.8209991455078,
+      "depth": 3.21000003814697,
+      "mag": 0.97,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781411527660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376071"
+    },
+    {
+      "id": "nc75376056",
+      "lon": -122.734664916992,
+      "lat": 38.7716674804688,
+      "depth": 1.14999997615814,
+      "mag": 1.69,
+      "place": "2 km ESE of The Geysers, CA",
+      "time": 1781409591870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376056"
+    },
+    {
+      "id": "nc75376051",
+      "lon": -122.84349822998,
+      "lat": 38.8198318481445,
+      "depth": 1.89999997615814,
+      "mag": 1.34,
+      "place": "9 km WNW of The Geysers, CA",
+      "time": 1781408794550,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376051"
+    },
+    {
+      "id": "hv74981192",
+      "lon": -155.202163696289,
+      "lat": 19.2770004272461,
+      "depth": -0.0700000002980232,
+      "mag": 2.02,
+      "place": "18 km S of Volcano, Hawaii",
+      "time": 1781408134100,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74981192"
+    },
+    {
+      "id": "aka2026lrekej",
+      "lon": -149.972,
+      "lat": 64.872,
+      "depth": 16.2,
+      "mag": 1.4,
+      "place": "34 km ESE of Manley Hot Springs, Alaska",
+      "time": 1781407445611,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrekej"
+    },
+    {
+      "id": "nc75376046",
+      "lon": -122.848335266113,
+      "lat": 38.8456649780273,
+      "depth": 0.990000009536743,
+      "mag": 1.05,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781407003420,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376046"
+    },
+    {
+      "id": "nc75376041",
+      "lon": -122.809669494629,
+      "lat": 38.8185005187988,
+      "depth": 3.23000001907349,
+      "mag": 1.14,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781406844350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376041"
+    },
+    {
+      "id": "nc75376036",
+      "lon": -122.765335083008,
+      "lat": 38.8226661682129,
+      "depth": 2.20000004768372,
+      "mag": 1.28,
+      "place": "4 km W of Cobb, CA",
+      "time": 1781406657780,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376036"
+    },
+    {
+      "id": "nc75376031",
+      "lon": -122.848663330078,
+      "lat": 38.8445014953613,
+      "depth": 1.44000005722046,
+      "mag": 0.27,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781406242830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376031"
+    },
+    {
+      "id": "nc75376026",
+      "lon": -121.967666625977,
+      "lat": 37.8320007324219,
+      "depth": 5.96999979019165,
+      "mag": 1.29,
+      "place": "1 km WSW of Diablo, CA",
+      "time": 1781406226540,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376026"
+    },
+    {
+      "id": "nc75376021",
+      "lon": -121.889999389648,
+      "lat": 37.8028335571289,
+      "depth": 14.6599998474121,
+      "mag": 0.96,
+      "place": "3 km SE of Blackhawk, CA",
+      "time": 1781406145500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376021"
+    },
+    {
+      "id": "nc75376016",
+      "lon": -122.847503662109,
+      "lat": 38.8460006713867,
+      "depth": 1.1599999666214,
+      "mag": 0.23,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781405866930,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376016"
+    },
+    {
+      "id": "aka2026lrdlmx",
+      "lon": -152.75,
+      "lat": 58.467,
+      "depth": 55.5,
+      "mag": 2.1,
+      "place": "46 km NNE of Aleneva, Alaska",
+      "time": 1781405738836,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrdlmx"
+    },
+    {
+      "id": "nc75376011",
+      "lon": -122.81600189209,
+      "lat": 38.8334999084473,
+      "depth": 1.92999994754791,
+      "mag": 0.72,
+      "place": "8 km NW of The Geysers, CA",
+      "time": 1781405479760,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376011"
+    },
+    {
+      "id": "nc75376006",
+      "lon": -122.849502563477,
+      "lat": 38.8476676940918,
+      "depth": 1.41999995708466,
+      "mag": 1.41,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781405474330,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75376006"
+    },
+    {
+      "id": "ci41486096",
+      "lon": -116.401333333333,
+      "lat": 32.471,
+      "depth": 5.02,
+      "mag": 1.43,
+      "place": "16 km SSE of Campo, CA",
+      "time": 1781404982420,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41486096"
+    },
+    {
+      "id": "nc75375986",
+      "lon": -122.848167419434,
+      "lat": 38.8465003967285,
+      "depth": 1.14999997615814,
+      "mag": 1.05,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781404917590,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375986"
+    },
+    {
+      "id": "nc75375981",
+      "lon": -122.846832275391,
+      "lat": 38.8456649780273,
+      "depth": 1.33000004291534,
+      "mag": 0.46,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781404659570,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375981"
+    },
+    {
+      "id": "nc75375976",
+      "lon": -122.846168518066,
+      "lat": 38.844165802002,
+      "depth": 0.810000002384186,
+      "mag": 1.96,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781404610110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375976"
+    },
+    {
+      "id": "tx2026lpggrd",
+      "lon": -103.936,
+      "lat": 30.941,
+      "depth": 3.0422,
+      "mag": 1.8,
+      "place": "18 km WSW of Balmorhea, Texas",
+      "time": 1781404552267,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lpggrd"
+    },
+    {
+      "id": "us7000sss4",
+      "lon": -106.8947,
+      "lat": 34.4912,
+      "depth": 10.192,
+      "mag": 3.2,
+      "place": "8 km WNW of Abeytas, New Mexico",
+      "time": 1781404419849,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sss4"
+    },
+    {
+      "id": "nc75375971",
+      "lon": -122.791664123535,
+      "lat": 38.8356666564941,
+      "depth": 2.11999988555908,
+      "mag": 1.23,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781403746520,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375971"
+    },
+    {
+      "id": "aka2026lrbyos",
+      "lon": -159.053,
+      "lat": 55.503,
+      "depth": 2.9,
+      "mag": 1.9,
+      "place": "45 km S of Perryville, Alaska",
+      "time": 1781403046983,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lrbyos"
+    },
     {
       "id": "nc75375966",
       "lon": -122.820167541504,
@@ -1582,416 +1992,6 @@
       "place": "7 km E of Calimesa, CA",
       "time": 1781334639550,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485720"
-    },
-    {
-      "id": "tx2026lnsqbo",
-      "lon": -102.105,
-      "lat": 32.432,
-      "depth": 4.1589,
-      "mag": 1.4,
-      "place": "36 km SSW of Los Ybanez, Texas",
-      "time": 1781332791790,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnsqbo"
-    },
-    {
-      "id": "aka2026lpovfu",
-      "lon": -152.174,
-      "lat": 60.27,
-      "depth": 93.5,
-      "mag": 1.7,
-      "place": "37 km NW of Ninilchik, Alaska",
-      "time": 1781332644786,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lpovfu"
-    },
-    {
-      "id": "hv74980667",
-      "lon": -155.38166809082,
-      "lat": 19.0616664886475,
-      "depth": 32.8300018310547,
-      "mag": 1.96,
-      "place": "18 km SSE of Pāhala, Hawaii",
-      "time": 1781332641970,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74980667"
-    },
-    {
-      "id": "us7000ssms",
-      "lon": -79.9986,
-      "lat": -4.5157,
-      "depth": 72.251,
-      "mag": 5.1,
-      "place": "0 km ESE of Suyo, Peru",
-      "time": 1781332539650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssms"
-    },
-    {
-      "id": "ci41485712",
-      "lon": -116.736833333333,
-      "lat": 33.526,
-      "depth": 3.72,
-      "mag": 0.64,
-      "place": "7 km WSW of Anza, CA",
-      "time": 1781332089330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485712"
-    },
-    {
-      "id": "ok2026lmhs",
-      "lon": -97.40266667,
-      "lat": 35.66816667,
-      "depth": 7.51,
-      "mag": 1.84,
-      "place": "6 km W of Arcadia, Oklahoma",
-      "time": 1781331916079,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ok2026lmhs"
-    },
-    {
-      "id": "nc75375536",
-      "lon": -122.804336547852,
-      "lat": 38.8526649475098,
-      "depth": 10.6800003051758,
-      "mag": 0.43,
-      "place": "8 km WNW of Cobb, CA",
-      "time": 1781331837170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375536"
-    },
-    {
-      "id": "aka2026lpogvu",
-      "lon": -158.346,
-      "lat": 55.421,
-      "depth": 12.3,
-      "mag": 3.5,
-      "place": "74 km SE of Perryville, Alaska",
-      "time": 1781331649980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lpogvu"
-    },
-    {
-      "id": "ci41485704",
-      "lon": -117.704666666667,
-      "lat": 35.8826666666667,
-      "depth": 8.64,
-      "mag": 0.49,
-      "place": "19 km ESE of Little Lake, CA",
-      "time": 1781331639500,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485704"
-    },
-    {
-      "id": "tx2026lnrsoi",
-      "lon": -104.456,
-      "lat": 31.636,
-      "depth": 3.8922,
-      "mag": 1.6,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781331203558,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnrsoi"
-    },
-    {
-      "id": "ci41485696",
-      "lon": -119.131666666667,
-      "lat": 34.5673333333333,
-      "depth": 0.36,
-      "mag": 1.36,
-      "place": "17 km NE of Ojai, CA",
-      "time": 1781329784580,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485696"
-    },
-    {
-      "id": "tx2026lnqxdn",
-      "lon": -103.222,
-      "lat": 30.997,
-      "depth": 4.8826,
-      "mag": 1,
-      "place": "31 km SSW of Coyanosa, Texas",
-      "time": 1781329674891,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnqxdn"
-    },
-    {
-      "id": "ci41485688",
-      "lon": -116.721,
-      "lat": 33.5353333333333,
-      "depth": 5.8,
-      "mag": 0.46,
-      "place": "5 km WSW of Anza, CA",
-      "time": 1781329522740,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485688"
-    },
-    {
-      "id": "aka2026lpmuxr",
-      "lon": -152.765,
-      "lat": 59.097,
-      "depth": 70.3,
-      "mag": 2.2,
-      "place": "56 km WSW of Nanwalek, Alaska",
-      "time": 1781329029675,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lpmuxr"
-    },
-    {
-      "id": "nc75375531",
-      "lon": -121.391998291016,
-      "lat": 36.8801651000977,
-      "depth": 12.210000038147,
-      "mag": 1.34,
-      "place": "4 km N of Hollister, CA",
-      "time": 1781328651590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375531"
-    },
-    {
-      "id": "ok2026lmft",
-      "lon": -98.04416667,
-      "lat": 35.6965,
-      "depth": 6.85,
-      "mag": 2.46,
-      "place": "6 km WSW of Okarche, Oklahoma",
-      "time": 1781328323329,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ok2026lmft"
-    },
-    {
-      "id": "nc75375526",
-      "lon": -122.799163818359,
-      "lat": 38.8368339538574,
-      "depth": 2.17000007629395,
-      "mag": 1.06,
-      "place": "7 km WNW of Cobb, CA",
-      "time": 1781327946510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375526"
-    },
-    {
-      "id": "us7000ssrx",
-      "lon": -70.0005,
-      "lat": 44.197,
-      "depth": 12.378,
-      "mag": 1.6,
-      "place": "5 km SSE of Monmouth, Maine",
-      "time": 1781327834517,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssrx"
-    },
-    {
-      "id": "aka2026lplzyh",
-      "lon": -148.347,
-      "lat": 61.808,
-      "depth": 19.3,
-      "mag": 1.8,
-      "place": "6 km ENE of Chickaloon, Alaska",
-      "time": 1781327574311,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lplzyh"
-    },
-    {
-      "id": "aka2026lplwid",
-      "lon": -148.881,
-      "lat": 65.249,
-      "depth": 10.9,
-      "mag": 0.9,
-      "place": "24 km ENE of Minto, Alaska",
-      "time": 1781327323091,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lplwid"
-    },
-    {
-      "id": "hv74980632",
-      "lon": -155.471664428711,
-      "lat": 19.2091674804688,
-      "depth": 32.1599998474121,
-      "mag": 1.78,
-      "place": "1 km NE of Pāhala, Hawaii",
-      "time": 1781327151750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74980632"
-    },
-    {
-      "id": "us7000ssm3",
-      "lon": -97.3965,
-      "lat": 35.6639,
-      "depth": 5,
-      "mag": 2.7,
-      "place": "6 km W of Arcadia, Oklahoma",
-      "time": 1781326520278,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssm3"
-    },
-    {
-      "id": "tx2026lnovjf",
-      "lon": -101.189,
-      "lat": 32.254,
-      "depth": 2.3908,
-      "mag": 1.5,
-      "place": "12 km ESE of Coahoma, Texas",
-      "time": 1781325921750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnovjf"
-    },
-    {
-      "id": "nc75375521",
-      "lon": -122.799835205078,
-      "lat": 38.8366661071777,
-      "depth": 2.27999997138977,
-      "mag": 1.25,
-      "place": "7 km WNW of Cobb, CA",
-      "time": 1781325369480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375521"
-    },
-    {
-      "id": "nc75375516",
-      "lon": -122.798835754395,
-      "lat": 38.8371658325195,
-      "depth": 2.26999998092651,
-      "mag": 1.18,
-      "place": "7 km WNW of Cobb, CA",
-      "time": 1781325278750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375516"
-    },
-    {
-      "id": "ci41485672",
-      "lon": -117.534,
-      "lat": 35.6711666666667,
-      "depth": 10.88,
-      "mag": 0.99,
-      "place": "14 km ENE of Ridgecrest, CA",
-      "time": 1781324228930,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485672"
-    },
-    {
-      "id": "hv74980607",
-      "lon": -155.492340087891,
-      "lat": 19.1638336181641,
-      "depth": 28.9200000762939,
-      "mag": 1.78,
-      "place": "4 km SSW of Pāhala, Hawaii",
-      "time": 1781323841200,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74980607"
-    },
-    {
-      "id": "ci41485656",
-      "lon": -117.5305,
-      "lat": 35.6666666666667,
-      "depth": 6.93,
-      "mag": 2,
-      "place": "14 km ENE of Ridgecrest, CA",
-      "time": 1781320486830,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485656"
-    },
-    {
-      "id": "aka2026lphoad",
-      "lon": -153.443,
-      "lat": 59.366,
-      "depth": 5,
-      "mag": 1,
-      "place": "60 km SE of Pedro Bay, Alaska",
-      "time": 1781319551558,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lphoad"
-    },
-    {
-      "id": "ci41485648",
-      "lon": -117.6935,
-      "lat": 35.9271666666667,
-      "depth": 7.29,
-      "mag": 1.46,
-      "place": "19 km E of Little Lake, CA",
-      "time": 1781319241190,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485648"
-    },
-    {
-      "id": "ci41485640",
-      "lon": -117.804666666667,
-      "lat": 35.3008333333333,
-      "depth": 8.73,
-      "mag": 1.13,
-      "place": "17 km WSW of Johannesburg, CA",
-      "time": 1781319220340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485640"
-    },
-    {
-      "id": "ci41485632",
-      "lon": -116.470666666667,
-      "lat": 33.4166666666667,
-      "depth": 12.53,
-      "mag": 0.98,
-      "place": "20 km NNW of Borrego Springs, CA",
-      "time": 1781318803470,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41485632"
-    },
-    {
-      "id": "nc75375491",
-      "lon": -122.076667785645,
-      "lat": 40.2760009765625,
-      "depth": 13.9300003051758,
-      "mag": 2.7,
-      "place": "17 km NE of Red Bluff, CA",
-      "time": 1781318115850,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375491"
-    },
-    {
-      "id": "nc75375486",
-      "lon": -120.988334655762,
-      "lat": 36.4218330383301,
-      "depth": 22.0200004577637,
-      "mag": 1.08,
-      "place": "18 km SE of Pinnacles, CA",
-      "time": 1781317916530,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375486"
-    },
-    {
-      "id": "tx2026lnkijo",
-      "lon": -104.107,
-      "lat": 31.613,
-      "depth": 4.4305,
-      "mag": 1.8,
-      "place": "44 km NW of Toyah, Texas",
-      "time": 1781317778663,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnkijo"
-    },
-    {
-      "id": "tx2026lnkibg",
-      "lon": -104.19,
-      "lat": 31.547,
-      "depth": 4.1636,
-      "mag": 2.1,
-      "place": "45 km NW of Toyah, Texas",
-      "time": 1781317754818,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnkibg"
-    },
-    {
-      "id": "nc75375481",
-      "lon": -122.054000854492,
-      "lat": 40.2605018615723,
-      "depth": 9.31999969482422,
-      "mag": 2.06,
-      "place": "18 km ENE of Red Bluff, CA",
-      "time": 1781317434550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375481"
-    },
-    {
-      "id": "tx2026lnkams",
-      "lon": -104.105,
-      "lat": 31.618,
-      "depth": 4.2463,
-      "mag": 1.7,
-      "place": "44 km NW of Toyah, Texas",
-      "time": 1781317243344,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lnkams"
-    },
-    {
-      "id": "nc75375476",
-      "lon": -121.732498168945,
-      "lat": 37.361499786377,
-      "depth": 3.65000009536743,
-      "mag": 1.27,
-      "place": "8 km E of Alum Rock, CA",
-      "time": 1781317122050,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75375476"
-    },
-    {
-      "id": "nn00920182",
-      "lon": -115.2734,
-      "lat": 37.1068,
-      "depth": 8.2391,
-      "mag": 1.85,
-      "place": "30 km SSW of Alamo, Nevada",
-      "time": 1781316384834,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920182"
-    },
-    {
-      "id": "us7000ssls",
-      "lon": 125.1803,
-      "lat": 5.774,
-      "depth": 69.522,
-      "mag": 5.2,
-      "place": "2 km WSW of Kablalan, Philippines",
-      "time": 1781316353272,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000ssls"
     }
   ]
 }

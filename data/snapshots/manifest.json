@@ -1,20 +1,20 @@
 {
   "layers": {
     "quakes": {
-      "updated": "2026-06-14T02:02:36Z",
+      "updated": "2026-06-14T06:58:11Z",
       "count": 199
     },
     "flights": {
-      "updated": "2026-06-14T02:02:36Z",
-      "count": 3129
+      "updated": "2026-06-14T06:58:12Z",
+      "count": 5815
     },
     "protests": {
-      "updated": "2026-06-14T02:02:41Z",
-      "count": 45
+      "updated": "2026-06-14T06:58:13Z",
+      "count": 58
     },
     "conflict": {
-      "updated": "2026-06-14T02:02:41Z",
-      "count": 293
+      "updated": "2026-06-14T06:58:13Z",
+      "count": 365
     }
   }
 }
