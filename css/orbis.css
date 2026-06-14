@@ -1,6 +1,9 @@
 :root {
   --bg: #05080f; --panel: rgba(14, 22, 38, 0.72); --line: #1c2c48;
   --cyan: #39d0ff; --text: #cfe0f5; --muted: #5b7fb0;
+  /* リッチ化: ルック(js/lib/look.js)が上書きする星雲・グラス変数。ここは A プリセットの既定値 */
+  --neb-a: rgba(46,111,179,0.12); --neb-b: rgba(138,92,246,0.08); --neb-base: #05080f;
+  --glass-blur: 16px; --glass-bg: rgba(10,18,32,0.55); --glass-rim: rgba(90,200,255,0.22);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
@@ -8,24 +11,82 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 #app { display: flex; flex-direction: column; height: 100vh; }
 #map-wrap { position: relative; flex: 1; min-height: 0; }
 #map { position: absolute; inset: 0; z-index: 1; background: transparent; }
+/* 星雲: 地球の背後(中心)は素の暗色にし、星雲を地球の「周り」に漂わせる。色味はルック変数で切替。
+   配置は ?neb= で2種を比較: neb-corners=四隅/縁, neb-ring=地球をリング状に囲むハロ。採用=ring */
 #starfield { position: absolute; inset: 0; z-index: 0; pointer-events: none;
-  background: radial-gradient(ellipse at 50% 40%, #0a1220 0%, #05080f 70%); }
+  background: radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%); }
+/* 四隅・縁に大きくにじませる（開けた上部中央・下部に強く出る） */
+#starfield.neb-corners {
+  background:
+    radial-gradient(40% 36% at 9% 13%, var(--neb-a) 0%, transparent 60%),
+    radial-gradient(44% 38% at 91% 19%, var(--neb-b) 0%, transparent 60%),
+    radial-gradient(42% 38% at 15% 89%, var(--neb-b) 0%, transparent 60%),
+    radial-gradient(46% 40% at 87% 85%, var(--neb-a) 0%, transparent 62%),
+    radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%); }
+/* 地球のすぐ外側を時計回りに囲む星雲リング（大気ハロと馴染む） */
+#starfield.neb-ring {
+  background:
+    radial-gradient(20% 18% at 50% 10%, var(--neb-a) 0%, transparent 55%),
+    radial-gradient(20% 18% at 71% 19%, var(--neb-b) 0%, transparent 55%),
+    radial-gradient(20% 20% at 29% 19%, var(--neb-b) 0%, transparent 55%),
+    radial-gradient(22% 22% at 23% 50%, var(--neb-a) 0%, transparent 55%),
+    radial-gradient(20% 20% at 30% 76%, var(--neb-a) 0%, transparent 55%),
+    radial-gradient(20% 18% at 50% 82%, var(--neb-b) 0%, transparent 55%),
+    radial-gradient(20% 20% at 70% 76%, var(--neb-b) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 42%, transparent 28%, #0a1220 52%, var(--neb-base) 86%); }
 #freshness { position: absolute; right: 12px; top: 12px; z-index: 5;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
-  padding: 6px 10px; font-size: 11px; color: var(--muted); backdrop-filter: blur(8px); }
+  background: var(--glass-bg); border: 1px solid var(--glass-rim); border-radius: 8px;
+  padding: 6px 10px; font-size: 11px; color: var(--muted);
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05), 0 6px 22px rgba(0,0,0,.35); }
 #loading { position: absolute; inset: 0; z-index: 20; display: flex;
-  align-items: center; justify-content: center; background: var(--bg);
-  color: var(--cyan); letter-spacing: .2em; transition: opacity .5s; }
+  align-items: center; justify-content: center; transition: opacity .6s;
+  background: radial-gradient(ellipse at 50% 45%, #0a1426 0%, #05080f 75%); }
 #loading.hidden { opacity: 0; pointer-events: none; }
+/* 起動演出: 同心リング＋軌道スイープ＋ワードマーク＋進捗シマー（描画言語＝光リング） */
+.boot { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.boot-rings { position: relative; width: 96px; height: 96px; }
+.boot-rings span { position: absolute; inset: 0; margin: auto; border-radius: 50%;
+  border: 1px solid rgba(57,208,255,.18); }
+.boot-rings span:nth-child(1) { width: 96px; height: 96px; }
+.boot-rings span:nth-child(2) { width: 66px; height: 66px; border-color: rgba(138,92,246,.22); }
+.boot-rings span:nth-child(3) { width: 36px; height: 36px; border-color: rgba(57,208,255,.30); }
+/* 軌道スイープ: 外周を回る発光弧 */
+.boot-rings i { position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid transparent; border-top-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(57,208,255,.5); animation: boot-spin 1.1s linear infinite; }
+.boot-word { font-size: 22px; font-weight: 700; letter-spacing: .42em; color: #eaf4ff;
+  text-shadow: 0 0 18px rgba(57,208,255,.55); padding-left: .42em; }
+.boot-sub { font-size: 10px; letter-spacing: .18em; color: var(--muted); }
+.boot-bar { width: 168px; height: 2px; border-radius: 2px; overflow: hidden;
+  background: rgba(57,208,255,.12); }
+.boot-bar b { display: block; width: 38%; height: 100%; border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), rgba(138,92,246,.9), transparent);
+  animation: boot-shimmer 1.3s ease-in-out infinite; }
+@keyframes boot-spin { to { transform: rotate(360deg); } }
+@keyframes boot-shimmer { 0% { transform: translateX(-120%); } 100% { transform: translateX(320%); } }
+@media (prefers-reduced-motion: reduce) {
+  .boot-rings i { animation: none; border-top-color: rgba(57,208,255,.4); }
+  .boot-bar b { animation: none; width: 100%; opacity: .5; }
+}
 .side-panel { position: absolute; left: 12px; top: 12px; z-index: 5; width: 220px;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
-  padding: 10px 12px; backdrop-filter: blur(8px); font-size: 12px; max-height: 70vh; overflow-y: auto; }
+  background: var(--glass-bg); border: 1px solid var(--glass-rim); border-radius: 12px;
+  padding: 10px 12px; font-size: 12px; max-height: 70vh; overflow-y: auto; overflow-x: hidden;
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.06), 0 10px 34px rgba(0,0,0,.42),
+    0 0 22px rgba(57,208,255,.06); }
+/* ヘッダー上端のオーロラ・アクセント線 */
+.side-panel::before { content: ''; position: absolute; left: 12px; right: 12px; top: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(57,208,255,.55), rgba(138,92,246,.45), transparent);
+  opacity: .8; }
 .panel-head { display: flex; align-items: center; justify-content: space-between; }
 .side-panel h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em;
   text-transform: uppercase; color: var(--muted); }
 .collapse-btn { background: none; border: 1px solid var(--line); color: var(--muted);
   border-radius: 6px; cursor: pointer; width: 22px; height: 22px; line-height: 1; }
-.layer-row { display: flex; align-items: center; gap: 7px; margin: 5px 0; cursor: pointer; }
+.layer-row { display: flex; align-items: center; gap: 7px; margin: 3px 0; padding: 2px 6px; cursor: pointer;
+  border-radius: 7px; transition: background .15s, transform .15s; }
+.layer-row:hover { background: rgba(57,208,255,.08); transform: translateX(2px); }
 .layer-row .swatch { width: 10px; height: 10px; flex: 0 0 auto; color: var(--cyan); }
 /* マップのマーカー形状に対応: dot=塗り円 / ring=中空リング(地震) / triangle=三角(航空) */
 .layer-row .swatch-dot { border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
@@ -55,9 +116,10 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 
 /* 着地点ポップアップ（ネオン濃紺ガラス。maplibre 既定の白を上書き） */
 .orbis-popup .maplibregl-popup-content {
-  background: rgba(10, 18, 32, 0.92); border: 1px solid var(--cyan);
+  background: var(--glass-bg); border: 1px solid var(--cyan);
   border-radius: 10px; padding: 9px 12px; color: var(--text);
-  box-shadow: 0 0 18px rgba(57,208,255,.45); backdrop-filter: blur(8px); }
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.07), 0 0 20px rgba(57,208,255,.40), 0 10px 30px rgba(0,0,0,.45);
+  backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); }
 .orbis-popup .maplibregl-popup-tip { border-top-color: var(--cyan); border-bottom-color: var(--cyan); }
 .orbis-popup .maplibregl-popup-close-button { color: var(--muted); font-size: 16px; padding: 0 5px; }
 .sel-popup .sel-top { display: flex; align-items: center; gap: 7px; }

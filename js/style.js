@@ -1,9 +1,13 @@
 // ネオン濃紺ベクターベースマップ（OpenFreeMap・キー不要）。
 // 背景レイヤーを置かないことで globe の外側が透明になり、背面の星空が見える。
+import { getLook } from './lib/look.js';
+
 const OFM = 'https://tiles.openfreemap.org';
 
-export function buildBaseStyle() {
+export function buildBaseStyle(look = getLook()) {
   const jaLabel = ['coalesce', ['get', 'name:ja'], ['get', 'name']];
+  const water = (look && look.water) || '#081a30';
+  const land = (look && look.land) || '#182a47';
   return {
     version: 8,
     // MapLibre GL JS v5+ の球体投影をスタイルで宣言。これが無いと平面メルカトルになり、
@@ -17,11 +21,11 @@ export function buildBaseStyle() {
     layers: [
       // 背景レイヤーなし（透明＝星空に浮く球体）
       { id: 'water', type: 'fill', source: 'openmaptiles', 'source-layer': 'water',
-        paint: { 'fill-color': '#081a30' } },
+        paint: { 'fill-color': water } },
       { id: 'landcover', type: 'fill', source: 'openmaptiles', 'source-layer': 'landcover',
-        paint: { 'fill-color': '#182a47', 'fill-opacity': 0.55 } },
+        paint: { 'fill-color': land, 'fill-opacity': 0.55 } },
       { id: 'landuse', type: 'fill', source: 'openmaptiles', 'source-layer': 'landuse',
-        paint: { 'fill-color': '#182a47', 'fill-opacity': 0.35 } },
+        paint: { 'fill-color': land, 'fill-opacity': 0.35 } },
       // 国内境界（共和国/州 = admin_level 3 以上）: 点線・淡い。「ロシア連邦に属するサハ共和国」
       // のような従属関係を点線で示す。低zoomでは消し、近づくと現れる。
       { id: 'boundary-region', type: 'line', source: 'openmaptiles', 'source-layer': 'boundary',

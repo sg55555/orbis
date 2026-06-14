@@ -4,6 +4,7 @@ import { startPolling, fetchManifest } from './snapshot.js';
 import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
+import { getLook, applyLookCss } from './lib/look.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
@@ -214,6 +215,11 @@ function motionLoop() {
 }
 
 function boot() {
+  const look = getLook();
+  applyLookCss(look); // 星雲・グラスの CSS 変数を :root に適用
+  // 星雲の配置。採用=ring(地球を囲むハロ)。?neb=corners で四隅版にも切替可能
+  const nebClass = /[?&]neb=corners/i.test(location.search) ? 'neb-corners' : 'neb-ring';
+  document.getElementById('starfield').classList.add(nebClass);
   const { map, overlay } = initMap(
     'map',
     (info) => (info.object && info.layer) ? tooltipFor(info.layer.id, info.object) : null,
@@ -226,9 +232,10 @@ function boot() {
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN)).addTo(map);
         drawAll(overlay);
       }
-    }
+    },
+    look
   );
-  mountStarfield(document.getElementById('starfield'));
+  mountStarfield(document.getElementById('starfield'), { reduced: REDUCED });
   window.__orbis = { map, overlay, counts: {} };
 
   // 着地点ポップアップ（クリック地点に追従。閉じても再クリックで再表示）。
