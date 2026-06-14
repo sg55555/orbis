@@ -95,38 +95,6 @@ export function waveFactor(phase, motionT) {
   return 0.45 + 0.95 * (0.5 + 0.5 * Math.sin(2 * Math.PI * (phase * WAVE_COUNT - motionT * WAVE_SPEED)));
 }
 
-// チェイス調整の既定値（?flow=chase 時。URL/ctx で上書き可能）。
-const CHASE_CELLS = 6;     // 1海流あたりのセル(面)数
-const CHASE_TAIL = 0.22;   // 尾の長さ（phase 単位の減衰幅）
-const CHASE_SPEED = 0.7;   // motionT に対するヘッド進行速度
-const CHASE_BASE = 0.55;   // 消灯セルの明るさ（淡い水温面を常時見せる）
-const CHASE_PEAK = 1.6;    // 点灯セルの追加明るさ
-const CHASE_STEP = 'hard'; // 'hard'=セル量子化 / 'glide'=連続
-
-// 0..1 の2位相間の巡回距離（0..0.5、ラップ考慮・対称）。
-export function cyclicDist(a, b) {
-  const d = Math.abs(a - b) % 1;
-  return d > 0.5 ? 1 - d : d;
-}
-
-// チェイスの明るさ係数。各点を cells 個のセルに量子化し、動く点灯ヘッドの「後方(尾)」を
-// 明るく、前方を暗く（＝流れ方向が読める）。戻り値 base..(base+peak)。
-export function chaseFactor(phase, motionT, opts = {}) {
-  const cells = opts.cells || CHASE_CELLS;
-  const tail = opts.tail || CHASE_TAIL;
-  const speed = opts.speed || CHASE_SPEED;
-  const base = opts.base != null ? opts.base : CHASE_BASE;
-  const peak = opts.peak != null ? opts.peak : CHASE_PEAK;
-  const step = opts.step || CHASE_STEP;
-  // hard はセル中心に量子化（セル単位でステップ点灯）、glide は連続。
-  const pos = step === 'glide' ? phase : (Math.floor(phase * cells) + 0.5) / cells;
-  const head = ((motionT * speed) % 1 + 1) % 1;
-  // ヘッドより「後方(phase が小さい側)」への距離。0=ヘッド、増えるほど尾の後ろ、前方は ~1。
-  const behind = ((head - pos) % 1 + 1) % 1;
-  const lit = Math.max(0, 1 - behind / tail);
-  return base + peak * lit * lit; // 二乗で crest を鋭く
-}
-
 const _fieldCache = {};
 function field(geojson, cmap) {
   if (!_fieldCache[cmap]) _fieldCache[cmap] = buildCurrentField(geojson, cmap);
@@ -156,20 +124,14 @@ export const currentsLayer = {
   toDeckLayer(geojson, ctx) {
     const cmap = (ctx && ctx.cmap) || DEFAULT_CMAP;
     const mt = (ctx && ctx.motionT) || 0;
-    const flow = (ctx && ctx.flow) || 'chase';
-    const chaseOpts = (ctx && ctx.chase) || {};
-    // 明るさ係数: chase=離散セルの順送り（既定）/ wave=旧 sine 波（?flow=wave 比較用）。
-    const bright = flow === 'wave'
-      ? (d) => waveFactor(d.phase, mt)
-      : (d) => chaseFactor(d.phase, mt, chaseOpts);
-    // 温度フィールド面（加算ブロブ）。淡い水温面を常時見せ、その上をチェイスが走る。
+    // 温度フィールド面（加算ブロブ）。広い半径で重ねて面を作り、明るさの波で流れを表す。
     return [new deck.ScatterplotLayer({
       id: 'currents', data: field(geojson, cmap), pickable: true,
       radiusUnits: 'pixels', stroked: false, filled: true,
       getPosition: (d) => d.position, getRadius: 1,
       radiusMinPixels: 26, radiusMaxPixels: 54,
       getFillColor: (d) => {
-        const a = Math.min(255, Math.round(FIELD_ALPHA * bright(d)));
+        const a = Math.min(255, Math.round(FIELD_ALPHA * waveFactor(d.phase, mt)));
         return [d.rgb[0], d.rgb[1], d.rgb[2], a];
       },
       updateTriggers: { getFillColor: mt },

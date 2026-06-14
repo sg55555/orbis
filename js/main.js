@@ -14,19 +14,6 @@ import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
-// 海流の流れ表現。?flow=chase|wave、?step=hard|glide、?cells= ?tail= ?speed= ?peak= ?base= で実物比較。
-const _qs = typeof location !== 'undefined' ? location.search : '';
-const _qnum = (re) => { const m = re.exec(_qs); return m ? Number(m[1]) : undefined; };
-const FLOW = (/[?&]flow=(chase|wave)/i.exec(_qs) || [])[1] || 'chase';
-const CHASE = {
-  step: (/[?&]step=(hard|glide)/i.exec(_qs) || [])[1] || undefined,
-  cells: _qnum(/[?&]cells=([\d.]+)/i),
-  tail: _qnum(/[?&]tail=([\d.]+)/i),
-  speed: _qnum(/[?&]speed=([\d.]+)/i),
-  peak: _qnum(/[?&]peak=([\d.]+)/i),
-  base: _qnum(/[?&]base=([\d.]+)/i),
-};
-
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
 const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents'];
@@ -215,7 +202,7 @@ function drawAll(overlay) {
   _overlay = overlay;
   const now = (typeof performance !== 'undefined') ? performance.now() : Date.now();
   const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
-  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom, cmap: CMAP, motionT, flow: FLOW, chase: CHASE });
+  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom, cmap: CMAP, motionT });
   const extra = [];
   if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);

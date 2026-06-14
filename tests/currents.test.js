@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import {
   colorForTemp, lerpStops, buildCurrentField, tempAtT, currentsLayer, CMAPS, DEFAULT_CMAP,
-  cyclicDist, chaseFactor,
+  waveFactor,
 } from '../js/layers/currents.js';
 
 test('lerpStops: 停止点の端と中間を補間', () => {
@@ -94,54 +94,27 @@ test('ocean_currents.geojson: 全 feature が LineString・temps長=座標数・
   }
 });
 
-test('cyclicDist: 巡回距離（ラップ考慮・対称・0..0.5）', () => {
-  assert.ok(Math.abs(cyclicDist(0.2, 0.3) - 0.1) < 1e-9);
-  assert.ok(Math.abs(cyclicDist(0.1, 0.9) - 0.2) < 1e-9, 'ラップ');
-  assert.ok(Math.abs(cyclicDist(0.9, 0.1) - 0.2) < 1e-9, '対称');
-  assert.equal(cyclicDist(0.5, 0.5), 0);
+test('waveFactor: motionT で位相が進む（0..~1.4・有限）', () => {
+  const v0 = waveFactor(0.3, 0);
+  const v1 = waveFactor(0.3, 0.25);
+  assert.ok(Number.isFinite(v0) && Number.isFinite(v1));
+  assert.ok(v0 >= 0 && v0 <= 1.5);
+  assert.notEqual(v0, v1); // motionT が変われば明るさが変わる＝アニメーションが効く
 });
 
-test('chaseFactor: ヘッド位置で最大・前方は base・尾は中間（glide）', () => {
-  const o = { cells: 4, tail: 0.25, speed: 1, base: 0.5, peak: 1.5, step: 'glide' };
-  // head = (motionT*speed) mod 1 = 0.5
-  const atHead = chaseFactor(0.5, 0.5, o);
-  const behind = chaseFactor(0.4, 0.5, o); // ヘッドの後方（尾）= phase が小さい側
-  const ahead = chaseFactor(0.7, 0.5, o);  // ヘッド前方（暗い）
-  assert.ok(Math.abs(atHead - 2.0) < 1e-9, 'ヘッドで base+peak');
-  assert.ok(ahead <= 0.5 + 1e-9, '前方は base');
-  assert.ok(behind > 0.5 && behind < atHead, '尾は base と最大の間');
-});
-
-test('chaseFactor: base を下回らない / step hard はセル内一定・glide は連続', () => {
-  const o = { cells: 5, tail: 0.2, speed: 1, base: 0.6, peak: 1.0, step: 'hard' };
-  for (const ph of [0, 0.13, 0.37, 0.5, 0.88, 1]) {
-    assert.ok(chaseFactor(ph, 0.3, o) >= 0.6 - 1e-9, 'base 以上');
-  }
-  // cells=5 → セル0は phase[0,0.2)。同一セル内の2点は同値（量子化）
-  assert.equal(chaseFactor(0.02, 0.3, o), chaseFactor(0.18, 0.3, o));
-  // glide は連続なので同一セル内でも異なる
-  const g = { ...o, step: 'glide' };
-  assert.notEqual(chaseFactor(0.02, 0.3, g), chaseFactor(0.18, 0.3, g));
-});
-
-test('toDeckLayer: flow=chase は chaseFactor、flow=wave は waveFactor で alpha 駆動', () => {
+test('toDeckLayer: 波の明るさで alpha が駆動され 0..255 に収まる', () => {
   const captured = [];
   globalThis.deck = { ScatterplotLayer: function (cfg) { captured.push(cfg); Object.assign(this, cfg); } };
-  const chase = currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.25, flow: 'chase', chase: { step: 'hard' } });
-  assert.equal(chase.length, 1);
+  const out = currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.25 });
+  assert.equal(out.length, 1);
   const cfg = captured[0];
-  const sample = cfg.data[0];
-  const col = cfg.getFillColor(sample);
+  const col = cfg.getFillColor(cfg.data[0]);
   assert.equal(col.length, 4);
   assert.ok(col[3] >= 0 && col[3] <= 255, 'alpha は 0..255');
-  // wave 分岐も呼べる（例外なく配列1件）
-  const wave = currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.25, flow: 'wave' });
-  assert.equal(wave.length, 1);
-  // chase と wave で同一点・同一 motionT の alpha が異なりうる（分岐が効いている）
-  const waveCfg = captured[captured.length - 1];
-  const chaseAlpha = cfg.getFillColor(cfg.data[0])[3];
-  const waveAlpha = waveCfg.getFillColor(waveCfg.data[0])[3];
-  assert.equal(typeof chaseAlpha, 'number');
-  assert.equal(typeof waveAlpha, 'number');
+  // motionT 違いで同一点の alpha が変わる（アニメーション駆動）
+  captured.length = 0;
+  currentsLayer.toDeckLayer(GEO, { cmap: 'sst', motionT: 0.6 });
+  const col2 = captured[0].getFillColor(captured[0].data[0]);
+  assert.equal(typeof col2[3], 'number');
   delete globalThis.deck;
 });
