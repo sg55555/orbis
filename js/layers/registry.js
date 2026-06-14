@@ -4,8 +4,9 @@ import { flightsLayer } from './flights.js';
 import { conflictLayer } from './conflict.js';
 import { protestsLayer } from './protests.js';
 import { tradeLayer } from './trade.js';
+import { currentsLayer } from './currents.js';
 
-export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer];
+export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer, currentsLayer];
 
 export function getLayer(id) {
   return layers.find((l) => l.id === id);
@@ -34,6 +35,7 @@ const DECK_TO_LAYER = {
   quakes: 'quakes', flights: 'flights', 'flights-dot': 'flights',
   conflict: 'conflict', protests: 'protests',
   'trade-routes': 'trade', 'trade-chokepoints': 'trade',
+  currents: 'currents',
 };
 
 // deck の picking 結果から、レイヤー別フォーマット済みツールチップ文字列を返す。
@@ -49,5 +51,6 @@ const DESCRIPTIONS = {
   conflict: '紛争関連報道の集中（GDELT・24h・赤い面）',
   protests: '抗議関連報道の集中（GDELT・24h・緑の面）',
   trade: '主要な海上貿易ルートと要衝',
+  currents: '世界の主要な海流（色=水温の連続グラデ・暖/寒）',
 };
 export function descFor(id) { return DESCRIPTIONS[id] || ''; }

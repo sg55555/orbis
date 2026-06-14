@@ -10,10 +10,13 @@ import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { pointAlongPath, diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/selection.js';
+// 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
+const CMAP = (typeof location !== 'undefined'
+  && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
 const POLL_MS = 60000;
 const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
-const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade'];
+const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents'];
 let ENABLED = loadEnabled(ALL_IDS, readStored());
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
@@ -105,6 +108,7 @@ function tradeFlowLayer() {
     trailLength: 0.4, currentTime: motionT,
   });
 }
+
 
 // pulses（出現後 ~1.5s）の拡大リング。期限切れは描画前に除去。
 const PULSE_MS = 1500;
@@ -198,7 +202,7 @@ function drawAll(overlay) {
   _overlay = overlay;
   const now = (typeof performance !== 'undefined') ? performance.now() : Date.now();
   const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
-  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom });
+  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom, cmap: CMAP, motionT });
   const extra = [];
   if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
@@ -257,10 +261,14 @@ function boot() {
   map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');
 
-    // 静的な貿易ルートを trade レイヤー自身の fetch() で一度だけ読み込む
+    // 静的な貿易ルート・海流を各レイヤー自身の fetch() で一度だけ読み込む
     try {
       const trade = layers.find((l) => l.id === 'trade');
       if (trade) snapshots.trade = await trade.fetch();
+    } catch { /* noop */ }
+    try {
+      const currents = layers.find((l) => l.id === 'currents');
+      if (currents) snapshots.currents = await currents.fetch();
     } catch { /* noop */ }
     rebuild(overlay);
     if (!REDUCED) requestAnimationFrame(motionLoop);

@@ -6,8 +6,8 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
-  // 左パネルに5レイヤー行
-  await expect(page.locator('#panel .layer-row')).toHaveCount(5);
+  // 左パネルに6レイヤー行（地震/航空/紛争/抗議/貿易/海流）
+  await expect(page.locator('#panel .layer-row')).toHaveCount(6);
 
   // データ到着
   await expect.poll(
@@ -77,6 +77,13 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'quakes');
   });
   expect(hasQuakes).toBe(true);
+
+  // 海流(currents)が deck に描画されている（既定 ON・静的ロード後）
+  const hasCurrents = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    return ((o._props && o._props.layers) || []).some((l) => l.id === 'currents');
+  });
+  expect(hasCurrents).toBe(true);
 
   // 航空クリックの進路ライン＋到達点＋ポップアップは canvas ピックが座標依存で
   // 不安定なため e2e では検証せず、Playwright スクショの目視で担保する（plan Task 11）。
