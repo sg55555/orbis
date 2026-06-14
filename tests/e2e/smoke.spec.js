@@ -43,4 +43,18 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await page.evaluate(() => window.__orbis.map.setZoom(0.3));
   await page.waitForTimeout(300);
   expect(await page.evaluate(() => window.__orbis.map.getZoom())).toBeLessThan(1);
+
+  // 実際に globe 投影が効いている（平面メルカトル＋世界の横繰り返しではない）
+  expect(await page.evaluate(() => window.__orbis.map.getProjection().type)).toBe('globe');
+  expect(await page.evaluate(() => window.__orbis.map.getRenderWorldCopies())).toBe(false);
+
+  // deck.gl レイヤーが globe に整合（縁の点でも MapLibre 投影と一致：mercator なら大きくズレる）
+  const drift = await page.evaluate(() => {
+    const m = window.__orbis.map;
+    const vp = window.__orbis.overlay._deck.getViewports()[0];
+    const c = [-0.13, 51.5]; // ロンドン（投影中心から遠い＝ズレが出やすい）
+    const mp = m.project(c); const dp = vp.project(c);
+    return Math.hypot(dp[0] - mp.x, dp[1] - mp.y);
+  });
+  expect(drift).toBeLessThan(2);
 });

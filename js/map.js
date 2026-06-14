@@ -10,6 +10,7 @@ export function initMap(container, getTooltip) {
     center: [0, 20],
     zoom: 1.2,
     minZoom: 0,
+    renderWorldCopies: false, // 世界の横繰り返しを止める（globe では1つの球体のみ）
     attributionControl: true,
     localIdeographFontFamily: "'Noto Sans JP', 'Hiragino Sans', 'Yu Gothic', sans-serif",
   });

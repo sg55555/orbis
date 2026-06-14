@@ -6,6 +6,9 @@ export function buildBaseStyle() {
   const jaLabel = ['coalesce', ['get', 'name:ja'], ['get', 'name']];
   return {
     version: 8,
+    // MapLibre GL JS v5+ の球体投影をスタイルで宣言。これが無いと平面メルカトルになり、
+    // 引いても球体にならず同じ大陸が横に繰り返される（renderWorldCopies）。
+    projection: { type: 'globe' },
     glyphs: `${OFM}/fonts/{fontstack}/{range}.pbf`,
     sprite: `${OFM}/sprites/ofm_f384/ofm`,
     sources: {
