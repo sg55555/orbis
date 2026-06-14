@@ -10,6 +10,12 @@ test('buildBaseStyle: OpenFreeMap ベクター源とフォントを参照', () =
   assert.match(s.glyphs, /openfreemap\.org\/fonts/);
 });
 
+test('buildBaseStyle: globe 投影を指定する（平面メルカトルではなく球体）', () => {
+  const s = buildBaseStyle();
+  assert.ok(s.projection, 'projection を持つ');
+  assert.equal(s.projection.type, 'globe');
+});
+
 test('buildBaseStyle: 不透明な黒背景レイヤーを持たない（球体を星空に浮かせる）', () => {
   const s = buildBaseStyle();
   const opaqueBg = s.layers.find(
