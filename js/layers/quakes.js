@@ -16,6 +16,7 @@ export function buildRingConfig(snapshot) {
 export const quakesLayer = {
   id: 'quakes',
   label: '地震',
+  marker: 'ring', // パネルのスウォッチ形状（マップの中空リングに合わせる）
   legend: [
     { color: 'rgb(57,208,255)', label: 'M<2' },
     { color: 'rgb(94,255,166)', label: 'M2–4' },

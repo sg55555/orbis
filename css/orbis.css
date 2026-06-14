@@ -26,7 +26,12 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .collapse-btn { background: none; border: 1px solid var(--line); color: var(--muted);
   border-radius: 6px; cursor: pointer; width: 22px; height: 22px; line-height: 1; }
 .layer-row { display: flex; align-items: center; gap: 7px; margin: 5px 0; cursor: pointer; }
-.layer-row .swatch { width: 10px; height: 10px; border-radius: 50%; box-shadow: 0 0 8px currentColor; flex: 0 0 auto; }
+.layer-row .swatch { width: 10px; height: 10px; flex: 0 0 auto; color: var(--cyan); }
+/* マップのマーカー形状に対応: dot=塗り円 / ring=中空リング(地震) / triangle=三角(航空) */
+.layer-row .swatch-dot { border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+.layer-row .swatch-ring { border-radius: 50%; border: 2px solid currentColor; background: transparent; box-shadow: 0 0 8px currentColor; }
+.layer-row .swatch-triangle { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-bottom: 11px solid currentColor; background: transparent; filter: drop-shadow(0 0 4px currentColor); }
 .layer-label { flex: 1; }
 .layer-count { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 11px; }
 .side-panel.collapsed #panel-rows { display: none; }
@@ -61,3 +66,4 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .sel-popup .sel-meta { font-size: 11px; color: var(--text); opacity: .9; margin-top: 3px; }
 .sel-popup .sel-hint { font-size: 10px; color: var(--cyan); opacity: .85; margin-top: 4px; }
+.sel-popup .sel-note { font-size: 9px; color: var(--muted); opacity: .9; }

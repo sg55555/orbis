@@ -50,6 +50,7 @@ export function buildDotConfig(snapshot) {
 export const flightsLayer = {
   id: 'flights',
   label: '航空',
+  marker: 'triangle', // パネルのスウォッチ形状（マップの三角に合わせる）
   legend: [{ color: 'rgb(80,220,255)', label: '航空機（▲＝進行方向）' }],
   async fetch(getSnapshot) { return getSnapshot('flights'); },
   toDeckLayer(snapshot, ctx) {

@@ -28,8 +28,9 @@ export function selectionPopupHtml(item) {
     + '</div>';
 }
 
-// 航空機クリック時のポップアップ（便名/高度/速度/方位/推定到達）。
-export function flightPopupHtml(p, arrival) {
+// 航空機クリック時のポップアップ（便名/高度/速度/方位/推定進路）。
+// minutes: 推定進路の延長時間（分）。目的地は OpenSky に無いため heading の延長＝推定。
+export function flightPopupHtml(p, arrival, minutes = 20) {
   const o = p || {};
   const cs = String(o.callsign || '').trim() || '(便名なし)';
   const alt = (o.on_ground || o.alt == null) ? '地上' : `${Math.round(o.alt)}m`;
@@ -41,7 +42,7 @@ export function flightPopupHtml(p, arrival) {
     + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">✈ ${escapeHtml(cs)}</span></div>`
     + `<div class="sel-meta">高度 ${alt}｜速度 ${spd}m/s｜方位 ${hd}°</div>`
-    + `<div class="sel-hint">📍 推定到達(10分後) ${arr}</div>`
+    + `<div class="sel-hint">📍 推定進路 約${minutes}分後 ${arr}<br><span class="sel-note">※目的地データ無し・heading の延長による推定</span></div>`
     + '</div>';
 }
 

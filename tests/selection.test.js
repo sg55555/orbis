@@ -51,13 +51,15 @@ test('selectionPopupHtml: 座標行を含む（lon/lat があるとき）', () =
   assert.match(html, /139\.7/);  // 経度
 });
 
-test('flightPopupHtml: 便名/高度/速度/推定到達を含み、エスケープ', () => {
-  const html = flightPopupHtml({ callsign: 'AB<1>', alt: 1800, velocity: 200, heading: 90, on_ground: false }, [10.5, 20.25]);
+test('flightPopupHtml: 便名/高度/速度/推定進路を含み、エスケープ', () => {
+  const html = flightPopupHtml({ callsign: 'AB<1>', alt: 1800, velocity: 200, heading: 90, on_ground: false }, [10.5, 20.25], 20);
   assert.match(html, /AB&lt;1&gt;/);
   assert.match(html, /1800m/);
   assert.match(html, /200m\/s/);
-  assert.match(html, /推定到達/);
+  assert.match(html, /推定進路/);
+  assert.match(html, /約20分後/);
   assert.match(html, /20\.25/);
+  assert.match(html, /目的地データ無し/);
 });
 
 test('flightPopupHtml: arrival が null でも安全（—）', () => {

@@ -8,11 +8,12 @@ import { toggleEnabled, writeStored } from '../lib/state.js';
 export function renderPanel(root, layers, getEnabled, getCounts, onChange, descFor) {
   root.innerHTML = layers.map((l) => {
     const sw = (l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)';
+    const marker = l.marker || 'dot'; // dot | ring | triangle（マップのマーカー形状に対応）
     const desc = descFor ? descFor(l.id) : '';
     return `<div class="layer-item">
       <label class="layer-row" data-id="${l.id}">
         <input type="checkbox" class="layer-toggle" />
-        <span class="swatch" style="color:${sw};background:${sw}"></span>
+        <span class="swatch swatch-${marker}" style="color:${sw}"></span>
         <span class="layer-label">${l.label}</span>
         <span class="layer-count" data-count="${l.id}">–</span>
       </label>

@@ -27,6 +27,7 @@ let _overlay = null;      // rAF ループ用の overlay 参照
 let selected = null;      // フィードで選択中のイベント { lon, lat, title, layerId, at }
 let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
 let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
+const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
 
 async function updateFreshness() {
   try {
@@ -141,16 +142,17 @@ function selectedMarkerLayers(now) {
     .map((c) => new deck.ScatterplotLayer(c));
 }
 
-// 選択中の航空機の推定進路（現在地→到達点の線）＋到達点リング。
+// 選択中の航空機の推定進路：現在地→到達点の線＋到達点リング＋（動的）機体から到達点へ流れる粒子。
+// 目的地は不明のため heading の延長＝推定進路。粒子の流れで「向かっている」動きを表現する。
 function flightProjectionLayers() {
   if (!selectedFlight || !selectedFlight.arrival) return [];
   const { point, arrival } = selectedFlight;
   const src = [point.lon, point.lat];
-  return [
+  const out = [
     new deck.LineLayer({
       id: 'flight-route', data: [{}], widthUnits: 'pixels', getWidth: 1.6,
       getSourcePosition: () => src, getTargetPosition: () => arrival,
-      getColor: [80, 220, 255, 180], pickable: false,
+      getColor: [80, 220, 255, 150], pickable: false,
     }),
     new deck.ScatterplotLayer({
       id: 'flight-arrival', data: [{}], radiusUnits: 'pixels',
@@ -158,6 +160,32 @@ function flightProjectionLayers() {
       getPosition: () => arrival, getRadius: 8, getLineColor: [80, 220, 255, 230], pickable: false,
     }),
   ];
+  if (!REDUCED) {
+    // 機体→到達点を流れる粒子（進行している動きを表現）。
+    const PER = 6;
+    const pts = [];
+    for (let k = 0; k < PER; k++) {
+      const t = (motionT + k / PER) % 1;
+      const pp = pointAlongPath([src, arrival], t);
+      if (pp) pts.push({ position: pp, t });
+    }
+    out.push(new deck.ScatterplotLayer({
+      id: 'flight-flow', data: pts, radiusUnits: 'pixels',
+      getPosition: (d) => d.position, getRadius: 3,
+      getFillColor: (d) => [150, 240, 255, Math.round(110 + 140 * Math.sin(Math.PI * d.t))],
+      updateTriggers: { getPosition: motionT, getFillColor: motionT }, pickable: false,
+    }));
+    // 到達点の拡大パルスリング。
+    const ph = motionT;
+    out.push(new deck.ScatterplotLayer({
+      id: 'flight-arrival-pulse', data: [{}], radiusUnits: 'pixels',
+      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1.5,
+      getPosition: () => arrival, getRadius: 8 + 16 * ph,
+      getLineColor: [120, 240, 255, Math.round(220 * (1 - ph))],
+      updateTriggers: { getRadius: ph, getLineColor: ph }, pickable: false,
+    }));
+  }
+  return out;
 }
 
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
@@ -189,9 +217,9 @@ function boot() {
       if (!info || !info.object || !info.layer) return;
       if (info.layer.id === 'flights' || info.layer.id === 'flights-dot') {
         const p = info.object;
-        const arrival = projectedArrival(p, 10);
+        const arrival = projectedArrival(p, FLIGHT_PROJECT_MIN);
         selectedFlight = { point: p, arrival };
-        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival)).addTo(map);
+        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN)).addTo(map);
         drawAll(overlay);
       }
     }
