@@ -28,6 +28,9 @@ let selected = null;      // フィードで選択中のイベント { lon, lat,
 let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
 let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
+// 推定進路の色＝シアン機体の補色マゼンタ（多数の機体の中でも着地点/進路が際立つ）。
+const PROJ_RGB = [255, 90, 220];
+const PROJ_FLOW_RGB = [255, 150, 235]; // 流れる粒子は少し明るいマゼンタ
 
 async function updateFreshness() {
   try {
@@ -151,14 +154,14 @@ function flightProjectionLayers() {
   const src = [point.lon, point.lat];
   const out = [
     new deck.LineLayer({
-      id: 'flight-route', data: [{}], widthUnits: 'pixels', getWidth: 1.6,
+      id: 'flight-route', data: [{}], widthUnits: 'pixels', getWidth: 2,
       getSourcePosition: () => src, getTargetPosition: () => arrival,
-      getColor: [80, 220, 255, 150], pickable: false,
+      getColor: [...PROJ_RGB, 200], pickable: false,
     }),
     new deck.ScatterplotLayer({
       id: 'flight-arrival', data: [{}], radiusUnits: 'pixels',
-      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2,
-      getPosition: () => arrival, getRadius: 8, getLineColor: [80, 220, 255, 230], pickable: false,
+      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2.5,
+      getPosition: () => arrival, getRadius: 9, getLineColor: [...PROJ_RGB, 240], pickable: false,
     }),
   ];
   if (!REDUCED) {
@@ -173,7 +176,7 @@ function flightProjectionLayers() {
     out.push(new deck.ScatterplotLayer({
       id: 'flight-flow', data: pts, radiusUnits: 'pixels',
       getPosition: (d) => d.position, getRadius: 3,
-      getFillColor: (d) => [150, 240, 255, Math.round(110 + 140 * Math.sin(Math.PI * d.t))],
+      getFillColor: (d) => [...PROJ_FLOW_RGB, Math.round(110 + 140 * Math.sin(Math.PI * d.t))],
       updateTriggers: { getPosition: motionT, getFillColor: motionT }, pickable: false,
     }));
     // 到達点の拡大パルスリング。
@@ -181,8 +184,8 @@ function flightProjectionLayers() {
     out.push(new deck.ScatterplotLayer({
       id: 'flight-arrival-pulse', data: [{}], radiusUnits: 'pixels',
       stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1.5,
-      getPosition: () => arrival, getRadius: 8 + 16 * ph,
-      getLineColor: [120, 240, 255, Math.round(220 * (1 - ph))],
+      getPosition: () => arrival, getRadius: 9 + 16 * ph,
+      getLineColor: [...PROJ_RGB, Math.round(220 * (1 - ph))],
       updateTriggers: { getRadius: ph, getLineColor: ph }, pickable: false,
     }));
   }

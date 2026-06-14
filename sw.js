@@ -1,5 +1,5 @@
 // ORBIS Service Worker — シェルをキャッシュ。データJSONは常にネットワーク優先。
-const CACHE = 'orbis-v9';
+const CACHE = 'orbis-v10';
 const SHELL = ['/', '/index.html', '/css/orbis.css', '/js/main.js'];
 
 self.addEventListener('install', (e) => {
