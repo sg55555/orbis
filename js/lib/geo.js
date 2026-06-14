@@ -29,7 +29,7 @@ export function iconAngle(headingDeg) {
 
 // 画面上で約 targetPx ピクセルに見える地理度長を、現在ズームから求める。
 // 赤道 metersPerPixel ≈ 156543.03 / 2^zoom、1度 ≈ 111320m。
-export function degLenForZoom(zoom, targetPx = 10) {
+export function degLenForZoom(zoom, targetPx = 7) {
   const mpp = 156543.03 / Math.pow(2, zoom);
   return (targetPx * mpp) / 111320;
 }

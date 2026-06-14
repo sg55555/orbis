@@ -14,7 +14,8 @@ export function flightTrianglePolygon(p, degLen) {
   const cosLat = Math.max(Math.cos((p.lat * Math.PI) / 180), 0.2);
   const fwd = [Math.sin(rad) / cosLat, Math.cos(rad)];
   const perp = [Math.cos(rad) / cosLat, -Math.sin(rad)];
-  const L = degLen, W = degLen * 0.55;
+  // 緯度補正: 高緯度ほど度あたりの画素が大きいため degLen を cosLat 倍して画素一定化。
+  const L = degLen * cosLat, W = degLen * cosLat * 0.55;
   const tip = [p.lon + fwd[0] * L, p.lat + fwd[1] * L];
   const back = [p.lon - fwd[0] * L * 0.5, p.lat - fwd[1] * L * 0.5];
   const left = [back[0] + perp[0] * W, back[1] + perp[1] * W];
@@ -29,7 +30,7 @@ export function buildTriangleConfig(snapshot, degLen) {
   return {
     id: 'flights', data,
     getPolygon: (p) => flightTrianglePolygon(p, degLen),
-    getFillColor: [...CYAN, 235], stroked: false, pickable: true,
+    getFillColor: [...CYAN, 190], stroked: false, pickable: true,
     updateTriggers: { getPolygon: degLen },
   };
 }
