@@ -14,8 +14,8 @@ test('flights tooltip: 地上', () => {
     '便名 AIC1TA｜高度 地上｜速度 7m/s');
 });
 test('conflict/protests tooltip: ラベル付き', () => {
-  assert.equal(tooltipFor('conflict', { place: 'FR', url: 'https://www.dailymail.com/x' }), '紛争｜FR｜出典 dailymail.com');
-  assert.equal(tooltipFor('protests', { place: 'US', url: 'https://www.sacurrent.com/x' }), '抗議｜US｜出典 sacurrent.com');
+  assert.equal(tooltipFor('conflict', { place: 'FR', url: 'https://www.dailymail.com/x' }), '紛争｜フランス（FR）｜出典 dailymail.com');
+  assert.equal(tooltipFor('protests', { place: 'US', url: 'https://www.sacurrent.com/x' }), '抗議｜アメリカ（US）｜出典 sacurrent.com');
 });
 test('trade tooltip: 要衝/航路ラベル', () => {
   assert.equal(tooltipFor('trade-chokepoints', { properties: { name: 'Suez Canal' } }), '要衝 Suez Canal');
