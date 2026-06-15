@@ -97,6 +97,8 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .layer-row .swatch-line { width: 14px; height: 3px; border-radius: 2px;
   background: linear-gradient(90deg, rgb(42,127,255), rgb(94,224,106), rgb(255,90,50));
   box-shadow: 0 0 6px rgba(120,200,255,.6); }
+.layer-row .swatch-gradient { width: 16px; height: 8px; border-radius: 2px; box-shadow: 0 0 6px rgba(120,200,255,.5);
+  background: linear-gradient(90deg, rgb(42,150,255), rgb(30,220,210), rgb(110,230,120), rgb(255,230,90), rgb(255,70,55)); }
 .layer-label { flex: 1; }
 .layer-count { color: var(--cyan); font-variant-numeric: tabular-nums; font-size: 11px; }
 .side-panel.collapsed #panel-rows { display: none; }
