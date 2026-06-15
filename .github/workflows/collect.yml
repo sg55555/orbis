@@ -22,6 +22,8 @@ jobs:
         run: python -m collectors.flights || echo "flights skipped"
       - name: Collect GDELT events
         run: python -m collectors.gdelt_events || echo "gdelt skipped"
+      - name: Collect air temperature
+        run: python -m collectors.airtemp || echo "airtemp skipped"
       - name: Commit snapshots
         run: |
           git config user.name "orbis-bot"

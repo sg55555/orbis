@@ -60,3 +60,53 @@ def build_snapshot(temps, meta, updated_iso):
         "count": sum(1 for t in temps if t is not None),
         "temps": temps,
     }
+
+
+SNAPSHOT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "snapshots")
+
+
+def fetch_batch(coords, timeout=30):
+    """座標群（[(lat,lon),...]）を1リクエストで取得し、座標順の応答リストを返す。"""
+    lats = ",".join(str(la) for la, _ in coords)
+    lons = ",".join(str(lo) for _, lo in coords)
+    resp = requests.get(
+        API_URL,
+        params={"latitude": lats, "longitude": lons, "current": "temperature_2m"},
+        timeout=timeout,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    return data if isinstance(data, list) else [data]
+
+
+def main():
+    out_dir = os.path.abspath(SNAPSHOT_DIR)
+    os.makedirs(out_dir, exist_ok=True)
+    snap_path = os.path.join(out_dir, "airtemp.json")
+    manifest_path = os.path.join(out_dir, "manifest.json")
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    grid = build_grid(LAT0, LAT1, LON0, LON1, STEP)
+    meta = grid_meta(LAT0, LAT1, LON0, LON1, STEP)
+    responses = []
+    try:
+        for i, batch in enumerate(chunk(grid, BATCH)):
+            responses.append(fetch_batch(batch))
+            if i + 1 < (len(grid) + BATCH - 1) // BATCH:
+                time.sleep(SLEEP_S)
+    except Exception as e:  # 失敗時は前回スナップショットを温存
+        print(f"[airtemp] fetch failed: {e}; keeping previous snapshot")
+        return 1
+    temps = parse_temps(responses)
+    if len(temps) != len(grid):  # 期待長と不一致は破棄（堅牢性）
+        print(f"[airtemp] length mismatch {len(temps)} != {len(grid)}; abort")
+        return 1
+    snap = build_snapshot(temps, meta, now_iso)
+    with open(snap_path, "w", encoding="utf-8") as f:
+        json.dump(snap, f, ensure_ascii=False)
+    update_manifest(manifest_path, "airtemp", now_iso, snap["count"])
+    print(f"[airtemp] wrote {snap['count']}/{len(grid)} temps -> {snap_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
