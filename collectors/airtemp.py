@@ -11,7 +11,8 @@ API_URL = "https://api.open-meteo.com/v1/forecast"
 # 全球 5° グリッド（lat -85..85=35行, lon -180..175=72列 = 2520点）
 LAT0, LAT1, LON0, LON1, STEP = -85, 85, -180, 175, 5
 BATCH = 200          # 1リクエストの座標数（保守的）
-SLEEP_S = 1.0        # バッチ間スリープ（レート制限回避）
+SLEEP_S = 25.0       # バッチ間スリープ（Open-Meteo 分次レート制限 ~3req/min 回避）
+RETRY_WAIT_S = 65    # 429（分次レート制限）検知時の待機秒
 
 
 def _seq(start, end, step):
@@ -79,6 +80,20 @@ def fetch_batch(coords, timeout=30):
     return data if isinstance(data, list) else [data]
 
 
+def fetch_with_retry(coords, attempts=3, wait=RETRY_WAIT_S):
+    """429（レート制限）時は wait 秒待って最大 attempts 回までリトライ。その他のエラーは即再送出。"""
+    for k in range(attempts):
+        try:
+            return fetch_batch(coords)
+        except requests.HTTPError as e:
+            code = getattr(getattr(e, "response", None), "status_code", None)
+            if code == 429 and k < attempts - 1:
+                print(f"[airtemp] 429 rate-limited; wait {wait}s ({k + 1}/{attempts})")
+                time.sleep(wait)
+                continue
+            raise
+
+
 def main():
     out_dir = os.path.abspath(SNAPSHOT_DIR)
     os.makedirs(out_dir, exist_ok=True)
@@ -90,7 +105,7 @@ def main():
     responses = []
     try:
         for i, batch in enumerate(chunk(grid, BATCH)):
-            responses.append(fetch_batch(batch))
+            responses.append(fetch_with_retry(batch))
             if i + 1 < (len(grid) + BATCH - 1) // BATCH:
                 time.sleep(SLEEP_S)
     except Exception as e:  # 失敗時は前回スナップショットを温存
