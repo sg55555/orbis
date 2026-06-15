@@ -25,3 +25,14 @@ function lerpStops(stops, t) {
 export function tempToColor(tempC) {
   return lerpStops(STOPS, (tempC - TMIN) / (TMAX - TMIN));
 }
+
+// 緯度経度に最も近いグリッドセルの温度を返す（ホバー用）。範囲外/欠損は null。
+export function tempAt(snapshot, lat, lon) {
+  if (!snapshot || !snapshot.grid || !snapshot.temps) return null;
+  const { lat0, lon0, latStep, lonStep, nLat, nLon } = snapshot.grid;
+  const i = Math.round((lat - lat0) / latStep);
+  const j = Math.round((lon - lon0) / lonStep);
+  if (i < 0 || i >= nLat || j < 0 || j >= nLon) return null;
+  const v = snapshot.temps[i * nLon + j];
+  return v == null ? null : v;
+}
