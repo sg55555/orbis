@@ -42,3 +42,26 @@ test('tempAt: グリッド外は null', () => {
   assert.equal(tempAt(SNAP, 200, 200), null);
   assert.equal(tempAt(null, 0, 0), null);
 });
+
+import { buildTempField } from '../js/layers/airtemp.js';
+
+const FULL = {
+  grid: { lat0: -45, lon0: -90, latStep: 90, lonStep: 90, nLat: 2, nLon: 3 },
+  temps: [-40, 0, 40, -40, 0, 40], // 全セル有効
+};
+
+test('buildTempField: w*h*4 の Uint8ClampedArray を返し、有効領域は alpha=255', () => {
+  const w = 6, h = 4;
+  const px = buildTempField(FULL, w, h);
+  assert.ok(px instanceof Uint8ClampedArray);
+  assert.equal(px.length, w * h * 4);
+  // 中央付近のピクセルは不透明
+  const mid = ((Math.floor(h / 2) * w) + Math.floor(w / 2)) * 4;
+  assert.equal(px[mid + 3], 255);
+});
+
+test('buildTempField: 全 null セルは透明(alpha=0)', () => {
+  const empty = { grid: FULL.grid, temps: [null, null, null, null, null, null] };
+  const px = buildTempField(empty, 4, 2);
+  for (let i = 0; i < px.length; i += 4) assert.equal(px[i + 3], 0);
+});

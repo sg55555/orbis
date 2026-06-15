@@ -26,6 +26,46 @@ export function tempToColor(tempC) {
   return lerpStops(STOPS, (tempC - TMIN) / (TMAX - TMIN));
 }
 
+function cell(temps, nLon, i, j) { return temps[i * nLon + j]; }
+
+// (lat,lon) をグリッド上で双線形補間。周囲4セルに null があれば非null近傍へフォールバック、全 null は null。
+function bilinear(grid, temps, lat, lon) {
+  const { lat0, lon0, latStep, lonStep, nLat, nLon } = grid;
+  let fi = Math.max(0, Math.min(nLat - 1, (lat - lat0) / latStep));
+  let fj = Math.max(0, Math.min(nLon - 1, (lon - lon0) / lonStep));
+  const i0 = Math.floor(fi), j0 = Math.floor(fj);
+  const i1 = Math.min(nLat - 1, i0 + 1), j1 = Math.min(nLon - 1, j0 + 1);
+  const di = fi - i0, dj = fj - j0;
+  const c00 = cell(temps, nLon, i0, j0), c01 = cell(temps, nLon, i0, j1);
+  const c10 = cell(temps, nLon, i1, j0), c11 = cell(temps, nLon, i1, j1);
+  if ([c00, c01, c10, c11].some((v) => v == null)) {
+    const ok = [c00, c01, c10, c11].filter((v) => v != null);
+    return ok.length ? ok[0] : null;
+  }
+  const top = c00 + (c01 - c00) * dj;
+  const bot = c10 + (c11 - c10) * dj;
+  return top + (bot - top) * di;
+}
+
+// グリッドを w×h ピクセルへ補間し、温度カラーの RGBA 配列を返す（BitmapLayer の ImageData 元）。
+// 画像 row 0 = 北(lat=+90)。null セルは透明(alpha=0)。
+export function buildTempField(snapshot, w, h) {
+  const { grid, temps } = snapshot;
+  const out = new Uint8ClampedArray(w * h * 4);
+  for (let py = 0; py < h; py++) {
+    const lat = 90 - (py + 0.5) * (180 / h);
+    for (let px = 0; px < w; px++) {
+      const lon = -180 + (px + 0.5) * (360 / w);
+      const t = bilinear(grid, temps, lat, lon);
+      const idx = (py * w + px) * 4;
+      if (t == null) { out[idx + 3] = 0; continue; }
+      const [r, g, b] = tempToColor(t);
+      out[idx] = r; out[idx + 1] = g; out[idx + 2] = b; out[idx + 3] = 255;
+    }
+  }
+  return out;
+}
+
 // 緯度経度に最も近いグリッドセルの温度を返す（ホバー用）。範囲外/欠損は null。
 export function tempAt(snapshot, lat, lon) {
   if (!snapshot || !snapshot.grid || !snapshot.temps) return null;
