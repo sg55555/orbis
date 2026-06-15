@@ -10,14 +10,15 @@ import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { pointAlongPath, diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/selection.js';
+import { tempAt } from './layers/airtemp.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
 const POLL_MS = 60000;
-const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests']; // スナップショットを持つ層
-const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents'];
-let ENABLED = loadEnabled(ALL_IDS, readStored());
+const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp']; // スナップショットを持つ層
+const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents', 'airtemp'];
+let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp']);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 let panel;
@@ -67,7 +68,9 @@ function rebuild(overlay) {
 
   drawAll(overlay);
   window.__orbis.counts = Object.fromEntries(
-    Object.entries(snapshots).map(([k, v]) => [k, (v && (v.points?.length ?? v.features?.length)) ?? 0])
+    Object.entries(snapshots).map(([k, v]) => [k,
+      (v && (v.points?.length ?? v.features?.length
+        ?? (Array.isArray(v.temps) ? v.temps.filter((t) => t != null).length : 0))) ?? 0])
   );
   if (panel) panel.updateCounts();
   refreshFeed();
@@ -226,7 +229,16 @@ function boot() {
   document.getElementById('starfield').classList.add(nebClass);
   const { map, overlay } = initMap(
     'map',
-    (info) => (info.object && info.layer) ? tooltipFor(info.layer.id, info.object) : null,
+    (info) => {
+      if (!info || !info.layer) return null;
+      if (info.layer.id === 'airtemp') {
+        const c = info.coordinate;
+        if (!c) return null;
+        const t = tempAt(snapshots.airtemp, c[1], c[0]);
+        return t == null ? null : `気温 ${Math.round(t)}°C｜${c[1].toFixed(0)}, ${c[0].toFixed(0)}`;
+      }
+      return info.object ? tooltipFor(info.layer.id, info.object) : null;
+    },
     (info) => {
       if (!info || !info.object || !info.layer) return;
       if (info.layer.id === 'flights' || info.layer.id === 'flights-dot') {
