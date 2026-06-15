@@ -6,8 +6,8 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
-  // 左パネルに6レイヤー行（地震/航空/紛争/抗議/貿易/海流）
-  await expect(page.locator('#panel .layer-row')).toHaveCount(6);
+  // 左パネルに7レイヤー行（地震/航空/紛争/抗議/貿易/海流/気温）
+  await expect(page.locator('#panel .layer-row')).toHaveCount(7);
 
   // データ到着
   await expect.poll(
@@ -84,6 +84,16 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'currents');
   });
   expect(hasCurrents).toBe(true);
+
+  // 気温(airtemp)は既定OFF。ON にすると BitmapLayer(or 格子) が deck に描画される。
+  await expect(page.locator('.layer-row[data-id="airtemp"] .layer-toggle')).not.toBeChecked();
+  await page.locator('.layer-row[data-id="airtemp"] .layer-toggle').check();
+  await page.waitForTimeout(400);
+  const hasAirtemp = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    return ((o._props && o._props.layers) || []).some((l) => l.id === 'airtemp');
+  });
+  expect(hasAirtemp).toBe(true);
 
   // 航空クリックの進路ライン＋到達点＋ポップアップは canvas ピックが座標依存で
   // 不安定なため e2e では検証せず、Playwright スクショの目視で担保する（plan Task 11）。
