@@ -76,3 +76,42 @@ export function tempAt(snapshot, lat, lon) {
   const v = snapshot.temps[i * nLon + j];
   return v == null ? null : v;
 }
+
+const FIELD_W = 360, FIELD_H = 180;   // 5°グリッド(72x35)を1°相当へ補間
+let _bmp = { ts: null, image: null };
+
+// snapshot.updated ごとに温度カラーの canvas を一度だけ生成してキャッシュ（再描画時の負荷を抑える）。
+function fieldImage(snapshot) {
+  if (_bmp.ts === snapshot.updated && _bmp.image) return _bmp.image;
+  const data = buildTempField(snapshot, FIELD_W, FIELD_H);
+  const canvas = (typeof OffscreenCanvas !== 'undefined')
+    ? new OffscreenCanvas(FIELD_W, FIELD_H)
+    : Object.assign(document.createElement('canvas'), { width: FIELD_W, height: FIELD_H });
+  canvas.getContext('2d').putImageData(new ImageData(data, FIELD_W, FIELD_H), 0, 0);
+  _bmp = { ts: snapshot.updated, image: canvas };
+  return canvas;
+}
+
+export const airtempLayer = {
+  id: 'airtemp',
+  label: '気温',
+  marker: 'gradient',
+  legend: [
+    { color: 'rgb(42,150,255)', label: '寒い' },
+    { color: 'rgb(110,230,120)', label: '0°C 付近' },
+    { color: 'rgb(255,70,55)', label: '暑い' },
+  ],
+  toDeckLayer(snapshot, _ctx) {
+    if (!snapshot || !snapshot.grid || !snapshot.temps) return [];
+    return [new deck.BitmapLayer({
+      id: 'airtemp',
+      image: fieldImage(snapshot),
+      bounds: [-180, -90, 180, 90],
+      opacity: 0.45,
+      pickable: true,
+    })];
+  },
+  // ツールチップは BitmapLayer のピック object に座標が無いため、main.js が info.coordinate + tempAt で生成。
+  tooltip() { return null; },
+  toFeedItems() { return []; },
+};

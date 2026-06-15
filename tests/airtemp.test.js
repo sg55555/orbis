@@ -65,3 +65,18 @@ test('buildTempField: 全 null セルは透明(alpha=0)', () => {
   const px = buildTempField(empty, 4, 2);
   for (let i = 0; i < px.length; i += 4) assert.equal(px[i + 3], 0);
 });
+
+import { airtempLayer } from '../js/layers/airtemp.js';
+
+test('airtempLayer: id/label/marker/legend/feed のメタを持つ', () => {
+  assert.equal(airtempLayer.id, 'airtemp');
+  assert.equal(airtempLayer.label, '気温');
+  assert.equal(airtempLayer.marker, 'gradient');
+  assert.ok(Array.isArray(airtempLayer.legend) && airtempLayer.legend.length >= 2);
+  assert.deepEqual(airtempLayer.toFeedItems(), []);   // フィードには出さない
+  assert.equal(airtempLayer.tooltip(), null);         // tooltip は main.js が座標から生成
+});
+
+test('airtempLayer.toDeckLayer: grid 無しスナップショットは空配列', () => {
+  assert.deepEqual(airtempLayer.toDeckLayer({}), []);
+});
