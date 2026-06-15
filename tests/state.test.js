@@ -31,3 +31,14 @@ test('toggleEnabled: 新しい Set を返し、元を破壊しない', () => {
   assert.equal(on.has('flights'), true);
   assert.equal(on.has('quakes'), true);
 });
+
+test('loadEnabled: stored=null かつ defaultOff 指定で、その id だけ OFF・他は ON', () => {
+  const e = loadEnabled(['quakes', 'airtemp'], null, ['airtemp']);
+  assert.equal(e.has('quakes'), true);
+  assert.equal(e.has('airtemp'), false);
+});
+
+test('loadEnabled: stored 指定時は defaultOff を無視し stored を尊重', () => {
+  const e = loadEnabled(['quakes', 'airtemp'], ['airtemp'], ['airtemp']);
+  assert.deepEqual([...e], ['airtemp']);
+});
