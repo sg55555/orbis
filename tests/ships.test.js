@@ -46,25 +46,23 @@ test('buildHullConfig/buildDotConfig: snapshot 無しでも安全', () => {
   assert.deepEqual(buildHullConfig(null, 1).data, []);
 });
 
-test('shipTooltip: 船名・船種・速度・航路（全部あり）', () => {
+test('shipTooltip: 船名・船種・速度・航路（全部あり・全項目見出し付き）', () => {
   assert.equal(
     shipTooltip({ mmsi: 123456789, name: 'EVER GIVEN', type: '貨物船', sog: 12.3, cog: 45 }),
-    '船名 EVER GIVEN｜貨物船｜12kn｜航路 045°',
+    '船名 EVER GIVEN｜船種 貨物船｜速度 12kn｜航路 045°',
   );
 });
-
 test('shipTooltip: 船名/船種無しは MMSI ＋欠損項目を省略', () => {
   assert.equal(
     shipTooltip({ mmsi: 123456789, name: null, type: null, sog: 12.3, cog: 45 }),
-    'MMSI 123456789｜12kn｜航路 045°',
+    'MMSI 123456789｜速度 12kn｜航路 045°',
   );
   assert.equal(shipTooltip({ mmsi: 1, name: null, type: null, sog: null, cog: null }), 'MMSI 1');
   assert.equal(shipTooltip(null), null);
 });
-
 test('shipTooltip: cog 359.6 は 360 ではなく 000 に丸める', () => {
   assert.equal(
     shipTooltip({ mmsi: 1, name: null, type: null, sog: 5, cog: 359.6 }),
-    'MMSI 1｜5kn｜航路 000°',
+    'MMSI 1｜速度 5kn｜航路 000°',
   );
 });

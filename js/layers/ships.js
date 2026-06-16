@@ -49,13 +49,14 @@ export function buildDotConfig(snapshot) {
   };
 }
 
-// ツールチップ: 船名 or MMSI ＋ 船種 ＋ 速度kn ＋ 航路°（欠損項目は省略）。
+// ツールチップ: 船名 or MMSI ＋ 船種 ＋ 速度kn ＋ 航路°（全項目見出し付き・欠損項目は省略）。
 export function shipTooltip(o) {
   if (!o) return null;
   const head = o.name ? `船名 ${o.name}` : `MMSI ${o.mmsi}`;
-  const sog = o.sog == null ? null : `${Math.round(o.sog)}kn`;
+  const type = o.type ? `船種 ${o.type}` : null;
+  const sog = o.sog == null ? null : `速度 ${Math.round(o.sog)}kn`;
   const cog = o.cog == null ? null : `航路 ${String(Math.round(o.cog) % 360).padStart(3, '0')}°`;
-  return [head, o.type || null, sog, cog].filter(Boolean).join('｜');
+  return [head, type, sog, cog].filter(Boolean).join('｜');
 }
 
 export const shipsLayer = {
