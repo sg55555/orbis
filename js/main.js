@@ -16,9 +16,9 @@ const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
 const POLL_MS = 60000;
-const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp']; // スナップショットを持つ層
-const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents', 'airtemp'];
-let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp']);
+const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp', 'ships']; // スナップショットを持つ層
+const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents', 'airtemp', 'ships'];
+let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp', 'ships']);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 let panel;
