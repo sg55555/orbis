@@ -73,3 +73,21 @@ export function hostnameOf(url) {
   try { return new URL(url).hostname.replace(/^www\./, ''); }
   catch { return ''; }
 }
+
+// 進行方向(headingDeg, 北0°時計回り)に向けたローカル多角形を地理座標へ変換する（純粋）。
+// verts: [[forward, side], ...]（forward=前方+, side=右+、単位は degLen 基準）。
+// flights 三角形と同じ fwd/perp/L 基底を用い、高緯度でも画素一定の向き付き形状を作る。
+export function silhouettePolygon(lon, lat, headingDeg, degLen, verts) {
+  if (lon == null || lat == null || headingDeg == null || !Array.isArray(verts)) return null;
+  const h = Number(headingDeg);
+  if (!Number.isFinite(h)) return null;
+  const rad = (h * Math.PI) / 180;
+  const cosLat = Math.max(Math.cos((lat * Math.PI) / 180), 0.2);
+  const fwd = [Math.sin(rad) / cosLat, Math.cos(rad)];
+  const perp = [Math.cos(rad) / cosLat, -Math.sin(rad)];
+  const L = degLen * cosLat;
+  return verts.map(([f, s]) => [
+    lon + (fwd[0] * f + perp[0] * s) * L,
+    lat + (fwd[1] * f + perp[1] * s) * L,
+  ]);
+}

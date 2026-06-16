@@ -6,8 +6,8 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
-  // 左パネルに7レイヤー行（地震/航空/紛争/抗議/貿易/海流/気温）
-  await expect(page.locator('#panel .layer-row')).toHaveCount(7);
+  // 左パネルに8レイヤー行（地震/航空/紛争/抗議/貿易/海流/気温/船舶）
+  await expect(page.locator('#panel .layer-row')).toHaveCount(8);
 
   // データ到着
   await expect.poll(
@@ -62,7 +62,7 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   });
   expect(drift).toBeLessThan(2);
 
-  // 航空=三角(SolidPolygon) が deck に存在（flights は ON のまま）
+  // 航空=飛行機シルエット(SolidPolygon) が deck に存在（flights は ON のまま）
   const hasFlights = await page.evaluate(() => {
     const o = window.__orbis.overlay;
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'flights');
@@ -94,6 +94,21 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'airtemp');
   });
   expect(hasAirtemp).toBe(true);
+
+  // 船舶(ships)は既定OFF。ON にすると船体シルエット(SolidPolygon)が deck に描画される。
+  // 本番データはキー設定後に存在。e2e ではトグル ON が反映され例外が出ないことを担保し、
+  // データがある場合のみ deck レイヤー存在も確認する（描画の画素検証は本番 Playwright）。
+  await expect(page.locator('.layer-row[data-id="ships"] .layer-toggle')).not.toBeChecked();
+  await page.locator('.layer-row[data-id="ships"] .layer-toggle').check();
+  await page.waitForTimeout(400);
+  await expect(page.locator('.layer-row[data-id="ships"] .layer-toggle')).toBeChecked();
+  const shipsLayerOk = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    const has = window.__orbis.counts && window.__orbis.counts.ships > 0;
+    const present = ((o._props && o._props.layers) || []).some((l) => l.id === 'ships');
+    return !has || present; // データがあるなら描画されているはず
+  });
+  expect(shipsLayerOk).toBe(true);
 
   // 航空クリックの進路ライン＋到達点＋ポップアップは canvas ピックが座標依存で
   // 不安定なため e2e では検証せず、Playwright スクショの目視で担保する（plan Task 11）。

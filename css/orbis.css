@@ -93,6 +93,8 @@ html, body { margin: 0; height: 100%; background: var(--bg); color: var(--text);
 .layer-row .swatch-ring { border-radius: 50%; border: 2px solid currentColor; background: transparent; box-shadow: 0 0 8px currentColor; }
 .layer-row .swatch-triangle { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
   border-bottom: 11px solid currentColor; background: transparent; filter: drop-shadow(0 0 4px currentColor); }
+.layer-row .swatch-diamond { width: 9px; height: 9px; background: currentColor; transform: rotate(45deg);
+  box-shadow: 0 0 8px currentColor; }
 /* line=海流: 冷→中→暖の水温グラデの短い横棒 */
 .layer-row .swatch-line { width: 14px; height: 3px; border-radius: 2px;
   background: linear-gradient(90deg, rgb(42,127,255), rgb(94,224,106), rgb(255,90,50));
