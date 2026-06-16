@@ -222,6 +222,7 @@ function boot() {
         const p = info.object;
         const arrival = projectedArrival(p, FLIGHT_PROJECT_MIN);
         selectedFlight = { point: p, arrival };
+        selectedShip = null;
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN)).addTo(map);
         drawAll(overlay);
       }
@@ -229,6 +230,7 @@ function boot() {
         const p = info.object;
         const arrival = shipArrival(p, SHIP_PROJECT_MIN);
         selectedShip = { point: p, arrival };
+        selectedFlight = null;
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(shipPopupHtml(p, arrival, SHIP_PROJECT_MIN)).addTo(map);
         drawAll(overlay);
       }
@@ -240,6 +242,13 @@ function boot() {
 
   // 着地点ポップアップ（クリック地点に追従。閉じても再クリックで再表示）。
   selPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 20, className: 'orbis-popup' });
+  // ポップアップを閉じたら推定進路の選択も解除する（線が残らないように）。
+  selPopup.on('close', () => {
+    if (!selectedFlight && !selectedShip) return;
+    selectedFlight = null;
+    selectedShip = null;
+    if (_overlay) drawAll(_overlay);
+  });
 
   panel = renderPanel(
     document.getElementById('panel-rows'),
