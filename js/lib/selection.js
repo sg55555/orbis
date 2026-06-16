@@ -1,3 +1,5 @@
+import { pointAlongPath } from './motion.js';
+
 // flyTo 着地点の可視化ヘルパ（純粋関数）。
 // ・selectionPopupHtml: イベント名＋色ドット＋移動ガイドの popup HTML を組む
 // ・flightPopupHtml: 航空機クリック時のポップアップ（便名/高度/速度/方位/推定到達）
@@ -6,6 +8,9 @@
 
 const LAYER_RGB = { quakes: [255, 176, 40], conflict: [255, 60, 80], protests: [94, 255, 166] };
 const CYAN = [57, 208, 255];
+// 推定進路の色＝機体シアンの補色マゼンタ（航空・船で共通）。
+export const PROJ_RGB = [255, 90, 220];
+export const PROJ_FLOW_RGB = [255, 150, 235];
 
 export function escapeHtml(s) {
   return String(s == null ? '' : s).replace(/[&<>"]/g,
@@ -73,4 +78,68 @@ export function buildReticleConfigs(selected, now = 0, opts = {}) {
       updateTriggers: { getRadius: now, getLineColor: now }, pickable: false });
   }
   return cfgs;
+}
+
+// 推定進路の deck config 群を返す（純粋・deck 非依存。航空/船で共用）。
+// sel: { src:[lon,lat], arrival:[lon,lat]|null, prefix }。motionT: 0..1。opts.reduced で flow/pulse 省略。
+// 返り値: [{ kind:'line'|'scatter', config }]（呼び出し側で new deck.LineLayer/ScatterplotLayer する）。
+export function buildProjectionConfigs(sel, motionT = 0, opts = {}) {
+  if (!sel || !sel.src || !sel.arrival) return [];
+  const { src, arrival, prefix } = sel;
+  const out = [
+    { kind: 'line', config: {
+      id: `${prefix}-route`, data: [{}], widthUnits: 'pixels', getWidth: 2,
+      getSourcePosition: () => src, getTargetPosition: () => arrival,
+      getColor: [...PROJ_RGB, 200], pickable: false,
+    } },
+    { kind: 'scatter', config: {
+      id: `${prefix}-arrival`, data: [{}], radiusUnits: 'pixels',
+      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2.5,
+      getPosition: () => arrival, getRadius: 9, getLineColor: [...PROJ_RGB, 240], pickable: false,
+    } },
+  ];
+  if (!opts.reduced) {
+    const PER = 6;
+    const pts = [];
+    for (let k = 0; k < PER; k++) {
+      const t = (motionT + k / PER) % 1;
+      const pp = pointAlongPath([src, arrival], t);
+      if (pp) pts.push({ position: pp, t });
+    }
+    out.push({ kind: 'scatter', config: {
+      id: `${prefix}-flow`, data: pts, radiusUnits: 'pixels',
+      getPosition: (d) => d.position, getRadius: 3,
+      getFillColor: (d) => [...PROJ_FLOW_RGB, Math.round(110 + 140 * Math.sin(Math.PI * d.t))],
+      updateTriggers: { getPosition: motionT, getFillColor: motionT }, pickable: false,
+    } });
+    const ph = motionT;
+    out.push({ kind: 'scatter', config: {
+      id: `${prefix}-arrival-pulse`, data: [{}], radiusUnits: 'pixels',
+      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1.5,
+      getPosition: () => arrival, getRadius: 9 + 16 * ph,
+      getLineColor: [...PROJ_RGB, Math.round(220 * (1 - ph))],
+      updateTriggers: { getRadius: ph, getLineColor: ph }, pickable: false,
+    } });
+  }
+  return out;
+}
+
+// 船舶クリック時のポップアップ（船名/船種/速度/航路/推定進路）。flightPopupHtml と対。
+// arrival が null（停泊/速度0/針路不明）は推定不可を明示。
+export function shipPopupHtml(p, arrival, minutes = 60) {
+  const o = p || {};
+  const head = o.name ? escapeHtml(o.name) : `MMSI ${o.mmsi}`;
+  const spd = o.sog == null ? '—' : `${Math.round(o.sog)}kn`;
+  const cog = o.cog == null ? '—' : `${String(Math.round(o.cog) % 360).padStart(3, '0')}°`;
+  const dot = 'rgb(255,90,220)';
+  const arr = arrival ? `${Number(arrival[1]).toFixed(2)}, ${Number(arrival[0]).toFixed(2)}` : '—';
+  const hint = arrival
+    ? `📍 推定進路 約${minutes}分後 ${arr}<br><span class="sel-note">※AIS の COG/SOG 延長による推定（針路・速度一定と仮定）</span>`
+    : '<span class="sel-note">速度0/針路不明で進路推定不可</span>';
+  return '<div class="sel-popup">'
+    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<span class="sel-title">🚢 ${head}</span></div>`
+    + `<div class="sel-meta">船種 ${escapeHtml(o.type || '不明')}｜速度 ${spd}｜航路 ${cog}</div>`
+    + `<div class="sel-hint">${hint}</div>`
+    + '</div>';
 }

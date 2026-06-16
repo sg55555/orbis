@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml } from '../js/lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml } from '../js/lib/selection.js';
 
 test('escapeHtml: HTMLメタ文字を実体参照に / null→空', () => {
   assert.equal(escapeHtml('<b>"&"</b>'), '&lt;b&gt;&quot;&amp;&quot;&lt;/b&gt;');
@@ -66,4 +66,35 @@ test('flightPopupHtml: arrival が null でも安全（—）', () => {
   const html = flightPopupHtml({ callsign: 'X', alt: null, velocity: 0, heading: 0, on_ground: true }, null);
   assert.match(html, /地上/);
   assert.match(html, /—/);
+});
+
+test('buildProjectionConfigs: arrival 無し / sel 無しは空配列', () => {
+  assert.deepEqual(buildProjectionConfigs({ src: [0, 0], arrival: null, prefix: 'ship' }, 0), []);
+  assert.deepEqual(buildProjectionConfigs(null, 0), []);
+});
+
+test('buildProjectionConfigs: prefix 反映・line+arrival+flow+pulse の4種', () => {
+  const cfgs = buildProjectionConfigs({ src: [0, 0], arrival: [1, 1], prefix: 'ship' }, 0.3, { reduced: false });
+  assert.deepEqual(cfgs.map((c) => c.config.id), ['ship-route', 'ship-arrival', 'ship-flow', 'ship-arrival-pulse']);
+  assert.equal(cfgs[0].kind, 'line');
+  assert.equal(cfgs[1].kind, 'scatter');
+});
+
+test('buildProjectionConfigs: reduced は flow/pulse を省く', () => {
+  const cfgs = buildProjectionConfigs({ src: [0, 0], arrival: [1, 1], prefix: 'flight' }, 0, { reduced: true });
+  assert.deepEqual(cfgs.map((c) => c.config.id), ['flight-route', 'flight-arrival']);
+});
+
+test('shipPopupHtml: 船名・船種・速度・航路・推定到達', () => {
+  const html = shipPopupHtml({ mmsi: 7, name: 'EVER GIVEN', type: '貨物船', sog: 12.3, cog: 45 }, [2.5, 1.5], 60);
+  assert.match(html, /🚢 EVER GIVEN/);
+  assert.match(html, /船種 貨物船｜速度 12kn｜航路 045°/);
+  assert.match(html, /約60分後 1\.50, 2\.50/);
+});
+
+test('shipPopupHtml: 船名無しは MMSI、進路無しは推定不可', () => {
+  const html = shipPopupHtml({ mmsi: 7, name: null, type: null, sog: null, cog: null }, null, 60);
+  assert.match(html, /🚢 MMSI 7/);
+  assert.match(html, /船種 不明｜速度 —｜航路 —/);
+  assert.match(html, /進路推定不可/);
 });
