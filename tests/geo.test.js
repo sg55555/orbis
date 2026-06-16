@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { magnitudeToRadius, magnitudeToColor, formatFreshness, silhouettePolygon } from '../js/lib/geo.js';
+import { magnitudeToRadius, magnitudeToColor, formatFreshness, silhouettePolygon, projectAhead, shipArrival, projectedArrival } from '../js/lib/geo.js';
 
 test('magnitudeToRadius is floored at 3 and grows with magnitude', () => {
   assert.equal(magnitudeToRadius(0), 3);
@@ -51,4 +51,39 @@ test('silhouettePolygon: side+ は heading 0 のとき東(経度+)へ動く', ()
 test('silhouettePolygon: verts が配列でなければ null', () => {
   assert.equal(silhouettePolygon(0, 0, 0, 1, null), null);
   assert.equal(silhouettePolygon(0, 0, 0, 1, undefined), null);
+});
+
+test('projectAhead: 北(0)へ前進すると緯度↑・経度≒不変', () => {
+  const out = projectAhead(0, 0, 0, 100, 10);
+  assert.ok(out[1] > 0 && Math.abs(out[0]) < 1e-9);
+});
+
+test('projectAhead: 東(90)へは経度↑', () => {
+  const out = projectAhead(0, 0, 90, 100, 10);
+  assert.ok(out[0] > 0 && Math.abs(out[1]) < 1e-9);
+});
+
+test('projectAhead: 速度0/負・heading欠損・座標欠損は null', () => {
+  assert.equal(projectAhead(0, 0, 0, 0, 10), null);
+  assert.equal(projectAhead(0, 0, 0, -5, 10), null);
+  assert.equal(projectAhead(0, 0, null, 100, 10), null);
+  assert.equal(projectAhead(null, 0, 0, 100, 10), null);
+});
+
+test('shipArrival: cog/sog(kn)から前進・kn→m/s換算', () => {
+  const out = shipArrival({ lon: 0, lat: 0, cog: 90, sog: 10 }, 60);
+  assert.ok(out[0] > 0 && Math.abs(out[1]) < 1e-9, '東へ進む');
+});
+
+test('shipArrival: cog/sog 欠損・sog0・p無しは null', () => {
+  assert.equal(shipArrival({ lon: 0, lat: 0, cog: 90, sog: 0 }, 60), null);
+  assert.equal(shipArrival({ lon: 0, lat: 0, cog: null, sog: 10 }, 60), null);
+  assert.equal(shipArrival({ lon: 0, lat: 0, cog: 90, sog: null }, 60), null);
+  assert.equal(shipArrival(null, 60), null);
+});
+
+test('projectedArrival 回帰: heading/velocity で従来通り（東進・緯度不変・速度0でnull）', () => {
+  const out = projectedArrival({ lon: 0, lat: 0, heading: 90, velocity: 100 }, 10);
+  assert.ok(out[0] > 0 && Math.abs(out[1]) < 1e-9);
+  assert.equal(projectedArrival({ lon: 0, lat: 0, heading: 90, velocity: 0 }, 10), null);
 });

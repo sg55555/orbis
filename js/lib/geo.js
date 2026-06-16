@@ -34,16 +34,31 @@ export function degLenForZoom(zoom, targetPx = 7) {
   return (targetPx * mpp) / 111320;
 }
 
-// 現在の heading(度) と velocity(m/s) から minutes 分後の推定到達点 [lon,lat]。
-// OpenSky は目的地を持たないため「推定」であることに注意。欠損/速度0で null。
-export function projectedArrival(p, minutes = 10) {
-  if (!p || p.heading == null || p.velocity == null || p.lon == null || p.lat == null) return null;
-  const h = Number(p.heading), v = Number(p.velocity);
+// (lon,lat) から headingDeg(北0°時計回り)方向へ speedMps(m/s) で minutes 分進んだ推定点 [lon,lat]。
+// 欠損/非有限/速度<=0 は null。経度は cosLat 補正（高緯度の度詰まりを補正）。
+export function projectAhead(lon, lat, headingDeg, speedMps, minutes) {
+  if (lon == null || lat == null || headingDeg == null || speedMps == null) return null;
+  const h = Number(headingDeg), v = Number(speedMps);
   if (!Number.isFinite(h) || !Number.isFinite(v) || v <= 0) return null;
   const degLat = (v * minutes * 60) / 111320;
   const rad = (h * Math.PI) / 180;
-  const cosLat = Math.max(Math.cos((p.lat * Math.PI) / 180), 0.2);
-  return [p.lon + (degLat * Math.sin(rad)) / cosLat, p.lat + degLat * Math.cos(rad)];
+  const cosLat = Math.max(Math.cos((lat * Math.PI) / 180), 0.2);
+  return [lon + (degLat * Math.sin(rad)) / cosLat, lat + degLat * Math.cos(rad)];
+}
+
+// 航空: 現在の heading(度)＋velocity(m/s) から minutes 分後の推定到達点。
+// OpenSky は目的地を持たないため「推定」。欠損/速度0で null。
+export function projectedArrival(p, minutes = 10) {
+  if (!p) return null;
+  return projectAhead(p.lon, p.lat, p.heading, p.velocity, minutes);
+}
+
+// 船舶: AIS の cog(針路・度)＋sog(ノット) から minutes 分後の推定到達点（kn→m/s = ×0.514444）。
+// cog/sog 欠損・sog0 で null。
+export function shipArrival(p, minutes = 60) {
+  if (!p) return null;
+  const sog = p.sog == null ? null : Number(p.sog) * 0.514444;
+  return projectAhead(p.lon, p.lat, p.cog, sog, minutes);
 }
 
 // イベントの言及数から描画半径(px)。floor 5, 上限 18。
