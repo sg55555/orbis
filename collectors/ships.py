@@ -49,6 +49,8 @@ def parse_position(msg):
     lat, lon = rep.get("Latitude"), rep.get("Longitude")
     if mmsi is None or lat is None or lon is None:
         return None
+    if not (-90 <= float(lat) <= 90 and -180 <= float(lon) <= 180):
+        return None
     cog, sog = rep.get("Cog"), rep.get("Sog")
     cog = round(float(cog), 1) if cog is not None and 0 <= cog < 360 else None
     sog = round(float(sog), 1) if sog is not None and 0 <= sog < 102.3 else None

@@ -56,10 +56,20 @@ def test_merge_records_joins_and_handles_missing_static():
     p2 = next(p for p in out if p["mmsi"] == 2)
     assert p2["name"] is None and p2["type"] is None
 
-def test_downsample_caps_count():
+def test_parse_position_out_of_range_sentinel_is_none():
+    msg = {"MetaData": {"MMSI": 1},
+           "Message": {"PositionReport": {"Latitude": 91.0, "Longitude": 181.0, "Cog": 10.0, "Sog": 5.0}}}
+    assert parse_position(msg) is None
+
+def test_downsample_caps_count_and_even_stride():
     pts = [{"mmsi": i, "lon": 0, "lat": 0} for i in range(100)]
     out = downsample(pts, 10)
-    assert len(out) <= 10 and out[0]["mmsi"] == 0
+    assert len(out) == 10
+    assert out[0]["mmsi"] == 0 and out[-1]["mmsi"] == 90  # stride 10, even spacing
+
+def test_downsample_passthrough_when_under_max():
+    pts = [{"mmsi": i} for i in range(5)]
+    assert downsample(pts, 10) is pts
 
 def test_build_snapshot_shape():
     snap = build_snapshot([{"mmsi": 1}], "2026-06-17T00:00:00Z")
