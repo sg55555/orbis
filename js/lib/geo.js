@@ -78,7 +78,7 @@ export function hostnameOf(url) {
 // verts: [[forward, side], ...]（forward=前方+, side=右+、単位は degLen 基準）。
 // flights 三角形と同じ fwd/perp/L 基底を用い、高緯度でも画素一定の向き付き形状を作る。
 export function silhouettePolygon(lon, lat, headingDeg, degLen, verts) {
-  if (lon == null || lat == null || headingDeg == null) return null;
+  if (lon == null || lat == null || headingDeg == null || !Array.isArray(verts)) return null;
   const h = Number(headingDeg);
   if (!Number.isFinite(h)) return null;
   const rad = (h * Math.PI) / 180;

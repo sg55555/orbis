@@ -28,6 +28,7 @@ test('silhouettePolygon: 北(0)は前方頂点が北、頂点数は verts と一
   const poly = silhouettePolygon(0, 0, 0, 1, verts);
   assert.equal(poly.length, 3);
   assert.ok(poly[0][1] > 0, '前方(forward+)は北で緯度が増える');
+  assert.ok(Math.abs(poly[0][0]) < 1e-9, '純前方頂点は経度が不変');
 });
 
 test('silhouettePolygon: 東(90)は前方頂点が東', () => {
@@ -39,4 +40,15 @@ test('silhouettePolygon: heading 欠損/非数値/座標欠損は null', () => {
   assert.equal(silhouettePolygon(0, 0, null, 1, [[1, 0]]), null);
   assert.equal(silhouettePolygon(0, 0, NaN, 1, [[1, 0]]), null);
   assert.equal(silhouettePolygon(null, 0, 0, 1, [[1, 0]]), null);
+});
+
+test('silhouettePolygon: side+ は heading 0 のとき東(経度+)へ動く', () => {
+  const poly = silhouettePolygon(0, 0, 0, 1, [[0, 1]]);
+  assert.ok(poly[0][0] > 0, 'side+ は右舷=東で経度が増える');
+  assert.ok(Math.abs(poly[0][1]) < 1e-9, '純横方向頂点は緯度がほぼ不変');
+});
+
+test('silhouettePolygon: verts が配列でなければ null', () => {
+  assert.equal(silhouettePolygon(0, 0, 0, 1, null), null);
+  assert.equal(silhouettePolygon(0, 0, 0, 1, undefined), null);
 });
