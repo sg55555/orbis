@@ -54,7 +54,7 @@ export function shipTooltip(o) {
   if (!o) return null;
   const head = o.name ? `船名 ${o.name}` : `MMSI ${o.mmsi}`;
   const sog = o.sog == null ? null : `${Math.round(o.sog)}kn`;
-  const cog = o.cog == null ? null : `航路 ${String(Math.round(o.cog)).padStart(3, '0')}°`;
+  const cog = o.cog == null ? null : `航路 ${String(Math.round(o.cog) % 360).padStart(3, '0')}°`;
   return [head, o.type || null, sog, cog].filter(Boolean).join('｜');
 }
 

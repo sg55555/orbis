@@ -61,3 +61,10 @@ test('shipTooltip: 船名/船種無しは MMSI ＋欠損項目を省略', () => 
   assert.equal(shipTooltip({ mmsi: 1, name: null, type: null, sog: null, cog: null }), 'MMSI 1');
   assert.equal(shipTooltip(null), null);
 });
+
+test('shipTooltip: cog 359.6 は 360 ではなく 000 に丸める', () => {
+  assert.equal(
+    shipTooltip({ mmsi: 1, name: null, type: null, sog: 5, cog: 359.6 }),
+    'MMSI 1｜5kn｜航路 000°',
+  );
+});
