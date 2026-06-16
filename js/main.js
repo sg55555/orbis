@@ -242,13 +242,9 @@ function boot() {
 
   // 着地点ポップアップ（クリック地点に追従。閉じても再クリックで再表示）。
   selPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 20, className: 'orbis-popup' });
-  // ポップアップを閉じたら推定進路の選択も解除する（線が残らないように）。
-  selPopup.on('close', () => {
-    if (!selectedFlight && !selectedShip) return;
-    selectedFlight = null;
-    selectedShip = null;
-    if (_overlay) drawAll(_overlay);
-  });
+  // 注: popup.addTo() は既に開いている popup だと内部で remove()→'close' を発火するため、
+  // 'close' で選択解除すると2回目以降のクリックで選択が即消え進路が描けない。よって close 解除はしない。
+  // 推定進路は次の機体/船クリック（相互排他）まで残す（航空の従来挙動）。
 
   panel = renderPanel(
     document.getElementById('panel-rows'),
