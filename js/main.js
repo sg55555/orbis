@@ -1,15 +1,15 @@
 import { initMap, setDeckLayers } from './map.js';
 import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
-import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival } from './lib/geo.js';
+import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
-import { pointAlongPath, diffNewIds, normalizedTimestamps } from './lib/motion.js';
-import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml } from './lib/selection.js';
+import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
+import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
@@ -32,10 +32,9 @@ let _overlay = null;      // rAF ループ用の overlay 参照
 let selected = null;      // フィードで選択中のイベント { lon, lat, title, layerId, at }
 let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
 let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
+let selectedShip = null;   // { point, arrival[lon,lat] } 船舶クリックで選択
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
-// 推定進路の色＝シアン機体の補色マゼンタ（多数の機体の中でも着地点/進路が際立つ）。
-const PROJ_RGB = [255, 90, 220];
-const PROJ_FLOW_RGB = [255, 150, 235]; // 流れる粒子は少し明るいマゼンタ
+const SHIP_PROJECT_MIN = 60; // 船は低速なので航空より長い延長（12knで約22km先）。
 
 async function updateFreshness() {
   try {
@@ -154,50 +153,27 @@ function selectedMarkerLayers(now) {
     .map((c) => new deck.ScatterplotLayer(c));
 }
 
-// 選択中の航空機の推定進路：現在地→到達点の線＋到達点リング＋（動的）機体から到達点へ流れる粒子。
-// 目的地は不明のため heading の延長＝推定進路。粒子の流れで「向かっている」動きを表現する。
+// 共通ビルダの {kind,config} を deck レイヤー化する。
+function deckFromProjectionConfigs(cfgs) {
+  return cfgs.map(({ kind, config }) => (kind === 'line'
+    ? new deck.LineLayer(config)
+    : new deck.ScatterplotLayer(config)));
+}
+
+// 選択中の航空機の推定進路（heading 延長）。マゼンタの線/到達リング/流れる粒子/パルス。
 function flightProjectionLayers() {
   if (!selectedFlight || !selectedFlight.arrival) return [];
-  const { point, arrival } = selectedFlight;
-  const src = [point.lon, point.lat];
-  const out = [
-    new deck.LineLayer({
-      id: 'flight-route', data: [{}], widthUnits: 'pixels', getWidth: 2,
-      getSourcePosition: () => src, getTargetPosition: () => arrival,
-      getColor: [...PROJ_RGB, 200], pickable: false,
-    }),
-    new deck.ScatterplotLayer({
-      id: 'flight-arrival', data: [{}], radiusUnits: 'pixels',
-      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2.5,
-      getPosition: () => arrival, getRadius: 9, getLineColor: [...PROJ_RGB, 240], pickable: false,
-    }),
-  ];
-  if (!REDUCED) {
-    // 機体→到達点を流れる粒子（進行している動きを表現）。
-    const PER = 6;
-    const pts = [];
-    for (let k = 0; k < PER; k++) {
-      const t = (motionT + k / PER) % 1;
-      const pp = pointAlongPath([src, arrival], t);
-      if (pp) pts.push({ position: pp, t });
-    }
-    out.push(new deck.ScatterplotLayer({
-      id: 'flight-flow', data: pts, radiusUnits: 'pixels',
-      getPosition: (d) => d.position, getRadius: 3,
-      getFillColor: (d) => [...PROJ_FLOW_RGB, Math.round(110 + 140 * Math.sin(Math.PI * d.t))],
-      updateTriggers: { getPosition: motionT, getFillColor: motionT }, pickable: false,
-    }));
-    // 到達点の拡大パルスリング。
-    const ph = motionT;
-    out.push(new deck.ScatterplotLayer({
-      id: 'flight-arrival-pulse', data: [{}], radiusUnits: 'pixels',
-      stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 1.5,
-      getPosition: () => arrival, getRadius: 9 + 16 * ph,
-      getLineColor: [...PROJ_RGB, Math.round(220 * (1 - ph))],
-      updateTriggers: { getRadius: ph, getLineColor: ph }, pickable: false,
-    }));
-  }
-  return out;
+  const src = [selectedFlight.point.lon, selectedFlight.point.lat];
+  return deckFromProjectionConfigs(
+    buildProjectionConfigs({ src, arrival: selectedFlight.arrival, prefix: 'flight' }, motionT, { reduced: REDUCED }));
+}
+
+// 選択中の船舶の推定進路（COG/SOG 延長）。航空と同じビルダ・マゼンタ。
+function shipProjectionLayers() {
+  if (!selectedShip || !selectedShip.arrival) return [];
+  const src = [selectedShip.point.lon, selectedShip.point.lat];
+  return deckFromProjectionConfigs(
+    buildProjectionConfigs({ src, arrival: selectedShip.arrival, prefix: 'ship' }, motionT, { reduced: REDUCED }));
 }
 
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
@@ -212,6 +188,7 @@ function drawAll(overlay) {
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
   extra.push(...selectedMarkerLayers(now));
   extra.push(...flightProjectionLayers());
+  extra.push(...shipProjectionLayers());
   setDeckLayers(overlay, [...base, ...extra]);
 }
 
@@ -246,6 +223,13 @@ function boot() {
         const arrival = projectedArrival(p, FLIGHT_PROJECT_MIN);
         selectedFlight = { point: p, arrival };
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN)).addTo(map);
+        drawAll(overlay);
+      }
+      if (info.layer.id === 'ships' || info.layer.id === 'ships-dot') {
+        const p = info.object;
+        const arrival = shipArrival(p, SHIP_PROJECT_MIN);
+        selectedShip = { point: p, arrival };
+        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(shipPopupHtml(p, arrival, SHIP_PROJECT_MIN)).addTo(map);
         drawAll(overlay);
       }
     },

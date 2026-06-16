@@ -32,6 +32,6 @@ test('tooltipFor: flights-dot は flights のツールチップに解決', () =>
 test('tooltipFor: ships-dot は ships のツールチップに解決', () => {
   assert.equal(
     tooltipFor('ships-dot', { mmsi: 7, name: 'A', type: '貨物船', sog: 10, cog: 90 }),
-    '船名 A｜貨物船｜10kn｜航路 090°',
+    '船名 A｜船種 貨物船｜速度 10kn｜航路 090°',
   );
 });
