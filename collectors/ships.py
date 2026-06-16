@@ -118,14 +118,17 @@ def collect(api_key, seconds=LISTEN_SECONDS):
             except ValueError:
                 continue
             mt = msg.get("MessageType")
-            if mt == "PositionReport":
-                p = parse_position(msg)
-                if p:
-                    positions[p["mmsi"]] = p
-            elif mt == "ShipStaticData":
-                s = parse_static(msg)
-                if s:
-                    statics[s["mmsi"]] = s
+            try:
+                if mt == "PositionReport":
+                    p = parse_position(msg)
+                    if p:
+                        positions[p["mmsi"]] = p
+                elif mt == "ShipStaticData":
+                    s = parse_static(msg)
+                    if s:
+                        statics[s["mmsi"]] = s
+            except Exception:
+                continue  # 1件の不正メッセージで28sリッスン全体を止めない
     finally:
         try:
             ws.close()
