@@ -89,3 +89,74 @@ def downsample(points, max_points=MAX_POINTS):
 
 def build_snapshot(points, updated_iso):
     return {"layer": "ships", "updated": updated_iso, "count": len(points), "points": points}
+
+
+def collect(api_key, seconds=LISTEN_SECONDS):
+    """AISStream に接続し seconds 秒リッスン。(positions, statics) を返す（I/O）。"""
+    import websocket  # websocket-client
+    positions, statics = {}, {}
+    ws = websocket.create_connection(API_URL, timeout=10)
+    try:
+        sub = {"APIKey": api_key,
+               "BoundingBoxes": [[[-90, -180], [90, 180]]],
+               "FilterMessageTypes": ["PositionReport", "ShipStaticData"]}
+        ws.send(json.dumps(sub))
+        ws.settimeout(3)
+        deadline = time.time() + seconds
+        while time.time() < deadline:
+            try:
+                raw = ws.recv()
+            except websocket.WebSocketTimeoutException:
+                continue
+            except Exception:
+                break
+            if not raw:
+                continue
+            try:
+                msg = json.loads(raw)
+            except ValueError:
+                continue
+            mt = msg.get("MessageType")
+            if mt == "PositionReport":
+                p = parse_position(msg)
+                if p:
+                    positions[p["mmsi"]] = p
+            elif mt == "ShipStaticData":
+                s = parse_static(msg)
+                if s:
+                    statics[s["mmsi"]] = s
+    finally:
+        try:
+            ws.close()
+        except Exception:
+            pass
+    return positions, statics
+
+
+def main():
+    os.makedirs(SNAPSHOT_DIR, exist_ok=True)
+    api_key = os.environ.get("AISSTREAM_API_KEY")
+    if not api_key:
+        print("[ships] AISSTREAM_API_KEY not set; skipping")
+        return 0
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        positions, statics = collect(api_key)
+    except Exception as e:
+        print(f"[ships] collect failed: {e}; keeping previous snapshot")
+        return 1
+    points = downsample(merge_records(positions, statics))
+    if not points:
+        print("[ships] no points received; keeping previous snapshot")
+        return 1
+    snap = build_snapshot(points, now_iso)
+    snap_path = os.path.join(SNAPSHOT_DIR, "ships.json")
+    with open(snap_path, "w", encoding="utf-8") as f:
+        json.dump(snap, f, ensure_ascii=False, separators=(",", ":"))
+    update_manifest(os.path.join(SNAPSHOT_DIR, "manifest.json"), "ships", now_iso, len(points))
+    print(f"[ships] wrote {len(points)} points -> {snap_path}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

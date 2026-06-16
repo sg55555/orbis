@@ -24,6 +24,10 @@ jobs:
         run: python -m collectors.gdelt_events || echo "gdelt skipped"
       - name: Collect air temperature
         run: python -m collectors.airtemp || echo "airtemp skipped"
+      - name: Collect ships
+        env:
+          AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
+        run: python -m collectors.ships || echo "ships skipped"
       - name: Commit snapshots
         run: |
           git config user.name "orbis-bot"
