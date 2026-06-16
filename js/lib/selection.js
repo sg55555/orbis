@@ -131,7 +131,7 @@ export function shipPopupHtml(p, arrival, minutes = 60) {
   const head = o.name ? escapeHtml(o.name) : `MMSI ${o.mmsi}`;
   const spd = o.sog == null ? '—' : `${Math.round(o.sog)}kn`;
   const cog = o.cog == null ? '—' : `${String(Math.round(o.cog) % 360).padStart(3, '0')}°`;
-  const dot = 'rgb(255,90,220)';
+  const dot = `rgb(${PROJ_RGB.join(',')})`;
   const arr = arrival ? `${Number(arrival[1]).toFixed(2)}, ${Number(arrival[0]).toFixed(2)}` : '—';
   const hint = arrival
     ? `📍 推定進路 約${minutes}分後 ${arr}<br><span class="sel-note">※AIS の COG/SOG 延長による推定（針路・速度一定と仮定）</span>`
