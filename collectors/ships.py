@@ -98,7 +98,7 @@ def collect(api_key, seconds=LISTEN_SECONDS):
     ws = websocket.create_connection(API_URL, timeout=10)
     try:
         sub = {"APIKey": api_key,
-               "BoundingBoxes": [[[-90, -180], [90, 180]]],
+               "BoundingBoxes": [[[-90, -180], [90, 180]]],  # [[lat_min,lon_min],[lat_max,lon_max]] 全球
                "FilterMessageTypes": ["PositionReport", "ShipStaticData"]}
         ws.send(json.dumps(sub))
         ws.settimeout(3)
@@ -108,7 +108,8 @@ def collect(api_key, seconds=LISTEN_SECONDS):
                 raw = ws.recv()
             except websocket.WebSocketTimeoutException:
                 continue
-            except Exception:
+            except Exception as e:
+                print(f"[ships] ws.recv error: {e}; closing early")
                 break
             if not raw:
                 continue
