@@ -1,35 +1,38 @@
-// 航空レイヤー。進行方向を向く塗り三角形(SolidPolygonLayer)＋heading無し機の小ドット。
+// 航空レイヤー。進行方向を向く飛行機シルエット(SolidPolygonLayer)＋heading無し機の小ドット。
 // 注: IconLayer/TextLayer は deck.gl 9.3.4 + globe + MapboxOverlay で描画されない
 // （[[deckgl-9.3-iconlayer-globe-broken]]）。ジオメトリ層のみ・ズーム適応で一定px化する。
-import { degLenForZoom } from '../lib/geo.js';
+import { degLenForZoom, silhouettePolygon } from '../lib/geo.js';
 
 const CYAN = [80, 220, 255];
 
-// 機体を heading 方向に向けた二等辺三角形の頂点 [[lon,lat]×3]。heading 欠損で null。
-export function flightTrianglePolygon(p, degLen) {
-  if (!p || p.heading == null || p.lon == null || p.lat == null) return null;
-  const h = Number(p.heading);
-  if (!Number.isFinite(h)) return null;
-  const rad = (h * Math.PI) / 180;
-  const cosLat = Math.max(Math.cos((p.lat * Math.PI) / 180), 0.2);
-  const fwd = [Math.sin(rad) / cosLat, Math.cos(rad)];
-  const perp = [Math.cos(rad) / cosLat, -Math.sin(rad)];
-  // 緯度補正: 高緯度ほど度あたりの画素が大きいため degLen を cosLat 倍して画素一定化。
-  const L = degLen * cosLat, W = degLen * cosLat * 0.55;
-  const tip = [p.lon + fwd[0] * L, p.lat + fwd[1] * L];
-  const back = [p.lon - fwd[0] * L * 0.5, p.lat - fwd[1] * L * 0.5];
-  const left = [back[0] + perp[0] * W, back[1] + perp[1] * W];
-  const right = [back[0] - perp[0] * W, back[1] - perp[1] * W];
-  return [tip, left, right];
+// 機首=前方(+forward)、右翼=+side の飛行機シルエット（[forward, side] のローカル座標列）。
+// 機首・後退翼・尾翼の10頂点。極小サイズでも「機体」と分かる最小限の形。
+export const PLANE_VERTS = [
+  [1.0, 0.0],     // 機首
+  [-0.2, 0.15],   // 右胴
+  [-0.45, 0.75],  // 右翼端
+  [-0.6, 0.12],   // 右翼後縁
+  [-1.0, 0.35],   // 右尾翼端
+  [-0.9, 0.0],    // 尾部
+  [-1.0, -0.35],  // 左尾翼端
+  [-0.6, -0.12],  // 左翼後縁
+  [-0.45, -0.75], // 左翼端
+  [-0.2, -0.15],  // 左胴
+];
+
+// 機体を heading 方向に向けた飛行機シルエット頂点。heading 欠損で null。
+export function planeSilhouettePolygon(p, degLen) {
+  if (!p) return null;
+  return silhouettePolygon(p.lon, p.lat, p.heading, degLen, PLANE_VERTS);
 }
 
-// heading を持つ機の三角形（SolidPolygonLayer config）。degLen はズーム適応。
-export function buildTriangleConfig(snapshot, degLen) {
+// heading を持つ機のシルエット（SolidPolygonLayer config）。degLen はズーム適応。
+export function buildPlaneConfig(snapshot, degLen) {
   const pts = (snapshot && snapshot.points) ? snapshot.points : [];
   const data = pts.filter((p) => p.heading != null);
   return {
     id: 'flights', data,
-    getPolygon: (p) => flightTrianglePolygon(p, degLen),
+    getPolygon: (p) => planeSilhouettePolygon(p, degLen),
     getFillColor: [...CYAN, 190], stroked: false, pickable: true,
     updateTriggers: { getPolygon: degLen },
   };
@@ -50,14 +53,14 @@ export function buildDotConfig(snapshot) {
 export const flightsLayer = {
   id: 'flights',
   label: '航空',
-  marker: 'triangle', // パネルのスウォッチ形状（マップの三角に合わせる）
-  legend: [{ color: 'rgb(80,220,255)', label: '航空機（▲＝進行方向）' }],
+  marker: 'triangle', // パネルのスウォッチ形状（簡易・進行方向の三角で近似）
+  legend: [{ color: 'rgb(80,220,255)', label: '航空機（✈＝進行方向）' }],
   async fetch(getSnapshot) { return getSnapshot('flights'); },
   toDeckLayer(snapshot, ctx) {
     const zoom = (ctx && typeof ctx.zoom === 'number') ? ctx.zoom : 3;
     const degLen = degLenForZoom(zoom);
     return [
-      new deck.SolidPolygonLayer(buildTriangleConfig(snapshot, degLen)),
+      new deck.SolidPolygonLayer(buildPlaneConfig(snapshot, degLen)),
       new deck.ScatterplotLayer(buildDotConfig(snapshot)),
     ];
   },
