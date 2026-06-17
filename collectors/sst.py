@@ -8,8 +8,11 @@ import requests
 from collectors.lib.manifest import update_manifest
 
 API_URL = "https://marine-api.open-meteo.com/v1/marine"
-# 全球 5° グリッド（lat -85..85=35行, lon -180..175=72列 = 2520点）
-LAT0, LAT1, LON0, LON1, STEP = -85, 85, -180, 175, 5
+# 全球 5° グリッド（lat -80..80=33行, lon -180..175=72列 = 2376点）。
+# 注: Marine API は海洋モデル範囲外（極域 ±85 等）の地点で「No data」=HTTP 400 を返し、
+# その地点を1つでも含むバッチ全体が 400 で失敗する（陸は null を返すので可。極域だけが 400）。
+# 実測で ±80 以内なら全バッチ 200（陸=null・海=値）。よって緯度を ±80 に制限する。
+LAT0, LAT1, LON0, LON1, STEP = -80, 80, -180, 175, 5
 BATCH = 200          # 1リクエストの座標数（保守的）
 SLEEP_S = 25.0       # バッチ間スリープ（Open-Meteo 分次レート制限回避）
 RETRY_WAIT_S = 65    # 429（分次レート制限）検知時の待機秒
