@@ -1,6 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { iconAngle, eventRadius, degLenForZoom, projectedArrival } from '../js/lib/geo.js';
+import { iconAngle, eventRadius, degLenForZoom, projectedArrival, formatLatLon } from '../js/lib/geo.js';
+
+test('formatLatLon: 北緯/南緯・東経/西経で符号を明示', () => {
+  assert.equal(formatLatLon(10, -30), '北緯10° 西経30°');
+  assert.equal(formatLatLon(-15, 120), '南緯15° 東経120°');
+  assert.equal(formatLatLon(0, 0), '北緯0° 東経0°');
+});
+
+test('formatLatLon: 経度はラップを [-180,180) に正規化', () => {
+  assert.equal(formatLatLon(0, 200), '北緯0° 西経160°');   // 200 → -160
+  assert.equal(formatLatLon(0, -190), '北緯0° 東経170°');  // -190 → 170
+});
 
 test('iconAngle converts compass heading to deck CCW icon angle', () => {
   assert.equal(iconAngle(0), 0);

@@ -1,7 +1,7 @@
 import { initMap, setDeckLayers } from './map.js';
 import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
 import { startPolling, fetchManifest } from './snapshot.js';
-import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival } from './lib/geo.js';
+import { formatFreshness, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival, formatLatLon } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
@@ -213,13 +213,13 @@ function boot() {
         const c = info.coordinate;
         if (!c) return null;
         const t = tempAt(snapshots.airtemp, c[1], c[0]);
-        return t == null ? null : `気温 ${Math.round(t)}°C｜${c[1].toFixed(0)}, ${c[0].toFixed(0)}`;
+        return t == null ? null : `気温 ${Math.round(t)}°C｜${formatLatLon(c[1], c[0])}`;
       }
       if (info.layer.id === 'sst') {
         const c = info.coordinate;
         if (!c) return null;
         const t = sstAt(snapshots.sst, c[1], c[0]);
-        return t == null ? null : `水温 ${Math.round(t)}°C｜${c[1].toFixed(0)}, ${c[0].toFixed(0)}`;
+        return t == null ? null : `水温 ${Math.round(t)}°C｜${formatLatLon(c[1], c[0])}`;
       }
       return info.object ? tooltipFor(info.layer.id, info.object) : null;
     },

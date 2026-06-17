@@ -21,6 +21,15 @@ export function formatFreshness(updatedIso, now = Date.now()) {
   return `${Math.floor(diffSec / 86400)}日前`;
 }
 
+// 緯度経度を地理慣例の和文ラベルへ（純粋）。北緯/南緯・東経/西経で符号を明示し、
+// 「| の右が座標」と一目で分かるようにする。経度は globe のラップ対策で [-180,180) に正規化。
+export function formatLatLon(lat, lon) {
+  const L = ((lon % 360) + 540) % 360 - 180;
+  const la = `${lat >= 0 ? '北緯' : '南緯'}${Math.abs(Math.round(lat))}°`;
+  const lo = `${L >= 0 ? '東経' : '西経'}${Math.abs(Math.round(L))}°`;
+  return `${la} ${lo}`;
+}
+
 // 方位（北0°時計回り）を deck.gl IconLayer の角度（反時計回り）へ変換。
 export function iconAngle(headingDeg) {
   const h = Number(headingDeg) || 0;
