@@ -34,7 +34,7 @@ let selPopup = null;      // 着地点を示す maplibre ポップアップ（bo
 let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
 let selectedShip = null;   // { point, arrival[lon,lat] } 船舶クリックで選択
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
-const SHIP_PROJECT_MIN = 60; // 船は低速なので航空より長い延長（12knで約22km先）。
+const SHIP_PROJECT_MIN = 600; // 船は低速なので約10時間の長延長（12knで約222km先）。引きで到達ポインタが船首に重ならないように。
 
 async function updateFreshness() {
   try {

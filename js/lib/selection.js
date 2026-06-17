@@ -17,6 +17,17 @@ export function escapeHtml(s) {
     (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 }
 
+// 推定進路の延長（分）を読みやすい和文に整形（純粋関数）。
+// 60分未満→「約N分後」、60分以上→「約N時間後」、端数あり→「約N時間M分後」。
+// 例: 600→「約10時間後」、90→「約1時間30分後」、20→「約20分後」。
+export function projLabel(minutes) {
+  const m = Math.max(0, Math.round(Number(minutes) || 0));
+  if (m < 60) return `約${m}分後`;
+  const h = Math.floor(m / 60);
+  const rem = m % 60;
+  return rem === 0 ? `約${h}時間後` : `約${h}時間${rem}分後`;
+}
+
 // item: { title, layerId, lon, lat, time } → 着地点ポップアップの HTML。
 export function selectionPopupHtml(item) {
   const it = item || {};
@@ -47,7 +58,7 @@ export function flightPopupHtml(p, arrival, minutes = 20) {
     + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">✈ ${escapeHtml(cs)}</span></div>`
     + `<div class="sel-meta">高度 ${alt}｜速度 ${spd}m/s｜方位 ${hd}°</div>`
-    + `<div class="sel-hint">📍 推定進路 約${minutes}分後 ${arr}<br><span class="sel-note">※目的地データ無し・heading の延長による推定</span></div>`
+    + `<div class="sel-hint">📍 推定進路 ${projLabel(minutes)} ${arr}<br><span class="sel-note">※目的地データ無し・heading の延長による推定</span></div>`
     + '</div>';
 }
 
@@ -134,7 +145,7 @@ export function shipPopupHtml(p, arrival, minutes = 60) {
   const dot = `rgb(${PROJ_RGB.join(',')})`;
   const arr = arrival ? `${Number(arrival[1]).toFixed(2)}, ${Number(arrival[0]).toFixed(2)}` : '—';
   const hint = arrival
-    ? `📍 推定進路 約${minutes}分後 ${arr}<br><span class="sel-note">※AIS の COG/SOG 延長による推定（針路・速度一定と仮定）</span>`
+    ? `📍 推定進路 ${projLabel(minutes)} ${arr}<br><span class="sel-note">※AIS の COG/SOG 延長による推定（針路・速度一定と仮定）</span>`
     : '<span class="sel-note">速度0/針路不明で進路推定不可</span>';
   return '<div class="sel-popup">'
     + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`

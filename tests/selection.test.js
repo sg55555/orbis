@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml } from '../js/lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml, projLabel } from '../js/lib/selection.js';
 
 test('escapeHtml: HTMLメタ文字を実体参照に / null→空', () => {
   assert.equal(escapeHtml('<b>"&"</b>'), '&lt;b&gt;&quot;&amp;&quot;&lt;/b&gt;');
@@ -86,10 +86,19 @@ test('buildProjectionConfigs: reduced は flow/pulse を省く', () => {
 });
 
 test('shipPopupHtml: 船名・船種・速度・航路・推定到達', () => {
-  const html = shipPopupHtml({ mmsi: 7, name: 'EVER GIVEN', type: '貨物船', sog: 12.3, cog: 45 }, [2.5, 1.5], 60);
+  const html = shipPopupHtml({ mmsi: 7, name: 'EVER GIVEN', type: '貨物船', sog: 12.3, cog: 45 }, [2.5, 1.5], 600);
   assert.match(html, /🚢 EVER GIVEN/);
   assert.match(html, /船種 貨物船｜速度 12kn｜航路 045°/);
-  assert.match(html, /約60分後 1\.50, 2\.50/);
+  assert.match(html, /約10時間後 1\.50, 2\.50/);
+});
+
+test('projLabel: 分/時間/時分の整形', () => {
+  assert.equal(projLabel(20), '約20分後');
+  assert.equal(projLabel(59), '約59分後');
+  assert.equal(projLabel(60), '約1時間後');
+  assert.equal(projLabel(90), '約1時間30分後');
+  assert.equal(projLabel(600), '約10時間後');
+  assert.equal(projLabel(0), '約0分後');
 });
 
 test('shipPopupHtml: 船名無しは MMSI、進路無しは推定不可', () => {
