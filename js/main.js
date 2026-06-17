@@ -8,6 +8,7 @@ import { getLook, applyLookCss } from './lib/look.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
+import { renderStreams, wireStreamsCollapse } from './ui/streams.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
@@ -280,6 +281,23 @@ function boot() {
     } catch { /* noop */ }
     rebuild(overlay);
     if (!REDUCED) requestAnimationFrame(motionLoop);
+
+    // 下部の YouTube Live バー（config 駆動・選択で本拠地へ flyTo・既定折りたたみ）。
+    const streamsRoot = document.getElementById('streams');
+    try {
+      const channels = await (await fetch('config/live_channels.json')).json();
+      if (Array.isArray(channels) && channels.length) {
+        const streamsApi = renderStreams(streamsRoot, channels, {
+          onSelect: (ch) => map.flyTo({ center: [ch.lon, ch.lat], zoom: 4, duration: 1500, essential: true }),
+        });
+        wireStreamsCollapse(streamsRoot, document.getElementById('streams-toggle'), streamsApi);
+        if (window.__orbis) window.__orbis.streams = streamsApi; // e2e/デバッグ用
+      } else {
+        streamsRoot.style.display = 'none';
+      }
+    } catch {
+      streamsRoot.style.display = 'none';
+    }
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {
       Object.assign(snapshots, polled);
