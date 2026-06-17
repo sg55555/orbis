@@ -4,6 +4,11 @@
 - 対象: ORBIS（`/home/shugo/apps/orbis`）
 - 種別: 新レイヤー追加（海面水温 Sea Surface Temperature）
 
+> **実装時の修正（2026-06-18）**: 本文中の「全球 5° グリッド -85..85 / 35行 / 2520点」は実装時に
+> **-80..80 / 33行 / 2376点** に変更した。理由＝Open-Meteo Marine API は海洋モデル範囲外（±85 等の極域）の
+> 地点で「No data」=HTTP 400 を返し、その地点を含む 200点バッチ全体が失敗する（陸は null を返すので可・極域だけが 400）。
+> 実測で ±80 以内なら全バッチ 200。回帰防止テスト `tests/test_sst.py::test_production_grid_is_within_marine_domain_pm80`。
+
 ## 目的
 
 全球の海面水温(SST)を地球儀上に連続カラーの面で可視化する。既存の `airtemp`（気温）
