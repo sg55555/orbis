@@ -1,6 +1,16 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from collectors.sst import build_grid, chunk, parse_temps, build_snapshot, grid_meta
+from collectors.sst import LAT0, LAT1, LON0, LON1, STEP
+
+
+def test_production_grid_is_within_marine_domain_pm80():
+    # Marine API は極域(±85等)で hard-400 を返しバッチ全体を失敗させるため、本番グリッドは ±80 に制限する。
+    # この回帰防止: 本番定数が ±80・33行になっていること（範囲を広げると極域 400 で収集が壊れる）。
+    assert (LAT0, LAT1) == (-80, 80)
+    m = grid_meta(LAT0, LAT1, LON0, LON1, STEP)
+    assert m["nLat"] == 33 and m["nLon"] == 72
+    assert len(build_grid(LAT0, LAT1, LON0, LON1, STEP)) == 33 * 72
 
 def test_build_grid_is_row_major_lat_outer_lon_inner():
     g = build_grid(-85, 85, -180, 175, 5)
