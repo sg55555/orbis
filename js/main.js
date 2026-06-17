@@ -11,14 +11,15 @@ import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
+import { sstAt } from './layers/sst.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
 const POLL_MS = 60000;
-const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp', 'ships']; // スナップショットを持つ層
-const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'currents', 'airtemp', 'ships'];
-let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp', 'ships']);
+const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp', 'sst', 'ships']; // スナップショットを持つ層
+const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'sst', 'currents', 'airtemp', 'ships'];
+let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp', 'ships', 'sst']);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 let panel;
@@ -213,6 +214,12 @@ function boot() {
         if (!c) return null;
         const t = tempAt(snapshots.airtemp, c[1], c[0]);
         return t == null ? null : `気温 ${Math.round(t)}°C｜${c[1].toFixed(0)}, ${c[0].toFixed(0)}`;
+      }
+      if (info.layer.id === 'sst') {
+        const c = info.coordinate;
+        if (!c) return null;
+        const t = sstAt(snapshots.sst, c[1], c[0]);
+        return t == null ? null : `水温 ${Math.round(t)}°C｜${c[1].toFixed(0)}, ${c[0].toFixed(0)}`;
       }
       return info.object ? tooltipFor(info.layer.id, info.object) : null;
     },
