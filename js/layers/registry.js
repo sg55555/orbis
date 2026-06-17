@@ -6,9 +6,10 @@ import { protestsLayer } from './protests.js';
 import { tradeLayer } from './trade.js';
 import { currentsLayer } from './currents.js';
 import { airtempLayer } from './airtemp.js';
+import { sstLayer } from './sst.js';
 import { shipsLayer } from './ships.js';
 
-export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer, currentsLayer, airtempLayer, shipsLayer];
+export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer, sstLayer, currentsLayer, airtempLayer, shipsLayer];
 
 export function getLayer(id) {
   return layers.find((l) => l.id === id);
@@ -37,7 +38,7 @@ const DECK_TO_LAYER = {
   quakes: 'quakes', flights: 'flights', 'flights-dot': 'flights',
   conflict: 'conflict', protests: 'protests',
   'trade-routes': 'trade', 'trade-chokepoints': 'trade',
-  currents: 'currents', airtemp: 'airtemp',
+  sst: 'sst', currents: 'currents', airtemp: 'airtemp',
   ships: 'ships', 'ships-dot': 'ships',
 };
 
@@ -54,6 +55,7 @@ const DESCRIPTIONS = {
   conflict: '紛争関連報道の集中（GDELT・24h・赤い面）',
   protests: '抗議関連報道の集中（GDELT・24h・緑の面）',
   trade: '主要な海上貿易ルートと要衝',
+  sst: '全球の海面水温（Open-Meteo Marine・色=暖/寒の連続グラデ・既定OFF）',
   currents: '世界の主要な海流（色=水温の連続グラデ・暖/寒）',
   airtemp: '全球の気温（Open-Meteo・色=暖/寒の連続グラデ・半透明）',
   ships: '航行中の船舶（AIS・◆＝進行方向・既定OFF）',
