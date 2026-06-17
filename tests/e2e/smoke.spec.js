@@ -6,8 +6,8 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
-  // 左パネルに8レイヤー行（地震/航空/紛争/抗議/貿易/海流/気温/船舶）
-  await expect(page.locator('#panel .layer-row')).toHaveCount(8);
+  // 左パネルに9レイヤー行（地震/航空/紛争/抗議/貿易/水温/海流/気温/船舶）
+  await expect(page.locator('#panel .layer-row')).toHaveCount(9);
 
   // データ到着
   await expect.poll(
@@ -94,6 +94,20 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'airtemp');
   });
   expect(hasAirtemp).toBe(true);
+
+  // 水温(sst)は既定OFF。ON にすると BitmapLayer が deck に描画される（データがある場合）。
+  // ローカルにスナップショットが無い環境でも例外が出ないことを担保する（ships 同型）。
+  await expect(page.locator('.layer-row[data-id="sst"] .layer-toggle')).not.toBeChecked();
+  await page.locator('.layer-row[data-id="sst"] .layer-toggle').check();
+  await page.waitForTimeout(400);
+  await expect(page.locator('.layer-row[data-id="sst"] .layer-toggle')).toBeChecked();
+  const sstLayerOk = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    const has = window.__orbis.counts && window.__orbis.counts.sst > 0;
+    const present = ((o._props && o._props.layers) || []).some((l) => l.id === 'sst');
+    return !has || present; // データがあるなら描画されているはず
+  });
+  expect(sstLayerOk).toBe(true);
 
   // 船舶(ships)は既定OFF。ON にすると船体シルエット(SolidPolygon)が deck に描画される。
   // 本番データはキー設定後に存在。e2e ではトグル ON が反映され例外が出ないことを担保し、
