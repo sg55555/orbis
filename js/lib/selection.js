@@ -163,12 +163,14 @@ export function newsPopupHtml(p) {
   const c = categoryOf(o.category);
   const dot = `rgb(${c.color.join(',')})`;
   const host = hostnameOf(o.url);
+  // href は http/https のみ許可（不正フィードの javascript: 等を無効化）。
+  const safeUrl = /^https?:\/\//i.test(o.url || '') ? o.url : '#';
   return '<div class="sel-popup">'
     + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(o.title_ja || '')}</span></div>`
     + `<div class="sel-meta">${escapeHtml(c.label)}${o.place ? '｜' + escapeHtml(o.place) : ''}</div>`
     + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
-    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(o.url || '')}"`
+    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
     + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
     + '</div>';
 }

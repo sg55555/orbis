@@ -98,12 +98,15 @@ def main():
                 if not d:
                     continue
                 enr = {**d}
+            lon, lat = enr.get("lon"), enr.get("lat")
+            if lon is None or lat is None:  # 座標欠落の item はピン化できないので除外
+                continue
             items.append({
                 "id": a["url"], "url": a["url"], "source": a["source"],
                 "time": to_epoch_ms(a["published_iso"]), "rank": a["rank"],
                 "title_ja": enr["title_ja"], "summary_ja": enr.get("summary_ja", ""),
                 "category": enr.get("category", "other"),
-                "lon": enr["lon"], "lat": enr["lat"], "place": enr.get("place", ""),
+                "lon": lon, "lat": lat, "place": enr.get("place", ""),
             })
         items = finalize_items(items, int(now.timestamp() * 1000), WINDOW_HOURS, TOP_N)
     except Exception as e:  # 全体失敗は前回温存
