@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T21:15:50Z",
-  "count": 251,
+  "updated": "2026-06-18T21:31:04Z",
+  "count": 253,
   "points": [
+    {
+      "id": "aka2026lzymqv",
+      "lon": -152.607,
+      "lat": 60.192,
+      "depth": 111.9,
+      "mag": 1.2,
+      "place": "54 km WNW of Ninilchik, Alaska",
+      "time": 1781817829690,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzymqv"
+    },
+    {
+      "id": "ci41490280",
+      "lon": -119.147499084473,
+      "lat": 34.5299987792969,
+      "depth": 0.790000021457672,
+      "mag": 2.13,
+      "place": "13 km NE of Ojai, CA",
+      "time": 1781817492120,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490280"
+    },
+    {
+      "id": "ci41490272",
+      "lon": -116.517833333333,
+      "lat": 33.4988333333333,
+      "depth": 13,
+      "mag": 1.42,
+      "place": "16 km ESE of Anza, CA",
+      "time": 1781817182440,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490272"
+    },
     {
       "id": "nc75379266",
       "lon": -122.856498718262,
@@ -12,6 +42,16 @@
       "place": "10 km WNW of The Geysers, CA",
       "time": 1781817008970,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379266"
+    },
+    {
+      "id": "us7000sueg",
+      "lon": -177.693,
+      "lat": -19.8992,
+      "depth": 549.781,
+      "mag": 4.6,
+      "place": "286 km WNW of Houma, Tonga",
+      "time": 1781816955212,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sueg"
     },
     {
       "id": "aka2026lzxzos",
@@ -1964,6 +2004,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489536"
     },
     {
+      "id": "av94251943",
+      "lon": -169.804,
+      "lat": 52.8751666666667,
+      "depth": 0.73,
+      "mag": 2.07,
+      "place": "63 km W of Nikolski, Alaska",
+      "time": 1781748824410,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251943"
+    },
+    {
       "id": "hv74985232",
       "lon": -155.431671142578,
       "lat": 19.0501670837402,
@@ -2002,6 +2052,16 @@
       "place": "74 km ESE of Chignik, Alaska",
       "time": 1781747462669,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyljto"
+    },
+    {
+      "id": "av94251908",
+      "lon": -152.883166666667,
+      "lat": 60.4985,
+      "depth": 5.19,
+      "mag": -0.51,
+      "place": "83 km NW of Ninilchik, Alaska",
+      "time": 1781747441090,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251908"
     },
     {
       "id": "tx2026lwnhwv",
@@ -2472,46 +2532,6 @@
       "place": "70 km WSW of Nikolski, Alaska",
       "time": 1781732267170,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251433"
-    },
-    {
-      "id": "ci41489472",
-      "lon": -116.615,
-      "lat": 33.2,
-      "depth": 18.35,
-      "mag": 1.09,
-      "place": "9 km S of Warner Springs, CA",
-      "time": 1781731553490,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489472"
-    },
-    {
-      "id": "av94251408",
-      "lon": -169.853,
-      "lat": 52.8251666666667,
-      "depth": 4.09,
-      "mag": -0.04,
-      "place": "67 km W of Nikolski, Alaska",
-      "time": 1781731419540,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251408"
-    },
-    {
-      "id": "ci41489464",
-      "lon": -117.813,
-      "lat": 35.3006666666667,
-      "depth": 8.81,
-      "mag": 1.08,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781731225550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489464"
-    },
-    {
-      "id": "nc75378791",
-      "lon": -122.83699798584,
-      "lat": 38.8246650695801,
-      "depth": 1.00999999046326,
-      "mag": 1.08,
-      "place": "9 km NW of The Geysers, CA",
-      "time": 1781730913810,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378791"
     }
   ]
 }
