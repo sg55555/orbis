@@ -13,13 +13,14 @@ export const AREA_LABEL = {
 // キー不要のライブ埋め込みURL。video_id 優先（固定ライブ動画）、無ければ channel_id（チャンネルlive）。
 // captions=true（既定）で日本語字幕＋日本語UIを要求（cc_load_policy/cc_lang_pref/hl）。
 // 注: cc_lang_pref=ja は「日本語字幕トラックがあれば表示」までで、外国語音声の自動翻訳は強制できない（ベストエフォート）。
-export function buildEmbedUrl(item, { captions = true } = {}) {
+export function buildEmbedUrl(item, { captions = true, jsapi = false } = {}) {
   const base = item.video_id
     ? `https://www.youtube.com/embed/${item.video_id}`
     : `https://www.youtube.com/embed/live_stream?channel=${item.channel_id}`;
   const sep = base.includes('?') ? '&' : '?';
   const cc = captions ? '&cc_load_policy=1&cc_lang_pref=ja&hl=ja' : '';
-  return `${base}${sep}autoplay=1&mute=1&playsinline=1${cc}`;
+  const api = jsapi ? '&enablejsapi=1' : ''; // IFrame Player API で字幕を制御するため
+  return `${base}${sep}autoplay=1&mute=1&playsinline=1${cc}${api}`;
 }
 
 // キー不要のサムネ静止画。video_id 無しは空（プレースホルダにフォールバック）。

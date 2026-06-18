@@ -45,6 +45,11 @@ test('buildEmbedUrl: captions=false で字幕パラメータを付けない', ()
   assert.ok(u.includes('autoplay=1'), u); // 再生パラメータは維持
 });
 
+test('buildEmbedUrl: jsapi=true で enablejsapi=1（既定は付けない）', () => {
+  assert.ok(buildEmbedUrl(NEWS[0], { jsapi: true }).includes('enablejsapi=1'));
+  assert.ok(!buildEmbedUrl(NEWS[0]).includes('enablejsapi'));
+});
+
 test('thumbUrl: video_id あり/なし', () => {
   assert.equal(thumbUrl(CAMS[0]), 'https://i.ytimg.com/vi/8H3nRCFVR6Y/hqdefault.jpg');
   assert.equal(thumbUrl({ id: 'x', channel_id: 'C' }), '');
