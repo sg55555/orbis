@@ -49,13 +49,21 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
   await page.waitForTimeout(300);
   await expect(page.locator('#cams-grid .cam-cell')).toHaveCount(4);
 
-  // サムネ(非empty セル)クリックで該当セルが iframe 再生 src を持つ
+  // 全枠同時再生：可視時、全非emptyセルが iframe 再生 src を持つ
+  await expect.poll(async () => {
+    const srcs = await page.locator('#cams-grid .cam-cell:not(.empty) iframe').evaluateAll(
+      (frames) => frames.map((f) => f.getAttribute('src')),
+    );
+    return srcs.length > 1 && srcs.every((s) => s && s.includes('youtube.com/embed/'));
+  }, { timeout: 3000 }).toBe(true);
+
+  // カメラクリックで flyTo（地図中心が変化・地上カメラ）
   const firstCell = page.locator('#cams-grid .cam-cell:not(.empty)').first();
+  const camBefore = await page.evaluate(() => window.__orbis.map.getCenter());
   await firstCell.click();
-  await page.waitForTimeout(500);
-  const cellSrc = await firstCell.locator('iframe').getAttribute('src');
-  expect(cellSrc).toBeTruthy();
-  expect(cellSrc).toContain('youtube.com/embed/');
+  await page.waitForTimeout(1500);
+  const camAfter = await page.evaluate(() => window.__orbis.map.getCenter());
+  expect(camAfter.lng !== camBefore.lng || camAfter.lat !== camBefore.lat).toBe(true);
 
   // 上に戻ると不可視 → news/cam の src 空（停止）
   await page.evaluate(() => window.scrollTo(0, 0));

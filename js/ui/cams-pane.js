@@ -1,4 +1,4 @@
-// カメラペイン：地域タブ × 分割モード(1/4/6) × サムネグリッド ＋ 選択1枚だけ再生。
+// カメラペイン：地域タブ × 分割モード(1/4/6) × グリッド全枠を同時再生（選択は強調＋flyTo）。
 import {
   buildEmbedUrl, thumbUrl, itemById,
   areasPresent, camsByArea, gridCount, gridSlots, AREA_LABEL,
@@ -38,16 +38,16 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
   function highlightCells() {
     gridEl.querySelectorAll('.cam-cell').forEach((c) => c.classList.toggle('active', c.dataset.id === curId));
   }
-  // 選択セルだけ iframe 再生・他はサムネ。可視時のみ再生。
+  // グリッドの全枠を同時再生（可視時のみ）。選択(curId)は強調のみで、再生対象は全セル。
   function playCells() {
-    const it = itemById(cams, curId);
     gridEl.querySelectorAll('.cam-cell').forEach((c) => {
+      if (c.classList.contains('empty')) return;
       const f = c.querySelector('iframe');
       const img = c.querySelector('img');
-      const isCur = c.dataset.id === curId;
-      if (isCur && visible && it) {
+      const it = itemById(cams, c.dataset.id);
+      if (visible && it) {
         if (img) img.style.display = 'none';
-        if (f) f.src = buildEmbedUrl(it);
+        if (f && !f.src) f.src = buildEmbedUrl(it); // 既に再生中なら再設定せず再読込を避ける
       } else {
         if (f) f.src = '';
         if (img) img.style.display = '';
@@ -79,7 +79,11 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
       label.className = 'cam-label';
       label.textContent = it.name;
       cell.appendChild(label);
-      cell.addEventListener('click', () => selectCam(it.id));
+      // 透明クリック層（iframe の上）。全枠再生中も iframe がクリックを奪わず選択＋flyTo を発火させる。
+      const hit = document.createElement('div');
+      hit.className = 'cam-hit';
+      hit.addEventListener('click', () => selectCam(it.id));
+      cell.appendChild(hit);
       gridEl.appendChild(cell);
     }
     highlightCells();
