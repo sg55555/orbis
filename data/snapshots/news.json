@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-18T20:59:05Z",
+  "updated": "2026-06-18T21:02:24Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/18/netanyahu-says-israel-must-protect-relationship-with-us?traffic_source=rss",
@@ -145,24 +145,11 @@
       "place": "イラン"
     },
     {
-      "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781779958000,
-      "rank": 16,
-      "title_ja": "ウクライナのドローン攻撃後、プーチンは戦術を変えるのか？",
-      "summary_ja": "ウクライナによるドローン攻撃を受け、ロシアのプーチン大統領が軍事戦略を変更するかどうかについての分析。ロシアとウクライナの戦況における重要な転換点を検討している。",
-      "category": "conflict",
-      "lon": 37.6173,
-      "lat": 55.7558,
-      "place": "ロシア"
-    },
-    {
       "id": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781747978000,
-      "rank": 17,
+      "rank": 16,
       "title_ja": "トランプ大統領がベルサイユ宮殿で米国とイランの合意に署名する瞬間",
       "summary_ja": "トランプ大統領がベルサイユ宮殿で米国とイランの合意に署名した。この合意の詳細な内容については現在確認中である。",
       "category": "politics",
@@ -171,24 +158,11 @@
       "place": "ベルサイユ宮殿、フランス"
     },
     {
-      "id": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
-      "url": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
-      "source": "guardian",
-      "time": 1781808909000,
-      "rank": 18,
-      "title_ja": "CDCがコンゴとウガンダのエボラ対応に1億700万ドルの緊急資金を拠出",
-      "summary_ja": "米国疾病対策予防センター（CDC）がコンゴ民主共和国とウガンダでのエボラウイルス対応に1億700万ドルの緊急資金を充当する。両国での感染拡大に対する支援強化の取り組み。",
-      "category": "disaster",
-      "lon": 21.759,
-      "lat": -4.038,
-      "place": "コンゴ民主共和国"
-    },
-    {
       "id": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "url": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "source": "guardian",
       "time": 1781796066000,
-      "rank": 19,
+      "rank": 17,
       "title_ja": "「ウクライナが燃えれば、モスクワも燃える」ゼレンスキー大統領がロシアへの夜間攻撃後に警告",
       "summary_ja": "ウクライナのゼレンスキー大統領は、ロシア領土への夜間攻撃の後、モスクワに対して報復を警告した。ウクライナはロシアの軍事施設や基盤施設に対する継続的な攻撃を行っている。",
       "category": "conflict",
@@ -201,7 +175,7 @@
       "url": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
       "source": "guardian",
       "time": 1781813077000,
-      "rank": 20,
+      "rank": 18,
       "title_ja": "中東危機ライブ：トランプ大統領、レバノン・ヒズボラ・イスラエルを含むすべての前線での『完全な停戦』を期待すると述べる",
       "summary_ja": "トランプ米大統領は、中東における全面的な停戦を期待していると発表した。この声明は、レバノン、ヒズボラ、イスラエル間の紛争を含む複数の地域での緊張緩和を目指すものである。",
       "category": "conflict",
@@ -214,7 +188,7 @@
       "url": "https://www.theguardian.com/world/2026/jun/18/iran-announces-plans-to-bring-in-maritime-fees-for-strait-of-hormuz",
       "source": "guardian",
       "time": 1781804431000,
-      "rank": 22,
+      "rank": 20,
       "title_ja": "イラン、ホルムズ海峡の海上通行料導入を発表",
       "summary_ja": "イランはホルムズ海峡を通過する船舶に対して海上通行料を徴収する計画を発表した。同海峡は世界の石油輸送の重要な経路である。",
       "category": "economy",
@@ -227,7 +201,7 @@
       "url": "https://www.theguardian.com/world/2026/jun/18/iran-peace-deal-us-trump",
       "source": "guardian",
       "time": 1781797263000,
-      "rank": 23,
+      "rank": 21,
       "title_ja": "イラン和平合意は2025年以来の米国の後退がいかに大きいかを明確にする",
       "summary_ja": "米国とイランの平和合意により、2025年以降の米国の国際的地位の後退が明らかになった。この合意は中東地域での米国の影響力低下を示す重要な事例となっている。",
       "category": "conflict",
@@ -236,43 +210,30 @@
       "place": "イラン"
     },
     {
-      "id": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
-      "url": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
-      "source": "dw",
-      "time": 1781791920000,
-      "rank": 25,
-      "title_ja": "米国とイラン協議：スイス・アルプスでの希望と懐疑",
-      "summary_ja": "スイスのアルプス地域で米国とイランが協議を行い、核問題をめぐる交渉が進められている。国際社会では交渉の進展に期待と懐疑の両方の見方がある。",
-      "category": "politics",
-      "lon": 8.2275,
-      "lat": 46.8182,
-      "place": "スイス・アルプス"
-    },
-    {
-      "id": "https://www.france24.com/en/middle-east/20260618-us-forces-lift-iran-ports-blockade-as-uncertainty-clouds-planned-switzerland-talks",
-      "url": "https://www.france24.com/en/middle-east/20260618-us-forces-lift-iran-ports-blockade-as-uncertainty-clouds-planned-switzerland-talks",
+      "id": "https://www.france24.com/en/video/20260618-ukraine-hits-moscow-with-large-scale-attack",
+      "url": "https://www.france24.com/en/video/20260618-ukraine-hits-moscow-with-large-scale-attack",
       "source": "france24",
-      "time": 1781812295000,
-      "rank": 27,
-      "title_ja": "米軍がイラン港湾の封鎖を解除、スイスでの計画中の協議に不確実性",
-      "summary_ja": "米軍がイラン港湾に対する封鎖を解除した。一方、スイスで予定されていた協議の実現に向けて不確実性が広がっている。",
+      "time": 1781792958000,
+      "rank": 26,
+      "title_ja": "ウクライナがモスクワに「大規模」攻撃を実施",
+      "summary_ja": "ウクライナがモスクワに対して大規模な攻撃を行った。ロシアの首都への攻撃は戦争の激化を示している。",
       "category": "conflict",
-      "lon": 53.688,
-      "lat": 32.4279,
-      "place": "イラン"
+      "lon": 37.6173,
+      "lat": 55.7558,
+      "place": "モスクワ、ロシア"
     },
     {
-      "id": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
-      "url": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
-      "source": "france24",
-      "time": 1781805751000,
+      "id": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
+      "url": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
+      "source": "npr",
+      "time": 1781799138000,
       "rank": 28,
-      "title_ja": "米国とイランの合意：ホルムズ海峡の地位をめぐる重要な問題が残る",
-      "summary_ja": "米国とイランの核合意に関連して、戦略的に重要なホルムズ海峡の地位や管理に関する懸念が継続している。両国間の交渉では、この重要な海上通路の将来的な役割についての合意がまだ明確になっていない。",
-      "category": "politics",
-      "lon": 56.3417,
-      "lat": 26.5597,
-      "place": "ホルムズ海峡（ペルシャ湾、イラン・オマーン間）"
+      "title_ja": "ウクライナがモスクワの石油精製所を含む複数の施設に大規模ドローン攻撃",
+      "summary_ja": "ウクライナがモスクワの石油精製所と複数の施設を対象とした大規模なドローン攻撃を実施した。ロシアのエネルギーインフラに対する攻撃の一環と見られている。",
+      "category": "conflict",
+      "lon": 37.6173,
+      "lat": 55.7558,
+      "place": "モスクワ、ロシア"
     }
   ]
 }
