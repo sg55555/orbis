@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T22:31:03Z",
+  "updated": "2026-06-18T22:45:48Z",
   "count": 256,
   "points": [
+    {
+      "id": "hv74985962",
+      "lon": -155.497329711914,
+      "lat": 19.1666660308838,
+      "depth": 28.3199996948242,
+      "mag": 2.15,
+      "place": "4 km SSW of Pāhala, Hawaii",
+      "time": 1781821740160,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985962"
+    },
     {
       "id": "aka2026maagjj",
       "lon": -154.642,
@@ -44,14 +54,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzzoly"
     },
     {
-      "id": "us7000sufm",
-      "lon": -64.2493,
-      "lat": 18.0931,
-      "depth": 7.437,
-      "mag": 3.9,
-      "place": "61 km NE of Christiansted, U.S. Virgin Islands",
-      "time": 1781819338588,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sufm"
+      "id": "pr2026169002",
+      "lon": -64.27,
+      "lat": 18.2895,
+      "depth": 35,
+      "mag": 3.86,
+      "place": "55 km E of Cruz Bay, U.S. Virgin Islands",
+      "time": 1781819340550,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026169002"
     },
     {
       "id": "nc75379281",
@@ -2552,16 +2562,6 @@
       "place": "70 km WSW of Nikolski, Alaska",
       "time": 1781736408330,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251573"
-    },
-    {
-      "id": "aka2026lyexqn",
-      "lon": -147.427,
-      "lat": 64.956,
-      "depth": 1.1,
-      "mag": 0.9,
-      "place": "9 km E of Fox, Alaska",
-      "time": 1781735829417,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyexqn"
     }
   ]
 }
