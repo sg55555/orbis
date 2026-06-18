@@ -38,19 +38,33 @@
         </div>
       </div>
     </div>
-    <section id="media" class="media-section">
-      <div class="media-head">
-        <div class="media-cats">
-          <button class="media-cat active" data-cat="news">📺 ニュース</button>
-          <button class="media-cat" data-cat="cameras">📷 カメラ</button>
+      <section id="media" class="media-section">
+        <div id="media-news" class="media-pane">
+          <div class="pane-head">
+            <h3 class="pane-title">📺 ニュース</h3>
+            <div class="news-tabs" id="news-tabs"></div>
+          </div>
+          <div class="media-player">
+            <iframe id="news-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+          </div>
+          <div class="pane-now news-now">—</div>
         </div>
-        <span class="media-now">—</span>
-      </div>
-      <div class="media-player">
-        <iframe id="media-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <div id="media-selector" class="media-selector"></div>
-    </section>
+        <div id="media-cams" class="media-pane">
+          <div class="pane-head">
+            <h3 class="pane-title">📷 ライブカメラ</h3>
+            <div class="cams-controls">
+              <div class="area-tabs" id="area-tabs"></div>
+              <div class="mode-btns" id="mode-btns">
+                <button class="mode-btn" data-mode="1">1</button>
+                <button class="mode-btn active" data-mode="4">4</button>
+                <button class="mode-btn" data-mode="6">6</button>
+              </div>
+            </div>
+          </div>
+          <div class="cams-grid cols-2" id="cams-grid"></div>
+          <div class="pane-now cams-now">—</div>
+        </div>
+      </section>
   </div>
   <script type="module" src="js/main.js"></script>
 </body>

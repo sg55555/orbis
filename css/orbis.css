@@ -138,19 +138,37 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .sel-popup .sel-hint { font-size: 10px; color: var(--cyan); opacity: .85; margin-top: 4px; }
 .sel-popup .sel-note { font-size: 9px; color: var(--muted); opacity: .9; }
 
-/* 下部メディア領域（スクロール大画面・ニュース/カメラ） */
-.media-section { padding: 24px 16px 40px; max-width: 980px; margin: 0 auto; }
-.media-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
-.media-cats { display: flex; gap: 8px; }
-.media-cat { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);
-  font-size: 13px; padding: 6px 14px; border-radius: 999px; cursor: pointer; }
-.media-cat.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(57, 208, 255, .3); }
-.media-now { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* 下部メディア領域（2ペイン: ニュース｜地域カメラ・フル幅50/50） */
+.media-section { display: flex; gap: 16px; padding: 24px 16px 40px; }
+.media-pane { flex: 1 1 0; min-width: 0; }
+.pane-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+.pane-title { margin: 0; font-size: 15px; color: var(--text); white-space: nowrap; letter-spacing: .02em; }
+.news-tabs, .area-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.cams-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.news-tab, .area-tab { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);
+  font-size: 12px; padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.news-tab.active, .area-tab.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px rgba(57, 208, 255, .3); }
+.mode-btns { display: flex; gap: 4px; }
+.mode-btn { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);
+  font-size: 12px; width: 28px; height: 26px; border-radius: 6px; cursor: pointer; }
+.mode-btn.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px rgba(57, 208, 255, .3); }
 .media-player { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px;
-  overflow: hidden; background: #000; border: 1px solid var(--glass-rim);
-  box-shadow: 0 8px 40px rgba(0, 0, 0, .5); }
+  overflow: hidden; background: #000; border: 1px solid var(--glass-rim); box-shadow: 0 8px 40px rgba(0, 0, 0, .5); }
 .media-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-.media-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
-.media-item { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);
-  font-size: 12px; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
-.media-item.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px rgba(57, 208, 255, .3); }
+.cams-grid { display: grid; gap: 8px; }
+.cams-grid.cols-1 { grid-template-columns: 1fr; }
+.cams-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+.cams-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+.cam-cell { position: relative; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden;
+  background: #000; border: 1px solid var(--line); cursor: pointer; }
+.cam-cell.active { border-color: var(--cyan); box-shadow: 0 0 10px rgba(57, 208, 255, .35); }
+.cam-cell img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.cam-cell iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.cam-cell .cam-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 6px;
+  font-size: 11px; color: var(--text); background: linear-gradient(transparent, rgba(0, 0, 0, .7));
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cam-cell.empty { background: rgba(10, 18, 32, .4); cursor: default; }
+.cam-cell.empty .cam-label { background: none; color: var(--muted); text-align: center; }
+.pane-now { font-size: 12px; color: var(--muted); margin-top: 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+@media (max-width: 860px) { .media-section { flex-direction: column; } }
