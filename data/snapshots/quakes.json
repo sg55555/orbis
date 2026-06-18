@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T23:01:12Z",
+  "updated": "2026-06-18T23:22:11Z",
   "count": 254,
   "points": [
+    {
+      "id": "ci41490352",
+      "lon": -116.7145,
+      "lat": 33.5326666666667,
+      "depth": 6.01,
+      "mag": 1.08,
+      "place": "5 km WSW of Anza, CA",
+      "time": 1781824467120,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490352"
+    },
+    {
+      "id": "hv74985987",
+      "lon": -155.489334106445,
+      "lat": 19.1791667938232,
+      "depth": 31.0599994659424,
+      "mag": 1.74,
+      "place": "2 km SSW of Pāhala, Hawaii",
+      "time": 1781823764020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985987"
+    },
     {
       "id": "nc75379306",
       "lon": -121.941833496094,
@@ -32,6 +52,16 @@
       "place": "4 km SSW of Pāhala, Hawaii",
       "time": 1781821740160,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985962"
+    },
+    {
+      "id": "pr71520518",
+      "lon": -64.3631666666667,
+      "lat": 18.0965,
+      "depth": 9.65,
+      "mag": 3.15,
+      "place": "52 km ESE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1781821490330,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520518"
     },
     {
       "id": "aka2026maagjj",
@@ -242,6 +272,16 @@
       "place": "5 km SSE of Rodeo, CA",
       "time": 1781812763360,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379231"
+    },
+    {
+      "id": "aka2026lzvbvo",
+      "lon": -164.682,
+      "lat": 53.591,
+      "depth": 11.1,
+      "mag": 3.5,
+      "place": "93 km SE of Akutan, Alaska",
+      "time": 1781811682933,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzvbvo"
     },
     {
       "id": "nc75379216",
@@ -1524,6 +1564,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489632"
     },
     {
+      "id": "av93062154",
+      "lon": -169.936,
+      "lat": 52.8376666666667,
+      "depth": 10.29,
+      "mag": 1.04,
+      "place": "73 km W of Nikolski, Alaska",
+      "time": 1781766166840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062154"
+    },
+    {
       "id": "us7000su9f",
       "lon": 125.1953,
       "lat": 5.7634,
@@ -2492,56 +2542,6 @@
       "place": "12 km SE of Pāhala, Hawaii",
       "time": 1781738738540,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985082"
-    },
-    {
-      "id": "av94251668",
-      "lon": -178.978333333333,
-      "lat": 51.7678333333333,
-      "depth": 9.86,
-      "mag": 0.76,
-      "place": "162 km W of Adak, Alaska",
-      "time": 1781738321550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251668"
-    },
-    {
-      "id": "av94251663",
-      "lon": -169.902166666667,
-      "lat": 52.791,
-      "depth": 10.65,
-      "mag": 0.26,
-      "place": "71 km WSW of Nikolski, Alaska",
-      "time": 1781738080020,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251663"
-    },
-    {
-      "id": "av94251658",
-      "lon": -169.906833333333,
-      "lat": 52.802,
-      "depth": 10.59,
-      "mag": 0.59,
-      "place": "72 km WSW of Nikolski, Alaska",
-      "time": 1781737996990,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251658"
-    },
-    {
-      "id": "pr2026168002",
-      "lon": -68.9756,
-      "lat": 18.6231,
-      "depth": 61,
-      "mag": 3.75,
-      "place": "3 km N of Guaymate, Dominican Republic",
-      "time": 1781737583470,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026168002"
-    },
-    {
-      "id": "hv74985067",
-      "lon": -155.282501220703,
-      "lat": 19.4025001525879,
-      "depth": 0.219999998807907,
-      "mag": 1.76,
-      "place": "6 km SW of Volcano, Hawaii",
-      "time": 1781737549070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985067"
     }
   ]
 }
