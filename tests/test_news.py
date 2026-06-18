@@ -47,3 +47,32 @@ def test_parse_feed_atom_link_href():
 
 def test_parse_feed_garbage_is_empty():
     assert parse_feed("not xml", "ex") == []
+
+
+from collectors.lib.rss import dedup, recent, to_epoch_ms
+
+
+def test_dedup_by_title_and_url():
+    arts = [
+        {"title": "Quake hits Tokyo!", "url": "https://a.com/1", "published_iso": "2026-06-18T09:00:00Z", "source": "a"},
+        {"title": "quake hits tokyo", "url": "https://b.com/2", "published_iso": "2026-06-18T08:00:00Z", "source": "b"},
+        {"title": "Other", "url": "https://a.com/1", "published_iso": "2026-06-18T07:00:00Z", "source": "a"},
+    ]
+    out = dedup(arts)
+    assert len(out) == 1  # 同一正規化タイトル＆同一URLで1件
+
+
+def test_recent_window():
+    now = datetime(2026, 6, 18, 12, 0, 0, tzinfo=timezone.utc)
+    arts = [
+        {"title": "fresh", "url": "u1", "published_iso": "2026-06-18T06:00:00Z", "source": "a"},
+        {"title": "old", "url": "u2", "published_iso": "2026-06-16T06:00:00Z", "source": "a"},
+        {"title": "nodate", "url": "u3", "published_iso": None, "source": "a"},
+    ]
+    out = recent(arts, now, hours=24)
+    assert [a["title"] for a in out] == ["fresh"]
+
+
+def test_to_epoch_ms():
+    assert to_epoch_ms("2026-06-18T00:00:00Z") == 1781740800000
+    assert to_epoch_ms(None) == 0

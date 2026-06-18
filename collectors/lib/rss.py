@@ -51,3 +51,37 @@ def parse_feed(xml_text, source):
         if title and url:
             out.append({"title": title, "url": url, "published_iso": date, "source": source})
     return out
+
+
+def _norm_title(t):
+    return re.sub(r"[^a-z0-9]+", "", (t or "").lower())
+
+
+def dedup(articles):
+    """正規化タイトル または URL の一致で重複排除（先勝ち・純粋）。"""
+    seen_title, seen_url, out = set(), set(), []
+    for a in articles:
+        nt, u = _norm_title(a.get("title")), a.get("url")
+        if nt in seen_title or u in seen_url:
+            continue
+        seen_title.add(nt)
+        seen_url.add(u)
+        out.append(a)
+    return out
+
+
+def to_epoch_ms(iso):
+    """ISO UTC 文字列 -> epoch ms。None/不正は 0（純粋）。"""
+    if not iso:
+        return 0
+    try:
+        dt = datetime.fromisoformat(iso.replace("Z", "+00:00"))
+    except ValueError:
+        return 0
+    return int(dt.timestamp() * 1000)
+
+
+def recent(articles, now, hours=24):
+    """published が直近 hours 内のものだけ（日付不明は除外・純粋）。now=aware datetime。"""
+    cutoff = now.timestamp() * 1000 - hours * 3600 * 1000
+    return [a for a in articles if to_epoch_ms(a.get("published_iso")) >= cutoff]
