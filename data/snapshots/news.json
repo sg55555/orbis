@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-18T19:31:42Z",
+  "updated": "2026-06-18T19:46:23Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/18/pakistan-signs-us-iran-mou?traffic_source=rss",
@@ -158,32 +158,6 @@
       "place": "日本"
     },
     {
-      "id": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781791372000,
-      "rank": 18,
-      "title_ja": "ロシアのシャドーフリート・タンカーがスミルトス事件以来初めてイギリス海峡に進入",
-      "summary_ja": "ロシアの違法な石油輸送に使用されるシャドーフリート（影の艦隊）に属するタンカーが、スミルトス号の乗船事件以来初めてイギリス海峡を通過した。この動きはロシアの海上輸送活動の継続を示唆している。",
-      "category": "conflict",
-      "lon": -1.5,
-      "lat": 50.5,
-      "place": "イギリス海峡"
-    },
-    {
-      "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781779958000,
-      "rank": 19,
-      "title_ja": "ウクライナのドローン攻撃後、プーチンは戦術を変更するのか",
-      "summary_ja": "ウクライナによるドローン攻撃を受けて、ロシアのプーチン大統領が軍事戦術の変更を検討しているかについて分析している。ロシアの対応方針が問われている。",
-      "category": "conflict",
-      "lon": 37.6173,
-      "lat": 55.7558,
-      "place": "ロシア・モスクワ"
-    },
-    {
       "id": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
@@ -201,7 +175,7 @@
       "url": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "source": "guardian",
       "time": 1781796066000,
-      "rank": 21,
+      "rank": 22,
       "title_ja": "「ウクライナが燃えれば、モスクワも燃える」ゼレンスキー大統領がロシアへの夜間攻撃後に警告",
       "summary_ja": "ウクライナのゼレンスキー大統領は、ロシアへの夜間ドローン攻撃の後、モスクワへの報復を警告した。両国間の軍事紛争が継続している。",
       "category": "conflict",
@@ -213,8 +187,8 @@
       "id": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
       "url": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
       "source": "guardian",
-      "time": 1781809375000,
-      "rank": 22,
+      "time": 1781810897000,
+      "rank": 23,
       "title_ja": "中東危機ライブ：トランプ大統領、米国は「レバノン、ヒズボラ、イスラエルを含むすべての前線での完全な停戦」を期待していると表明",
       "summary_ja": "トランプ大統領は、中東地域におけるイスラエル、ヒズボラ、レバノンを含むすべての紛争当事者に対して、完全な停戦を期待していると述べた。米国は地域の紛争解決に向けた積極的な外交姿勢を示している。",
       "category": "conflict",
@@ -227,7 +201,7 @@
       "url": "https://www.theguardian.com/world/2026/jun/18/iran-announces-plans-to-bring-in-maritime-fees-for-strait-of-hormuz",
       "source": "guardian",
       "time": 1781804431000,
-      "rank": 23,
+      "rank": 24,
       "title_ja": "イラン、ホルムズ海峡の海上通行料導入計画を発表",
       "summary_ja": "イランはホルムズ海峡を通過する船舶に対して海上通行料を徴収する計画を発表した。この措置は地域の海上輸送に影響を与える可能性がある。",
       "category": "politics",
@@ -240,7 +214,7 @@
       "url": "https://www.theguardian.com/world/2026/jun/18/iran-peace-deal-us-trump",
       "source": "guardian",
       "time": 1781797263000,
-      "rank": 24,
+      "rank": 25,
       "title_ja": "イラン和平合意は2025年以降の米国の後退がいかに進んだかを明確にしている",
       "summary_ja": "イランとの新しい和平合意により、2025年以降における米国外交政策の大きな転換と国際的地位の後退が明らかになった。この合意は中東地域における米国の影響力の低下を象徴している。",
       "category": "politics",
@@ -253,7 +227,7 @@
       "url": "https://www.france24.com/en/tv-shows/the-debate/20260618-signing-off-trump-rushes-to-turn-page-on-iran-war",
       "source": "france24",
       "time": 1781806277000,
-      "rank": 26,
+      "rank": 27,
       "title_ja": "イラン戦争の終焉へ？トランプが急速にページをめくろうとしている",
       "summary_ja": "トランプ大統領がイランとの対立に終止符を打つ動きを急いでいる。米国とイラン間の緊張緩和に向けた急速な転換が進行中である。",
       "category": "conflict",
@@ -262,17 +236,17 @@
       "place": "イラン"
     },
     {
-      "id": "https://www.france24.com/en/for-israel-us-iran-deal-a-disaster-incompatible-with-its-security-interests",
-      "url": "https://www.france24.com/en/for-israel-us-iran-deal-a-disaster-incompatible-with-its-security-interests",
+      "id": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
+      "url": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
       "source": "france24",
-      "time": 1781796514000,
+      "time": 1781805751000,
       "rank": 28,
-      "title_ja": "イスラエルにとって米国とイランの協議は安全保障上「破滅的」",
-      "summary_ja": "イスラエルは米国とイランの核協議について、同国の安全保障利益と相容れない「災難」だと位置付けている。イスラエルはイランの核兵器開発を極めて深刻な脅威と見なしている。",
-      "category": "politics",
-      "lon": 35.2271,
-      "lat": 31.9454,
-      "place": "イスラエル"
+      "title_ja": "米国・イラン合意：ホルムズ海峡の地位について主要な問題が残存",
+      "summary_ja": "米国とイラン間の核合意をめぐり、ホルムズ海峡の航行自由と安全保障に関する重要な問題が未解決のままとなっている。両国間の対立が継続する中、国際海運にも影響を及ぼす可能性がある。",
+      "category": "conflict",
+      "lon": 56.25,
+      "lat": 26.57,
+      "place": "ホルムズ海峡（ペルシャ湾）"
     }
   ]
 }
