@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T18:29:21Z",
-  "count": 234,
+  "updated": "2026-06-18T18:45:51Z",
+  "count": 232,
   "points": [
+    {
+      "id": "pr71520458",
+      "lon": -66.648,
+      "lat": 17.9098333333333,
+      "depth": 17.87,
+      "mag": 2.07,
+      "place": "11 km SSW of Ponce, Puerto Rico",
+      "time": 1781807387660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520458"
+    },
     {
       "id": "tx2026lxuoii",
       "lon": -100.676,
@@ -1724,14 +1734,24 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyiwic"
     },
     {
-      "id": "aka2026lyivmv",
-      "lon": -154.934,
-      "lat": 58.337,
-      "depth": 5,
-      "mag": 1.3,
-      "place": "90 km NNW of Karluk, Alaska",
-      "time": 1781742877186,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyivmv"
+      "id": "aka2026lyioix",
+      "lon": -160.062,
+      "lat": 54.496,
+      "depth": 5.2,
+      "mag": 2.2,
+      "place": "97 km SSE of Sand Point, Alaska",
+      "time": 1781742387298,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyioix"
+    },
+    {
+      "id": "aka2026lyiner",
+      "lon": -150.633,
+      "lat": 62.883,
+      "depth": 97.2,
+      "mag": 1.7,
+      "place": "43 km N of Petersville, Alaska",
+      "time": 1781742301713,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyiner"
     },
     {
       "id": "pr71520363",
@@ -1754,13 +1774,23 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985112"
     },
     {
+      "id": "aka2026lyhzwt",
+      "lon": -147.06,
+      "lat": 65.038,
+      "depth": 8.4,
+      "mag": 1.4,
+      "place": "18 km N of Two Rivers, Alaska",
+      "time": 1781741381259,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyhzwt"
+    },
+    {
       "id": "aka2026lyhuzi",
-      "lon": -149.955,
-      "lat": 62.181,
-      "depth": 5,
-      "mag": 2.1,
-      "place": "5 km WNW of Susitna North, Alaska",
-      "time": 1781741041839,
+      "lon": -149.965,
+      "lat": 62.153,
+      "depth": 3,
+      "mag": 1.9,
+      "place": "6 km W of Susitna North, Alaska",
+      "time": 1781741042038,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyhuzi"
     },
     {
@@ -2034,6 +2064,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378791"
     },
     {
+      "id": "uu80007458",
+      "lon": -112.042333333333,
+      "lat": 40.727,
+      "depth": 7.22,
+      "mag": 0.18,
+      "place": "5 km NW of West Valley City, Utah",
+      "time": 1781730896260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007458"
+    },
+    {
       "id": "av94251388",
       "lon": -169.877333333333,
       "lat": 52.8076666666667,
@@ -2282,66 +2322,6 @@
       "place": "41 km NNE of Rankin, Texas",
       "time": 1781722250684,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lvztlp"
-    },
-    {
-      "id": "ci41489336",
-      "lon": -117.8115,
-      "lat": 35.2916666666667,
-      "depth": 8.45,
-      "mag": 1.42,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781721900700,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489336"
-    },
-    {
-      "id": "hv74984712",
-      "lon": -155.37516784668,
-      "lat": 19.0191669464111,
-      "depth": 16.7199993133545,
-      "mag": 1.95,
-      "place": "22 km ESE of Naalehu, Hawaii",
-      "time": 1781721718100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74984712"
-    },
-    {
-      "id": "aka2026lxwzqa",
-      "lon": -177.112,
-      "lat": 51.688,
-      "depth": 12.1,
-      "mag": 1.5,
-      "place": "38 km WSW of Adak, Alaska",
-      "time": 1781721572335,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxwzqa"
-    },
-    {
-      "id": "aka2026lxwxxf",
-      "lon": 176.285,
-      "lat": 51.934,
-      "depth": 10.5,
-      "mag": 3,
-      "place": "234 km ESE of Attu Station, Alaska",
-      "time": 1781721452914,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxwxxf"
-    },
-    {
-      "id": "aka2026lxwwkx",
-      "lon": -155.841,
-      "lat": 56.73,
-      "depth": 29.2,
-      "mag": 2.4,
-      "place": "104 km WSW of Akhiok, Alaska",
-      "time": 1781721350994,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxwwkx"
-    },
-    {
-      "id": "nc75378741",
-      "lon": -122.84700012207,
-      "lat": 38.8241653442383,
-      "depth": 1.58000004291534,
-      "mag": 0.43,
-      "place": "9 km WNW of The Geysers, CA",
-      "time": 1781721225130,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378741"
     }
   ]
 }
