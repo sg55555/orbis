@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T21:46:00Z",
-  "count": 255,
+  "updated": "2026-06-18T22:01:17Z",
+  "count": 254,
   "points": [
+    {
+      "id": "aka2026lzzoly",
+      "lon": -148.695,
+      "lat": 63.995,
+      "depth": 5,
+      "mag": 2,
+      "place": "20 km NE of Healy, Alaska",
+      "time": 1781819755477,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzzoly"
+    },
+    {
+      "id": "us7000sufm",
+      "lon": -64.2493,
+      "lat": 18.0931,
+      "depth": 7.437,
+      "mag": 3.9,
+      "place": "61 km NE of Christiansted, U.S. Virgin Islands",
+      "time": 1781819338588,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sufm"
+    },
+    {
+      "id": "nc75379281",
+      "lon": -123.958503723145,
+      "lat": 40.3370018005371,
+      "depth": 21.9599990844727,
+      "mag": 2,
+      "place": "22 km SE of Rio Dell, CA",
+      "time": 1781819285870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379281"
+    },
     {
       "id": "nc75379271",
       "lon": -122.786499023438,
@@ -2512,46 +2542,6 @@
       "place": "65 km WSW of Nikolski, Alaska",
       "time": 1781733947270,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251498"
-    },
-    {
-      "id": "aka2026lydrrz",
-      "lon": -152.388,
-      "lat": 62.366,
-      "depth": 0.2,
-      "mag": 1.5,
-      "place": "66 km NW of Skwentna, Alaska",
-      "time": 1781733610193,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lydrrz"
-    },
-    {
-      "id": "aka2026lydirt",
-      "lon": -160.07,
-      "lat": 54.517,
-      "depth": 5.4,
-      "mag": 2.2,
-      "place": "95 km SSE of Sand Point, Alaska",
-      "time": 1781733188097,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lydirt"
-    },
-    {
-      "id": "us7000su6s",
-      "lon": 126.8462,
-      "lat": 6.6029,
-      "depth": 43.107,
-      "mag": 4.8,
-      "place": "64 km ESE of Bobon, Philippines",
-      "time": 1781732966605,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su6s"
-    },
-    {
-      "id": "av94251448",
-      "lon": -169.954166666667,
-      "lat": 52.821,
-      "depth": -0.64,
-      "mag": 0.53,
-      "place": "74 km W of Nikolski, Alaska",
-      "time": 1781732728260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251448"
     }
   ]
 }
