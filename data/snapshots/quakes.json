@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T22:01:17Z",
-  "count": 254,
+  "updated": "2026-06-18T22:15:50Z",
+  "count": 257,
   "points": [
+    {
+      "id": "ci41490312",
+      "lon": -117.268666666667,
+      "lat": 34.0568333333333,
+      "depth": 14.47,
+      "mag": 1,
+      "place": "1 km NW of Loma Linda, CA",
+      "time": 1781820432820,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490312"
+    },
+    {
+      "id": "nc75379286",
+      "lon": -122.059829711914,
+      "lat": 37.8371658325195,
+      "depth": 8.27999973297119,
+      "mag": 1.34,
+      "place": "3 km WSW of Alamo, CA",
+      "time": 1781819991030,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379286"
+    },
     {
       "id": "aka2026lzzoly",
       "lon": -148.695,
@@ -1794,6 +1814,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8t"
     },
     {
+      "id": "av94252173",
+      "lon": -169.878833333333,
+      "lat": 52.8178333333333,
+      "depth": 5.42,
+      "mag": 0.59,
+      "place": "69 km WSW of Nikolski, Alaska",
+      "time": 1781756071600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252173"
+    },
+    {
+      "id": "av94252163",
+      "lon": -169.903166666667,
+      "lat": 52.8131666666667,
+      "depth": 7.35,
+      "mag": 0.43,
+      "place": "71 km WSW of Nikolski, Alaska",
+      "time": 1781755869830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252163"
+    },
+    {
       "id": "aka2026lypsrx",
       "lon": -154.908,
       "lat": 58.245,
@@ -2532,16 +2572,6 @@
       "place": "51 km NNE of Karluk, Alaska",
       "time": 1781734808117,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyeixd"
-    },
-    {
-      "id": "av94251498",
-      "lon": -169.7555,
-      "lat": 52.699,
-      "depth": 9.79,
-      "mag": 1.24,
-      "place": "65 km WSW of Nikolski, Alaska",
-      "time": 1781733947270,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251498"
     }
   ]
 }
