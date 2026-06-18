@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T20:31:04Z",
-  "count": 249,
+  "updated": "2026-06-18T20:58:32Z",
+  "count": 254,
   "points": [
+    {
+      "id": "nc75379251",
+      "lon": -120.539329528809,
+      "lat": 35.9836654663086,
+      "depth": 2.61999988555908,
+      "mag": 1.03,
+      "place": "14 km NW of Parkfield, CA",
+      "time": 1781815901070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379251"
+    },
     {
       "id": "aka2026lzwqaj",
       "lon": -153.563,
@@ -194,6 +204,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxvibs"
     },
     {
+      "id": "uu80142821",
+      "lon": -111.082333333333,
+      "lat": 39.4925,
+      "depth": 6.06,
+      "mag": 1.07,
+      "place": "6 km W of Hiawatha, Utah",
+      "time": 1781808018500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142821"
+    },
+    {
+      "id": "ci41490088",
+      "lon": -118.347,
+      "lat": 35.0536666666667,
+      "depth": -0.94,
+      "mag": 1.66,
+      "place": "13 km SE of Tehachapi, CA",
+      "time": 1781807496610,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490088"
+    },
+    {
       "id": "pr71520458",
       "lon": -66.648,
       "lat": 17.9098333333333,
@@ -205,12 +235,12 @@
     },
     {
       "id": "tx2026lxuoii",
-      "lon": -100.676,
-      "lat": 32.789,
-      "depth": 2.675,
+      "lon": -100.672,
+      "lat": 32.769,
+      "depth": 6.2744,
       "mag": 1.6,
-      "place": "18 km NNE of Hermleigh, Texas",
-      "time": 1781806979075,
+      "place": "16 km NNE of Hermleigh, Texas",
+      "time": 1781806978972,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxuoii"
     },
     {
@@ -252,6 +282,26 @@
       "place": "8 km ESE of Cloverdale, CA",
       "time": 1781805888960,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379176"
+    },
+    {
+      "id": "ci41490032",
+      "lon": -115.558,
+      "lat": 32.9475,
+      "depth": 3.54,
+      "mag": 1.36,
+      "place": "4 km SW of Brawley, CA",
+      "time": 1781805724490,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490032"
+    },
+    {
+      "id": "ci41490024",
+      "lon": -114.9865,
+      "lat": 33.0478333333333,
+      "depth": -0.2,
+      "mag": 1.62,
+      "place": "45 km NE of Holtville, CA",
+      "time": 1781805162840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490024"
     },
     {
       "id": "hv74985707",
@@ -2074,6 +2124,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378821"
     },
     {
+      "id": "av94251818",
+      "lon": -159.6345,
+      "lat": 55.9901666666667,
+      "depth": 25.73,
+      "mag": 0.81,
+      "place": "13 km NW of Ivanof Bay, Alaska",
+      "time": 1781743549430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251818"
+    },
+    {
+      "id": "av94251813",
+      "lon": -159.663833333333,
+      "lat": 55.9841666666667,
+      "depth": 23.48,
+      "mag": 1.05,
+      "place": "14 km NW of Ivanof Bay, Alaska",
+      "time": 1781743493730,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251813"
+    },
+    {
       "id": "aka2026lyiwic",
       "lon": -156.322,
       "lat": 54.968,
@@ -2472,26 +2542,6 @@
       "place": "63 km S of Adak, Alaska",
       "time": 1781730129555,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lybtbt"
-    },
-    {
-      "id": "av94251353",
-      "lon": -169.9285,
-      "lat": 52.82,
-      "depth": 10.73,
-      "mag": 2.18,
-      "place": "73 km W of Nikolski, Alaska",
-      "time": 1781729883190,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251353"
-    },
-    {
-      "id": "uu80142751",
-      "lon": -112.045166666667,
-      "lat": 40.7321666666667,
-      "depth": 6.08,
-      "mag": 1.39,
-      "place": "5 km ENE of Magna, Utah",
-      "time": 1781729795410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142751"
     }
   ]
 }
