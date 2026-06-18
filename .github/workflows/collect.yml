@@ -1,12 +1,15 @@
 name: collect
 on:
   schedule:
-    - cron: '*/15 * * * *'   # 15分毎（OpenSky匿名クレジット安全域＋GDELT更新間隔）
+    # 15分間隔だが毎時オフセット（:07,:22,:37,:52）にして、:00/:15/:30/:45 の
+    # 混雑スロットを避ける。GitHub Actions schedule は高負荷時に間引かれ実測 1.9〜5.1h に
+    # なるため、オフセットで間引きを緩和する（恒久対策は外部dispatch・docs/scheduling.md 参照）。
+    - cron: '7,22,37,52 * * * *'
   workflow_dispatch: {}
 permissions:
   contents: write
 concurrency:
-  group: collect
+  group: collect            # collect-slow.yml と共有 → リポジトリ全体で直列化し push 競合を防ぐ
   cancel-in-progress: false
 jobs:
   collect:
@@ -16,16 +19,13 @@ jobs:
       - uses: actions/setup-python@v6
         with: { python-version: '3.12' }
       - run: pip install -r requirements.txt
+      # 各収集は失敗してもジョブを止めない（1ソースの障害で全層のコミットを失わない＝SPOF回避）。
       - name: Collect quakes
-        run: python -m collectors.quakes
+        run: python -m collectors.quakes || echo "quakes skipped"
       - name: Collect flights
         run: python -m collectors.flights || echo "flights skipped"
       - name: Collect GDELT events
         run: python -m collectors.gdelt_events || echo "gdelt skipped"
-      - name: Collect air temperature
-        run: python -m collectors.airtemp || echo "airtemp skipped"
-      - name: Collect sea surface temperature
-        run: python -m collectors.sst || echo "sst skipped"
       - name: Collect ships
         env:
           AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
@@ -43,5 +43,6 @@ jobs:
             echo "no changes"
           else
             git commit -m "data: refresh snapshots [skip ci]"
+            git pull --rebase origin main   # collect-slow との競合に備え push 前に取り込む
             git push
           fi
