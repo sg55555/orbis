@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T23:31:01Z",
-  "count": 253,
+  "updated": "2026-06-18T23:45:50Z",
+  "count": 255,
   "points": [
+    {
+      "id": "nc75379311",
+      "lon": -122.795829772949,
+      "lat": 38.8141670227051,
+      "depth": 3.30999994277954,
+      "mag": 1.37,
+      "place": "5 km NW of The Geysers, CA",
+      "time": 1781825891080,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379311"
+    },
+    {
+      "id": "aka2026macuum",
+      "lon": -149.929,
+      "lat": 61.528,
+      "depth": 30.6,
+      "mag": 1.9,
+      "place": "1 km ENE of Big Lake, Alaska",
+      "time": 1781825592874,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026macuum"
+    },
     {
       "id": "ci41490352",
       "lon": -116.7145,
@@ -1232,6 +1252,16 @@
       "place": "20 km W of Anchor Point, Alaska",
       "time": 1781774058266,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzaeci"
+    },
+    {
+      "id": "av93062169",
+      "lon": -154.895333333333,
+      "lat": 58.3103333333333,
+      "depth": 5.21,
+      "mag": 0.18,
+      "place": "86 km NNW of Karluk, Alaska",
+      "time": 1781774051440,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062169"
     },
     {
       "id": "nc75378961",
@@ -2522,16 +2552,6 @@
       "place": "58 km S of Whites City, New Mexico",
       "time": 1781740027125,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwjots"
-    },
-    {
-      "id": "tx2026lwizbi",
-      "lon": -104.024,
-      "lat": 31.701,
-      "depth": 7.2662,
-      "mag": 1.1,
-      "place": "40 km W of Mentone, Texas",
-      "time": 1781739034401,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwizbi"
     }
   ]
 }

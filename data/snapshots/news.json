@@ -1,6 +1,19 @@
 {
-  "updated": "2026-06-18T23:31:33Z",
+  "updated": "2026-06-18T23:46:24Z",
   "items": [
+    {
+      "id": "https://www.aljazeera.com/news/2026/6/18/us-judge-orders-release-of-palestinian-rights-advocate-detained-by-ice?traffic_source=rss",
+      "url": "https://www.aljazeera.com/news/2026/6/18/us-judge-orders-release-of-palestinian-rights-advocate-detained-by-ice?traffic_source=rss",
+      "source": "aljazeera",
+      "time": 1781823686000,
+      "rank": 0,
+      "title_ja": "米国の裁判官、ICEに拘束されたパレスチナ人権活動家の釈放を命令",
+      "summary_ja": "米国の裁判官がICE（移民税関捜査局）に拘束されていたパレスチナ人権活動家の釈放を命じた。この決定は移民拘束慣行をめぐる法的争点に関わるものである。",
+      "category": "politics",
+      "lon": -77.0369,
+      "lat": 38.8951,
+      "place": "ワシントンD.C.、アメリカ合衆国"
+    },
     {
       "id": "https://www.aljazeera.com/news/2026/6/18/cubas-communist-party-approves-opening-economy-in-unprecedented-move?traffic_source=rss",
       "url": "https://www.aljazeera.com/news/2026/6/18/cubas-communist-party-approves-opening-economy-in-unprecedented-move?traffic_source=rss",
@@ -97,7 +110,7 @@
       "url": "https://www.bbc.com/news/articles/c98291g5rr1o?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781797596000,
-      "rank": 13,
+      "rank": 12,
       "title_ja": "ウクライナの大規模攻撃によりモスクワで黒い雨が降る、石油精製所が被害",
       "summary_ja": "ウクライナの大規模な攻撃がロシアの石油精製所に命中し、モスクワ地域で黒い雨が降るなどの被害が報告されている。この攻撃はウクライナ側による最大規模の作戦とみられている。",
       "category": "conflict",
@@ -110,7 +123,7 @@
       "url": "https://www.bbc.com/news/articles/cdx7krkdqeno?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781819245000,
-      "rank": 14,
+      "rank": 13,
       "title_ja": "ニジェール最大の空港への銃撃で35人が殺害",
       "summary_ja": "ニジェール最大の空港がgunmen（武装勢力）による攻撃を受け、35人が殺害された。同国の安全保障上の重大な脅威となっている。",
       "category": "conflict",
@@ -119,30 +132,30 @@
       "place": "ニジェール（ニアメ国際空港）"
     },
     {
-      "id": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781791372000,
-      "rank": 16,
-      "title_ja": "スミルトス乗船以来、初のロシア影の船隊タンカーがイギリス海峡に進入",
-      "summary_ja": "ロシアの制裁回避目的の影の船隊に属するタンカーが、スミルトス号への対応以降、初めてイギリス海峡に入域した。この動きは国際的な海上安全と制裁執行をめぐる緊張を反映している。",
-      "category": "conflict",
-      "lon": 1.4,
-      "lat": 50.8,
-      "place": "イギリス海峡"
-    },
-    {
       "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781779958000,
-      "rank": 17,
+      "rank": 16,
       "title_ja": "ウクライナのドローン攻撃後、プーチンは戦術を変更するのか？",
       "summary_ja": "ウクライナによるドローン攻撃を受けて、ロシアのプーチン大統領が軍事戦術の変更を迫られる可能性について報じている。",
       "category": "conflict",
       "lon": 37.6173,
       "lat": 55.7558,
       "place": "ロシア（モスクワ）"
+    },
+    {
+      "id": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
+      "url": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
+      "source": "guardian",
+      "time": 1781808909000,
+      "rank": 17,
+      "title_ja": "CDCがコンゴ民主共和国とウガンダのエボラ対応に1億700万ドルの緊急資金を動員",
+      "summary_ja": "米国疾病予防管理センター（CDC）がコンゴ民主共和国とウガンダでのエボラウイルス対応に1億700万ドルの緊急資金を活用する。両国での感染拡大に対応するための支援である。",
+      "category": "disaster",
+      "lon": 29.8739,
+      "lat": -1.9536,
+      "place": "コンゴ民主共和国"
     },
     {
       "id": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
@@ -210,24 +223,11 @@
       "place": "イラン"
     },
     {
-      "id": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
-      "url": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
-      "source": "dw",
-      "time": 1781791920000,
-      "rank": 24,
-      "title_ja": "米イラン協議：スイスアルプスでの希望と懐疑",
-      "summary_ja": "スイスアルプスで米国とイランの協議が開催され、核問題解決への期待が示される一方で、懐疑的な見方も存在している。両国の対話の行方が注視されている。",
-      "category": "politics",
-      "lon": 8.2275,
-      "lat": 46.8182,
-      "place": "スイス・アルプス"
-    },
-    {
       "id": "https://www.dw.com/en/cuba-approves-economic-reforms-amid-us-pressure/a-77597635?maca=en-rss-en-world-4025-rdf",
       "url": "https://www.dw.com/en/cuba-approves-economic-reforms-amid-us-pressure/a-77597635?maca=en-rss-en-world-4025-rdf",
       "source": "dw",
       "time": 1781773920000,
-      "rank": 26,
+      "rank": 23,
       "title_ja": "キューバが米国の圧力の中で経済改革を承認",
       "summary_ja": "キューバが米国からの圧力を受ける中、経済改革を承認した。この改革はキューバの経済政策の転換を示している。",
       "category": "economy",
@@ -240,7 +240,7 @@
       "url": "https://www.france24.com/en/americas/20260618-barack-obama-opens-presidential-center-chicago-democracy",
       "source": "france24",
       "time": 1781817167000,
-      "rank": 27,
+      "rank": 24,
       "title_ja": "オバマ前大統領、シカゴ大統領センターを開設し民主主義の防衛を呼びかけ",
       "summary_ja": "オバマ前大統領がシカゴに大統領センターをオープンした。センター開設式で、民主主義を守ることの重要性をアメリカ国民に訴えた。",
       "category": "politics",
@@ -249,30 +249,17 @@
       "place": "シカゴ、イリノイ州、アメリカ"
     },
     {
-      "id": "https://www.france24.com/en/tv-shows/the-debate/20260618-signing-off-trump-rushes-to-turn-page-on-iran-war",
-      "url": "https://www.france24.com/en/tv-shows/the-debate/20260618-signing-off-trump-rushes-to-turn-page-on-iran-war",
+      "id": "https://www.france24.com/en/for-israel-us-iran-deal-a-disaster-incompatible-with-its-security-interests",
+      "url": "https://www.france24.com/en/for-israel-us-iran-deal-a-disaster-incompatible-with-its-security-interests",
       "source": "france24",
-      "time": 1781806277000,
-      "rank": 28,
-      "title_ja": "イラン戦争に幕引き？トランプ大統領が急速に次のページへ",
-      "summary_ja": "トランプ大統領がイランとの軍事紛争から方針を転換し、別の課題への対応を急いでいる。米国とイランの緊張関係の転機を示す動きとなっている。",
+      "time": 1781796514000,
+      "rank": 27,
+      "title_ja": "イスラエルにとって米国とイランの合意は安全保障上「災害」と相容れず",
+      "summary_ja": "イスラエルは米国とイランの核合意について、自国の安全保障利益と相容れない「災害」であると表明した。イスラエルは中東地域における脅威の増大を懸念している。",
       "category": "conflict",
-      "lon": 53.688,
-      "lat": 32.4279,
-      "place": "イラン"
-    },
-    {
-      "id": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
-      "url": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
-      "source": "france24",
-      "time": 1781805751000,
-      "rank": 29,
-      "title_ja": "米イラン協議：ホルムズ海峡の地位をめぐる重要な懸案事項が残る",
-      "summary_ja": "米国とイランの間で、戦略的に重要なホルムズ海峡の地位をめぐる協議が行われている。合意の詳細については、依然として多くの未解決の問題が残されている。",
-      "category": "politics",
-      "lon": 56.5,
-      "lat": 26.1667,
-      "place": "ホルムズ海峡（ペルシャ湾）"
+      "lon": 35.2,
+      "lat": 31.9,
+      "place": "イスラエル"
     }
   ]
 }
