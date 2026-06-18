@@ -50,9 +50,12 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
       const it = itemById(cams, c.dataset.id);
       if (visible && it) {
         if (img) img.style.display = 'none';
-        if (f && !f.src) f.src = buildEmbedUrl(it, { captions }); // 既に再生中なら再設定せず再読込を避ける
+        // 既に同URLなら再設定しない（再読込回避）。判定は IDL f.src でなく getAttribute を使う：
+        // f.src='' は空文字をページURLに解決して truthy を返すため、!f.src だと再生開始を取りこぼす。
+        const url = buildEmbedUrl(it, { captions });
+        if (f && f.getAttribute('src') !== url) f.src = url;
       } else {
-        if (f) f.src = '';
+        if (f && f.getAttribute('src')) f.src = '';
         if (img) img.style.display = '';
       }
     });

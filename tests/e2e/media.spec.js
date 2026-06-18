@@ -24,6 +24,15 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
   await expect.poll(() => page.locator('#news-frame').getAttribute('src'), { timeout: 3000 }).toBeTruthy();
   expect(await page.locator('#news-frame').getAttribute('src')).toContain(news[0].channel_id);
 
+  // カメラ初回再生：地域/分割を一切触らず、初回スクロールだけで全非emptyセルが再生srcを持つ。
+  // 退行防止：iframe.src='' がページURLに解決され !f.src 判定で再生開始を取りこぼしたバグ。
+  await expect.poll(async () => {
+    const srcs = await page.locator('#cams-grid .cam-cell:not(.empty) iframe').evaluateAll(
+      (fs) => fs.map((f) => f.getAttribute('src') || ''),
+    );
+    return srcs.length > 0 && srcs.every((s) => s.includes('youtube.com/embed/'));
+  }, { timeout: 3000 }).toBe(true);
+
   // 字幕トグル：既定ON → src に cc_lang_pref=ja。OFFにすると消える。再ONで復活。
   await expect(page.locator('#media-cc-toggle')).toBeChecked();
   expect(await page.locator('#news-frame').getAttribute('src')).toContain('cc_lang_pref=ja');
