@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T18:01:16Z",
+  "updated": "2026-06-18T18:10:55Z",
   "count": 235,
   "points": [
+    {
+      "id": "nc75379176",
+      "lon": -122.935165405273,
+      "lat": 38.775333404541,
+      "depth": 4.11999988555908,
+      "mag": 1.13,
+      "place": "8 km ESE of Cloverdale, CA",
+      "time": 1781805888960,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379176"
+    },
     {
       "id": "hv74985707",
       "lon": -155.225830078125,
@@ -2342,16 +2352,6 @@
       "place": "59 km WNW of Nanwalek, Alaska",
       "time": 1781719897209,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxwbkr"
-    },
-    {
-      "id": "ci41489272",
-      "lon": -117.675,
-      "lat": 33.8903333333333,
-      "depth": 5.77,
-      "mag": 0.94,
-      "place": "10 km WNW of Corona, CA",
-      "time": 1781719491650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489272"
     }
   ]
 }
