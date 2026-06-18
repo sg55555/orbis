@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T22:15:50Z",
-  "count": 257,
+  "updated": "2026-06-18T22:31:03Z",
+  "count": 256,
   "points": [
+    {
+      "id": "aka2026maagjj",
+      "lon": -154.642,
+      "lat": 57.182,
+      "depth": 48.3,
+      "mag": 2.4,
+      "place": "38 km NW of Akhiok, Alaska",
+      "time": 1781820994575,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maagjj"
+    },
     {
       "id": "ci41490312",
       "lon": -117.268666666667,
@@ -2552,26 +2562,6 @@
       "place": "9 km E of Fox, Alaska",
       "time": 1781735829417,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyexqn"
-    },
-    {
-      "id": "aka2026lyeqdw",
-      "lon": -159.812,
-      "lat": 55.97,
-      "depth": 5.3,
-      "mag": 1.8,
-      "place": "21 km WNW of Ivanof Bay, Alaska",
-      "time": 1781735312296,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyeqdw"
-    },
-    {
-      "id": "aka2026lyeixd",
-      "lon": -154.278,
-      "lat": 58.025,
-      "depth": 11.2,
-      "mag": 1.6,
-      "place": "51 km NNE of Karluk, Alaska",
-      "time": 1781734808117,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyeixd"
     }
   ]
 }
