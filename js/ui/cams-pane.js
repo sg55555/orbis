@@ -1,4 +1,5 @@
 // カメラペイン：地域タブ × 分割モード(1/4/6) × グリッド全枠を同時再生（選択は強調＋flyTo）。
+// 1画面(mode1)は選択カメラを1枚表示＋カメラ名ピル行で切替。4/6分割の各セルに⛶で1画面化。
 import {
   buildEmbedUrl, thumbUrl, itemById,
   areasPresent, camsByArea, gridCount, gridSlots, AREA_LABEL,
@@ -10,6 +11,7 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
   const tabsEl = paneEl.querySelector('#area-tabs');
   const modeEl = paneEl.querySelector('#mode-btns');
   const gridEl = paneEl.querySelector('#cams-grid');
+  const oneEl = paneEl.querySelector('#cams-one-tabs');
   const nowEl = paneEl.querySelector('.cams-now');
   let area = 'all';
   let mode = 4;
@@ -54,38 +56,74 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
       }
     });
   }
-  function renderGrid() {
-    const cols = mode === 6 ? 3 : mode === 4 ? 2 : 1;
-    gridEl.className = `cams-grid cols-${cols}`;
-    gridEl.innerHTML = '';
-    for (const it of gridSlots(list(), gridCount(mode))) {
-      const cell = document.createElement('div');
-      cell.className = 'cam-cell';
-      if (!it) {
-        cell.classList.add('empty');
-        cell.innerHTML = '<span class="cam-label">—</span>';
-        gridEl.appendChild(cell);
-        continue;
-      }
-      cell.dataset.id = it.id;
-      const t = thumbUrl(it);
-      const img = document.createElement('img');
-      if (t) { img.src = t; img.alt = ''; cell.appendChild(img); }
-      const f = document.createElement('iframe');
-      f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
-      f.setAttribute('allowfullscreen', '');
-      cell.appendChild(f);
-      const label = document.createElement('span');
-      label.className = 'cam-label';
-      label.textContent = it.name;
-      cell.appendChild(label);
-      // 透明クリック層（iframe の上）。全枠再生中も iframe がクリックを奪わず選択＋flyTo を発火させる。
-      const hit = document.createElement('div');
-      hit.className = 'cam-hit';
-      hit.addEventListener('click', () => selectCam(it.id));
-      cell.appendChild(hit);
-      gridEl.appendChild(cell);
+  // 1セルを生成。it=null は空枠。分割表示(mode!=1)のときだけ右上に⛶（1画面化）を付ける。
+  function buildCell(it) {
+    const cell = document.createElement('div');
+    cell.className = 'cam-cell';
+    if (!it) {
+      cell.classList.add('empty');
+      cell.innerHTML = '<span class="cam-label">—</span>';
+      return cell;
     }
+    cell.dataset.id = it.id;
+    const t = thumbUrl(it);
+    const img = document.createElement('img');
+    if (t) { img.src = t; img.alt = ''; cell.appendChild(img); }
+    const f = document.createElement('iframe');
+    f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+    f.setAttribute('allowfullscreen', '');
+    cell.appendChild(f);
+    const label = document.createElement('span');
+    label.className = 'cam-label';
+    label.textContent = it.name;
+    cell.appendChild(label);
+    // 透明クリック層（iframe の上）。全枠再生中も iframe がクリックを奪わず選択＋flyTo を発火させる。
+    const hit = document.createElement('div');
+    hit.className = 'cam-hit';
+    hit.addEventListener('click', () => selectCam(it.id));
+    cell.appendChild(hit);
+    // 分割表示のときだけ⛶（このカメラをセクション内1画面に）。
+    if (mode !== 1) {
+      const exp = document.createElement('button');
+      exp.className = 'cam-expand';
+      exp.title = '1画面表示';
+      exp.textContent = '⛶';
+      exp.addEventListener('click', (e) => { e.stopPropagation(); selectCam(it.id); setMode(1); });
+      cell.appendChild(exp);
+    }
+    return cell;
+  }
+  // 1画面モードのカメラ名ピル行（表示カメラ切替）。mode!=1 では非表示。
+  function renderOneTabs() {
+    if (!oneEl) return;
+    if (mode !== 1) { oneEl.style.display = 'none'; oneEl.innerHTML = ''; return; }
+    oneEl.style.display = '';
+    oneEl.innerHTML = '';
+    for (const it of list()) {
+      const p = document.createElement('button');
+      p.className = 'cam-one-tab';
+      p.dataset.id = it.id;
+      p.textContent = it.name;
+      p.classList.toggle('active', it.id === curId);
+      p.addEventListener('click', () => selectCam(it.id));
+      oneEl.appendChild(p);
+    }
+  }
+  function renderGrid() {
+    if (mode === 1) {
+      // 1画面：選択カメラ(curId)を1枚。無ければ先頭。
+      const cur = itemById(cams, curId) || list()[0] || null;
+      curId = cur ? cur.id : null;
+      gridEl.className = 'cams-grid cols-1';
+      gridEl.innerHTML = '';
+      if (cur) gridEl.appendChild(buildCell(cur));
+    } else {
+      const cols = mode === 6 ? 3 : 2;
+      gridEl.className = `cams-grid cols-${cols}`;
+      gridEl.innerHTML = '';
+      for (const it of gridSlots(list(), gridCount(mode))) gridEl.appendChild(buildCell(it));
+    }
+    renderOneTabs();
     highlightCells();
     playCells();
   }
@@ -95,8 +133,8 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
     if (!it) return;
     curId = id;
     setNow(it);
-    highlightCells();
-    playCells();
+    if (mode === 1) renderGrid(); // 1画面は表示カメラを差し替え（ピルの active も更新）
+    else { highlightCells(); playCells(); }
     if (onSelect) onSelect(it);
   }
   function selectArea(a) {
@@ -111,12 +149,8 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
   function setMode(n) {
     mode = gridCount(n);
     highlightMode();
-    // 選択カメラが新枠内に残らなければ先頭に。
-    const slots = gridSlots(list(), gridCount(mode));
-    if (!slots.some((s) => s && s.id === curId)) {
-      const first = list()[0];
-      curId = first ? first.id : null;
-    }
+    // 選択カメラは保持（現リストに無ければ先頭）。1画面化時は curId をそのまま大写し。
+    if (!itemById(list(), curId)) { const first = list()[0]; curId = first ? first.id : null; }
     renderGrid();
     setNow(itemById(cams, curId));
   }

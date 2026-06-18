@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 test('globe boots, layers render, panel toggles, feed flies', async ({ page }) => {
+  test.setTimeout(60000); // WebGL globe 起動＋全レイヤー描画＋flyTo で WSL2 では既定30sに張り付くため延長
   await page.goto('/');
   await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();

@@ -155,6 +155,11 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .media-player { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px;
   overflow: hidden; background: #000; border: 1px solid var(--glass-rim); box-shadow: 0 8px 40px rgba(0, 0, 0, .5); }
 .media-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+/* 1画面モードのカメラ名ピル行（表示カメラ切替） */
+.cams-one-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+.cam-one-tab { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);
+  font-size: 12px; padding: 5px 12px; border-radius: 999px; cursor: pointer; }
+.cam-one-tab.active { border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 8px rgba(57, 208, 255, .3); }
 .cams-grid { display: grid; gap: 8px; }
 .cams-grid.cols-1 { grid-template-columns: 1fr; }
 .cams-grid.cols-2 { grid-template-columns: 1fr 1fr; }
@@ -166,6 +171,12 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .cam-cell iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 /* 透明クリック層：全枠再生中も iframe にクリックを奪われず選択＋flyTo を発火させる */
 .cam-hit { position: absolute; inset: 0; z-index: 2; cursor: pointer; }
+/* ⛶ 1画面化ボタン（分割セル右上・クリック層より前面） */
+.cam-expand { position: absolute; top: 4px; right: 4px; z-index: 4; width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center; padding: 0; line-height: 1;
+  background: rgba(5, 8, 15, .6); border: 1px solid var(--glass-rim); color: var(--text);
+  border-radius: 6px; cursor: pointer; font-size: 13px; }
+.cam-expand:hover { border-color: var(--cyan); color: var(--cyan); }
 .cam-cell .cam-label { position: absolute; left: 0; right: 0; bottom: 0; padding: 3px 6px; z-index: 3;
   font-size: 11px; color: var(--text); background: linear-gradient(transparent, rgba(0, 0, 0, .7));
   pointer-events: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }

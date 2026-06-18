@@ -3,6 +3,7 @@ import { test, expect } from '@playwright/test';
 // 2ペイン メディア領域の構造検証（描画/局タブ/地域タブ/分割/サムネ選択src/flyTo/可視制御）。
 // 注: 映像の再生(decode)は headless Chromium のコーデック制約で不可のためアサートしない。
 test('media dual-pane: news + cameras structure', async ({ page }) => {
+  test.setTimeout(60000); // 2ペイン＋全枠再生＋分割＋1画面と検証が多く、各 flyTo/再生待ちで既定30sを超えるため延長
   await page.goto('/');
   await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
 
@@ -64,6 +65,30 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
   await page.waitForTimeout(1500);
   const camAfter = await page.evaluate(() => window.__orbis.map.getCenter());
   expect(camAfter.lng !== camBefore.lng || camAfter.lat !== camBefore.lat).toBe(true);
+
+  // 1画面モード：カメラ名ピル行が出て、地域(すべて)のカメラ数ぶん。グリッドは1セル。
+  await page.locator('.mode-btn[data-mode="1"]').click();
+  await page.waitForTimeout(400);
+  await expect(page.locator('#cams-one-tabs')).toBeVisible();
+  await expect(page.locator('#cams-one-tabs .cam-one-tab')).toHaveCount(cams.length);
+  await expect(page.locator('#cams-grid .cam-cell')).toHaveCount(1);
+
+  // ピルで1画面の表示カメラを切替（グリッド1セルの dataset.id がピルに一致）
+  const pill2 = page.locator('#cams-one-tabs .cam-one-tab').nth(2);
+  const pill2Id = await pill2.getAttribute('data-id');
+  await pill2.click();
+  await page.waitForTimeout(400);
+  expect(await page.locator('#cams-grid .cam-cell').first().getAttribute('data-id')).toBe(pill2Id);
+
+  // 4分割に戻して、セルの⛶で1画面化（そのカメラが1画面に）
+  await page.locator('.mode-btn[data-mode="4"]').click();
+  await page.waitForTimeout(400);
+  const targetCell = page.locator('#cams-grid .cam-cell:not(.empty)').nth(1);
+  const targetId = await targetCell.getAttribute('data-id');
+  await targetCell.locator('.cam-expand').click();
+  await page.waitForTimeout(400);
+  await expect(page.locator('#cams-grid .cam-cell')).toHaveCount(1);
+  expect(await page.locator('#cams-grid .cam-cell').first().getAttribute('data-id')).toBe(targetId);
 
   // 上に戻ると不可視 → news/cam の src 空（停止）
   await page.evaluate(() => window.scrollTo(0, 0));
