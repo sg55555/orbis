@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-18T18:46:29Z",
+  "updated": "2026-06-18T19:02:26Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/18/pakistan-signs-us-iran-mou?traffic_source=rss",
@@ -158,32 +158,6 @@
       "place": "日本"
     },
     {
-      "id": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/articles/cgk6d12lz6jo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781791372000,
-      "rank": 16,
-      "title_ja": "スミルトス船乗船以来、初のロシア影の艦隊タンカーがイギリス海峡に進入",
-      "summary_ja": "ロシアの経済制裁回避を目的とした影の艦隊に属するタンカーが、スミルトス事件後初めてイギリス海峡に進入した。この動きは、ロシアの石油輸送戦略と国際的な制裁監視の緊張関係を反映している。",
-      "category": "conflict",
-      "lon": 1.5,
-      "lat": 50.8,
-      "place": "イギリス海峡"
-    },
-    {
-      "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781779958000,
-      "rank": 17,
-      "title_ja": "ウクライナのドローン攻撃後、プーチンは戦術を変えるのか？",
-      "summary_ja": "ウクライナによるドローン攻撃を受けて、プーチン大統領がロシアの軍事戦術を転換する可能性について問われている。ロシアの対応策と今後の紛争の展開が注視されている。",
-      "category": "conflict",
-      "lon": 37.6173,
-      "lat": 55.7558,
-      "place": "ロシア"
-    },
-    {
       "id": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/videos/crm03y1xx2no?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
@@ -197,6 +171,19 @@
       "place": "ベルサイユ宮殿、フランス"
     },
     {
+      "id": "https://www.theguardian.com/us-news/2026/jun/18/pete-hegseth-accuses-nato-countries-free-riding-europe",
+      "url": "https://www.theguardian.com/us-news/2026/jun/18/pete-hegseth-accuses-nato-countries-free-riding-europe",
+      "source": "guardian",
+      "time": 1781807009000,
+      "rank": 19,
+      "title_ja": "ピート・ヘグセス、NATO加盟国の「ただ乗り」を非難 - 戦闘的な演説で",
+      "summary_ja": "米国防長官ピート・ヘグセスはNATO加盟国がアメリカの防衛費に依存しており、防衛支出の増加を求めるべきだと主張した。この発言はNATO諸国間の緊張を高める可能性がある。",
+      "category": "politics",
+      "lon": 4.3517,
+      "lat": 50.8503,
+      "place": "ブリュッセル（NATO本部所在地）"
+    },
+    {
       "id": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "url": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "source": "guardian",
@@ -208,6 +195,19 @@
       "lon": 37.6173,
       "lat": 55.7558,
       "place": "ロシア、モスクワ"
+    },
+    {
+      "id": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
+      "url": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
+      "source": "guardian",
+      "time": 1781808494000,
+      "rank": 21,
+      "title_ja": "中東危機ライブ：トランプ大統領、米国は「レバノン、ヒズボラ、イスラエルを含むすべての前線での完全な停戦」を期待していると表明",
+      "summary_ja": "トランプ大統領は、中東地域におけるイスラエル、ヒズボラ、レバノンを含むすべての紛争当事者に対して、完全な停戦を期待していると述べた。米国は地域の紛争解決に向けた積極的な外交姿勢を示している。",
+      "category": "conflict",
+      "lon": 35.8623,
+      "lat": 33.8547,
+      "place": "中東（イスラエル・レバノン地域）"
     },
     {
       "id": "https://www.theguardian.com/world/2026/jun/18/iran-announces-plans-to-bring-in-maritime-fees-for-strait-of-hormuz",
@@ -240,7 +240,7 @@
       "url": "https://www.france24.com/en/for-israel-us-iran-deal-a-disaster-incompatible-with-its-security-interests",
       "source": "france24",
       "time": 1781796514000,
-      "rank": 26,
+      "rank": 24,
       "title_ja": "イスラエルにとって米国とイランの協議は「災厄」で安全保障上相容れない",
       "summary_ja": "イスラエルは米国とイランの核合意交渉を、同国の安全保障利益と相容れない「災厄」と評価している。イスラエル政府はこの協議の進展に強い懸念を示している。",
       "category": "politics",
@@ -253,7 +253,7 @@
       "url": "https://www.france24.com/en/us-iran-agreement-leaves-israelis-in-profound-state-of-shock",
       "source": "france24",
       "time": 1781796291000,
-      "rank": 27,
+      "rank": 25,
       "title_ja": "米国とイランの合意がイスラエル人を「深刻なショック状態」に",
       "summary_ja": "米国とイランの合意がイスラエルに衝撃を与えている。イスラエルは地域の安全保障上の懸念を表明している。",
       "category": "politics",
@@ -266,7 +266,7 @@
       "url": "https://www.france24.com/en/video/20260618-ukraine-hits-moscow-with-large-scale-attack",
       "source": "france24",
       "time": 1781792958000,
-      "rank": 28,
+      "rank": 26,
       "title_ja": "ウクライナがモスクワに「大規模」攻撃を実施",
       "summary_ja": "ウクライナ軍がモスクワに対して大規模な攻撃を行った。ロシアの首都への攻撃により複数の施設に被害が生じたと報じられている。",
       "category": "conflict",
@@ -279,9 +279,22 @@
       "url": "https://www.france24.com/en/ukraine-launches-large-drone-attack-on-moscow-ahead-of-nato-meeting",
       "source": "france24",
       "time": 1781791250000,
-      "rank": 29,
+      "rank": 27,
       "title_ja": "ウクライナ、NATO会議を前にモスクワへの大規模ドローン攻撃を実施",
       "summary_ja": "ウクライナはNATO会議を控える中、モスクワに対して大規模なドローン攻撃を実施した。この攻撃はウクライナの継続的な軍事作戦の一環である。",
+      "category": "conflict",
+      "lon": 37.6173,
+      "lat": 55.7558,
+      "place": "モスクワ、ロシア"
+    },
+    {
+      "id": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
+      "url": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
+      "source": "npr",
+      "time": 1781799138000,
+      "rank": 29,
+      "title_ja": "ウクライナがモスクワの石油精製所などを大規模ドローン攻撃で襲撃",
+      "summary_ja": "ウクライナがモスクワの石油精製所を含む複数の施設に対して大規模なドローン攻撃を実施した。ロシアのエネルギーインフラを標的とした攻撃とみられている。",
       "category": "conflict",
       "lon": 37.6173,
       "lat": 55.7558,

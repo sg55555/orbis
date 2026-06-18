@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T18:45:51Z",
-  "count": 232,
+  "updated": "2026-06-18T19:01:15Z",
+  "count": 238,
   "points": [
+    {
+      "id": "aka2026lztpyt",
+      "lon": -148.903,
+      "lat": 62.256,
+      "depth": 14.3,
+      "mag": 2.4,
+      "place": "50 km ENE of Susitna North, Alaska",
+      "time": 1781809066226,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lztpyt"
+    },
+    {
+      "id": "ci41490112",
+      "lon": -117.489333333333,
+      "lat": 35.6865,
+      "depth": 4.92,
+      "mag": 0.72,
+      "place": "12 km SW of Searles Valley, CA",
+      "time": 1781808762900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490112"
+    },
+    {
+      "id": "nc75379196",
+      "lon": -122.85066986084,
+      "lat": 38.824333190918,
+      "depth": 2.16000008583069,
+      "mag": 0.76,
+      "place": "10 km WNW of The Geysers, CA",
+      "time": 1781808737360,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379196"
+    },
+    {
+      "id": "tx2026lxvibs",
+      "lon": -103.403,
+      "lat": 31.101,
+      "depth": 3.8656,
+      "mag": 1.5,
+      "place": "32 km SSE of Lindsay, Texas",
+      "time": 1781808566856,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxvibs"
+    },
     {
       "id": "pr71520458",
       "lon": -66.648,
@@ -1154,6 +1194,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489608"
     },
     {
+      "id": "uu80142786",
+      "lon": -110.88,
+      "lat": 44.5898333333333,
+      "depth": 7.57,
+      "mag": 1.1,
+      "place": "19 km ESE of West Yellowstone, Montana",
+      "time": 1781762899020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142786"
+    },
+    {
+      "id": "uu80007463",
+      "lon": -110.8805,
+      "lat": 44.5856666666667,
+      "depth": 7.89,
+      "mag": 0.37,
+      "place": "19 km ESE of West Yellowstone, Montana",
+      "time": 1781762882350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007463"
+    },
+    {
       "id": "pr71520388",
       "lon": -66.9641666666667,
       "lat": 18.1021666666667,
@@ -1192,6 +1252,16 @@
       "place": "20 km ESE of West Yellowstone, Montana",
       "time": 1781761783990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007438"
+    },
+    {
+      "id": "uu80007453",
+      "lon": -113.9745,
+      "lat": 36.871,
+      "depth": 13.28,
+      "mag": 0.92,
+      "place": "4 km WSW of Littlefield, Arizona",
+      "time": 1781761405260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007453"
     },
     {
       "id": "aka2026lytdes",
@@ -1624,6 +1694,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985222"
     },
     {
+      "id": "aka2026lylvjn",
+      "lon": -173.05,
+      "lat": 52.242,
+      "depth": 1.5,
+      "mag": 2.7,
+      "place": "78 km E of Atka, Alaska",
+      "time": 1781748271276,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lylvjn"
+    },
+    {
+      "id": "aka2026lyljto",
+      "lon": -157.332,
+      "lat": 55.994,
+      "depth": 19.5,
+      "mag": 1.6,
+      "place": "74 km ESE of Chignik, Alaska",
+      "time": 1781747462669,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyljto"
+    },
+    {
       "id": "tx2026lwnhwv",
       "lon": -103.402,
       "lat": 31.925,
@@ -1645,12 +1735,12 @@
     },
     {
       "id": "aka2026lyktso",
-      "lon": -159.137,
-      "lat": 55.88,
-      "depth": 20.2,
-      "mag": 0.9,
-      "place": "3 km S of Perryville, Alaska",
-      "time": 1781746355730,
+      "lon": -160.094,
+      "lat": 54.309,
+      "depth": 10.1,
+      "mag": 2.3,
+      "place": "117 km SSE of Sand Point, Alaska",
+      "time": 1781746330015,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyktso"
     },
     {
@@ -1684,6 +1774,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60505773"
     },
     {
+      "id": "aka2026lyjxmj",
+      "lon": 176.19,
+      "lat": 51.847,
+      "depth": 20,
+      "mag": 3.3,
+      "place": "232 km ESE of Attu Station, Alaska",
+      "time": 1781744805153,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjxmj"
+    },
+    {
       "id": "ci41489520",
       "lon": -116.761666666667,
       "lat": 33.6663333333333,
@@ -1708,10 +1808,30 @@
       "lon": -152.651,
       "lat": 60.165,
       "depth": 99.3,
-      "mag": 1.6,
+      "mag": 1.8,
       "place": "56 km WNW of Ninilchik, Alaska",
-      "time": 1781744522978,
+      "time": 1781744522973,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjthu"
+    },
+    {
+      "id": "aka2026lyjqvn",
+      "lon": 176.298,
+      "lat": 51.985,
+      "depth": 11.7,
+      "mag": 3.3,
+      "place": "232 km ESE of Attu Station, Alaska",
+      "time": 1781744345943,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjqvn"
+    },
+    {
+      "id": "aka2026lyjkpq",
+      "lon": -149.542,
+      "lat": 60.435,
+      "depth": 33.7,
+      "mag": 1.4,
+      "place": "9 km W of Crown Point, Alaska",
+      "time": 1781743922361,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjkpq"
     },
     {
       "id": "nc75378821",
@@ -2262,66 +2382,6 @@
       "place": "7 km NW of The Geysers, CA",
       "time": 1781723396610,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378751"
-    },
-    {
-      "id": "ci41489360",
-      "lon": -118.190833333333,
-      "lat": 34.9956666666667,
-      "depth": -0.89,
-      "mag": 1.16,
-      "place": "7 km SSW of Mojave, CA",
-      "time": 1781722768910,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489360"
-    },
-    {
-      "id": "ci41489352",
-      "lon": -117.967,
-      "lat": 34.0005,
-      "depth": 12.57,
-      "mag": 1.84,
-      "place": "1 km N of Hacienda Heights, CA",
-      "time": 1781722646860,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489352"
-    },
-    {
-      "id": "av94251103",
-      "lon": -154.9215,
-      "lat": 58.2921666666667,
-      "depth": 5.71,
-      "mag": -0.17,
-      "place": "85 km NNW of Karluk, Alaska",
-      "time": 1781722628060,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251103"
-    },
-    {
-      "id": "us7000stti",
-      "lon": -20.0149,
-      "lat": -0.5246,
-      "depth": 10,
-      "mag": 6.6,
-      "place": "central Mid-Atlantic Ridge",
-      "time": 1781722618250,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stti"
-    },
-    {
-      "id": "us7000stsf",
-      "lon": -106.8616,
-      "lat": 34.4743,
-      "depth": 9.783,
-      "mag": 3.8,
-      "place": "4 km W of Abeytas, New Mexico",
-      "time": 1781722616523,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stsf"
-    },
-    {
-      "id": "tx2026lvztlp",
-      "lon": -101.805,
-      "lat": 31.577,
-      "depth": 6.9824,
-      "mag": 0.8,
-      "place": "41 km NNE of Rankin, Texas",
-      "time": 1781722250684,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lvztlp"
     }
   ]
 }
