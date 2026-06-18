@@ -29,18 +29,6 @@
         <div class="feed-hint">クリックでその地点へ移動 📍</div>
         <div id="feed-rows"></div>
       </div>
-      <div id="streams" class="stream-bar collapsed">
-        <div class="stream-head">
-          <button id="streams-toggle" class="collapse-btn" aria-label="ライブ折りたたみ">🔴 LIVE</button>
-          <span class="stream-now">—</span>
-        </div>
-        <div class="stream-body">
-          <div class="stream-player">
-            <iframe id="stream-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
-          </div>
-          <div id="stream-tabs" class="stream-tabs"></div>
-        </div>
-      </div>
       <div id="loading">
         <div class="boot">
           <div class="boot-rings"><span></span><span></span><span></span><i></i></div>
@@ -50,6 +38,19 @@
         </div>
       </div>
     </div>
+    <section id="media" class="media-section">
+      <div class="media-head">
+        <div class="media-cats">
+          <button class="media-cat active" data-cat="news">📺 ニュース</button>
+          <button class="media-cat" data-cat="cameras">📷 カメラ</button>
+        </div>
+        <span class="media-now">—</span>
+      </div>
+      <div class="media-player">
+        <iframe id="media-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+      </div>
+      <div id="media-selector" class="media-selector"></div>
+    </section>
   </div>
   <script type="module" src="js/main.js"></script>
 </body>
