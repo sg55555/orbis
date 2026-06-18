@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T17:31:02Z",
-  "count": 238,
+  "updated": "2026-06-18T17:45:49Z",
+  "count": 234,
   "points": [
+    {
+      "id": "aka2026lzqwva",
+      "lon": -149.125,
+      "lat": 64.745,
+      "depth": 5,
+      "mag": 1.1,
+      "place": "15 km N of Four Mile Road, Alaska",
+      "time": 1781804140279,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqwva"
+    },
     {
       "id": "aka2026lzqcug",
       "lon": -154.135,
@@ -12,6 +22,16 @@
       "place": "78 km ENE of Lime Village, Alaska",
       "time": 1781802754036,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqcug"
+    },
+    {
+      "id": "pr71520438",
+      "lon": -66.2998333333333,
+      "lat": 17.9298333333333,
+      "depth": 10.36,
+      "mag": 2.81,
+      "place": "5 km S of Salinas, Puerto Rico",
+      "time": 1781802753360,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520438"
     },
     {
       "id": "nc75379151",
@@ -2322,66 +2342,6 @@
       "place": "26 km E of Honaunau-Napoopoo, Hawaii",
       "time": 1781718567270,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74984697"
-    },
-    {
-      "id": "nc75378716",
-      "lon": -122.812835693359,
-      "lat": 38.821834564209,
-      "depth": 2.6800000667572,
-      "mag": 0.75,
-      "place": "7 km NW of The Geysers, CA",
-      "time": 1781718098400,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378716"
-    },
-    {
-      "id": "ci41489216",
-      "lon": -117.81,
-      "lat": 35.3013333333333,
-      "depth": 7.86,
-      "mag": 1.94,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781717992250,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489216"
-    },
-    {
-      "id": "us7000stpv",
-      "lon": -106.8502,
-      "lat": 34.5596,
-      "depth": 8.5,
-      "mag": 2.6,
-      "place": "9 km WNW of Veguita, New Mexico",
-      "time": 1781717803370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stpv"
-    },
-    {
-      "id": "ci41489208",
-      "lon": -117.800666666667,
-      "lat": 35.3041666666667,
-      "depth": 6.34,
-      "mag": 0.98,
-      "place": "17 km WSW of Johannesburg, CA",
-      "time": 1781717713850,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489208"
-    },
-    {
-      "id": "nc75378706",
-      "lon": -122.804168701172,
-      "lat": 38.8248329162598,
-      "depth": 2.70000004768372,
-      "mag": 1.09,
-      "place": "7 km NW of The Geysers, CA",
-      "time": 1781717673440,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378706"
-    },
-    {
-      "id": "us7000stpy",
-      "lon": 154.7816,
-      "lat": -6.4073,
-      "depth": 96.026,
-      "mag": 4.6,
-      "place": "78 km W of Panguna, Papua New Guinea",
-      "time": 1781717450885,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stpy"
     }
   ]
 }
