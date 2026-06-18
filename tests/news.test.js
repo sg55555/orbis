@@ -39,3 +39,15 @@ test('newsLayer.toFeedItems: time/lon/lat/カテゴリ付き', () => {
 test('newsLayer.toFeedItems: 空スナップは空配列', () => {
   assert.deepEqual(newsLayer.toFeedItems(null), []);
 });
+
+import { newsPopupHtml } from '../js/lib/selection.js';
+
+test('newsPopupHtml: 見出し・要約・カテゴリ・出典リンク・XSSエスケープ', () => {
+  const html = newsPopupHtml({
+    title_ja: '<b>東京</b>で地震', summary_ja: 'M6。', category: 'disaster',
+    url: 'https://www.bbc.com/n/1', place: '東京',
+  });
+  assert.ok(html.includes('&lt;b&gt;東京&lt;/b&gt;')); // エスケープ
+  assert.ok(html.includes('M6。') && html.includes('災害・事故'));
+  assert.ok(html.includes('href="https://www.bbc.com/n/1"') && html.includes('bbc.com'));
+});

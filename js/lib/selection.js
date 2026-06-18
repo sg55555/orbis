@@ -1,4 +1,6 @@
 import { pointAlongPath } from './motion.js';
+import { hostnameOf } from './geo.js';
+import { categoryOf } from './news_categories.js';
 
 // flyTo 着地点の可視化ヘルパ（純粋関数）。
 // ・selectionPopupHtml: イベント名＋色ドット＋移動ガイドの popup HTML を組む
@@ -152,5 +154,21 @@ export function shipPopupHtml(p, arrival, minutes = 60) {
     + `<span class="sel-title">🚢 ${head}</span></div>`
     + `<div class="sel-meta">船種 ${escapeHtml(o.type || '不明')}｜速度 ${spd}｜航路 ${cog}</div>`
     + `<div class="sel-hint">${hint}</div>`
+    + '</div>';
+}
+
+// ニュースピンのクリック用ポップアップ（日本語見出し＋要約＋カテゴリ＋出典リンク）。
+export function newsPopupHtml(p) {
+  const o = p || {};
+  const c = categoryOf(o.category);
+  const dot = `rgb(${c.color.join(',')})`;
+  const host = hostnameOf(o.url);
+  return '<div class="sel-popup">'
+    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<span class="sel-title">${escapeHtml(o.title_ja || '')}</span></div>`
+    + `<div class="sel-meta">${escapeHtml(c.label)}${o.place ? '｜' + escapeHtml(o.place) : ''}</div>`
+    + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
+    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(o.url || '')}"`
+    + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
     + '</div>';
 }

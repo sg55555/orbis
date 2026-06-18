@@ -10,7 +10,7 @@ import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
-import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, buildProjectionConfigs } from './lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
 import { sstAt } from './layers/sst.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
@@ -70,7 +70,7 @@ function rebuild(overlay) {
   drawAll(overlay);
   window.__orbis.counts = Object.fromEntries(
     Object.entries(snapshots).map(([k, v]) => [k,
-      (v && (v.points?.length ?? v.features?.length
+      (v && (v.points?.length ?? v.features?.length ?? v.items?.length
         ?? (Array.isArray(v.temps) ? v.temps.filter((t) => t != null).length : 0))) ?? 0])
   );
   if (panel) panel.updateCounts();
@@ -240,6 +240,16 @@ function boot() {
         selectedShip = { point: p, arrival };
         selectedFlight = null;
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(shipPopupHtml(p, arrival, SHIP_PROJECT_MIN)).addTo(map);
+        drawAll(overlay);
+      }
+      if (info.layer.id === 'news') {
+        const p = info.object;
+        selectedFlight = null;
+        selectedShip = null;
+        selected = { lon: p.lon, lat: p.lat, title: p.title_ja, layerId: 'news', at: performance.now() };
+        if (window.__orbis) window.__orbis.selected = selected;
+        map.flyTo({ center: [p.lon, p.lat], zoom: 4, duration: 1500, essential: true });
+        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(newsPopupHtml(p)).addTo(map);
         drawAll(overlay);
       }
     },
