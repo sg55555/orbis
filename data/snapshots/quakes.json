@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T20:01:16Z",
-  "count": 246,
+  "updated": "2026-06-18T20:15:49Z",
+  "count": 248,
   "points": [
+    {
+      "id": "ci41490176",
+      "lon": -116.412,
+      "lat": 33.0321666666667,
+      "depth": 8.03,
+      "mag": 1.08,
+      "place": "18 km ESE of Julian, CA",
+      "time": 1781813215590,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490176"
+    },
+    {
+      "id": "nc75379231",
+      "lon": -122.235832214355,
+      "lat": 37.9911651611328,
+      "depth": 8.22999954223633,
+      "mag": 1.59,
+      "place": "5 km SSE of Rodeo, CA",
+      "time": 1781812763360,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379231"
+    },
     {
       "id": "nc75379216",
       "lon": -120.531829833984,
@@ -2024,6 +2044,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyiwic"
     },
     {
+      "id": "av94251788",
+      "lon": -154.894166666667,
+      "lat": 58.3133333333333,
+      "depth": 5.12,
+      "mag": 0.2,
+      "place": "86 km NNW of Karluk, Alaska",
+      "time": 1781742875100,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251788"
+    },
+    {
       "id": "aka2026lyioix",
       "lon": -160.062,
       "lat": 54.496,
@@ -2452,16 +2482,6 @@
       "place": "14 km ENE of Milford, Utah",
       "time": 1781727528730,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142746"
-    },
-    {
-      "id": "ci41489408",
-      "lon": -117.499333333333,
-      "lat": 33.864,
-      "depth": -0.45,
-      "mag": 1.32,
-      "place": "3 km SE of Home Gardens, CA",
-      "time": 1781726449100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489408"
     }
   ]
 }
