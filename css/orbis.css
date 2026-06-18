@@ -139,8 +139,13 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .sel-popup .sel-note { font-size: 9px; color: var(--muted); opacity: .9; }
 
 /* 下部メディア領域（2ペイン: ニュース｜地域カメラ・フル幅50/50） */
-.media-section { display: flex; gap: 16px; padding: 24px 16px 40px; }
+.media-section { display: flex; flex-wrap: wrap; gap: 16px; padding: 24px 16px 40px; }
 .media-pane { flex: 1 1 0; min-width: 0; }
+/* 全幅バー：字幕トグル（両ペイン共通） */
+.media-bar { flex: 0 0 100%; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.cc-toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text); cursor: pointer; }
+.cc-toggle input { accent-color: var(--cyan); cursor: pointer; }
+.cc-note { font-size: 11px; color: var(--muted); }
 .pane-head { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
 .pane-title { margin: 0; font-size: 15px; color: var(--text); white-space: nowrap; letter-spacing: .02em; }
 .news-tabs, .area-tabs { display: flex; flex-wrap: wrap; gap: 6px; }

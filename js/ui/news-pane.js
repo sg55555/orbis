@@ -8,12 +8,13 @@ export function renderNewsPane(paneEl, news, { onSelect } = {}) {
   const nowEl = paneEl.querySelector('.news-now');
   let curId = defaultItem(news) ? defaultItem(news).id : null;
   let visible = false;
+  let captions = true; // 日本語字幕（既定ON・トグルで切替）
 
   function highlight() {
     tabsEl.querySelectorAll('.news-tab').forEach((t) => t.classList.toggle('active', t.dataset.id === curId));
   }
   function setNow(it) { if (nowEl) nowEl.textContent = it ? `${it.name}｜${it.region}` : '—'; }
-  function play() { const it = itemById(news, curId); if (visible && it) frame.src = buildEmbedUrl(it); }
+  function play() { const it = itemById(news, curId); if (visible && it) frame.src = buildEmbedUrl(it, { captions }); }
 
   function select(id) {
     const it = itemById(news, id);
@@ -21,7 +22,7 @@ export function renderNewsPane(paneEl, news, { onSelect } = {}) {
     curId = id;
     highlight();
     setNow(it);
-    if (visible) frame.src = buildEmbedUrl(it);
+    if (visible) frame.src = buildEmbedUrl(it, { captions });
     if (onSelect) onSelect(it);
   }
 
@@ -41,5 +42,7 @@ export function renderNewsPane(paneEl, news, { onSelect } = {}) {
     select,
     current: () => curId,
     setPlaying(on) { visible = on; if (on) play(); else frame.src = ''; },
+    // 字幕ON/OFF切替。可視中なら src を作り直して即反映（iframe は再読込が必要）。
+    setCaptions(on) { captions = !!on; if (visible) play(); },
   };
 }

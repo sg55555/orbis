@@ -17,6 +17,7 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
   let mode = 4;
   let curId = null;
   let visible = false;
+  let captions = true; // 日本語字幕（既定ON・トグルで切替）
 
   const list = () => camsByArea(cams, area);
 
@@ -49,7 +50,7 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
       const it = itemById(cams, c.dataset.id);
       if (visible && it) {
         if (img) img.style.display = 'none';
-        if (f && !f.src) f.src = buildEmbedUrl(it); // 既に再生中なら再設定せず再読込を避ける
+        if (f && !f.src) f.src = buildEmbedUrl(it, { captions }); // 既に再生中なら再設定せず再読込を避ける
       } else {
         if (f) f.src = '';
         if (img) img.style.display = '';
@@ -170,5 +171,11 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
     selectCam,
     current: () => ({ area, mode, id: curId }),
     setPlaying(on) { visible = on; playCells(); },
+    // 字幕ON/OFF切替。全 iframe を一度クリアして字幕パラメータ込みで再生し直す。
+    setCaptions(on) {
+      captions = !!on;
+      gridEl.querySelectorAll('iframe').forEach((f) => { f.src = ''; });
+      playCells();
+    },
   };
 }

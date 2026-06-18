@@ -24,6 +24,16 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
   await expect.poll(() => page.locator('#news-frame').getAttribute('src'), { timeout: 3000 }).toBeTruthy();
   expect(await page.locator('#news-frame').getAttribute('src')).toContain(news[0].channel_id);
 
+  // 字幕トグル：既定ON → src に cc_lang_pref=ja。OFFにすると消える。再ONで復活。
+  await expect(page.locator('#media-cc-toggle')).toBeChecked();
+  expect(await page.locator('#news-frame').getAttribute('src')).toContain('cc_lang_pref=ja');
+  await page.locator('#media-cc-toggle').uncheck();
+  await expect.poll(() => page.locator('#news-frame').getAttribute('src'), { timeout: 2000 })
+    .not.toContain('cc_lang_pref=ja');
+  await page.locator('#media-cc-toggle').check();
+  await expect.poll(() => page.locator('#news-frame').getAttribute('src'), { timeout: 2000 })
+    .toContain('cc_lang_pref=ja');
+
   // 局タブ切替で news-frame src 更新＋flyTo
   if (news.length > 1) {
     const before = await page.evaluate(() => window.__orbis.map.getCenter());

@@ -27,6 +27,24 @@ test('buildEmbedUrl: video_id 形式', () => {
   assert.ok(u.includes('playsinline=1') && !u.includes('live_stream'));
 });
 
+test('buildEmbedUrl: 既定で日本語字幕パラメータ付き（channel/video 両形式）', () => {
+  const ch = buildEmbedUrl(NEWS[0]);
+  const vid = buildEmbedUrl(CAMS[0]);
+  for (const u of [ch, vid]) {
+    assert.ok(u.includes('cc_load_policy=1'), `cc_load_policy: ${u}`);
+    assert.ok(u.includes('cc_lang_pref=ja'), `cc_lang_pref: ${u}`);
+    assert.ok(u.includes('hl=ja'), `hl: ${u}`);
+  }
+});
+
+test('buildEmbedUrl: captions=false で字幕パラメータを付けない', () => {
+  const u = buildEmbedUrl(NEWS[0], { captions: false });
+  assert.ok(!u.includes('cc_load_policy'), u);
+  assert.ok(!u.includes('cc_lang_pref'), u);
+  assert.ok(!u.includes('hl=ja'), u);
+  assert.ok(u.includes('autoplay=1'), u); // 再生パラメータは維持
+});
+
 test('thumbUrl: video_id あり/なし', () => {
   assert.equal(thumbUrl(CAMS[0]), 'https://i.ytimg.com/vi/8H3nRCFVR6Y/hqdefault.jpg');
   assert.equal(thumbUrl({ id: 'x', channel_id: 'C' }), '');
