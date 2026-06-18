@@ -8,8 +8,9 @@ import { currentsLayer } from './currents.js';
 import { airtempLayer } from './airtemp.js';
 import { sstLayer } from './sst.js';
 import { shipsLayer } from './ships.js';
+import { newsLayer } from './news.js';
 
-export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer, sstLayer, currentsLayer, airtempLayer, shipsLayer];
+export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, tradeLayer, sstLayer, currentsLayer, airtempLayer, shipsLayer, newsLayer];
 
 export function getLayer(id) {
   return layers.find((l) => l.id === id);
@@ -40,6 +41,7 @@ const DECK_TO_LAYER = {
   'trade-routes': 'trade', 'trade-chokepoints': 'trade',
   sst: 'sst', currents: 'currents', airtemp: 'airtemp',
   ships: 'ships', 'ships-dot': 'ships',
+  news: 'news',
 };
 
 // deck の picking 結果から、レイヤー別フォーマット済みツールチップ文字列を返す。
@@ -59,5 +61,6 @@ const DESCRIPTIONS = {
   currents: '世界の主要な海流（色=水温の連続グラデ・暖/寒）',
   airtemp: '全球の気温（Open-Meteo・色=暖/寒の連続グラデ・半透明）',
   ships: '航行中の船舶（AIS・◆＝進行方向・既定OFF）',
+  news: '世界の重要ニュース（厳選RSS→日本語訳・色=カテゴリ）',
 };
 export function descFor(id) { return DESCRIPTIONS[id] || ''; }
