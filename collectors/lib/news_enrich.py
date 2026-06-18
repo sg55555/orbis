@@ -89,3 +89,11 @@ def parse_enrich(text):
         "lon": lon,
         "place": str(d.get("place") or "").strip(),
     }
+
+
+def finalize_items(items, now_ms, hours=24, cap=30):
+    """直近 hours 内に絞り、rank 昇順→time 降順で cap 件（純粋）。"""
+    cutoff = now_ms - hours * 3600 * 1000
+    kept = [it for it in items if it.get("time", 0) >= cutoff]
+    kept.sort(key=lambda it: (it.get("rank", 1_000_000), -it.get("time", 0)))
+    return kept[:cap]

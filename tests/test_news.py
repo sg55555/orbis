@@ -131,3 +131,18 @@ def test_parse_enrich_unknown_category_becomes_other():
 
 def test_parse_enrich_garbage_none():
     assert parse_enrich("no json here") is None
+
+
+from collectors.lib.news_enrich import finalize_items
+
+
+def test_finalize_sorts_by_rank_then_time_and_caps():
+    now_ms = 1781784000000  # 2026-06-18T12:00:00Z
+    items = [
+        {"url": "u1", "rank": 2, "time": now_ms - 1000},
+        {"url": "u2", "rank": 0, "time": now_ms - 5000},
+        {"url": "u3", "rank": 1, "time": now_ms - 2000},
+        {"url": "u4", "rank": 3, "time": now_ms - 99 * 3600 * 1000},  # 窓外
+    ]
+    out = finalize_items(items, now_ms, hours=24, cap=2)
+    assert [i["url"] for i in out] == ["u2", "u3"]  # rank昇順、窓外/cap除外
