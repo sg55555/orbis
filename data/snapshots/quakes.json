@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T19:15:54Z",
-  "count": 244,
+  "updated": "2026-06-18T19:31:08Z",
+  "count": 243,
   "points": [
+    {
+      "id": "aka2026lzupst",
+      "lon": -156.492,
+      "lat": 56.835,
+      "depth": 4.2,
+      "mag": 3.4,
+      "place": "93 km SE of Ugashik, Alaska",
+      "time": 1781810847733,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzupst"
+    },
+    {
+      "id": "nc75379201",
+      "lon": -122.8125,
+      "lat": 38.8276672363281,
+      "depth": 1.00999999046326,
+      "mag": 0.73,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781809965010,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379201"
+    },
     {
       "id": "ci41490136",
       "lon": -116.759333333333,
@@ -32,6 +52,16 @@
       "place": "50 km ENE of Susitna North, Alaska",
       "time": 1781809066902,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lztpyt"
+    },
+    {
+      "id": "us7000sudj",
+      "lon": -64.194,
+      "lat": 18.1041,
+      "depth": 10,
+      "mag": 3.9,
+      "place": "67 km NE of Christiansted, U.S. Virgin Islands",
+      "time": 1781809012578,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sudj"
     },
     {
       "id": "ci41490112",
@@ -2402,46 +2432,6 @@
       "place": "15 km NNW of Midland, Texas",
       "time": 1781724816473,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwbedq"
-    },
-    {
-      "id": "ci10244854",
-      "lon": -117.7445,
-      "lat": 35.3346666666667,
-      "depth": 8.51,
-      "mag": 1.6,
-      "place": "11 km WSW of Johannesburg, CA",
-      "time": 1781724443300,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci10244854"
-    },
-    {
-      "id": "ci41489368",
-      "lon": -117.8165,
-      "lat": 35.3081666666667,
-      "depth": 8.07,
-      "mag": 2.37,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781724431620,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489368"
-    },
-    {
-      "id": "av94251128",
-      "lon": -169.884833333333,
-      "lat": 52.8181666666667,
-      "depth": 4,
-      "mag": 0.84,
-      "place": "70 km WSW of Nikolski, Alaska",
-      "time": 1781723985360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251128"
-    },
-    {
-      "id": "av94251123",
-      "lon": -169.862166666667,
-      "lat": 52.8241666666667,
-      "depth": 3.68,
-      "mag": 1.14,
-      "place": "68 km W of Nikolski, Alaska",
-      "time": 1781723912430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251123"
     }
   ]
 }
