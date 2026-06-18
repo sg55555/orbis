@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T19:45:50Z",
-  "count": 249,
+  "updated": "2026-06-18T20:01:16Z",
+  "count": 246,
   "points": [
     {
       "id": "nc75379216",
@@ -705,12 +705,12 @@
     },
     {
       "id": "ci41489752",
-      "lon": -117.208333333333,
-      "lat": 34.0133333333333,
-      "depth": 7.07,
+      "lon": -117.209833333333,
+      "lat": 34.0141666666667,
+      "depth": 7.06,
       "mag": 0.7,
       "place": "5 km SSW of Redlands, CA",
-      "time": 1781782885250,
+      "time": 1781782885220,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489752"
     },
     {
@@ -2462,36 +2462,6 @@
       "place": "3 km SE of Home Gardens, CA",
       "time": 1781726449100,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489408"
-    },
-    {
-      "id": "nc75378771",
-      "lon": -122.776832580566,
-      "lat": 38.804500579834,
-      "depth": 1.45000004768372,
-      "mag": 1.4,
-      "place": "4 km NNW of The Geysers, CA",
-      "time": 1781726348330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378771"
-    },
-    {
-      "id": "tx2026lwbxca",
-      "lon": -103.349,
-      "lat": 31.019,
-      "depth": 7.4072,
-      "mag": 1.6,
-      "place": "36 km SW of Coyanosa, Texas",
-      "time": 1781726128887,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwbxca"
-    },
-    {
-      "id": "us7000su4d",
-      "lon": -26.0334,
-      "lat": -55.73,
-      "depth": 10,
-      "mag": 4.9,
-      "place": "South Sandwich Islands region",
-      "time": 1781725705970,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su4d"
     }
   ]
 }
