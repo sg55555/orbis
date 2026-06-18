@@ -46,6 +46,8 @@ export function buildTradeConfigs(geojson) {
 export const tradeLayer = {
   id: 'trade',
   label: '貿易ルート',
+  static: true,   // 静的GeoJSON。クライアントで一度だけ fetch（ポーリング対象外）
+
   legend: [
     { color: 'rgb(70,230,255)', label: '主要航路' },
     { color: 'rgb(255,176,40)', label: '要衝（チョークポイント）' },

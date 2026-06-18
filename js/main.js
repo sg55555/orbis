@@ -1,5 +1,5 @@
 import { initMap, setDeckLayers } from './map.js';
-import { layers, buildDeckLayers, tooltipFor, feedLayers, descFor } from './layers/registry.js';
+import { layers, tooltipFor, feedLayers, descFor, allLayerIds, pollLayerIds, staticLayers } from './layers/registry.js';
 import { startPolling } from './snapshot.js';
 import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival, formatLatLon } from './lib/geo.js';
 import { loadEnabled, readStored } from './lib/state.js';
@@ -18,8 +18,8 @@ const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
 
 const POLL_MS = 60000;
-const POLL_LAYERS = ['quakes', 'flights', 'conflict', 'protests', 'airtemp', 'sst', 'ships', 'news']; // スナップショットを持つ層
-const ALL_IDS = ['quakes', 'flights', 'conflict', 'protests', 'trade', 'sst', 'currents', 'airtemp', 'ships', 'news'];
+const POLL_LAYERS = pollLayerIds(); // スナップショットを持つ層（registry から自動導出）
+const ALL_IDS = allLayerIds();      // 全トグル対象レイヤー（registry から自動導出）
 let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp', 'ships', 'sst']);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
@@ -54,6 +54,7 @@ function updateFreshness() {
 }
 
 function rebuild(overlay) {
+  markBaseDirty(); // snapshots/ENABLED が変わった → base 層キャッシュを無効化
   // 新規イベント検出（quakes/conflict/protests）。初回(prevIds 空)はパルスしない。
   for (const id of ['quakes', 'conflict', 'protests']) {
     const snap = snapshots[id];
@@ -182,12 +183,40 @@ function shipProjectionLayers() {
     buildProjectionConfigs({ src, arrival: selectedShip.arrival, prefix: 'ship' }, motionT, { reduced: REDUCED }));
 }
 
+// 非アニメ層は deck インスタンスをキャッシュして再利用し、アニメ層(animated:true=currents)と
+// dirty 層だけ毎フレーム再構築する。flights/ships の toDeckLayer は毎回 filter で data 配列を
+// 作り直すため、そのまま 60fps で呼ぶと deck がシルエットを全点再計算してしまう（重い）。
+// レジストリ順のまま組むので z 順は不変。
+let baseDirty = true;
+const _layerCache = new Map(); // layerId -> deck layer 配列
+function markBaseDirty() { baseDirty = true; }
+function buildBaseLayers(zoom) {
+  const ctx = { zoom, cmap: CMAP, motionT };
+  const toArr = (r) => (Array.isArray(r) ? r : [r]);
+  const out = [];
+  for (const l of layers) {
+    if (!ENABLED.has(l.id) || !snapshots[l.id]) { _layerCache.delete(l.id); continue; }
+    let built;
+    if (l.animated) {
+      built = toArr(l.toDeckLayer(snapshots[l.id], ctx));   // 毎フレーム（motionT で動く）
+    } else if (!baseDirty && _layerCache.has(l.id)) {
+      built = _layerCache.get(l.id);                        // 変化なし→キャッシュ再利用（再計算なし）
+    } else {
+      built = toArr(l.toDeckLayer(snapshots[l.id], ctx));
+      _layerCache.set(l.id, built);
+    }
+    out.push(...built);
+  }
+  baseDirty = false;
+  return out;
+}
+
 // 現在の snapshots/ENABLED から deck レイヤー配列を組んで描く（動的レイヤーを base に重畳）。
 function drawAll(overlay) {
   _overlay = overlay;
   const now = (typeof performance !== 'undefined') ? performance.now() : Date.now();
   const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
-  const base = buildDeckLayers(ENABLED, snapshots, undefined, { zoom, cmap: CMAP, motionT });
+  const base = buildBaseLayers(zoom);
   const extra = [];
   if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
@@ -279,20 +308,16 @@ function boot() {
   wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
   wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));
 
-  map.on('zoom', () => drawAll(overlay));
+  map.on('zoom', () => { markBaseDirty(); drawAll(overlay); });
 
   map.on('load', async () => {
     document.getElementById('loading').classList.add('hidden');
 
-    // 静的な貿易ルート・海流を各レイヤー自身の fetch() で一度だけ読み込む
-    try {
-      const trade = layers.find((l) => l.id === 'trade');
-      if (trade) snapshots.trade = await trade.fetch();
-    } catch { /* noop */ }
-    try {
-      const currents = layers.find((l) => l.id === 'currents');
-      if (currents) snapshots.currents = await currents.fetch();
-    } catch { /* noop */ }
+    // 静的レイヤー（static:true の trade/currents 等）を各自の fetch() で一度だけ読み込む。
+    // registry から自動導出するので、静的レイヤー追加時に main.js を編集する必要がない。
+    await Promise.all(staticLayers().map(async (l) => {
+      try { snapshots[l.id] = await l.fetch(); } catch { /* noop */ }
+    }));
     rebuild(overlay);
     if (!REDUCED) requestAnimationFrame(motionLoop);
 

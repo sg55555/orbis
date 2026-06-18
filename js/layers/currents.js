@@ -110,6 +110,8 @@ function tempWord(t) {
 export const currentsLayer = {
   id: 'currents',
   label: '海流',
+  static: true,    // 静的GeoJSON。クライアントで一度だけ fetch（ポーリング対象外）
+  animated: true,  // motionT で波がアニメするため毎フレーム再構築（base キャッシュ対象外）
   marker: 'line',
   swatchColor: 'rgb(120,170,200)',
   legend: [

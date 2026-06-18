@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildDeckLayers, tooltipFor } from '../js/layers/registry.js';
+import { buildDeckLayers, tooltipFor, allLayerIds, pollLayerIds, staticLayers } from '../js/layers/registry.js';
 
 const single = { id: 'a', toDeckLayer: (snap) => ({ kind: 'one', v: snap.v }) };
 const multi = { id: 'b', toDeckLayer: (snap) => [{ kind: 'p' }, { kind: 'q' }] };
@@ -34,4 +34,16 @@ test('tooltipFor: ships-dot は ships のツールチップに解決', () => {
     tooltipFor('ships-dot', { mmsi: 7, name: 'A', type: '貨物船', sog: 10, cog: 90 }),
     '船名 A｜船種 貨物船｜速度 10kn｜航路 090°',
   );
+});
+
+// ALL_IDS / POLL_LAYERS の手動配列をやめ registry から自動導出する（手同期ミス防止）。
+test('allLayerIds returns every registered layer id in registry order', () => {
+  assert.deepEqual(allLayerIds(),
+    ['quakes', 'flights', 'conflict', 'protests', 'trade', 'sst', 'currents', 'airtemp', 'ships', 'news']);
+});
+
+test('pollLayerIds excludes static layers; staticLayers covers trade/currents', () => {
+  assert.deepEqual(staticLayers().map((l) => l.id), ['trade', 'currents']);
+  assert.deepEqual(pollLayerIds(),
+    ['quakes', 'flights', 'conflict', 'protests', 'sst', 'airtemp', 'ships', 'news']);
 });

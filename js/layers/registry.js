@@ -16,6 +16,19 @@ export function getLayer(id) {
   return layers.find((l) => l.id === id);
 }
 
+// 以下は main.js の手動配列(ALL_IDS/POLL_LAYERS)を置き換える自動導出。
+// 新レイヤーを registry に足すだけで反映され、手同期ミス（過去に1度発生）を防ぐ。
+export function allLayerIds() {
+  return layers.map((l) => l.id);
+}
+// static:true（trade/currents 等の静的GeoJSON）はポーリング対象外。
+export function pollLayerIds() {
+  return layers.filter((l) => !l.static).map((l) => l.id);
+}
+export function staticLayers() {
+  return layers.filter((l) => l.static);
+}
+
 // 有効レイヤーの deck レイヤー配列を組み立てる。
 // toDeckLayer は単体または配列を返してよい（配列は flat 化）。
 // layersOverride: テスト用に layers を差し替え可能。ctx: zoom など描画コンテキスト。
