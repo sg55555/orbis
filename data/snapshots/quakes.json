@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T17:01:17Z",
-  "count": 243,
+  "updated": "2026-06-18T17:15:49Z",
+  "count": 242,
   "points": [
+    {
+      "id": "aka2026lzqcug",
+      "lon": -154.135,
+      "lat": 61.686,
+      "depth": 1.8,
+      "mag": 1.6,
+      "place": "78 km ENE of Lime Village, Alaska",
+      "time": 1781802754036,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqcug"
+    },
+    {
+      "id": "nc75379151",
+      "lon": -122.825164794922,
+      "lat": 38.8421669006348,
+      "depth": 1.75,
+      "mag": 0.67,
+      "place": "9 km WNW of Cobb, CA",
+      "time": 1781802716040,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379151"
+    },
+    {
+      "id": "nc75379146",
+      "lon": -122.825500488281,
+      "lat": 38.8414993286133,
+      "depth": 1.83000004291534,
+      "mag": 1.2,
+      "place": "9 km WNW of Cobb, CA",
+      "time": 1781802234270,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379146"
+    },
+    {
+      "id": "hv74985692",
+      "lon": -155.346160888672,
+      "lat": 19.2140007019043,
+      "depth": 29.6200008392334,
+      "mag": 1.94,
+      "place": "13 km E of Pāhala, Hawaii",
+      "time": 1781802171590,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985692"
+    },
     {
       "id": "aka2026lzpidb",
       "lon": -151.086,
@@ -2382,56 +2422,6 @@
       "place": "83 km NW of Ninilchik, Alaska",
       "time": 1781716821440,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250893"
-    },
-    {
-      "id": "us7000stpn",
-      "lon": -106.8182,
-      "lat": 34.4917,
-      "depth": 9.077,
-      "mag": 3.7,
-      "place": "2 km NNW of Abeytas, New Mexico",
-      "time": 1781716446420,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stpn"
-    },
-    {
-      "id": "av94250863",
-      "lon": -178.854833333333,
-      "lat": 51.7908333333333,
-      "depth": 4.02,
-      "mag": 0.56,
-      "place": "153 km W of Adak, Alaska",
-      "time": 1781716228400,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250863"
-    },
-    {
-      "id": "av94250848",
-      "lon": -178.850833333333,
-      "lat": 51.7881666666667,
-      "depth": 4.2,
-      "mag": 0,
-      "place": "153 km W of Adak, Alaska",
-      "time": 1781715879770,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250848"
-    },
-    {
-      "id": "nn00920391",
-      "lon": -118.4751,
-      "lat": 38.1187,
-      "depth": 8.827,
-      "mag": 3.02,
-      "place": "33 km N of Benton, California",
-      "time": 1781715758772,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920391"
-    },
-    {
-      "id": "av94250838",
-      "lon": -178.849333333333,
-      "lat": 51.7855,
-      "depth": 4.84,
-      "mag": 0.55,
-      "place": "153 km W of Adak, Alaska",
-      "time": 1781715638970,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250838"
     }
   ]
 }
