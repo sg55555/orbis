@@ -1,5 +1,8 @@
 // メディア領域。左=ニュース(news-pane)／右=地域カメラ(cams-pane)。本ファイルは純粋ヘルパ＋renderMediaオーケストレーション。
 
+import { renderNewsPane } from './news-pane.js';
+import { renderCamsPane } from './cams-pane.js';
+
 // 地域コード（定義順）。areasPresent はこの順で実在分のみ返す。
 export const AREA_ORDER = ['middle_east', 'europe', 'americas', 'asia', 'africa', 'oceania', 'space'];
 export const AREA_LABEL = {
@@ -53,71 +56,26 @@ export function gridSlots(cams, count) {
   return arr;
 }
 
-// メディア領域を描画。lists = { news:[], cameras:[] }。onSelect(item) は項目選択時（flyTo 等）。
-// 返り値 API: select(id) / selectCategory(cat) / setPlaying(on) / current()。
-export function renderMedia(rootEl, lists, { onSelect } = {}) {
-  const frame = rootEl.querySelector('#media-frame');
-  const selEl = rootEl.querySelector('#media-selector');
-  const nowEl = rootEl.querySelector('.media-now');
-  const catBtns = Array.from(rootEl.querySelectorAll('.media-cat'));
-  let cat = 'news';
-  let curId = defaultItem(lists[cat]) ? defaultItem(lists[cat]).id : null;
-  let visible = false;
+// 2ペインをマウントし可視制御を伝播。lists={news,cameras}。onSelect(item) は両ペイン共通（flyTo 等）。
+// 返り値 {news,cams,setPlaying}。
+export function renderMedia(rootEl, { news = [], cameras = [] } = {}, { onSelect } = {}) {
+  const newsEl = rootEl.querySelector('#media-news');
+  const camsEl = rootEl.querySelector('#media-cams');
+  let newsApi = null;
+  let camsApi = null;
 
-  const items = () => lists[cat] || [];
+  if (Array.isArray(news) && news.length && newsEl) newsApi = renderNewsPane(newsEl, news, { onSelect });
+  else if (newsEl) newsEl.style.display = 'none';
 
-  function highlight() {
-    selEl.querySelectorAll('.media-item').forEach((t) => t.classList.toggle('active', t.dataset.id === curId));
-    catBtns.forEach((c) => c.classList.toggle('active', c.dataset.cat === cat));
-  }
-  function setNow(it) { if (nowEl && it) nowEl.textContent = `${it.name}｜${it.region}`; }
-  function play() { const it = itemById(items(), curId); if (visible && it) frame.src = buildEmbedUrl(it); }
-
-  function renderSelector() {
-    selEl.innerHTML = '';
-    for (const it of items()) {
-      const b = document.createElement('button');
-      b.className = 'media-item';
-      b.dataset.id = it.id;
-      b.textContent = it.name;
-      b.addEventListener('click', () => select(it.id));
-      selEl.appendChild(b);
-    }
-    highlight();
-  }
-
-  function select(id) {
-    const it = itemById(items(), id);
-    if (!it) return;
-    curId = id;
-    highlight();
-    setNow(it);
-    if (visible) frame.src = buildEmbedUrl(it);
-    if (onSelect) onSelect(it);
-  }
-
-  function selectCategory(c) {
-    if (!lists[c]) return; // 未知/欠落カテゴリは無視
-    cat = c;
-    curId = defaultItem(items()) ? defaultItem(items()).id : null;
-    renderSelector();
-    setNow(itemById(items(), curId));
-    play(); // カテゴリ切替時、可視なら新カテゴリ先頭を再生（flyTo はしない）
-  }
-
-  catBtns.forEach((b) => b.addEventListener('click', () => selectCategory(b.dataset.cat)));
-  renderSelector();
-  setNow(itemById(items(), curId));
+  if (Array.isArray(cameras) && cameras.length && camsEl) camsApi = renderCamsPane(camsEl, cameras, { onSelect });
+  else if (camsEl) camsEl.style.display = 'none';
 
   return {
-    select,
-    selectCategory,
-    current: () => ({ cat, id: curId }),
-    // 可視/不可視に応じて再生制御（IntersectionObserver から呼ぶ）。
+    news: newsApi,
+    cams: camsApi,
     setPlaying(on) {
-      visible = on;
-      if (on) play();
-      else frame.src = '';
+      if (newsApi) newsApi.setPlaying(on);
+      if (camsApi) camsApi.setPlaying(on);
     },
   };
 }
