@@ -194,3 +194,74 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .pane-now { font-size: 12px; color: var(--muted); margin-top: 10px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 @media (max-width: 860px) { .media-section { flex-direction: column; } }
+
+/* ===== モバイル ボトムシート UI（globe を主役・LAYERS/FEED はオンデマンド） ===== */
+/* デスクトップ(>768px)では新規 UI を隠す＝既存挙動を不変に保つ */
+#mobile-tabs, #sheet-scrim, #media-hint { display: none; }
+
+@media (max-width: 768px) {
+  /* デスクトップ用の折りたたみボタンはモバイルでは使わない（シート自前の閉手段を使う） */
+  #panel-toggle, #feed-toggle { display: none; }
+
+  /* LAYERS/FEED をボトムシート化：既定は画面外へ退避 */
+  #panel.side-panel, #feed.side-panel {
+    left: 0; right: 0; top: auto; bottom: calc(60px + env(safe-area-inset-bottom)); width: auto; max-width: none;
+    max-height: min(72dvh, 560px); border-radius: 16px 16px 0 0;
+    padding-top: 18px; padding-bottom: calc(10px + env(safe-area-inset-bottom));
+    transform: translateY(110%); transition: transform .28s ease; z-index: 8;
+  }
+  /* ドラッグハンドル */
+  #panel.side-panel::after, #feed.side-panel::after {
+    content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+    width: 40px; height: 4px; border-radius: 2px; background: var(--glass-rim);
+  }
+  /* 開いているシートだけ せり上げる（JS が body[data-sheet] を付ける） */
+  body[data-sheet="layers"] #panel.side-panel { transform: translateY(0); }
+  body[data-sheet="feed"] #feed.side-panel { transform: translateY(0); }
+
+  /* ディマー幕（globe 上・閉時は透明＆クリック透過） */
+  #sheet-scrim {
+    display: block; position: absolute; inset: 0; z-index: 6;
+    background: rgba(3, 6, 12, .5);
+    -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px);
+    opacity: 0; pointer-events: none; transition: opacity .28s ease;
+  }
+  body[data-sheet="layers"] #sheet-scrim, body[data-sheet="feed"] #sheet-scrim {
+    opacity: 1; pointer-events: auto;
+  }
+
+  /* 下端タブバー */
+  #mobile-tabs {
+    display: flex; position: absolute; left: 0; right: 0; bottom: 0; z-index: 9;
+    gap: 8px; padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, rgba(5, 8, 15, .66) 42%);
+  }
+  .mobile-tab {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    height: 44px; border-radius: 12px; background: var(--glass-bg);
+    border: 1px solid var(--glass-rim); color: var(--text); font-size: 13px; cursor: pointer;
+    -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  }
+  .mobile-tab[aria-expanded="true"] {
+    border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px rgba(57, 208, 255, .3);
+  }
+
+  /* ▼ メディア導線（タブバー上・控えめ） */
+  #media-hint {
+    display: flex; position: absolute; left: 50%; transform: translateX(-50%);
+    bottom: calc(64px + env(safe-area-inset-bottom)); z-index: 7;
+    align-items: center; gap: 6px; padding: 5px 12px; border-radius: 999px;
+    background: var(--glass-bg); border: 1px solid var(--glass-rim); color: var(--cyan);
+    font-size: 11px; opacity: .85; cursor: pointer;
+    -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
+  }
+  #media-hint.hidden { display: none; }
+  body[data-sheet="layers"] #media-hint, body[data-sheet="feed"] #media-hint { display: none; }
+
+  /* 鮮度ピル小型化 */
+  #freshness { font-size: 10px; padding: 4px 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #panel.side-panel, #feed.side-panel, #sheet-scrim { transition: none; }
+}
