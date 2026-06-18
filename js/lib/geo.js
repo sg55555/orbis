@@ -13,12 +13,33 @@ export function magnitudeToColor(mag) {
   return [255, 60, 80];                // red
 }
 
-export function formatFreshness(updatedIso, now = Date.now()) {
-  const diffSec = Math.max(0, Math.floor((now - Date.parse(updatedIso)) / 1000));
+export function formatAgeSec(diffSec) {
+  diffSec = Math.max(0, Math.floor(diffSec));
   if (diffSec < 60) return 'たった今';
   if (diffSec < 3600) return `${Math.floor(diffSec / 60)}分前`;
   if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}時間前`;
   return `${Math.floor(diffSec / 86400)}日前`;
+}
+
+export function formatFreshness(updatedIso, now = Date.now()) {
+  return formatAgeSec((now - Date.parse(updatedIso)) / 1000);
+}
+
+// 鮮度サマリ（純粋）。items=[{label, updated(iso)}] の全層から「N層 · 最新 X」を作り、
+// staleSec(既定6h)を超えた層は古い順に名指しで ⚠ 付記する（沈黙の陳腐化を可視化）。
+export function freshnessSummary(items, now = Date.now(), staleSec = 21600) {
+  if (!items || items.length === 0) return { text: 'データ取得中…', stale: false };
+  const withAge = items.map((it) => ({
+    label: it.label,
+    age: Math.max(0, Math.floor((now - Date.parse(it.updated)) / 1000)),
+  }));
+  const freshest = Math.min(...withAge.map((a) => a.age));
+  const stale = withAge.filter((a) => a.age > staleSec).sort((a, b) => b.age - a.age);
+  let text = `${withAge.length}層 · 最新 ${formatAgeSec(freshest)}`;
+  if (stale.length) {
+    text += ' · ⚠ ' + stale.map((a) => `${a.label} ${formatAgeSec(a.age)}`).join(' ');
+  }
+  return { text, stale: stale.length > 0 };
 }
 
 // 緯度経度を地理慣例の和文ラベルへ（純粋）。北緯/南緯・東経/西経で符号を明示し、
