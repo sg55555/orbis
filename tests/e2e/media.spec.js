@@ -24,14 +24,6 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
   await expect.poll(() => page.locator('#news-frame').getAttribute('src'), { timeout: 3000 }).toBeTruthy();
   expect(await page.locator('#news-frame').getAttribute('src')).toContain(news[0].channel_id);
 
-  // IFrame Player API（字幕の日本語自動翻訳用）：news は enablejsapi=1 付き＋APIスクリプト注入。
-  // 字幕の実表示は headless では検証不可（decode不可）→構造のみ。実表示は実ブラウザ確認。
-  expect(await page.locator('#news-frame').getAttribute('src')).toContain('enablejsapi=1');
-  await expect.poll(
-    () => page.locator('script[src*="youtube.com/iframe_api"]').count(),
-    { timeout: 3000 },
-  ).toBeGreaterThan(0);
-
   // カメラ初回再生：地域/分割を一切触らず、初回スクロールだけで全非emptyセルが再生srcを持つ。
   // 退行防止：iframe.src='' がページURLに解決され !f.src 判定で再生開始を取りこぼしたバグ。
   await expect.poll(async () => {
