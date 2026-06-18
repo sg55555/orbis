@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T16:49:59Z",
+  "updated": "2026-06-18T17:01:17Z",
   "count": 243,
   "points": [
+    {
+      "id": "aka2026lzpidb",
+      "lon": -151.086,
+      "lat": 60.433,
+      "depth": 61.6,
+      "mag": 3.4,
+      "place": "6 km SSW of Soldotna, Alaska",
+      "time": 1781801325845,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzpidb"
+    },
     {
       "id": "tx2026lxqyvq",
       "lon": -102.052,
@@ -12,6 +22,16 @@
       "place": "34 km WSW of Ackerly, Texas",
       "time": 1781800549234,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxqyvq"
+    },
+    {
+      "id": "us7000sucj",
+      "lon": 126.809,
+      "lat": 6.5597,
+      "depth": 10,
+      "mag": 5.3,
+      "place": "63 km ESE of Bobon, Philippines",
+      "time": 1781800438155,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sucj"
     },
     {
       "id": "aka2026lzotuc",
@@ -92,16 +112,6 @@
       "place": "2 km NE of Palomar Observatory, CA",
       "time": 1781797772720,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489920"
-    },
-    {
-      "id": "nn00920441",
-      "lon": -118.8521,
-      "lat": 37.8913,
-      "depth": 0.8546,
-      "mag": 2.26,
-      "place": "23 km ENE of June Lake, California",
-      "time": 1781797439351,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920441"
     },
     {
       "id": "aka2026lzmmew",
@@ -965,12 +975,12 @@
     },
     {
       "id": "nn00920428",
-      "lon": -119.0441,
-      "lat": 39.316,
-      "depth": 9.4902,
+      "lon": -119.0461,
+      "lat": 39.3146,
+      "depth": 6.2182,
       "mag": 2.11,
       "place": "19 km SE of Silver Springs, Nevada",
-      "time": 1781764008302,
+      "time": 1781764008945,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920428"
     },
     {
@@ -2422,16 +2432,6 @@
       "place": "153 km W of Adak, Alaska",
       "time": 1781715638970,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250838"
-    },
-    {
-      "id": "aka2026lxtovl",
-      "lon": -154.48,
-      "lat": 56.486,
-      "depth": 39,
-      "mag": 2.3,
-      "place": "54 km SSW of Akhiok, Alaska",
-      "time": 1781715428382,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxtovl"
     }
   ]
 }
