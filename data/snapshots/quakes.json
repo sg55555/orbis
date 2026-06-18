@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T21:31:04Z",
-  "count": 253,
+  "updated": "2026-06-18T21:46:00Z",
+  "count": 255,
   "points": [
+    {
+      "id": "nc75379271",
+      "lon": -122.786499023438,
+      "lat": 38.8354988098145,
+      "depth": 1.86000001430511,
+      "mag": 0.99,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781818344740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379271"
+    },
+    {
+      "id": "hv74985912",
+      "lon": -155.352172851562,
+      "lat": 19.238000869751,
+      "depth": 27.3600006103516,
+      "mag": 2.16,
+      "place": "13 km ENE of Pāhala, Hawaii",
+      "time": 1781818045110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985912"
+    },
     {
       "id": "aka2026lzymqv",
       "lon": -152.607,
@@ -1894,6 +1914,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lynxgv"
     },
     {
+      "id": "av94252028",
+      "lon": -152.969,
+      "lat": 60.042,
+      "depth": 5.01,
+      "mag": -0.43,
+      "place": "69 km ENE of Pedro Bay, Alaska",
+      "time": 1781751610730,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252028"
+    },
+    {
+      "id": "av94252023",
+      "lon": -167.084333333333,
+      "lat": 53.5395,
+      "depth": 14.26,
+      "mag": 0.6,
+      "place": "52 km SW of Unalaska, Alaska",
+      "time": 1781751367750,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252023"
+    },
+    {
       "id": "aka2026lynnmx",
       "lon": -152.821,
       "lat": 59.035,
@@ -2512,26 +2552,6 @@
       "place": "74 km W of Nikolski, Alaska",
       "time": 1781732728260,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251448"
-    },
-    {
-      "id": "av94251438",
-      "lon": -169.907166666667,
-      "lat": 52.8213333333333,
-      "depth": 6.27,
-      "mag": 0.58,
-      "place": "71 km W of Nikolski, Alaska",
-      "time": 1781732360560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251438"
-    },
-    {
-      "id": "av94251433",
-      "lon": -169.889333333333,
-      "lat": 52.809,
-      "depth": 6.71,
-      "mag": 0.65,
-      "place": "70 km WSW of Nikolski, Alaska",
-      "time": 1781732267170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251433"
     }
   ]
 }
