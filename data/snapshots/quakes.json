@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T23:22:11Z",
-  "count": 254,
+  "updated": "2026-06-18T23:31:01Z",
+  "count": 253,
   "points": [
     {
       "id": "ci41490352",
@@ -52,6 +52,16 @@
       "place": "4 km SSW of Pāhala, Hawaii",
       "time": 1781821740160,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985962"
+    },
+    {
+      "id": "us7000sug0",
+      "lon": -161.041,
+      "lat": 55.0667,
+      "depth": 66.036,
+      "mag": 3.6,
+      "place": "45 km SW of Sand Point, Alaska",
+      "time": 1781821675699,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sug0"
     },
     {
       "id": "pr71520518",
@@ -2522,26 +2532,6 @@
       "place": "40 km W of Mentone, Texas",
       "time": 1781739034401,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwizbi"
-    },
-    {
-      "id": "av94251693",
-      "lon": -169.895833333333,
-      "lat": 52.8321666666667,
-      "depth": 6.38,
-      "mag": 0.44,
-      "place": "70 km W of Nikolski, Alaska",
-      "time": 1781738827630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251693"
-    },
-    {
-      "id": "hv74985082",
-      "lon": -155.390838623047,
-      "lat": 19.1301670074463,
-      "depth": 32.3600006103516,
-      "mag": 1.98,
-      "place": "12 km SE of Pāhala, Hawaii",
-      "time": 1781738738540,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985082"
     }
   ]
 }
