@@ -1,0 +1,7 @@
+[
+  { "id": "shibuya", "name": "渋谷スクランブル交差点", "region": "東京", "lat": 35.66, "lon": 139.70, "video_id": "8H3nRCFVR6Y" },
+  { "id": "timessquare", "name": "Times Square", "region": "ニューヨーク", "lat": 40.758, "lon": -73.985, "video_id": "z-jYdOIKcTQ" },
+  { "id": "london", "name": "London Live", "region": "ロンドン", "lat": 51.51, "lon": -0.13, "video_id": "M3EYAY2MftI" },
+  { "id": "paris", "name": "Paris / Eiffel", "region": "パリ", "lat": 48.86, "lon": 2.29, "video_id": "OzYp4NRZlwQ" },
+  { "id": "venice", "name": "Venice", "region": "ヴェネツィア", "lat": 45.44, "lon": 12.34, "video_id": "a1mcaV3Sf9U" }
+]
