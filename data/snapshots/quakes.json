@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T17:15:49Z",
-  "count": 242,
+  "updated": "2026-06-18T17:31:02Z",
+  "count": 238,
   "points": [
     {
       "id": "aka2026lzqcug",
@@ -124,14 +124,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489936"
     },
     {
-      "id": "aka2026lznqac",
-      "lon": 176.173,
-      "lat": 51.836,
-      "depth": 20,
+      "id": "us7000suci",
+      "lon": 176.1668,
+      "lat": 51.8507,
+      "depth": 10,
       "mag": 3.7,
-      "place": "232 km ESE of Attu Station, Alaska",
-      "time": 1781798258757,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lznqac"
+      "place": "231 km ESE of Attu Station, Alaska",
+      "time": 1781798256829,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suci"
     },
     {
       "id": "hv74985652",
@@ -695,12 +695,12 @@
     },
     {
       "id": "nn00920432",
-      "lon": -115.3344,
-      "lat": 37.0791,
-      "depth": 6.1925,
-      "mag": 1.5,
-      "place": "35 km SSW of Alamo, Nevada",
-      "time": 1781772766166,
+      "lon": -115.3007,
+      "lat": 37.1175,
+      "depth": 9.7168,
+      "mag": 1.62,
+      "place": "30 km SSW of Alamo, Nevada",
+      "time": 1781772765826,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920432"
     },
     {
@@ -2244,6 +2244,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378741"
     },
     {
+      "id": "tx2026lvyyzd",
+      "lon": -103.795,
+      "lat": 32.007,
+      "depth": 6.8689,
+      "mag": 0.8,
+      "place": "35 km SE of Malaga, New Mexico",
+      "time": 1781720825744,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lvyyzd"
+    },
+    {
       "id": "nc75378736",
       "lon": -122.825500488281,
       "lat": 38.8431663513184,
@@ -2372,56 +2382,6 @@
       "place": "78 km W of Panguna, Papua New Guinea",
       "time": 1781717450885,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000stpy"
-    },
-    {
-      "id": "aka2026lxuppy",
-      "lon": -159.774,
-      "lat": 55.976,
-      "depth": 11.3,
-      "mag": 1.8,
-      "place": "19 km WNW of Ivanof Bay, Alaska",
-      "time": 1781717280083,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxuppy"
-    },
-    {
-      "id": "aka2026lxuodn",
-      "lon": -159.731,
-      "lat": 55.855,
-      "depth": 11.1,
-      "mag": 1.6,
-      "place": "16 km WSW of Ivanof Bay, Alaska",
-      "time": 1781717175293,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxuodn"
-    },
-    {
-      "id": "aka2026lxuocg",
-      "lon": -163.114,
-      "lat": 65.149,
-      "depth": 11.9,
-      "mag": 2.7,
-      "place": "53 km NNE of White Mountain, Alaska",
-      "time": 1781717172259,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxuocg"
-    },
-    {
-      "id": "ci41489160",
-      "lon": -117.2665,
-      "lat": 34.9621666666667,
-      "depth": -0.79,
-      "mag": 0.78,
-      "place": "23 km WNW of Barstow, CA",
-      "time": 1781717041680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489160"
-    },
-    {
-      "id": "av94250893",
-      "lon": -152.887333333333,
-      "lat": 60.4965,
-      "depth": 4.13,
-      "mag": -0.77,
-      "place": "83 km NW of Ninilchik, Alaska",
-      "time": 1781716821440,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94250893"
     }
   ]
 }
