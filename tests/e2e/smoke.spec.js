@@ -7,8 +7,8 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
-  // 左パネルに9レイヤー行（地震/航空/紛争/抗議/貿易/水温/海流/気温/船舶）
-  await expect(page.locator('#panel .layer-row')).toHaveCount(9);
+  // 左パネルに10レイヤー行（地震/航空/紛争/抗議/貿易/水温/海流/気温/船舶/ニュース）
+  await expect(page.locator('#panel .layer-row')).toHaveCount(10);
 
   // データ到着
   await expect.poll(
@@ -127,4 +127,14 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
 
   // 航空クリックの進路ライン＋到達点＋ポップアップは canvas ピックが座標依存で
   // 不安定なため e2e では検証せず、Playwright スクショの目視で担保する（plan Task 11）。
+
+  // ニュース(news)は既定ON。データがあれば deck レイヤーが描画される（無い環境でも例外なし）。
+  await expect(page.locator('.layer-row[data-id="news"] .layer-toggle')).toBeChecked();
+  const newsLayerOk = await page.evaluate(() => {
+    const o = window.__orbis.overlay;
+    const has = window.__orbis.counts && window.__orbis.counts.news > 0;
+    const present = ((o._props && o._props.layers) || []).some((l) => l.id === 'news');
+    return !has || present;
+  });
+  expect(newsLayerOk).toBe(true);
 });
