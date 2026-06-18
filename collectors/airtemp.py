@@ -6,13 +6,14 @@ from datetime import datetime, timezone
 
 import requests
 from collectors.lib.manifest import update_manifest
+from collectors.lib.http import retry
 
 API_URL = "https://api.open-meteo.com/v1/forecast"
 # 全球 5° グリッド（lat -85..85=35行, lon -180..175=72列 = 2520点）
 LAT0, LAT1, LON0, LON1, STEP = -85, 85, -180, 175, 5
 BATCH = 200          # 1リクエストの座標数（保守的）
 SLEEP_S = 25.0       # バッチ間スリープ（Open-Meteo 分次レート制限 ~3req/min 回避）
-RETRY_WAIT_S = 65    # 429（分次レート制限）検知時の待機秒
+RETRY_WAIT_S = 15    # 一時的エラー（timeout/429/5xx）でのリトライ待機秒
 
 
 def _seq(start, end, step):
@@ -66,8 +67,9 @@ def build_snapshot(temps, meta, updated_iso):
 SNAPSHOT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "snapshots")
 
 
-def fetch_batch(coords, timeout=30):
-    """座標群（[(lat,lon),...]）を1リクエストで取得し、座標順の応答リストを返す。"""
+def fetch_batch(coords, timeout=(10, 60)):
+    """座標群（[(lat,lon),...]）を1リクエストで取得し、座標順の応答リストを返す。
+    timeout=(connect, read)。200点の応答は重く 30s では読取タイムアウトするため read を 60s に取る。"""
     lats = ",".join(str(la) for la, _ in coords)
     lons = ",".join(str(lo) for _, lo in coords)
     resp = requests.get(
@@ -80,18 +82,11 @@ def fetch_batch(coords, timeout=30):
     return data if isinstance(data, list) else [data]
 
 
-def fetch_with_retry(coords, attempts=3, wait=RETRY_WAIT_S):
-    """429（レート制限）時は wait 秒待って最大 attempts 回までリトライ。その他のエラーは即再送出。"""
-    for k in range(attempts):
-        try:
-            return fetch_batch(coords)
-        except requests.HTTPError as e:
-            code = getattr(getattr(e, "response", None), "status_code", None)
-            if code == 429 and k < attempts - 1:
-                print(f"[airtemp] 429 rate-limited; wait {wait}s ({k + 1}/{attempts})")
-                time.sleep(wait)
-                continue
-            raise
+def fetch_with_retry(coords, attempts=4, wait=RETRY_WAIT_S, sleep=time.sleep):
+    """一時的エラー（読取/接続タイムアウト・接続断・429・5xx）で wait 秒待ってリトライ。
+    CI 共有IPでは 200点リクエストが散発的に Read timeout するため、429 だけでなく
+    timeout も再試行して層全体を1回の失敗で落とさない。sleep はテスト用に注入可。"""
+    return retry(lambda: fetch_batch(coords), attempts=attempts, wait=wait, sleep=sleep)
 
 
 def main():

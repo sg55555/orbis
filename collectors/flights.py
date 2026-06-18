@@ -1,13 +1,16 @@
 """OpenSky の全機 state vector を取得して data/snapshots/flights.json に書き出す。"""
 import json
 import os
+import time
 from datetime import datetime, timezone
 
 import requests
 from collectors.lib.manifest import update_manifest
+from collectors.lib.http import retry
 
 STATES_URL = "https://opensky-network.org/api/states/all"
 MAX_POINTS = 6000
+RETRY_WAIT_S = 5     # OpenSky への接続/読取の一時障害でのリトライ待機秒
 
 
 def transform(payload):
@@ -48,11 +51,17 @@ def build_snapshot(points, updated_iso):
 SNAPSHOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"))
 
 
-def fetch(url=STATES_URL, timeout=30):
-    """OpenSky 全機 state を取得（匿名）。"""
+def fetch(url=STATES_URL, timeout=(10, 30)):
+    """OpenSky 全機 state を取得（匿名）。timeout=(connect, read)。"""
     resp = requests.get(url, timeout=timeout, headers={"User-Agent": "orbis-collector"})
     resp.raise_for_status()
     return resp.json()
+
+
+def fetch_with_retry(attempts=3, wait=RETRY_WAIT_S, sleep=time.sleep, url=STATES_URL):
+    """一時的エラー（接続/読取タイムアウト・接続断・5xx 等）で待機リトライ。
+    OpenSky は散発的に接続タイムアウトするため、1回の失敗で層を落とさない。sleep はテスト用に注入可。"""
+    return retry(lambda: fetch(url), attempts=attempts, wait=wait, sleep=sleep)
 
 
 def main():
@@ -61,7 +70,7 @@ def main():
     manifest_path = os.path.join(SNAPSHOT_DIR, "manifest.json")
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
-        points = downsample(transform(fetch()))
+        points = downsample(transform(fetch_with_retry()))
     except Exception as e:
         print(f"[flights] fetch/transform failed: {e}; keeping previous snapshot")
         return 1

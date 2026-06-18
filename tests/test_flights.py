@@ -26,3 +26,18 @@ def test_downsample_caps_count():
 def test_build_snapshot_shape():
     snap = build_snapshot([{"icao24": "a"}], "2026-06-14T00:00:00Z")
     assert snap["layer"] == "flights" and snap["count"] == 1 and snap["updated"].endswith("Z")
+
+def test_fetch_with_retry_retries_on_connect_timeout(monkeypatch):
+    # 本番障害の再現: OpenSky への接続が 1回目 ConnectTimeout → リトライして2回目成功。
+    import requests
+    import collectors.flights as fl
+    n = {"i": 0}
+    def fake_fetch(url=fl.STATES_URL, timeout=30):
+        n["i"] += 1
+        if n["i"] == 1:
+            raise requests.exceptions.ConnectTimeout("connect timed out")
+        return {"states": []}
+    monkeypatch.setattr(fl, "fetch", fake_fetch)
+    out = fl.fetch_with_retry(attempts=3, wait=0, sleep=lambda s: None)
+    assert out == {"states": []}
+    assert n["i"] == 2

@@ -44,3 +44,18 @@ def test_build_snapshot_shape():
     assert snap["grid"] == meta
     assert snap["count"] == 2          # None を除く
     assert snap["temps"] == temps
+
+def test_fetch_with_retry_retries_on_read_timeout(monkeypatch):
+    # 本番障害の再現: 1回目 ReadTimeout → リトライして2回目成功。
+    import requests
+    import collectors.sst as sst
+    n = {"i": 0}
+    def fake_batch(coords, timeout=30):
+        n["i"] += 1
+        if n["i"] == 1:
+            raise requests.exceptions.ReadTimeout("read timed out")
+        return [{"current": {"sea_surface_temperature": 20.0}}]
+    monkeypatch.setattr(sst, "fetch_batch", fake_batch)
+    out = sst.fetch_with_retry([(0, 0)], attempts=3, wait=0, sleep=lambda s: None)
+    assert out == [{"current": {"sea_surface_temperature": 20.0}}]
+    assert n["i"] == 2
