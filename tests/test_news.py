@@ -76,3 +76,29 @@ def test_recent_window():
 def test_to_epoch_ms():
     assert to_epoch_ms("2026-06-18T00:00:00Z") == 1781740800000
     assert to_epoch_ms(None) == 0
+
+
+from collectors.lib.news_enrich import rank_prompt, parse_rank
+
+
+def _arts(n):
+    return [{"title": f"t{i}", "url": f"u{i}", "published_iso": "2026-06-18T09:00:00Z", "source": "a"} for i in range(n)]
+
+
+def test_rank_prompt_lists_numbered_headlines():
+    p = rank_prompt(_arts(3))
+    assert "1." in p and "t0" in p and "t2" in p
+
+
+def test_parse_rank_picks_top_and_orders():
+    arts = _arts(5)
+    out = parse_rank("Top: 3, 1, 5", arts, top_n=2)
+    assert [a["url"] for a in out] == ["u2", "u0"]  # 1始まり→0始まり、top_n=2
+    assert out[0]["rank"] == 0 and out[1]["rank"] == 1
+
+
+def test_parse_rank_fills_when_short():
+    arts = _arts(4)
+    out = parse_rank("2", arts, top_n=3)  # 1件しか拾えない→残りを元順で補完
+    assert len(out) == 3
+    assert out[0]["url"] == "u1"
