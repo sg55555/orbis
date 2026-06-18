@@ -8,7 +8,7 @@ import { getLook, applyLookCss } from './lib/look.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
-import { renderStreams, wireStreamsCollapse } from './ui/streams.js';
+import { renderMedia } from './ui/media.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
@@ -282,21 +282,33 @@ function boot() {
     rebuild(overlay);
     if (!REDUCED) requestAnimationFrame(motionLoop);
 
-    // 下部の YouTube Live バー（config 駆動・選択で本拠地へ flyTo・既定折りたたみ）。
-    const streamsRoot = document.getElementById('streams');
+    // 下部メディア領域（ニュース/カメラ）。2 config を読み、選択で本拠地へ flyTo＋マーカー。
+    const mediaRoot = document.getElementById('media');
     try {
-      const channels = await (await fetch('config/live_channels.json')).json();
-      if (Array.isArray(channels) && channels.length) {
-        const streamsApi = renderStreams(streamsRoot, channels, {
-          onSelect: (ch) => map.flyTo({ center: [ch.lon, ch.lat], zoom: 4, duration: 1500, essential: true }),
+      const [news, cameras] = await Promise.all([
+        fetch('config/live_channels.json').then((r) => r.json()).catch(() => []),
+        fetch('config/live_cameras.json').then((r) => r.json()).catch(() => []),
+      ]);
+      if ((Array.isArray(news) && news.length) || (Array.isArray(cameras) && cameras.length)) {
+        const mediaApi = renderMedia(mediaRoot, { news, cameras }, {
+          onSelect: (item) => {
+            map.flyTo({ center: [item.lon, item.lat], zoom: 4, duration: 1500, essential: true });
+            selected = { lon: item.lon, lat: item.lat, title: item.name, layerId: 'media', at: performance.now() };
+            if (window.__orbis) window.__orbis.selected = selected;
+            drawAll(overlay); // 着地リティクル（マーカー）を表示
+          },
         });
-        wireStreamsCollapse(streamsRoot, document.getElementById('streams-toggle'), streamsApi);
-        if (window.__orbis) window.__orbis.streams = streamsApi; // e2e/デバッグ用
+        // #media が画面に入ったら再生・離れたら停止（可視時のみ再生）。
+        const io = new IntersectionObserver((entries) => {
+          mediaApi.setPlaying(entries[0].isIntersecting);
+        }, { threshold: 0.4 });
+        io.observe(mediaRoot);
+        if (window.__orbis) window.__orbis.media = mediaApi; // e2e/デバッグ用
       } else {
-        streamsRoot.style.display = 'none';
+        mediaRoot.style.display = 'none';
       }
     } catch {
-      streamsRoot.style.display = 'none';
+      mediaRoot.style.display = 'none';
     }
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {
