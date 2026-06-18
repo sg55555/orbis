@@ -146,3 +146,36 @@ def test_finalize_sorts_by_rank_then_time_and_caps():
     ]
     out = finalize_items(items, now_ms, hours=24, cap=2)
     assert [i["url"] for i in out] == ["u2", "u3"]  # rank昇順、窓外/cap除外
+
+
+import collectors.news as news
+
+
+def test_main_skips_without_key(monkeypatch, tmp_path):
+    monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.setattr(news, "SNAPSHOT_DIR", str(tmp_path))
+    assert news.main() == 0
+    assert not os.path.exists(os.path.join(tmp_path, "news.json"))
+
+
+def test_main_builds_snapshot(monkeypatch, tmp_path):
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "k")
+    monkeypatch.setattr(news, "SNAPSHOT_DIR", str(tmp_path))
+    monkeypatch.setattr(news, "load_feeds", lambda: [{"id": "a", "name": "A", "url": "x"}])
+    monkeypatch.setattr(news, "fetch_text", lambda url: (
+        '<rss><channel>'
+        '<item><title>Quake hits Tokyo</title><link>https://e.com/1</link>'
+        '<pubDate>Wed, 18 Jun 2026 09:00:00 GMT</pubDate></item>'
+        '</channel></rss>'))
+    monkeypatch.setattr(news, "_make_client", lambda: object())
+    monkeypatch.setattr(news, "_rank", lambda client, arts: "1")
+    monkeypatch.setattr(news, "_enrich", lambda client, art: (
+        '{"title_ja":"東京で地震","summary_ja":"M6。","category":"disaster",'
+        '"lat":35.6,"lon":139.7,"place":"東京"}'))
+    monkeypatch.setattr(news, "_now", lambda: datetime(2026, 6, 18, 12, 0, 0, tzinfo=timezone.utc))
+    assert news.main() == 0
+    with open(os.path.join(tmp_path, "news.json"), encoding="utf-8") as f:
+        snap = json.load(f)
+    assert snap["items"][0]["title_ja"] == "東京で地震"
+    assert snap["items"][0]["category"] == "disaster"
+    assert snap["items"][0]["lon"] == 139.7
