@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T21:01:13Z",
-  "count": 254,
+  "updated": "2026-06-18T21:15:50Z",
+  "count": 251,
   "points": [
+    {
+      "id": "nc75379266",
+      "lon": -122.856498718262,
+      "lat": 38.828498840332,
+      "depth": 2.60999989509583,
+      "mag": 0.67,
+      "place": "10 km WNW of The Geysers, CA",
+      "time": 1781817008970,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379266"
+    },
+    {
+      "id": "aka2026lzxzos",
+      "lon": -152.952,
+      "lat": 60.124,
+      "depth": 0.4,
+      "mag": 0.6,
+      "place": "70 km WNW of Happy Valley, Alaska",
+      "time": 1781816925437,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzxzos"
+    },
+    {
+      "id": "nc75379261",
+      "lon": -120.54133605957,
+      "lat": 35.9823341369629,
+      "depth": 3.14000010490417,
+      "mag": 1.75,
+      "place": "14 km NW of Parkfield, CA",
+      "time": 1781816682330,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379261"
+    },
     {
       "id": "nc75379251",
       "lon": -120.539329528809,
@@ -92,16 +122,6 @@
       "place": "6 km WNW of The Geysers, CA",
       "time": 1781810934160,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379211"
-    },
-    {
-      "id": "nn00920449",
-      "lon": -115.3143,
-      "lat": 36.0665,
-      "depth": 3.8987,
-      "mag": 1.53,
-      "place": "5 km SSE of Summerlin South, Nevada",
-      "time": 1781810905120,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920449"
     },
     {
       "id": "aka2026lzupst",
@@ -255,12 +275,12 @@
     },
     {
       "id": "nn00920448",
-      "lon": -115.3667,
-      "lat": 37.1863,
-      "depth": 13.6899,
-      "mag": 1.68,
+      "lon": -115.3429,
+      "lat": 37.1789,
+      "depth": 10.5797,
+      "mag": 1.67,
       "place": "26 km SW of Alamo, Nevada",
-      "time": 1781806660262,
+      "time": 1781806660183,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920448"
     },
     {
@@ -352,16 +372,6 @@
       "place": "9 km WNW of Cobb, CA",
       "time": 1781802716040,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379151"
-    },
-    {
-      "id": "tx2026lxrzut",
-      "lon": -103.481,
-      "lat": 32.089,
-      "depth": 0,
-      "mag": 1.7,
-      "place": "27 km W of Jal, New Mexico",
-      "time": 1781802347274,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxrzut"
     },
     {
       "id": "nc75379146",
@@ -2124,6 +2134,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378821"
     },
     {
+      "id": "av93062139",
+      "lon": -176.1355,
+      "lat": 52.0928333333333,
+      "depth": 13.07,
+      "mag": -0.23,
+      "place": "42 km NE of Adak, Alaska",
+      "time": 1781743651350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062139"
+    },
+    {
       "id": "av94251818",
       "lon": -159.6345,
       "lat": 55.9901666666667,
@@ -2492,56 +2512,6 @@
       "place": "9 km NW of The Geysers, CA",
       "time": 1781730913810,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378791"
-    },
-    {
-      "id": "uu80007458",
-      "lon": -112.042333333333,
-      "lat": 40.727,
-      "depth": 7.22,
-      "mag": 0.18,
-      "place": "5 km NW of West Valley City, Utah",
-      "time": 1781730896260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007458"
-    },
-    {
-      "id": "av94251388",
-      "lon": -169.877333333333,
-      "lat": 52.8076666666667,
-      "depth": 3.52,
-      "mag": 1.26,
-      "place": "69 km WSW of Nikolski, Alaska",
-      "time": 1781730719430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251388"
-    },
-    {
-      "id": "aka2026lybxeg",
-      "lon": -176.59,
-      "lat": 51.945,
-      "depth": 188.7,
-      "mag": 1.8,
-      "place": "8 km NNE of Adak, Alaska",
-      "time": 1781730404502,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lybxeg"
-    },
-    {
-      "id": "hv74984952",
-      "lon": -155.282165527344,
-      "lat": 19.4150009155273,
-      "depth": 1.10000002384186,
-      "mag": 1.81,
-      "place": "5 km WSW of Volcano, Hawaii",
-      "time": 1781730399710,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74984952"
-    },
-    {
-      "id": "aka2026lybtbt",
-      "lon": -176.529,
-      "lat": 51.303,
-      "depth": 20,
-      "mag": 2,
-      "place": "63 km S of Adak, Alaska",
-      "time": 1781730129555,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lybtbt"
     }
   ]
 }
