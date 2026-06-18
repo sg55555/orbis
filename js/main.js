@@ -292,6 +292,7 @@ function boot() {
       if ((Array.isArray(news) && news.length) || (Array.isArray(cameras) && cameras.length)) {
         const mediaApi = renderMedia(mediaRoot, { news, cameras }, {
           onSelect: (item) => {
+            if (item.area === 'space') return; // 宇宙カメラは地上座標が無いので flyTo/マーカーしない
             map.flyTo({ center: [item.lon, item.lat], zoom: 4, duration: 1500, essential: true });
             selected = { lon: item.lon, lat: item.lat, title: item.name, layerId: 'media', at: performance.now() };
             if (window.__orbis) window.__orbis.selected = selected;
