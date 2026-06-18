@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T17:45:49Z",
-  "count": 234,
+  "updated": "2026-06-18T18:01:16Z",
+  "count": 235,
   "points": [
+    {
+      "id": "hv74985707",
+      "lon": -155.225830078125,
+      "lat": 19.3104991912842,
+      "depth": 4.34999990463257,
+      "mag": 1.89,
+      "place": "14 km S of Volcano, Hawaii",
+      "time": 1781805038930,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985707"
+    },
     {
       "id": "aka2026lzqwva",
       "lon": -149.125,
@@ -42,6 +52,16 @@
       "place": "9 km WNW of Cobb, CA",
       "time": 1781802716040,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379151"
+    },
+    {
+      "id": "tx2026lxrzut",
+      "lon": -103.481,
+      "lat": 32.089,
+      "depth": 0,
+      "mag": 1.7,
+      "place": "27 km W of Jal, New Mexico",
+      "time": 1781802347274,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxrzut"
     },
     {
       "id": "nc75379146",
@@ -172,6 +192,16 @@
       "place": "2 km NE of Palomar Observatory, CA",
       "time": 1781797772720,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489920"
+    },
+    {
+      "id": "us7000suc2",
+      "lon": 94.3367,
+      "lat": 24.5164,
+      "depth": 10,
+      "mag": 4.6,
+      "place": "28 km ESE of Wāngjing, India",
+      "time": 1781796559872,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suc2"
     },
     {
       "id": "aka2026lzmmew",
@@ -2322,26 +2352,6 @@
       "place": "10 km WNW of Corona, CA",
       "time": 1781719491650,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489272"
-    },
-    {
-      "id": "aka2026lxvrxy",
-      "lon": -159.71,
-      "lat": 55.788,
-      "depth": 12.6,
-      "mag": 1,
-      "place": "19 km SW of Ivanof Bay, Alaska",
-      "time": 1781719240619,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lxvrxy"
-    },
-    {
-      "id": "hv74984697",
-      "lon": -155.613830566406,
-      "lat": 19.469165802002,
-      "depth": 34.9799995422363,
-      "mag": 2.04,
-      "place": "26 km E of Honaunau-Napoopoo, Hawaii",
-      "time": 1781718567270,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74984697"
     }
   ]
 }
