@@ -1,7 +1,21 @@
 [
-  { "id": "shibuya", "name": "渋谷スクランブル交差点", "region": "東京", "lat": 35.66, "lon": 139.70, "video_id": "8H3nRCFVR6Y" },
-  { "id": "timessquare", "name": "Times Square", "region": "ニューヨーク", "lat": 40.758, "lon": -73.985, "video_id": "z-jYdOIKcTQ" },
-  { "id": "london", "name": "London Live", "region": "ロンドン", "lat": 51.51, "lon": -0.13, "video_id": "M3EYAY2MftI" },
-  { "id": "paris", "name": "Paris / Eiffel", "region": "パリ", "lat": 48.86, "lon": 2.29, "video_id": "OzYp4NRZlwQ" },
-  { "id": "venice", "name": "Venice", "region": "ヴェネツィア", "lat": 45.44, "lon": 12.34, "video_id": "a1mcaV3Sf9U" }
+  { "id": "shibuya", "name": "渋谷スクランブル交差点", "region": "東京", "area": "asia", "lat": 35.66, "lon": 139.70, "video_id": "8H3nRCFVR6Y" },
+  { "id": "timessquare", "name": "Times Square", "region": "ニューヨーク", "area": "americas", "lat": 40.758, "lon": -73.985, "video_id": "z-jYdOIKcTQ" },
+  { "id": "london", "name": "London Live", "region": "ロンドン", "area": "europe", "lat": 51.51, "lon": -0.13, "video_id": "M3EYAY2MftI" },
+  { "id": "paris", "name": "Paris / Eiffel", "region": "パリ", "area": "europe", "lat": 48.86, "lon": 2.29, "video_id": "OzYp4NRZlwQ" },
+  { "id": "venice", "name": "Venice", "region": "ヴェネツィア", "area": "europe", "lat": 45.44, "lon": 12.34, "video_id": "a1mcaV3Sf9U" },
+  { "id": "dubai", "name": "Dubai", "region": "ドバイ", "area": "middle_east", "lat": 25.20, "lon": 55.27, "video_id": "ydYDqZQpim8" },
+  { "id": "istanbul", "name": "Istanbul", "region": "イスタンブール", "area": "middle_east", "lat": 41.01, "lon": 28.98, "video_id": "Veq52FdYk0s" },
+  { "id": "rome", "name": "Rome", "region": "ローマ", "area": "europe", "lat": 41.90, "lon": 12.50, "video_id": "wMT2aNcP4Wg" },
+  { "id": "amsterdam", "name": "Amsterdam", "region": "アムステルダム", "area": "europe", "lat": 52.37, "lon": 4.90, "video_id": "Gd9d4q6WvUY" },
+  { "id": "miami", "name": "Miami Beach", "region": "マイアミ", "area": "americas", "lat": 25.79, "lon": -80.13, "video_id": "cmkAbDUEoyA" },
+  { "id": "lasvegas", "name": "Las Vegas", "region": "ラスベガス", "area": "americas", "lat": 36.17, "lon": -115.14, "video_id": "gDcfh-Wm0xE" },
+  { "id": "seoul", "name": "Seoul", "region": "ソウル", "area": "asia", "lat": 37.57, "lon": 126.98, "video_id": "vk5BHoDxXf0" },
+  { "id": "bangkok", "name": "Bangkok", "region": "バンコク", "area": "asia", "lat": 13.75, "lon": 100.50, "video_id": "UemFRPrl1hk" },
+  { "id": "capetown", "name": "Cape Town", "region": "ケープタウン", "area": "africa", "lat": -33.92, "lon": 18.42, "video_id": "IGu55JrxyHU" },
+  { "id": "safari", "name": "Africa Safari", "region": "サファリ", "area": "africa", "lat": -24.40, "lon": 31.49, "video_id": "qpukdDslCjk" },
+  { "id": "sydney", "name": "Sydney Harbour", "region": "シドニー", "area": "oceania", "lat": -33.86, "lon": 151.21, "video_id": "5uZa3-RMFos" },
+  { "id": "queenstown", "name": "Queenstown", "region": "クイーンズタウン", "area": "oceania", "lat": -45.03, "lon": 168.66, "video_id": "It9FhFpFIqs" },
+  { "id": "iss", "name": "ISS Earth View", "region": "宇宙（ISS）", "area": "space", "lat": 0, "lon": 0, "video_id": "vytmBNhc9ig" },
+  { "id": "earthfromspace", "name": "Earth From Space", "region": "宇宙（地球）", "area": "space", "lat": 0, "lon": 0, "video_id": "fO9e9jnhYK8" }
 ]
