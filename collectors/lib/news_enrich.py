@@ -39,3 +39,53 @@ def parse_rank(text, articles, top_n=30):
         a["rank"] = rank
         out.append(a)
     return out
+
+
+def enrich_prompt(article):
+    """1記事→ {title_ja,summary_ja,category,lat,lon,place} を JSON のみで返させる（純粋）。"""
+    cats = ", ".join(CATEGORIES)
+    return (
+        "次のニュース見出しについて、JSON だけを返してください（前後の説明やコードフェンスも可）。\n"
+        "キー: title_ja(日本語見出し), summary_ja(1〜2文の日本語要約), "
+        f"category({cats} のいずれか1つ), lat(緯度,数値), lon(経度,数値), place(日本語の地名)。\n"
+        "出来事の主な発生地の座標を入れてください。場所が特定できない場合は lat/lon を null に。\n\n"
+        f"見出し: {article['title']}\n出典: {article.get('source', '')}"
+    )
+
+
+def _extract_json(text):
+    m = re.search(r"\{.*\}", text or "", re.DOTALL)
+    if not m:
+        return None
+    try:
+        return json.loads(m.group(0))
+    except (json.JSONDecodeError, ValueError):
+        return None
+
+
+def parse_enrich(text):
+    """enrich 応答を検証済み dict に。必須キー欠落・座標不正は None。category は既知集合に丸め（純粋）。"""
+    d = _extract_json(text)
+    if not isinstance(d, dict):
+        return None
+    title = str(d.get("title_ja") or "").strip()
+    if not title:
+        return None
+    try:
+        lat = float(d.get("lat"))
+        lon = float(d.get("lon"))
+    except (TypeError, ValueError):
+        return None
+    if not (-90 <= lat <= 90 and -180 <= lon <= 180):
+        return None
+    cat = d.get("category")
+    if cat not in CATEGORIES:
+        cat = "other"
+    return {
+        "title_ja": title,
+        "summary_ja": str(d.get("summary_ja") or "").strip(),
+        "category": cat,
+        "lat": lat,
+        "lon": lon,
+        "place": str(d.get("place") or "").strip(),
+    }

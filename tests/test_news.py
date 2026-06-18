@@ -102,3 +102,32 @@ def test_parse_rank_fills_when_short():
     out = parse_rank("2", arts, top_n=3)  # 1件しか拾えない→残りを元順で補完
     assert len(out) == 3
     assert out[0]["url"] == "u1"
+
+
+from collectors.lib.news_enrich import enrich_prompt, parse_enrich
+
+
+def test_enrich_prompt_mentions_json_and_categories():
+    p = enrich_prompt({"title": "Quake hits Tokyo", "url": "u", "source": "a"})
+    assert "JSON" in p and "politics" in p and "Quake hits Tokyo" in p
+
+
+def test_parse_enrich_ok_with_fence():
+    text = '```json\n{"title_ja":"東京で地震","summary_ja":"M6。","category":"disaster","lat":35.6,"lon":139.7,"place":"東京"}\n```'
+    d = parse_enrich(text)
+    assert d["title_ja"] == "東京で地震" and d["category"] == "disaster"
+    assert d["lat"] == 35.6 and d["lon"] == 139.7 and d["place"] == "東京"
+
+
+def test_parse_enrich_coerces_bad_category_and_validates_coords():
+    text = '{"title_ja":"x","summary_ja":"y","category":"gossip","lat":999,"lon":10,"place":"z"}'
+    assert parse_enrich(text) is None  # lat 範囲外 → None
+
+
+def test_parse_enrich_unknown_category_becomes_other():
+    text = '{"title_ja":"x","summary_ja":"y","category":"gossip","lat":10,"lon":10,"place":"z"}'
+    assert parse_enrich(text)["category"] == "other"
+
+
+def test_parse_enrich_garbage_none():
+    assert parse_enrich("no json here") is None
