@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T20:15:49Z",
-  "count": 248,
+  "updated": "2026-06-18T20:31:04Z",
+  "count": 249,
   "points": [
+    {
+      "id": "aka2026lzwqaj",
+      "lon": -153.563,
+      "lat": 58.811,
+      "depth": 6.6,
+      "mag": 1.9,
+      "place": "91 km NNW of Aleneva, Alaska",
+      "time": 1781814469351,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzwqaj"
+    },
+    {
+      "id": "ci41490216",
+      "lon": -116.3835,
+      "lat": 33.3386666666667,
+      "depth": 6.77,
+      "mag": 0.76,
+      "place": "9 km N of Borrego Springs, CA",
+      "time": 1781814413860,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490216"
+    },
+    {
+      "id": "aka2026lzwjcb",
+      "lon": -159.672,
+      "lat": 55.935,
+      "depth": 11.6,
+      "mag": 1.5,
+      "place": "12 km WNW of Ivanof Bay, Alaska",
+      "time": 1781813994655,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzwjcb"
+    },
     {
       "id": "ci41490176",
       "lon": -116.412,
@@ -302,6 +332,16 @@
       "place": "13 km E of Pāhala, Hawaii",
       "time": 1781802171590,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985692"
+    },
+    {
+      "id": "ci41490000",
+      "lon": -116.413,
+      "lat": 33.0371666666667,
+      "depth": 9.68,
+      "mag": 0.37,
+      "place": "18 km ESE of Julian, CA",
+      "time": 1781801730380,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490000"
     },
     {
       "id": "aka2026lzpidb",
@@ -2452,36 +2492,6 @@
       "place": "5 km ENE of Magna, Utah",
       "time": 1781729795410,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142751"
-    },
-    {
-      "id": "aka2026lyaopq",
-      "lon": -154,
-      "lat": 61.814,
-      "depth": 2.9,
-      "mag": 1.9,
-      "place": "91 km ENE of Lime Village, Alaska",
-      "time": 1781728007006,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyaopq"
-    },
-    {
-      "id": "tx2026lwcrqb",
-      "lon": -103.302,
-      "lat": 31.075,
-      "depth": 1.8188,
-      "mag": 1,
-      "place": "29 km SW of Coyanosa, Texas",
-      "time": 1781727558335,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwcrqb"
-    },
-    {
-      "id": "uu80142746",
-      "lon": -112.849333333333,
-      "lat": 38.4241666666667,
-      "depth": 5.77,
-      "mag": 1.82,
-      "place": "14 km ENE of Milford, Utah",
-      "time": 1781727528730,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142746"
     }
   ]
 }
