@@ -36,3 +36,30 @@ def retry(fetcher, attempts=3, wait=2.0, sleep=time.sleep):
             if not is_transient(e) or k == attempts - 1:
                 raise
             sleep(wait)
+
+
+def collect_batches(batches, fetch_one, sleep_between=lambda: None, max_consecutive_fail=3):
+    """グリッド収集を best-effort 化する。各バッチを fetch_one(batch) で取得し、
+    失敗したバッチは [None]*len(batch) で埋めて**続行**する（1バッチ失敗で層全体を捨てない）。
+
+    ただし max_consecutive_fail 回連続で失敗したらエンドポイント障害とみなし早期 abort する
+    （全バッチを無駄に試して時間を浪費しない）。
+    返り値: (responses, failed_count, aborted)。
+    sleep_between はバッチ間にのみ呼ぶ（テスト用に注入可能）。
+    """
+    responses, failed, consec = [], 0, 0
+    for i, batch in enumerate(batches):
+        try:
+            responses.append(fetch_one(batch))
+            consec = 0
+        except Exception as e:
+            failed += 1
+            consec += 1
+            responses.append([None] * len(batch))
+            print(f"[collect] batch {i + 1}/{len(batches)} failed: {e}; filling None")
+            if consec >= max_consecutive_fail:
+                print(f"[collect] {consec} consecutive failures; aborting (endpoint likely down)")
+                return responses, failed, True
+        if i + 1 < len(batches):
+            sleep_between()
+    return responses, failed, False

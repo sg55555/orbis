@@ -6,7 +6,7 @@ from datetime import datetime, timezone
 
 import requests
 from collectors.lib.manifest import update_manifest
-from collectors.lib.http import retry
+from collectors.lib.http import retry, collect_batches
 
 API_URL = "https://marine-api.open-meteo.com/v1/marine"
 # 全球 5° グリッド（lat -80..80=33行, lon -180..175=72列 = 2376点）。
@@ -100,14 +100,12 @@ def main():
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     grid = build_grid(LAT0, LAT1, LON0, LON1, STEP)
     meta = grid_meta(LAT0, LAT1, LON0, LON1, STEP)
-    responses = []
-    try:
-        for i, batch in enumerate(chunk(grid, BATCH)):
-            responses.append(fetch_with_retry(batch))
-            if i + 1 < (len(grid) + BATCH - 1) // BATCH:
-                time.sleep(SLEEP_S)
-    except Exception as e:  # 失敗時は前回スナップショットを温存
-        print(f"[sst] fetch failed: {e}; keeping previous snapshot")
+    # best-effort 収集：1バッチ失敗で層全体を捨てず、失敗バッチは欠損で埋めて続行。
+    # ただし連続失敗（エンドポイント障害）なら早期 abort して前回を温存。
+    responses, failed, aborted = collect_batches(
+        chunk(grid, BATCH), fetch_with_retry, sleep_between=lambda: time.sleep(SLEEP_S))
+    if aborted:
+        print(f"[sst] aborted after consecutive failures ({failed} batches); keeping previous snapshot")
         return 1
     temps = parse_temps(responses)
     if len(temps) != len(grid):  # 期待長と不一致は破棄（堅牢性）
@@ -117,7 +115,7 @@ def main():
     with open(snap_path, "w", encoding="utf-8") as f:
         json.dump(snap, f, ensure_ascii=False)
     update_manifest(manifest_path, "sst", now_iso, snap["count"])
-    print(f"[sst] wrote {snap['count']}/{len(grid)} temps -> {snap_path}")
+    print(f"[sst] wrote {snap['count']}/{len(grid)} temps ({failed} batches missing) -> {snap_path}")
     return 0
 
 

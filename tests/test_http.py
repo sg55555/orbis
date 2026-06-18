@@ -2,7 +2,7 @@ import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 import pytest
 import requests
-from collectors.lib.http import retry, is_transient
+from collectors.lib.http import retry, is_transient, collect_batches
 
 
 def _http_error(code):
@@ -62,6 +62,38 @@ def test_retry_retries_on_429_http_error():
         return "ok"
     assert retry(f, attempts=3, wait=0, sleep=lambda s: None) == "ok"
     assert n["i"] == 2
+
+
+def test_collect_batches_all_success_sleeps_between():
+    batches = [[1, 2], [3, 4], [5, 6]]
+    slept = []
+    resp, failed, aborted = collect_batches(
+        batches, lambda b: [x * 10 for x in b], sleep_between=lambda: slept.append(1))
+    assert resp == [[10, 20], [30, 40], [50, 60]]
+    assert failed == 0 and aborted is False
+    assert len(slept) == 2   # バッチ間のみ（最後の後は sleep しない）
+
+
+def test_collect_batches_fills_none_on_sparse_failure_and_continues():
+    batches = [[1, 2], [3, 4], [5, 6]]
+    def fetch(b):
+        if b == [3, 4]:
+            raise requests.exceptions.ReadTimeout("x")
+        return [v * 10 for v in b]
+    resp, failed, aborted = collect_batches(batches, fetch)
+    assert resp == [[10, 20], [None, None], [50, 60]]   # 失敗バッチは欠損で埋め続行
+    assert failed == 1 and aborted is False
+
+
+def test_collect_batches_aborts_on_consecutive_failures():
+    batches = [[1, 2], [3, 4], [5, 6], [7, 8], [9, 10]]
+    def fetch(b):
+        if b in ([3, 4], [5, 6], [7, 8]):
+            raise requests.exceptions.ConnectionError("down")
+        return [v * 10 for v in b]
+    resp, failed, aborted = collect_batches(batches, fetch, max_consecutive_fail=3)
+    assert aborted is True and failed == 3
+    assert len(resp) == 4    # batch1成功 + 3連続失敗で早期abort（batch5未到達）
 
 
 def test_is_transient_classification():
