@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T14:31:20Z",
-  "count": 222,
+  "updated": "2026-06-19T14:45:56Z",
+  "count": 224,
   "points": [
+    {
+      "id": "aka2026mbhdig",
+      "lon": -156.645,
+      "lat": 56.253,
+      "depth": 14.7,
+      "mag": 1.9,
+      "place": "109 km E of Chignik, Alaska",
+      "time": 1781880153873,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbhdig"
+    },
+    {
+      "id": "ci41490568",
+      "lon": -117.584666666667,
+      "lat": 35.7523333333333,
+      "depth": 7.03,
+      "mag": 0.67,
+      "place": "16 km W of Searles Valley, CA",
+      "time": 1781879887240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490568"
+    },
+    {
+      "id": "tx2026lzimmm",
+      "lon": -103.484,
+      "lat": 31.246,
+      "depth": 4.7156,
+      "mag": 1.4,
+      "place": "14 km SSE of Lindsay, Texas",
+      "time": 1781879266542,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzimmm"
+    },
     {
       "id": "tx2026lzhyzg",
       "lon": -103.743,
@@ -535,12 +565,12 @@
     },
     {
       "id": "uu80142861",
-      "lon": -111.9365,
-      "lat": 40.4136666666667,
-      "depth": 4.32,
-      "mag": 2.25,
+      "lon": -111.9375,
+      "lat": 40.4143333333333,
+      "depth": 6.01,
+      "mag": 2.23,
       "place": "7 km NNW of Saratoga Springs, Utah",
-      "time": 1781854833790,
+      "time": 1781854833670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142861"
     },
     {
@@ -1224,6 +1254,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026macuum"
     },
     {
+      "id": "uu80142846",
+      "lon": -110.4055,
+      "lat": 44.7505,
+      "depth": 2.15,
+      "mag": 1.24,
+      "place": "34 km SE of Mammoth, Wyoming",
+      "time": 1781825302530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142846"
+    },
+    {
       "id": "tx2026lyegff",
       "lon": -102.022,
       "lat": 32.358,
@@ -1622,6 +1662,16 @@
       "place": "18 km ESE of Julian, CA",
       "time": 1781813215590,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490176"
+    },
+    {
+      "id": "tx2026lxxyry",
+      "lon": -102.194,
+      "lat": 32.361,
+      "depth": 8.374,
+      "mag": 0.4,
+      "place": "32 km ENE of McKinney Acres, Texas",
+      "time": 1781813132063,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxxyry"
     },
     {
       "id": "av94253713",
@@ -2192,36 +2242,6 @@
       "place": "93 km NW of Aleneva, Alaska",
       "time": 1781794060699,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzlhdu"
-    },
-    {
-      "id": "aka2026lzlces",
-      "lon": -166.77,
-      "lat": 52.938,
-      "depth": 51.1,
-      "mag": 1.7,
-      "place": "105 km S of Unalaska, Alaska",
-      "time": 1781793704384,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzlces"
-    },
-    {
-      "id": "tx2026lxnemp",
-      "lon": -101.913,
-      "lat": 32.257,
-      "depth": 6.7627,
-      "mag": 0.8,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781793620839,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxnemp"
-    },
-    {
-      "id": "tx2026lxnajg",
-      "lon": -101.731,
-      "lat": 31.931,
-      "depth": 7.5439,
-      "mag": 0.8,
-      "place": "22 km SSE of Stanton, Texas",
-      "time": 1781793334039,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxnajg"
     }
   ]
 }
