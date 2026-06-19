@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T16:45:47Z",
-  "count": 226,
+  "updated": "2026-06-19T17:01:15Z",
+  "count": 224,
   "points": [
     {
       "id": "aka2026mbladx",
@@ -2242,26 +2242,6 @@
       "place": "13 km E of Pāhala, Hawaii",
       "time": 1781802171590,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985692"
-    },
-    {
-      "id": "ci41490000",
-      "lon": -116.413,
-      "lat": 33.0371666666667,
-      "depth": 9.68,
-      "mag": 0.37,
-      "place": "18 km ESE of Julian, CA",
-      "time": 1781801730380,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490000"
-    },
-    {
-      "id": "aka2026lzpidb",
-      "lon": -151.086,
-      "lat": 60.433,
-      "depth": 61.6,
-      "mag": 3.4,
-      "place": "6 km SSW of Soldotna, Alaska",
-      "time": 1781801325845,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzpidb"
     }
   ]
 }
