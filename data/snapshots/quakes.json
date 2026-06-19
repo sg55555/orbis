@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T08:15:56Z",
-  "count": 226,
+  "updated": "2026-06-19T08:31:05Z",
+  "count": 223,
   "points": [
+    {
+      "id": "us7000suik",
+      "lon": 161.06,
+      "lat": 52.7416,
+      "depth": 10,
+      "mag": 5.2,
+      "place": "167 km ESE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781856220851,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suik"
+    },
     {
       "id": "us7000suii",
       "lon": 161.1149,
@@ -2222,46 +2232,6 @@
       "place": "144 km NNE of Cruz Bay, U.S. Virgin Islands",
       "time": 1781771544080,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026169000"
-    },
-    {
-      "id": "aka2026lyypos",
-      "lon": -157.245,
-      "lat": 56.018,
-      "depth": 9.8,
-      "mag": 1.7,
-      "place": "78 km ESE of Chignik, Alaska",
-      "time": 1781771258506,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyypos"
-    },
-    {
-      "id": "hv74985417",
-      "lon": -155.414169311523,
-      "lat": 19.2696666717529,
-      "depth": 30.1900005340576,
-      "mag": 1.81,
-      "place": "10 km NE of Pāhala, Hawaii",
-      "time": 1781770991430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985417"
-    },
-    {
-      "id": "nc75378951",
-      "lon": -123.235168457031,
-      "lat": 39.2801666259766,
-      "depth": 3.63000011444092,
-      "mag": 2.8,
-      "place": "3 km WNW of Redwood Valley, CA",
-      "time": 1781770807090,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378951"
-    },
-    {
-      "id": "ci41489680",
-      "lon": -116.746,
-      "lat": 33.2818333333333,
-      "depth": 16.45,
-      "mag": 0.62,
-      "place": "5 km NNE of Lake Henshaw, CA",
-      "time": 1781770757550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489680"
     }
   ]
 }
