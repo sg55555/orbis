@@ -23,6 +23,37 @@ export function buildFeed(layers, snapshots, enabled, cap = CAP) {
   return items.slice(0, cap);
 }
 
+// フィード項目の層内比較（純粋）。group(紛争/抗議)は count 降順、他は time 降順。
+// 各 queue は単一レイヤーの項目なので均質（全 group か全 個別）。
+function feedItemCmp(a, b) {
+  if (a.kind === 'group' && b.kind === 'group') {
+    const d = (Number(b.count) || 0) - (Number(a.count) || 0);
+    if (d) return d;
+  }
+  return (b.time || 0) - (a.time || 0);
+}
+
+// 可視レイヤーを層内整列し、layers 登場順にラウンドロビン巡回して cap 件（純粋）。
+export function buildFeedBalanced(layers, snapshots, visible, cap = CAP) {
+  const queues = [];
+  for (const l of layers) {
+    if (!visible.has(l.id) || typeof l.toFeedItems !== 'function') continue;
+    const snap = snapshots[l.id];
+    if (!snap) continue;
+    const items = l.toFeedItems(snap).slice().sort(feedItemCmp);
+    if (items.length) queues.push(items);
+  }
+  const out = [];
+  for (let i = 0; out.length < cap; i += 1) {
+    let took = false;
+    for (const q of queues) {
+      if (i < q.length) { out.push(q[i]); took = true; if (out.length >= cap) break; }
+    }
+    if (!took) break; // 全層尽きた
+  }
+  return out;
+}
+
 // ── フィードのレイヤーフィルタ（純粋・hidden=非表示idの Set モデル）──
 const FEED_FILTER_KEY = 'orbis.feedFilter.v1';
 
