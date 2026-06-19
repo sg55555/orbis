@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T06:45:52Z",
+  "updated": "2026-06-19T07:01:14Z",
   "count": 234,
   "points": [
+    {
+      "id": "nc75379511",
+      "lon": -122.944999694824,
+      "lat": 38.7719993591309,
+      "depth": 4.44999980926514,
+      "mag": 1.11,
+      "place": "7 km ESE of Cloverdale, CA",
+      "time": 1781852006070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379511"
+    },
+    {
+      "id": "aka2026markyp",
+      "lon": -152.73,
+      "lat": 59.467,
+      "depth": 80.3,
+      "mag": 1.8,
+      "place": "47 km WNW of Nanwalek, Alaska",
+      "time": 1781851897444,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026markyp"
+    },
     {
       "id": "aka2026maqzng",
       "lon": -155.151,
@@ -2322,26 +2342,6 @@
       "place": "73 km W of Nikolski, Alaska",
       "time": 1781766166840,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062154"
-    },
-    {
-      "id": "us7000su9f",
-      "lon": 125.1953,
-      "lat": 5.7634,
-      "depth": 95.287,
-      "mag": 5.3,
-      "place": "1 km S of Kablalan, Philippines",
-      "time": 1781765857092,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su9f"
-    },
-    {
-      "id": "ci41489624",
-      "lon": -116.275666666667,
-      "lat": 32.946,
-      "depth": 11.72,
-      "mag": 1.2,
-      "place": "26 km SSW of Ocotillo Wells, CA",
-      "time": 1781765445370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489624"
     }
   ]
 }

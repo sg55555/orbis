@@ -1,7 +1,7 @@
 {
   "layers": {
     "quakes": {
-      "updated": "2026-06-19T06:45:52Z",
+      "updated": "2026-06-19T07:01:14Z",
       "count": 234
     },
     "flights": {
@@ -9,24 +9,24 @@
       "count": 3304
     },
     "protests": {
-      "updated": "2026-06-19T06:46:33Z",
-      "count": 346
+      "updated": "2026-06-19T07:01:55Z",
+      "count": 351
     },
     "conflict": {
-      "updated": "2026-06-19T06:46:33Z",
+      "updated": "2026-06-19T07:01:55Z",
       "count": 2000
     },
     "ships": {
-      "updated": "2026-06-19T06:46:33Z",
-      "count": 2686
+      "updated": "2026-06-19T07:01:55Z",
+      "count": 2538
     },
     "sst": {
       "updated": "2026-06-19T05:31:21Z",
       "count": 1646
     },
     "news": {
-      "updated": "2026-06-19T06:47:02Z",
-      "count": 25
+      "updated": "2026-06-19T07:02:25Z",
+      "count": 23
     },
     "airtemp": {
       "updated": "2026-06-19T05:21:38Z",
