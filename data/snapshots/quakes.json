@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T12:45:56Z",
-  "count": 226,
+  "updated": "2026-06-19T13:01:17Z",
+  "count": 225,
   "points": [
+    {
+      "id": "nc75379591",
+      "lon": -122.844833374023,
+      "lat": 38.8251647949219,
+      "depth": 1.75999999046326,
+      "mag": 0.26,
+      "place": "9 km NW of The Geysers, CA",
+      "time": 1781873897660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379591"
+    },
     {
       "id": "hv74986357",
       "lon": -155.505996704102,
@@ -2242,26 +2252,6 @@
       "place": "46 km WSW of Nanwalek, Alaska",
       "time": 1781789110242,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzinpv"
-    },
-    {
-      "id": "ci41489776",
-      "lon": -116.954833333333,
-      "lat": 34.0008333333333,
-      "depth": 9.51,
-      "mag": 0.34,
-      "place": "8 km NNE of Beaumont, CA",
-      "time": 1781787037260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489776"
-    },
-    {
-      "id": "hv74985567",
-      "lon": -155.074493408203,
-      "lat": 19.3646659851074,
-      "depth": 2.39000010490417,
-      "mag": 2.17,
-      "place": "12 km SSE of Fern Forest, Hawaii",
-      "time": 1781786947350,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985567"
     }
   ]
 }
