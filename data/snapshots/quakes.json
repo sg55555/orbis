@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T14:15:54Z",
-  "count": 223,
+  "updated": "2026-06-19T14:31:20Z",
+  "count": 222,
   "points": [
     {
       "id": "tx2026lzhyzg",
@@ -1194,6 +1194,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026madsuh"
     },
     {
+      "id": "tx2026lyfggq",
+      "lon": -103.888,
+      "lat": 31.961,
+      "depth": 1.9214,
+      "mag": 0.4,
+      "place": "33 km SSE of Malaga, New Mexico",
+      "time": 1781826334697,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyfggq"
+    },
+    {
       "id": "nc75379311",
       "lon": -122.795829772949,
       "lat": 38.8141670227051,
@@ -1282,6 +1292,16 @@
       "place": "63 km E of Khorugh, Tajikistan",
       "time": 1781823603868,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugd"
+    },
+    {
+      "id": "tx2026lydqso",
+      "lon": -101.922,
+      "lat": 31.872,
+      "depth": 5.249,
+      "mag": 0.1,
+      "place": "20 km SE of Midland, Texas",
+      "time": 1781823440804,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lydqso"
     },
     {
       "id": "nc75379306",
@@ -1692,6 +1712,16 @@
       "place": "93 km SE of Ugashik, Alaska",
       "time": 1781810847733,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzupst"
+    },
+    {
+      "id": "tx2026lxwpbl",
+      "lon": -103.722,
+      "lat": 32.08,
+      "depth": 6.5356,
+      "mag": 0.9,
+      "place": "36 km ESE of Malaga, New Mexico",
+      "time": 1781810655975,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxwpbl"
     },
     {
       "id": "us7000suds",
@@ -2192,46 +2222,6 @@
       "place": "22 km SSE of Stanton, Texas",
       "time": 1781793334039,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxnajg"
-    },
-    {
-      "id": "uu80142811",
-      "lon": -110.408333333333,
-      "lat": 44.4316666666667,
-      "depth": 3.38,
-      "mag": 0.5,
-      "place": "60 km ESE of West Yellowstone, Montana",
-      "time": 1781792968650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142811"
-    },
-    {
-      "id": "ci41489856",
-      "lon": -116.438333333333,
-      "lat": 33.1651666666667,
-      "depth": 13.76,
-      "mag": 2.04,
-      "place": "12 km SSW of Borrego Springs, CA",
-      "time": 1781792684270,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489856"
-    },
-    {
-      "id": "tx2026lxmmzl",
-      "lon": -103.617,
-      "lat": 31.199,
-      "depth": 4.1728,
-      "mag": 1.6,
-      "place": "20 km SSW of Lindsay, Texas",
-      "time": 1781792606270,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxmmzl"
-    },
-    {
-      "id": "us7000subl",
-      "lon": -68.0193,
-      "lat": 48.7895,
-      "depth": 10,
-      "mag": 4.4,
-      "place": "26 km NNE of Mont-Joli, Canada",
-      "time": 1781792481683,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000subl"
     }
   ]
 }
