@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T07:15:49Z",
-  "count": 233,
+  "updated": "2026-06-19T07:31:03Z",
+  "count": 234,
   "points": [
+    {
+      "id": "hv74986207",
+      "lon": -155.856002807617,
+      "lat": 19.3080005645752,
+      "depth": 21.7600002288818,
+      "mag": 1.71,
+      "place": "16 km S of Honaunau-Napoopoo, Hawaii",
+      "time": 1781853724610,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986207"
+    },
+    {
+      "id": "nc75379521",
+      "lon": -120.561332702637,
+      "lat": 36.0003318786621,
+      "depth": 1.37999999523163,
+      "mag": 1.22,
+      "place": "16 km NW of Parkfield, CA",
+      "time": 1781853626510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379521"
+    },
     {
       "id": "uw714026791",
       "lon": -122.169502258301,
@@ -44,6 +64,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379511"
     },
     {
+      "id": "us7000sui3",
+      "lon": 160.6511,
+      "lat": 53.2488,
+      "depth": 10,
+      "mag": 6.6,
+      "place": "136 km E of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781851954507,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui3"
+    },
+    {
       "id": "aka2026markyp",
       "lon": -152.73,
       "lat": 59.467,
@@ -62,6 +92,16 @@
       "place": "185 km SE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781851887000,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pt26170000"
+    },
+    {
+      "id": "tx2026lysyqo",
+      "lon": -102.027,
+      "lat": 32.356,
+      "depth": 8.1787,
+      "mag": 0.9,
+      "place": "33 km NW of Stanton, Texas",
+      "time": 1781851176284,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lysyqo"
     },
     {
       "id": "aka2026maqzng",
@@ -2302,36 +2342,6 @@
       "place": "25 km SSW of Ocotillo Wells, CA",
       "time": 1781767852220,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489648"
-    },
-    {
-      "id": "us7000su9l",
-      "lon": 126.4891,
-      "lat": -8.6588,
-      "depth": 21.07,
-      "mag": 4.9,
-      "place": "12 km E of Venilale, Timor Leste",
-      "time": 1781767603224,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su9l"
-    },
-    {
-      "id": "tx2026lwyqji",
-      "lon": -101.913,
-      "lat": 32.257,
-      "depth": 8.2764,
-      "mag": 0.8,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781767292913,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwyqji"
-    },
-    {
-      "id": "aka2026lywhqm",
-      "lon": -148.89,
-      "lat": 63.612,
-      "depth": 1.1,
-      "mag": 1.8,
-      "place": "13 km S of Denali Park, Alaska",
-      "time": 1781767106073,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lywhqm"
     }
   ]
 }
