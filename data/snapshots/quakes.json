@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T21:31:06Z",
-  "count": 243,
+  "updated": "2026-06-19T21:37:52Z",
+  "count": 242,
   "points": [
     {
       "id": "aka2026mbumki",
@@ -315,12 +315,12 @@
     },
     {
       "id": "aka2026mbnren",
-      "lon": -150.369,
-      "lat": 61.413,
-      "depth": 59.6,
-      "mag": 1.5,
-      "place": "16 km SSE of Susitna, Alaska",
-      "time": 1781891910703,
+      "lon": -150.35,
+      "lat": 61.4,
+      "depth": 34.7,
+      "mag": 1.6,
+      "place": "18 km SSE of Susitna, Alaska",
+      "time": 1781891911060,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnren"
     },
     {
@@ -2422,16 +2422,6 @@
       "place": "15 km S of Nikolski, Alaska",
       "time": 1781818841203,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzzbgh"
-    },
-    {
-      "id": "nc75379271",
-      "lon": -122.786499023438,
-      "lat": 38.8354988098145,
-      "depth": 1.86000001430511,
-      "mag": 0.99,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781818344740,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379271"
     }
   ]
 }
