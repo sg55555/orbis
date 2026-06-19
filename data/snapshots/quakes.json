@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T20:21:28Z",
-  "count": 230,
+  "updated": "2026-06-19T20:31:05Z",
+  "count": 231,
   "points": [
+    {
+      "id": "nc75379761",
+      "lon": -122.781669616699,
+      "lat": 38.8079986572266,
+      "depth": 2.90000009536743,
+      "mag": 1.01,
+      "place": "4 km NNW of The Geysers, CA",
+      "time": 1781900777670,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379761"
+    },
     {
       "id": "aka2026mbryce",
       "lon": -152.471,
@@ -464,6 +474,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbibyt"
     },
     {
+      "id": "aka2026mbibtw",
+      "lon": -165.891,
+      "lat": 53.573,
+      "depth": 21.1,
+      "mag": 1.7,
+      "place": "54 km SE of Unalaska, Alaska",
+      "time": 1781881847484,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbibtw"
+    },
+    {
       "id": "ci41490584",
       "lon": -117.479833333333,
       "lat": 35.9666666666667,
@@ -784,6 +804,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379546"
     },
     {
+      "id": "av93062269",
+      "lon": -169.890333333333,
+      "lat": 52.8281666666667,
+      "depth": 6.38,
+      "mag": 0.17,
+      "place": "70 km W of Nikolski, Alaska",
+      "time": 1781865459260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062269"
+    },
+    {
       "id": "tx2026lzange",
       "lon": -103.829,
       "lat": 32.012,
@@ -804,14 +834,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maymqp"
     },
     {
-      "id": "av93062259",
-      "lon": -169.950333333333,
-      "lat": 52.7966666666667,
-      "depth": 6,
+      "id": "av93062264",
+      "lon": -169.909833333333,
+      "lat": 52.7941666666667,
+      "depth": 5.42,
       "mag": 0.69,
-      "place": "75 km WSW of Nikolski, Alaska",
-      "time": 1781864335800,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062259"
+      "place": "72 km WSW of Nikolski, Alaska",
+      "time": 1781864335950,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062264"
     },
     {
       "id": "ci41490520",
@@ -2282,26 +2312,6 @@
       "place": "26 km W of Dutch Harbor, Alaska",
       "time": 1781815732560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253788"
-    },
-    {
-      "id": "aka2026lzwqaj",
-      "lon": -153.563,
-      "lat": 58.811,
-      "depth": 6.6,
-      "mag": 1.9,
-      "place": "91 km NNW of Aleneva, Alaska",
-      "time": 1781814469351,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzwqaj"
-    },
-    {
-      "id": "ci41490216",
-      "lon": -116.3835,
-      "lat": 33.3386666666667,
-      "depth": 6.77,
-      "mag": 0.76,
-      "place": "9 km N of Borrego Springs, CA",
-      "time": 1781814413860,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490216"
     }
   ]
 }
