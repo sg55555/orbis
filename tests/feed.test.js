@@ -53,6 +53,16 @@ test('feedChipIds: フィード対象かつ有効なレイヤーのみ', () => {
   assert.deepEqual(feedChipIds(ls, new Set(['quakes', 'conflict'])), ['quakes', 'conflict']);
 });
 
+test('feedChipIds: items を渡すと実フィード項目を持つレイヤーだけ（空 currents 等を排除）', () => {
+  const ls = [{ id: 'quakes' }, { id: 'conflict' }, { id: 'currents' }, { id: 'news' }];
+  const enabled = new Set(['quakes', 'conflict', 'currents', 'news']);
+  // currents は items に登場しない（toFeedItems が空）→ チップに出さない
+  const items = [{ layerId: 'quakes' }, { layerId: 'conflict' }, { layerId: 'news' }];
+  assert.deepEqual(feedChipIds(ls, enabled, items), ['quakes', 'conflict', 'news']);
+  // items 省略時は従来どおり（有効レイヤー全部）
+  assert.deepEqual(feedChipIds(ls, enabled), ['quakes', 'conflict', 'currents', 'news']);
+});
+
 test('hidden モデル: toggle/visible/allActive/applyChips', () => {
   const ids = ['quakes', 'conflict', 'news'];
   let hidden = loadFeedHidden(null);

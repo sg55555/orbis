@@ -97,11 +97,13 @@ function rebuild(overlay) {
 
 function refreshFeed() {
   const map = window.__orbis.map;
-  const chipIds = feedChipIds(feedLayers(), ENABLED);
+  const allItems = buildFeed(feedLayers(), snapshots, ENABLED);
+  // チップは実際にフィード項目を持つレイヤーだけ（空の currents/airtemp/sst は出さない）。
+  const chipIds = feedChipIds(feedLayers(), ENABLED, allItems);
   renderChips(document.getElementById('feed-chips'), chipIds, feedHidden,
     (id) => { feedHidden = toggleHidden(feedHidden, id); writeFeedFilter(feedHidden); refreshFeed(); },
     () => { feedHidden = new Set(); writeFeedFilter(feedHidden); refreshFeed(); });
-  const items = applyChips(buildFeed(feedLayers(), snapshots, ENABLED), feedHidden);
+  const items = applyChips(allItems, feedHidden);
   renderFeed(document.getElementById('feed-rows'), items, (it) => {
     const at = (typeof performance !== 'undefined') ? performance.now() : Date.now();
     selected = { lon: it.lon, lat: it.lat, title: it.title || it.country_ja || '', layerId: it.layerId, at };

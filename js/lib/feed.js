@@ -26,9 +26,13 @@ export function buildFeed(layers, snapshots, enabled, cap = CAP) {
 // ── フィードのレイヤーフィルタ（純粋・hidden=非表示idの Set モデル）──
 const FEED_FILTER_KEY = 'orbis.feedFilter.v1';
 
-// チップに出す layerId（フィード対象かつ globe 有効）。
-export function feedChipIds(feedLayerObjs, enabled) {
-  return feedLayerObjs.filter((l) => enabled.has(l.id)).map((l) => l.id);
+// チップに出す layerId（フィード対象かつ globe 有効）。items を渡すと、実際にフィード項目を
+// 持つレイヤーだけに絞る（toFeedItems が空配列を返す currents/airtemp/sst の無意味なチップを排除）。
+export function feedChipIds(feedLayerObjs, enabled, items = null) {
+  const present = Array.isArray(items) ? new Set(items.map((it) => it.layerId)) : null;
+  return feedLayerObjs
+    .filter((l) => enabled.has(l.id) && (!present || present.has(l.id)))
+    .map((l) => l.id);
 }
 // stored=非表示idの配列。null/不正→空（全表示）。新レイヤーは hidden に無いので既定表示。
 export function loadFeedHidden(stored) {
