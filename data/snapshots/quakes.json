@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T03:15:51Z",
-  "count": 256,
+  "updated": "2026-06-19T03:31:07Z",
+  "count": 257,
   "points": [
+    {
+      "id": "aka2026maknfj",
+      "lon": -159.717,
+      "lat": 55.992,
+      "depth": 12.8,
+      "mag": 1.4,
+      "place": "17 km NW of Ivanof Bay, Alaska",
+      "time": 1781839458743,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maknfj"
+    },
+    {
+      "id": "aka2026makhxs",
+      "lon": -159.831,
+      "lat": 56.024,
+      "depth": 5,
+      "mag": 2.1,
+      "place": "25 km WNW of Ivanof Bay, Alaska",
+      "time": 1781839092899,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makhxs"
+    },
+    {
+      "id": "tx2026lymcio",
+      "lon": -104.448,
+      "lat": 31.631,
+      "depth": 3.3659,
+      "mag": 2.4,
+      "place": "60 km S of Whites City, New Mexico",
+      "time": 1781838729672,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lymcio"
+    },
     {
       "id": "aka2026majxip",
       "lon": -146.782,
@@ -2542,26 +2572,6 @@
       "place": "26 km W of Preston, Nevada",
       "time": 1781753444557,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920423"
-    },
-    {
-      "id": "ci41489560",
-      "lon": -116.818833333333,
-      "lat": 33.7078333333333,
-      "depth": 15.73,
-      "mag": 0.75,
-      "place": "8 km ESE of Valle Vista, CA",
-      "time": 1781753229520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489560"
-    },
-    {
-      "id": "ci41489552",
-      "lon": -117.451833333333,
-      "lat": 35.543,
-      "depth": 8.64,
-      "mag": 0.82,
-      "place": "22 km ESE of Ridgecrest, CA",
-      "time": 1781752954050,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489552"
     }
   ]
 }
