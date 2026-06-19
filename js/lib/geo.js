@@ -112,6 +112,22 @@ export const ADDITIVE_BLEND = {
   blendAlphaOperation: 'add', blendAlphaSrcFactor: 'one', blendAlphaDstFactor: 'one',
 };
 
+// ember コアの発色（純粋）。severity(0..1)＋mentions で baseRgb→白熱(255,235,215)へ補間。
+// scale は ?cfx の白熱度ダイヤル（既定1）。
+export function emberFill(mentions, severity, scale = 1, base = [200, 40, 50]) {
+  const m = Math.min(1, (Number(mentions) || 0) / 100);
+  const sev = Number(severity) || 0;
+  let heat = 0.35 + 0.5 * sev + 0.3 * m;
+  heat = Math.min(1, heat * (Number(scale) || 1));
+  if (sev === 0 && m === 0) heat = 0;
+  return [
+    Math.round(base[0] + (255 - base[0]) * heat),
+    Math.round(base[1] + (235 - base[1]) * heat),
+    Math.round(base[2] + (215 - base[2]) * heat),
+    Math.round(70 + 60 * heat),
+  ];
+}
+
 // URL からドメインを抽出（www. 除去）。失敗時は空文字。
 export function hostnameOf(url) {
   if (!url) return '';

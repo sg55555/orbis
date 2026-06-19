@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { iconAngle, eventRadius, degLenForZoom, projectedArrival, formatLatLon } from '../js/lib/geo.js';
+import { iconAngle, eventRadius, degLenForZoom, projectedArrival, formatLatLon, emberFill } from '../js/lib/geo.js';
 
 test('formatLatLon: 北緯/南緯・東経/西経で符号を明示', () => {
   assert.equal(formatLatLon(10, -30), '北緯10° 西経30°');
@@ -50,4 +50,18 @@ test('projectedArrival: velocity/heading 欠損や速度0は null', () => {
   assert.equal(projectedArrival({ lon: 0, lat: 0, heading: 90, velocity: 0 }, 10), null);
   assert.equal(projectedArrival({ lon: 0, lat: 0, heading: null, velocity: 200 }, 10), null);
   assert.equal(projectedArrival({ lon: 0, lat: 0, velocity: 200 }, 10), null);
+});
+
+test('emberFill: severity/mentions が高いほど明るく・alpha も上がる', () => {
+  const dim = emberFill(0, 0, 1, [200, 40, 50]);
+  const hot = emberFill(100, 1, 1, [200, 40, 50]);
+  assert.equal(dim.length, 4);
+  assert.ok(hot[1] > dim[1], '白熱で緑成分が増える（赤→白）');
+  assert.ok(hot[3] >= dim[3], '密集/深刻ほど不透明寄り');
+  assert.ok(hot[0] <= 255 && hot[1] <= 255 && hot[2] <= 255 && hot[3] <= 255);
+});
+
+test('emberFill: base 色を尊重（抗議=緑ベースでも白熱へ）', () => {
+  const g = emberFill(0, 0, 1, [40, 200, 120]);
+  assert.equal(g[0], 40); assert.equal(g[1], 200); assert.equal(g[2], 120);
 });
