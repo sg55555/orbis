@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T08:01:15Z",
+  "updated": "2026-06-19T08:15:56Z",
   "count": 226,
   "points": [
+    {
+      "id": "us7000suii",
+      "lon": 161.1149,
+      "lat": 52.7355,
+      "depth": 10,
+      "mag": 5.8,
+      "place": "171 km ESE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781855577734,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suii"
+    },
     {
       "id": "us7000suie",
       "lon": -111.9106,
@@ -105,12 +115,12 @@
     },
     {
       "id": "us7000sui3",
-      "lon": 160.6511,
-      "lat": 53.2488,
+      "lon": 160.5652,
+      "lat": 52.7943,
       "depth": 10,
       "mag": 6.6,
-      "place": "136 km E of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781851954507,
+      "place": "133 km ESE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781851951597,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui3"
     },
     {
@@ -2252,16 +2262,6 @@
       "place": "5 km NNE of Lake Henshaw, CA",
       "time": 1781770757550,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489680"
-    },
-    {
-      "id": "ci41489672",
-      "lon": -116.687666666667,
-      "lat": 33.9198333333333,
-      "depth": 13.11,
-      "mag": 1.09,
-      "place": "9 km E of Cabazon, CA",
-      "time": 1781770016500,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489672"
     }
   ]
 }
