@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T09:31:07Z",
-  "count": 225,
+  "updated": "2026-06-19T09:45:55Z",
+  "count": 227,
   "points": [
+    {
+      "id": "aka2026mawtxr",
+      "lon": -147.758,
+      "lat": 60.392,
+      "depth": 21.7,
+      "mag": 1.4,
+      "place": "38 km NNE of Chenega, Alaska",
+      "time": 1781861513890,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawtxr"
+    },
+    {
+      "id": "hv74986267",
+      "lon": -155.875671386719,
+      "lat": 19.3366661071777,
+      "depth": 12.8800001144409,
+      "mag": 2.25,
+      "place": "13 km S of Honaunau-Napoopoo, Hawaii",
+      "time": 1781861289470,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986267"
+    },
     {
       "id": "aka2026mawmkm",
       "lon": -149.559,
@@ -172,6 +192,16 @@
       "place": "16 km N of Snyder, Texas",
       "time": 1781853979469,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyunix"
+    },
+    {
+      "id": "us7000suid",
+      "lon": 137.5094,
+      "lat": 42.8008,
+      "depth": 285.14,
+      "mag": 4.2,
+      "place": "208 km ESE of Ol’ga, Russia",
+      "time": 1781853975965,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suid"
     },
     {
       "id": "us7000suia",
@@ -2242,16 +2272,6 @@
       "place": "7 km SSE of Redlands, CA",
       "time": 1781776445350,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489712"
-    },
-    {
-      "id": "ci41489704",
-      "lon": -117.1635,
-      "lat": 34.0373333333333,
-      "depth": 11.02,
-      "mag": 0.79,
-      "place": "3 km SE of Redlands, CA",
-      "time": 1781775556460,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489704"
     }
   ]
 }
