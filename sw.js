@@ -1,5 +1,5 @@
-// ORBIS Service Worker — シェルをキャッシュ。データJSONは常にネットワーク優先。
-const CACHE = 'orbis-v35';
+// ORBIS Service Worker — シェルはネットワーク優先（更新を常に即反映）。データJSONも常にネット。
+const CACHE = 'orbis-v36';
 const SHELL = ['/', '/index.html', '/css/orbis.css', '/js/main.js'];
 
 self.addEventListener('install', (e) => {
@@ -16,5 +16,16 @@ self.addEventListener('fetch', (e) => {
   // データ・タイルは常にネットワーク（鮮度優先）。
   // e.respondWith() を呼ばず return すると、ブラウザが既定のネットワーク取得を行う（キャッシュしない）。
   if (url.pathname.includes('/data/snapshots/') || url.hostname.includes('cartocdn')) return;
-  e.respondWith(caches.match(e.request).then((r) => r || fetch(e.request)));
+  // シェル/コードはネットワーク優先：常に最新を取得し成功時にキャッシュ更新、
+  // ネット失敗（オフライン）時のみキャッシュへフォールバック（PWA のオフライン起動を維持）。
+  // これにより index.html/main.js/css の更新が「古い SW が居座って反映されない」問題を根絶する。
+  e.respondWith(
+    fetch(e.request)
+      .then((res) => {
+        const copy = res.clone();
+        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+        return res;
+      })
+      .catch(() => caches.match(e.request))
+  );
 });
