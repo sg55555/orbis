@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T10:31:06Z",
-  "count": 222,
+  "updated": "2026-06-19T10:45:51Z",
+  "count": 224,
   "points": [
+    {
+      "id": "nc75379546",
+      "lon": -122.792999267578,
+      "lat": 38.8235015869141,
+      "depth": 2.73000001907349,
+      "mag": 1.84,
+      "place": "6 km NNW of The Geysers, CA",
+      "time": 1781865570380,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379546"
+    },
     {
       "id": "aka2026mayoof",
       "lon": -154.939,
@@ -72,6 +82,16 @@
       "place": "2 km ESE of Knik-Fairview, Alaska",
       "time": 1781860995019,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawmkm"
+    },
+    {
+      "id": "pr71520573",
+      "lon": -66.8426666666667,
+      "lat": 18.1896666666667,
+      "depth": 24.08,
+      "mag": 2.16,
+      "place": "12 km SSE of Lares, Puerto Rico",
+      "time": 1781859939390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520573"
     },
     {
       "id": "aka2026mavtiv",
@@ -182,6 +202,16 @@
       "place": "5 km SSW of Redlands, CA",
       "time": 1781857758920,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490504"
+    },
+    {
+      "id": "pr71520563",
+      "lon": -66.7633333333333,
+      "lat": 18.0733333333333,
+      "depth": 19.13,
+      "mag": 2.12,
+      "place": "1 km NW of Santo Domingo, Puerto Rico",
+      "time": 1781856483150,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520563"
     },
     {
       "id": "us7000suik",
@@ -2212,16 +2242,6 @@
       "place": "8 km WNW of Ester, Alaska",
       "time": 1781779863637,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzdjzr"
-    },
-    {
-      "id": "ci41489736",
-      "lon": -117.192166666667,
-      "lat": 33.9325,
-      "depth": 13.54,
-      "mag": 1.03,
-      "place": "3 km ENE of Moreno Valley, CA",
-      "time": 1781778844210,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489736"
     }
   ]
 }
