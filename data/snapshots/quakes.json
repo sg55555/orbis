@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T00:15:45Z",
-  "count": 256,
+  "updated": "2026-06-19T00:31:06Z",
+  "count": 257,
   "points": [
+    {
+      "id": "aka2026maegns",
+      "lon": -150.198,
+      "lat": 62.336,
+      "depth": 17.1,
+      "mag": 3.4,
+      "place": "2 km NE of Trapper Creek, Alaska",
+      "time": 1781828203032,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maegns"
+    },
     {
       "id": "pr71520523",
       "lon": -66.1316666666667,
@@ -62,6 +72,16 @@
       "place": "2 km SSW of Pāhala, Hawaii",
       "time": 1781823764020,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985987"
+    },
+    {
+      "id": "us7000sugd",
+      "lon": 72.262,
+      "lat": 37.565,
+      "depth": 189.083,
+      "mag": 4.2,
+      "place": "63 km E of Khorugh, Tajikistan",
+      "time": 1781823603868,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugd"
     },
     {
       "id": "nc75379306",
@@ -984,6 +1004,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985567"
     },
     {
+      "id": "av93062204",
+      "lon": -169.900833333333,
+      "lat": 52.8358333333333,
+      "depth": 5.77,
+      "mag": 0.37,
+      "place": "70 km W of Nikolski, Alaska",
+      "time": 1781786533340,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062204"
+    },
+    {
+      "id": "av93062199",
+      "lon": -169.883333333333,
+      "lat": 52.8191666666667,
+      "depth": 5.41,
+      "mag": 0.92,
+      "place": "70 km WSW of Nikolski, Alaska",
+      "time": 1781786505710,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062199"
+    },
+    {
       "id": "tx2026lxjblo",
       "lon": -103.707,
       "lat": 31.052,
@@ -1155,12 +1195,12 @@
     },
     {
       "id": "hv74985517",
-      "lon": -155.116668701172,
-      "lat": 19.3363342285156,
-      "depth": 1.53999996185303,
-      "mag": 2.16,
+      "lon": -155.119833333333,
+      "lat": 19.3356666666667,
+      "depth": 1.81,
+      "mag": 1.84,
       "place": "14 km S of Fern Forest, Hawaii",
-      "time": 1781780826450,
+      "time": 1781780826550,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985517"
     },
     {
@@ -2532,36 +2572,6 @@
       "place": "86 km NNW of Karluk, Alaska",
       "time": 1781742875100,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251788"
-    },
-    {
-      "id": "aka2026lyioix",
-      "lon": -160.062,
-      "lat": 54.496,
-      "depth": 5.2,
-      "mag": 2.2,
-      "place": "97 km SSE of Sand Point, Alaska",
-      "time": 1781742387298,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyioix"
-    },
-    {
-      "id": "aka2026lyiner",
-      "lon": -150.633,
-      "lat": 62.883,
-      "depth": 97.2,
-      "mag": 1.7,
-      "place": "43 km N of Petersville, Alaska",
-      "time": 1781742301713,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyiner"
-    },
-    {
-      "id": "pr71520363",
-      "lon": -68.022,
-      "lat": 18.0988333333333,
-      "depth": 75.69,
-      "mag": 3.4,
-      "place": "67 km SE of Punta Cana, Dominican Republic",
-      "time": 1781741854410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520363"
     }
   ]
 }
