@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T01:15:45Z",
-  "count": 254,
+  "updated": "2026-06-19T01:31:03Z",
+  "count": 258,
   "points": [
+    {
+      "id": "hv74986052",
+      "lon": -155.330673217773,
+      "lat": 19.2708339691162,
+      "depth": 32.0900001525879,
+      "mag": 2.28,
+      "place": "17 km ENE of Pāhala, Hawaii",
+      "time": 1781831931870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986052"
+    },
+    {
+      "id": "ci41490416",
+      "lon": -120.292833333333,
+      "lat": 34.6998333333333,
+      "depth": 0.58,
+      "mag": 1.42,
+      "place": "5 km SSW of Los Alamos, CA",
+      "time": 1781831925420,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490416"
+    },
+    {
+      "id": "nc75379391",
+      "lon": -122.806663513184,
+      "lat": 38.8216667175293,
+      "depth": 2.76999998092651,
+      "mag": 0.82,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781831803810,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379391"
+    },
     {
       "id": "hv74986047",
       "lon": -155.339492797852,
@@ -414,6 +444,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490176"
     },
     {
+      "id": "av94253713",
+      "lon": -153.0135,
+      "lat": 60.0643333333333,
+      "depth": 1.46,
+      "mag": -0.59,
+      "place": "68 km ENE of Pedro Bay, Alaska",
+      "time": 1781812797250,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253713"
+    },
+    {
       "id": "nc75379231",
       "lon": -122.235832214355,
       "lat": 37.9911651611328,
@@ -492,6 +532,16 @@
       "place": "7 km NW of The Geysers, CA",
       "time": 1781809965010,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379201"
+    },
+    {
+      "id": "av94253603",
+      "lon": -169.866833333333,
+      "lat": 52.8191666666667,
+      "depth": 4.16,
+      "mag": 1.95,
+      "place": "68 km WSW of Nikolski, Alaska",
+      "time": 1781809589490,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253603"
     },
     {
       "id": "ci41490136",
@@ -2532,16 +2582,6 @@
       "place": "117 km SSE of Sand Point, Alaska",
       "time": 1781746330015,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyktso"
-    },
-    {
-      "id": "us7000su81",
-      "lon": -69.9488,
-      "lat": 9.3116,
-      "depth": 10,
-      "mag": 4.6,
-      "place": "33 km E of Boconó, Venezuela",
-      "time": 1781745809278,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su81"
     }
   ]
 }
