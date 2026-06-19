@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T18:15:52Z",
-  "count": 225,
+  "updated": "2026-06-19T18:19:37Z",
+  "count": 224,
   "points": [
+    {
+      "id": "nc75379711",
+      "lon": -121.663833618164,
+      "lat": 40.8199996948242,
+      "depth": 6.28000020980835,
+      "mag": 2.17,
+      "place": "7 km S of Burney, CA",
+      "time": 1781892877400,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379711"
+    },
     {
       "id": "aka2026mbobgi",
       "lon": -151.183,
@@ -2232,26 +2242,6 @@
       "place": "16 km NNE of Hermleigh, Texas",
       "time": 1781806978972,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxuoii"
-    },
-    {
-      "id": "nc75379186",
-      "lon": -121.615333557129,
-      "lat": 36.8921661376953,
-      "depth": 0.550000011920929,
-      "mag": 2.17,
-      "place": "2 km E of Aromas, CA",
-      "time": 1781806773760,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379186"
-    },
-    {
-      "id": "nn00920448",
-      "lon": -115.3429,
-      "lat": 37.1789,
-      "depth": 10.5797,
-      "mag": 1.67,
-      "place": "26 km SW of Alamo, Nevada",
-      "time": 1781806660183,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920448"
     }
   ]
 }
