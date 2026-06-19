@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T20:45:51Z",
-  "count": 234,
+  "updated": "2026-06-19T21:01:14Z",
+  "count": 240,
   "points": [
+    {
+      "id": "nc75379801",
+      "lon": -122.807830810547,
+      "lat": 38.7939987182617,
+      "depth": 3.8199999332428,
+      "mag": 0.78,
+      "place": "5 km WNW of The Geysers, CA",
+      "time": 1781902710900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379801"
+    },
+    {
+      "id": "aka2026mbtlhj",
+      "lon": -150.445,
+      "lat": 62.101,
+      "depth": 9.4,
+      "mag": 2,
+      "place": "26 km SSW of Trapper Creek, Alaska",
+      "time": 1781902297610,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbtlhj"
+    },
     {
       "id": "nc75379776",
       "lon": -122.729499816895,
@@ -424,6 +444,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjdjk"
     },
     {
+      "id": "aka2026mbjbtw",
+      "lon": -166.999,
+      "lat": 53.415,
+      "depth": 5.1,
+      "mag": 1.6,
+      "place": "59 km SSW of Unalaska, Alaska",
+      "time": 1781883646714,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjbtw"
+    },
+    {
+      "id": "aka2026mbizve",
+      "lon": -139.94,
+      "lat": 60.582,
+      "depth": 1.2,
+      "mag": 2.5,
+      "place": "115 km N of Yakutat, Alaska",
+      "time": 1781883512115,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbizve"
+    },
+    {
       "id": "ci41490600",
       "lon": -116.7465,
       "lat": 34.026,
@@ -654,6 +694,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379591"
     },
     {
+      "id": "av93062289",
+      "lon": -154.895166666667,
+      "lat": 58.3096666666667,
+      "depth": 4.86,
+      "mag": 0.14,
+      "place": "86 km NNW of Karluk, Alaska",
+      "time": 1781873312820,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062289"
+    },
+    {
       "id": "hv74986357",
       "lon": -155.505996704102,
       "lat": 19.154167175293,
@@ -742,6 +792,16 @@
       "place": "194 km SSE of Unalaska, Alaska",
       "time": 1781869328486,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbbcxq"
+    },
+    {
+      "id": "av93062279",
+      "lon": -169.908333333333,
+      "lat": 52.824,
+      "depth": 5.69,
+      "mag": 0.39,
+      "place": "71 km W of Nikolski, Alaska",
+      "time": 1781869067370,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062279"
     },
     {
       "id": "tx2026lzcrdv",
@@ -2244,6 +2304,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379271"
     },
     {
+      "id": "aka2026lzyrdx",
+      "lon": -169.525,
+      "lat": 52.383,
+      "depth": 40.3,
+      "mag": 2.1,
+      "place": "76 km SW of Nikolski, Alaska",
+      "time": 1781818150337,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzyrdx"
+    },
+    {
       "id": "hv74985912",
       "lon": -155.352172851562,
       "lat": 19.238000869751,
@@ -2258,10 +2328,20 @@
       "lon": -152.607,
       "lat": 60.192,
       "depth": 111.9,
-      "mag": 1.2,
+      "mag": 1.5,
       "place": "54 km WNW of Ninilchik, Alaska",
       "time": 1781817829690,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzymqv"
+    },
+    {
+      "id": "aka2026lzykcg",
+      "lon": -149.938,
+      "lat": 63.466,
+      "depth": 105.2,
+      "mag": 1.6,
+      "place": "49 km W of Cantwell, Alaska",
+      "time": 1781817655399,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzykcg"
     },
     {
       "id": "ci41490280",
@@ -2272,6 +2352,16 @@
       "place": "13 km NE of Ojai, CA",
       "time": 1781817492120,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490280"
+    },
+    {
+      "id": "aka2026lzygye",
+      "lon": -164.61,
+      "lat": 53.591,
+      "depth": 18.7,
+      "mag": 2.2,
+      "place": "97 km SE of Akutan, Alaska",
+      "time": 1781817441864,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzygye"
     },
     {
       "id": "ci41490272",
@@ -2304,16 +2394,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sueg"
     },
     {
-      "id": "aka2026lzxzos",
-      "lon": -152.952,
-      "lat": 60.124,
-      "depth": 0.4,
-      "mag": 0.6,
-      "place": "70 km WNW of Happy Valley, Alaska",
-      "time": 1781816925437,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzxzos"
-    },
-    {
       "id": "nc75379261",
       "lon": -120.54133605957,
       "lat": 35.9823341369629,
@@ -2322,26 +2402,6 @@
       "place": "14 km NW of Parkfield, CA",
       "time": 1781816682330,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379261"
-    },
-    {
-      "id": "nc75379251",
-      "lon": -120.539329528809,
-      "lat": 35.9836654663086,
-      "depth": 2.61999988555908,
-      "mag": 1.03,
-      "place": "14 km NW of Parkfield, CA",
-      "time": 1781815901070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379251"
-    },
-    {
-      "id": "av94253788",
-      "lon": -166.939666666667,
-      "lat": 53.877,
-      "depth": 7.66,
-      "mag": -0.15,
-      "place": "26 km W of Dutch Harbor, Alaska",
-      "time": 1781815732560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253788"
     }
   ]
 }
