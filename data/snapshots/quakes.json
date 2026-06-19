@@ -1,8 +1,58 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T10:45:51Z",
-  "count": 224,
+  "updated": "2026-06-19T11:13:25Z",
+  "count": 226,
   "points": [
+    {
+      "id": "aka2026mazyrg",
+      "lon": -147.322,
+      "lat": 64.859,
+      "depth": 5,
+      "mag": 0.9,
+      "place": "11 km ENE of Badger, Alaska",
+      "time": 1781867239252,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mazyrg"
+    },
+    {
+      "id": "nc75379566",
+      "lon": -122.791168212891,
+      "lat": 38.8373336791992,
+      "depth": 2.21000003814697,
+      "mag": 0.87,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781866860850,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379566"
+    },
+    {
+      "id": "tx2026lzbfyg",
+      "lon": -102.045,
+      "lat": 32.071,
+      "depth": 4.4159,
+      "mag": 1,
+      "place": "8 km NNE of Midland, Texas",
+      "time": 1781866149531,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzbfyg"
+    },
+    {
+      "id": "hv74986317",
+      "lon": -155.359664916992,
+      "lat": 19.2908325195312,
+      "depth": 30.7000007629395,
+      "mag": 1.72,
+      "place": "15 km NE of Pāhala, Hawaii",
+      "time": 1781866078560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986317"
+    },
+    {
+      "id": "us7000suk6",
+      "lon": 160.5822,
+      "lat": 53.0001,
+      "depth": 30.853,
+      "mag": 4.4,
+      "place": "131 km E of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781865620816,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suk6"
+    },
     {
       "id": "nc75379546",
       "lon": -122.792999267578,
@@ -45,12 +95,12 @@
     },
     {
       "id": "tx2026lzadfx",
-      "lon": -103.812,
-      "lat": 32.018,
-      "depth": 7.1057,
-      "mag": 1.2,
-      "place": "33 km SE of Malaga, New Mexico",
-      "time": 1781864147350,
+      "lon": -103.802,
+      "lat": 32.003,
+      "depth": 7.6508,
+      "mag": 1.1,
+      "place": "35 km SE of Malaga, New Mexico",
+      "time": 1781864147747,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
     },
     {
@@ -224,14 +274,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suik"
     },
     {
-      "id": "us7000suih",
-      "lon": -68.4926,
-      "lat": 19.6107,
-      "depth": 10,
-      "mag": 3.7,
-      "place": "90 km NE of Miches, Dominican Republic",
-      "time": 1781855751167,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suih"
+      "id": "pr2026170000",
+      "lon": -68.72,
+      "lat": 18.9648,
+      "depth": 138,
+      "mag": 4.14,
+      "place": "34 km E of Miches, Dominican Republic",
+      "time": 1781855752960,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026170000"
     },
     {
       "id": "us7000suii",
@@ -2212,36 +2262,6 @@
       "place": "4 km WNW of Borrego Springs, CA",
       "time": 1781782162340,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489744"
-    },
-    {
-      "id": "nc75378996",
-      "lon": -122.814834594727,
-      "lat": 38.8271675109863,
-      "depth": 2.21000003814697,
-      "mag": 0.71,
-      "place": "8 km NW of The Geysers, CA",
-      "time": 1781780972430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378996"
-    },
-    {
-      "id": "hv74985517",
-      "lon": -155.119833333333,
-      "lat": 19.3356666666667,
-      "depth": 1.81,
-      "mag": 1.84,
-      "place": "14 km S of Fern Forest, Hawaii",
-      "time": 1781780826550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985517"
-    },
-    {
-      "id": "aka2026lzdjzr",
-      "lon": -148.184,
-      "lat": 64.882,
-      "depth": 14.6,
-      "mag": 0.6,
-      "place": "8 km WNW of Ester, Alaska",
-      "time": 1781779863637,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzdjzr"
     }
   ]
 }
