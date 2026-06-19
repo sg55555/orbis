@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T12:31:08Z",
+  "updated": "2026-06-19T12:45:56Z",
   "count": 226,
   "points": [
+    {
+      "id": "hv74986357",
+      "lon": -155.505996704102,
+      "lat": 19.154167175293,
+      "depth": 27.8400001525879,
+      "mag": 1.86,
+      "place": "6 km SSW of Pāhala, Hawaii",
+      "time": 1781872840920,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986357"
+    },
+    {
+      "id": "nc75379586",
+      "lon": -122.8056640625,
+      "lat": 38.7980003356934,
+      "depth": 2.32999992370605,
+      "mag": 1.06,
+      "place": "5 km WNW of The Geysers, CA",
+      "time": 1781872787960,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379586"
+    },
+    {
+      "id": "nn00920487",
+      "lon": -117.9903,
+      "lat": 39.6807,
+      "depth": 12.0654,
+      "mag": 2.06,
+      "place": "68 km ENE of Fallon Station, Nevada",
+      "time": 1781872643803,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920487"
+    },
+    {
+      "id": "ci41490528",
+      "lon": -117.043166666667,
+      "lat": 34.2248333333333,
+      "depth": 2.58,
+      "mag": 1.64,
+      "place": "6 km ENE of Running Springs, CA",
+      "time": 1781872131070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490528"
+    },
     {
       "id": "hv74986352",
       "lon": -154.746826171875,
@@ -2222,46 +2262,6 @@
       "place": "12 km SSE of Fern Forest, Hawaii",
       "time": 1781786947350,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985567"
-    },
-    {
-      "id": "av93062204",
-      "lon": -169.900833333333,
-      "lat": 52.8358333333333,
-      "depth": 5.77,
-      "mag": 0.37,
-      "place": "70 km W of Nikolski, Alaska",
-      "time": 1781786533340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062204"
-    },
-    {
-      "id": "av93062199",
-      "lon": -169.883333333333,
-      "lat": 52.8191666666667,
-      "depth": 5.41,
-      "mag": 0.92,
-      "place": "70 km WSW of Nikolski, Alaska",
-      "time": 1781786505710,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062199"
-    },
-    {
-      "id": "tx2026lxjblo",
-      "lon": -103.707,
-      "lat": 31.052,
-      "depth": 4.613,
-      "mag": 1.8,
-      "place": "8 km NNE of Balmorhea, Texas",
-      "time": 1781786168451,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxjblo"
-    },
-    {
-      "id": "tx2026lxixjg",
-      "lon": -103.708,
-      "lat": 31.045,
-      "depth": 5.1001,
-      "mag": 2,
-      "place": "7 km NNE of Balmorhea, Texas",
-      "time": 1781785884563,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxixjg"
     }
   ]
 }
