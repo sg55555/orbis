@@ -41,3 +41,20 @@ export function aggregateByCountry(points, layerId) {
   }
   return rows;
 }
+
+// 上位 topN 国の代表点に脈打つリング config（純粋）。reduced/空で []。
+export function buildHotspotConfigs(groups, motionT = 0, opts = {}) {
+  const { reduced = false, topN = 6, rgb = [255, 60, 80] } = opts;
+  if (reduced || !Array.isArray(groups) || groups.length === 0) return [];
+  const top = [...groups].sort((a, b) => (b.count || 0) - (a.count || 0)).slice(0, topN);
+  const phase = (((motionT % 1) + 1) % 1);
+  return [{
+    id: `hot-${rgb.join('-')}`, data: top, radiusUnits: 'pixels',
+    stroked: true, filled: false, lineWidthUnits: 'pixels', getLineWidth: 2,
+    getPosition: (d) => [d.lon, d.lat],
+    getRadius: (d) => 10 + Math.min(28, (d.count || 0) * 0.6) + 18 * phase,
+    getLineColor: () => [rgb[0], rgb[1], rgb[2], Math.round(200 * (1 - phase))],
+    updateTriggers: { getRadius: motionT, getLineColor: motionT },
+    pickable: false,
+  }];
+}

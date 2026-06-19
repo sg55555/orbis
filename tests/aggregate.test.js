@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { aggregateByCountry } from '../js/lib/aggregate.js';
+import { aggregateByCountry, buildHotspotConfigs } from '../js/lib/aggregate.js';
 
 const pts = [
   { id: '1', place: 'UP', root: '19', mentions: 10, date: '20260620120000', url: 'https://reuters.com/a', lon: 30, lat: 49 },
@@ -44,4 +44,29 @@ test('aggregateByCountry: 空配列・未知/空 place は安全', () => {
   assert.equal(rows.length, 1);
   assert.equal(rows[0].count, 1);
   assert.equal(rows[0].time, 0); // 不正 date→0
+});
+
+const groups = [
+  { lon: 30, lat: 49, count: 100 }, { lon: 37, lat: 55, count: 50 },
+  { lon: 10, lat: 5, count: 5 }, { lon: 1, lat: 1, count: 80 },
+];
+
+test('buildHotspotConfigs: count 上位 topN を選ぶ', () => {
+  const c = buildHotspotConfigs(groups, 0, { topN: 2 });
+  assert.equal(c.length, 1);
+  assert.equal(c[0].data.length, 2);
+  assert.equal(c[0].data[0].count, 100); // 降順先頭
+  assert.equal(c[0].data[1].count, 80);
+  assert.equal(c[0].pickable, false);
+});
+
+test('buildHotspotConfigs: reduced/空は []', () => {
+  assert.deepEqual(buildHotspotConfigs(groups, 0, { reduced: true }), []);
+  assert.deepEqual(buildHotspotConfigs([], 0, {}), []);
+});
+
+test('buildHotspotConfigs: rgb を線色に使う', () => {
+  const c = buildHotspotConfigs(groups, 0.5, { rgb: [94, 255, 166] });
+  const col = c[0].getLineColor(groups[0]);
+  assert.equal(col[0], 94); assert.equal(col[1], 255); assert.equal(col[2], 166);
 });
