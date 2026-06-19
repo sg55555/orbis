@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T17:01:15Z",
+  "updated": "2026-06-19T17:15:52Z",
   "count": 224,
   "points": [
+    {
+      "id": "aka2026mblwmk",
+      "lon": -151.887,
+      "lat": 61.419,
+      "depth": 11.7,
+      "mag": 1.3,
+      "place": "53 km NW of Beluga, Alaska",
+      "time": 1781888678572,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblwmk"
+    },
+    {
+      "id": "hv74986572",
+      "lon": -155.459838867188,
+      "lat": 19.0995006561279,
+      "depth": 29.0900001525879,
+      "mag": 1.9,
+      "place": "11 km S of Pāhala, Hawaii",
+      "time": 1781888664930,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986572"
+    },
+    {
+      "id": "aka2026mbltdd",
+      "lon": -154.513,
+      "lat": 58.474,
+      "depth": 5,
+      "mag": 1,
+      "place": "100 km N of Karluk, Alaska",
+      "time": 1781888446629,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbltdd"
+    },
     {
       "id": "aka2026mbladx",
       "lon": -154.251,
@@ -434,6 +464,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mayoof"
     },
     {
+      "id": "aka2026maymqp",
+      "lon": 178.741,
+      "lat": 51.379,
+      "depth": 50.2,
+      "mag": 2.9,
+      "place": "Rat Islands, Aleutian Islands, Alaska",
+      "time": 1781864585026,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maymqp"
+    },
+    {
       "id": "ci41490520",
       "lon": -116.7155,
       "lat": 33.9468333333333,
@@ -602,6 +642,16 @@
       "place": "3 km SSW of Pāhala, Hawaii",
       "time": 1781859162480,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986252"
+    },
+    {
+      "id": "aka2026mavjsg",
+      "lon": -149.675,
+      "lat": 56.205,
+      "depth": 5,
+      "mag": 2.7,
+      "place": "222 km SE of Chiniak, Alaska",
+      "time": 1781859016750,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavjsg"
     },
     {
       "id": "aka2026mavegh",
@@ -2192,56 +2242,6 @@
       "place": "15 km N of Four Mile Road, Alaska",
       "time": 1781804140279,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqwva"
-    },
-    {
-      "id": "aka2026lzqcug",
-      "lon": -154.135,
-      "lat": 61.686,
-      "depth": 1.8,
-      "mag": 1.6,
-      "place": "78 km ENE of Lime Village, Alaska",
-      "time": 1781802754036,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqcug"
-    },
-    {
-      "id": "pr71520438",
-      "lon": -66.2998333333333,
-      "lat": 17.9298333333333,
-      "depth": 10.36,
-      "mag": 2.81,
-      "place": "5 km S of Salinas, Puerto Rico",
-      "time": 1781802753360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520438"
-    },
-    {
-      "id": "nc75379151",
-      "lon": -122.825164794922,
-      "lat": 38.8421669006348,
-      "depth": 1.75,
-      "mag": 0.67,
-      "place": "9 km WNW of Cobb, CA",
-      "time": 1781802716040,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379151"
-    },
-    {
-      "id": "nc75379146",
-      "lon": -122.825500488281,
-      "lat": 38.8414993286133,
-      "depth": 1.83000004291534,
-      "mag": 1.2,
-      "place": "9 km WNW of Cobb, CA",
-      "time": 1781802234270,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379146"
-    },
-    {
-      "id": "hv74985692",
-      "lon": -155.346160888672,
-      "lat": 19.2140007019043,
-      "depth": 29.6200008392334,
-      "mag": 1.94,
-      "place": "13 km E of Pāhala, Hawaii",
-      "time": 1781802171590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985692"
     }
   ]
 }
