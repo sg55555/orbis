@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T03:32:17Z",
+  "updated": "2026-06-19T03:46:22Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/news/liveblog/2026/6/19/iran-war-live-jd-vance-defends-iran-deal-as-us-says-naval-blockade-lifted?traffic_source=rss",
@@ -171,24 +171,11 @@
       "place": "ミャンマー・ラカイン州"
     },
     {
-      "id": "https://www.bbc.com/news/articles/cdx7krkdqeno?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/articles/cdx7krkdqeno?at_medium=RSS&at_campaign=rss",
-      "source": "bbcworld",
-      "time": 1781819245000,
-      "rank": 18,
-      "title_ja": "ニジェール最大の空港への銃撃で35人が殺害",
-      "summary_ja": "ニジェール最大の空港が武装勢力による攻撃を受け、35人が殺害された。テロ組織による襲撃とみられている。",
-      "category": "conflict",
-      "lon": 2.1898,
-      "lat": 13.4911,
-      "place": "ニジェール、ニアメ（ディアマ国際空港）"
-    },
-    {
       "id": "https://www.bbc.com/news/articles/c98291g5rr1o?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/articles/c98291g5rr1o?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781797596000,
-      "rank": 19,
+      "rank": 18,
       "title_ja": "モスクワ住民が黒い雨を報告、ウクライナの大規模攻撃が石油精製所を直撃",
       "summary_ja": "ウクライナによる大規模な攻撃がモスクワ近郊の石油精製所に命中し、黒い雨がモスクワ住民の間で報告されている。この攻撃は同地域における最大規模のものとみられている。",
       "category": "conflict",
@@ -197,11 +184,24 @@
       "place": "モスクワ、ロシア"
     },
     {
+      "id": "https://www.bbc.com/news/articles/cdx7krkdqeno?at_medium=RSS&at_campaign=rss",
+      "url": "https://www.bbc.com/news/articles/cdx7krkdqeno?at_medium=RSS&at_campaign=rss",
+      "source": "bbcworld",
+      "time": 1781819245000,
+      "rank": 19,
+      "title_ja": "ニジェール最大の空港への銃撃で35人が殺害",
+      "summary_ja": "ニジェール最大の空港が武装勢力による攻撃を受け、35人が殺害された。テロ組織による襲撃とみられている。",
+      "category": "conflict",
+      "lon": 2.1898,
+      "lat": 13.4911,
+      "place": "ニジェール、ニアメ（ディアマ国際空港）"
+    },
+    {
       "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781779958000,
-      "rank": 20,
+      "rank": 21,
       "title_ja": "ウクライナのドローン攻撃後、プーチンは戦術を変更するのか？",
       "summary_ja": "ウクライナによるドローン攻撃の激化を受け、ロシアのプーチン大統領が軍事戦術の変更を余儀なくされる可能性について報じている。この攻撃はロシアの防衛体制に新たな課題をもたらしている。",
       "category": "conflict",
@@ -214,26 +214,13 @@
       "url": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "source": "guardian",
       "time": 1781796066000,
-      "rank": 21,
+      "rank": 22,
       "title_ja": "「ウクライナが燃えれば、モスクワも燃える」ゼレンスキー大統領がロシアへの夜間攻撃後に警告",
       "summary_ja": "ウクライナのゼレンスキー大統領は、ロシア領土への夜間攻撃の後、モスクワに対して報復を警告した。ウクライナはロシアの軍事施設や基盤施設に対する継続的な攻撃を行っている。",
       "category": "conflict",
       "lon": 37.6173,
       "lat": 55.7558,
       "place": "モスクワ、ロシア"
-    },
-    {
-      "id": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
-      "url": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
-      "source": "aljazeera",
-      "time": 1781828078000,
-      "rank": 22,
-      "title_ja": "ジンバブエ大統領選廃止法案、反発を招く",
-      "summary_ja": "ジンバブエが大統領選挙制度を廃止する法案を提出し、国内外から強い反発を受けている。民主主義の後退として批判されている。",
-      "category": "politics",
-      "lon": 29.1549,
-      "lat": -19.0154,
-      "place": "ジンバブエ"
     },
     {
       "id": "https://www.aljazeera.com/news/2026/6/18/cubas-communist-party-approves-opening-economy-in-unprecedented-move?traffic_source=rss",
@@ -262,30 +249,56 @@
       "place": "ブラジル・ブラジリア"
     },
     {
-      "id": "https://www.theguardian.com/global-development/2026/jun/18/taliban-ban-smartphones-officials-shown-destroying-devices",
-      "url": "https://www.theguardian.com/global-development/2026/jun/18/taliban-ban-smartphones-officials-shown-destroying-devices",
-      "source": "guardian",
-      "time": 1781758801000,
-      "rank": 27,
-      "title_ja": "タリバン、スマートフォンの使用禁止令を発令 当局者が端末破壊の映像を公開",
-      "summary_ja": "タリバンがスマートフォンの使用禁止令を発令し、当局者がデバイスを破壊している映像が公開されました。イスラム主義勢力による統制強化の一環とみられます。",
+      "id": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
+      "url": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
+      "source": "aljazeera",
+      "time": 1781828078000,
+      "rank": 25,
+      "title_ja": "ジンバブエ大統領選廃止法案、反発を招く",
+      "summary_ja": "ジンバブエが大統領選挙制度を廃止する法案を提出し、国内外から強い反発を受けている。民主主義の後退として批判されている。",
       "category": "politics",
-      "lon": 69.2075,
-      "lat": 34.5553,
-      "place": "アフガニスタン（カブール）"
+      "lon": 29.1549,
+      "lat": -19.0154,
+      "place": "ジンバブエ"
     },
     {
       "id": "https://www.bbc.com/news/articles/cj9g3j4pe2no?at_medium=RSS&at_campaign=rss",
       "url": "https://www.bbc.com/news/articles/cj9g3j4pe2no?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
       "time": 1781775329000,
-      "rank": 29,
+      "rank": 27,
       "title_ja": "ウガンダの高注目反逆罪事件の弁護士が関連罪で起訴",
       "summary_ja": "ウガンダの高注目反逆罪事件に関わる弁護士が関連する罪状で起訴された。この事件はウガンダの政治的緊張を反映している。",
       "category": "politics",
       "lon": 32.5825,
       "lat": 0.3476,
       "place": "ウガンダ"
+    },
+    {
+      "id": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
+      "url": "https://www.theguardian.com/us-news/2026/jun/18/cdc-emergency-ebola-funding",
+      "source": "guardian",
+      "time": 1781808909000,
+      "rank": 28,
+      "title_ja": "CDC、コンゴ民主共和国とウガンダのエボラ対応に1億700万ドルの緊急資金を活用",
+      "summary_ja": "米疾病対策予防センター（CDC）は、コンゴ民主共和国とウガンダでのエボラウイルス病の対応に向けて、1億700万ドルの緊急資金を充当することを発表した。両国での感染拡大防止と医療体制の強化が主な目的である。",
+      "category": "disaster",
+      "lon": 21.5,
+      "lat": -4.0,
+      "place": "コンゴ民主共和国"
+    },
+    {
+      "id": "https://www.theguardian.com/news/2026/jun/18/barbados-prime-minister-manifesto-slavery-reparations",
+      "url": "https://www.theguardian.com/news/2026/jun/18/barbados-prime-minister-manifesto-slavery-reparations",
+      "source": "guardian",
+      "time": 1781805128000,
+      "rank": 29,
+      "title_ja": "バルバドス首相が奴隷制度賠償に関するマニフェストを発表",
+      "summary_ja": "バルバドスの首相が奴隷制度の歴史的不正に対する賠償請求を含むマニフェストを発表した。同国は植民地時代の奴隷制度からの補償を求める動きを強化している。",
+      "category": "politics",
+      "lon": -59.5432,
+      "lat": 13.1939,
+      "place": "バルバドス"
     }
   ]
 }

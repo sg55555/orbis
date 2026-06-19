@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T03:31:07Z",
-  "count": 257,
+  "updated": "2026-06-19T03:45:51Z",
+  "count": 254,
   "points": [
+    {
+      "id": "nn00920463",
+      "lon": -116.6628,
+      "lat": 38.2248,
+      "depth": 6.4075,
+      "mag": 2.02,
+      "place": "52 km ENE of Tonopah, Nevada",
+      "time": 1781840337838,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920463"
+    },
+    {
+      "id": "aka2026makspc",
+      "lon": -149.052,
+      "lat": 61.926,
+      "depth": 21,
+      "mag": 2.6,
+      "place": "22 km NW of Sutton-Alpine, Alaska",
+      "time": 1781839831474,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makspc"
+    },
     {
       "id": "aka2026maknfj",
       "lon": -159.717,
@@ -2522,56 +2542,6 @@
       "place": "20 km ESE of Susitna North, Alaska",
       "time": 1781754578409,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lypipb"
-    },
-    {
-      "id": "us7000su8i",
-      "lon": -19.9332,
-      "lat": -0.4673,
-      "depth": 10,
-      "mag": 5.4,
-      "place": "central Mid-Atlantic Ridge",
-      "time": 1781754215838,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8i"
-    },
-    {
-      "id": "aka2026lypbqw",
-      "lon": -152.64,
-      "lat": 60.061,
-      "depth": 113.3,
-      "mag": 2.1,
-      "place": "52 km WNW of Happy Valley, Alaska",
-      "time": 1781754096437,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lypbqw"
-    },
-    {
-      "id": "ci41489568",
-      "lon": -116.375833333333,
-      "lat": 33.3406666666667,
-      "depth": 7.51,
-      "mag": 0.77,
-      "place": "9 km N of Borrego Springs, CA",
-      "time": 1781753975570,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489568"
-    },
-    {
-      "id": "aka2026lyoyiw",
-      "lon": -147.957,
-      "lat": 64.651,
-      "depth": 16.9,
-      "mag": 0.9,
-      "place": "19 km SSW of South Van Horn, Alaska",
-      "time": 1781753869299,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyoyiw"
-    },
-    {
-      "id": "nn00920423",
-      "lon": -115.3618,
-      "lat": 38.8819,
-      "depth": 2.0465,
-      "mag": 1.98,
-      "place": "26 km W of Preston, Nevada",
-      "time": 1781753444557,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920423"
     }
   ]
 }
