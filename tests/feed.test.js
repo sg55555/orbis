@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildFeed, parseGdeltDate, feedChipIds, loadFeedHidden, toggleHidden, visibleIds, allActive, applyChips, readFeedFilter, writeFeedFilter } from '../js/lib/feed.js';
+import { buildFeed, parseGdeltDate, feedChipIds, loadFeedHidden, toggleHidden, visibleIds, allActive, applyChips, readFeedFilter, writeFeedFilter, countBarPct } from '../js/lib/feed.js';
 
 test('parseGdeltDate: "YYYYMMDDHHMMSS"(UTC) を epoch ms に', () => {
   assert.equal(parseGdeltDate('20260613173000'), Date.UTC(2026, 5, 13, 17, 30, 0));
@@ -87,4 +87,12 @@ test('read/write FeedFilter: ラウンドトリップ（偽 storage）', () => {
   writeFeedFilter(new Set(['conflict', 'protests']), store);
   const back = readFeedFilter(store);
   assert.deepEqual([...back].sort(), ['conflict', 'protests']);
+});
+
+test('countBarPct: 0..100・log正規化・maxCount=0 ガード・単調', () => {
+  assert.equal(countBarPct(0, 100), 0);
+  assert.equal(countBarPct(50, 0), 0);     // maxCount=0 ガード
+  assert.equal(countBarPct(100, 100), 100); // 最大は満幅
+  assert.ok(countBarPct(10, 100) < countBarPct(50, 100)); // 単調増加
+  assert.ok(countBarPct(1, 100) > 0);       // 小件数でも >0
 });

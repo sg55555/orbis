@@ -55,3 +55,10 @@ export function writeFeedFilter(hidden, storage = (typeof localStorage !== 'unde
   if (!storage) return;
   try { storage.setItem(FEED_FILTER_KEY, JSON.stringify([...hidden])); } catch { /* noop */ }
 }
+
+// 件数バーの幅(0..100%)。フィード内最大件数で log 正規化。maxCount<=0/count<=0 は 0。
+export function countBarPct(count, maxCount) {
+  const c = Number(count) || 0, m = Number(maxCount) || 0;
+  if (m <= 0 || c <= 0) return 0;
+  return Math.round(100 * Math.log1p(c) / Math.log1p(m));
+}
