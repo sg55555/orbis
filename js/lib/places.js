@@ -72,3 +72,13 @@ export function fipsToJa(code) {
   const ja = FIPS_JA[c];
   return ja ? `${ja}（${c}）` : c;
 }
+
+// GDELT CAMEO root code → 紛争サブタイプ（日本語）。18=暴行/19=戦闘/20=大規模暴力。他は「紛争」。
+export function rootToJa(root) {
+  return ({ 18: '暴行', 19: '戦闘', 20: '大規模暴力' })[String(root)] || '紛争';
+}
+
+// 重大度ランク。dominantRoot の同数決着・globe 白熱度に使用。20>19>18>その他=0。
+export function severityRank(root) {
+  return ({ 20: 3, 19: 2, 18: 1 })[String(root)] || 0;
+}

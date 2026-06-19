@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { fipsToJa, FIPS_JA } from '../js/lib/places.js';
+import { fipsToJa, FIPS_JA, rootToJa, severityRank } from '../js/lib/places.js';
 
 test('fipsToJa: 既知コードは「日本語名（CODE）」に展開', () => {
   assert.equal(fipsToJa('AS'), 'オーストラリア（AS）');
@@ -32,4 +32,19 @@ test('FIPS_JA: 罠コードがISOではなくFIPSの意味を持つ', () => {
   assert.equal(FIPS_JA.SF, '南アフリカ');
   assert.equal(FIPS_JA.AS, 'オーストラリア');
   assert.equal(FIPS_JA.AU, 'オーストリア'); // FIPSのAUはオーストリア
+});
+
+test('rootToJa: 18/19/20→暴行/戦闘/大規模暴力・他は紛争', () => {
+  assert.equal(rootToJa('18'), '暴行');
+  assert.equal(rootToJa('19'), '戦闘');
+  assert.equal(rootToJa('20'), '大規模暴力');
+  assert.equal(rootToJa('14'), '紛争');
+  assert.equal(rootToJa(undefined), '紛争');
+});
+
+test('severityRank: 20>19>18>その他=0', () => {
+  assert.ok(severityRank('20') > severityRank('19'));
+  assert.ok(severityRank('19') > severityRank('18'));
+  assert.equal(severityRank('18'), 1);
+  assert.equal(severityRank('14'), 0);
 });
