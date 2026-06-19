@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T11:45:52Z",
-  "count": 230,
+  "updated": "2026-06-19T12:01:16Z",
+  "count": 228,
   "points": [
+    {
+      "id": "tx2026lzdenj",
+      "lon": -104.376,
+      "lat": 31.648,
+      "depth": 4.677,
+      "mag": 1.5,
+      "place": "58 km S of Whites City, New Mexico",
+      "time": 1781869666462,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzdenj"
+    },
     {
       "id": "tx2026lzcrdv",
       "lon": -103.686,
@@ -522,6 +532,16 @@
       "place": "156 km ESE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781851891085,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui2"
+    },
+    {
+      "id": "nm60623021",
+      "lon": -89.6778333333333,
+      "lat": 36.1643333333333,
+      "depth": 7.14,
+      "mag": 2.25,
+      "place": "3 km SSW of Caruthersville, Missouri",
+      "time": 1781851668180,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60623021"
     },
     {
       "id": "tx2026lysyqo",
@@ -2262,46 +2282,6 @@
       "place": "13 km SSW of Honoka‘a, Hawaii",
       "time": 1781784705980,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985552"
-    },
-    {
-      "id": "av93062189",
-      "lon": -159.396333333333,
-      "lat": 56.1755,
-      "depth": 16.21,
-      "mag": 0.11,
-      "place": "30 km N of Ivanof Bay, Alaska",
-      "time": 1781783734870,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062189"
-    },
-    {
-      "id": "aka2026lzfnfz",
-      "lon": -154.892,
-      "lat": 58.262,
-      "depth": 3.7,
-      "mag": 1.1,
-      "place": "81 km NNW of Karluk, Alaska",
-      "time": 1781783686432,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzfnfz"
-    },
-    {
-      "id": "av93062179",
-      "lon": -169.895166666667,
-      "lat": 52.881,
-      "depth": 4.54,
-      "mag": 0.89,
-      "place": "69 km W of Nikolski, Alaska",
-      "time": 1781783583280,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062179"
-    },
-    {
-      "id": "av93062174",
-      "lon": -152.236,
-      "lat": 61.3381666666667,
-      "depth": 2.85,
-      "mag": -0.12,
-      "place": "65 km WNW of Beluga, Alaska",
-      "time": 1781783449500,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062174"
     }
   ]
 }
