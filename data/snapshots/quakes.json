@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T14:45:56Z",
+  "updated": "2026-06-19T15:01:19Z",
   "count": 224,
   "points": [
     {
@@ -22,6 +22,16 @@
       "place": "16 km W of Searles Valley, CA",
       "time": 1781879887240,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490568"
+    },
+    {
+      "id": "tx2026lzitcp",
+      "lon": -102.048,
+      "lat": 32.08,
+      "depth": 4.8619,
+      "mag": 1.5,
+      "place": "9 km NNE of Midland, Texas",
+      "time": 1781879726938,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzitcp"
     },
     {
       "id": "tx2026lzimmm",
@@ -2232,16 +2242,6 @@
       "place": "71 km E of Port Alsworth, Alaska",
       "time": 1781795229340,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzlxlw"
-    },
-    {
-      "id": "aka2026lzlhdu",
-      "lon": -154.007,
-      "lat": 58.665,
-      "depth": 13.1,
-      "mag": 0.7,
-      "place": "93 km NW of Aleneva, Alaska",
-      "time": 1781794060699,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzlhdu"
     }
   ]
 }
