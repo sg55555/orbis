@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T11:15:54Z",
+  "updated": "2026-06-19T11:31:06Z",
   "count": 226,
   "points": [
+    {
+      "id": "aka2026mbaltd",
+      "lon": -154.168,
+      "lat": 58.438,
+      "depth": 5,
+      "mag": 1,
+      "place": "85 km WNW of Aleneva, Alaska",
+      "time": 1781868144713,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbaltd"
+    },
     {
       "id": "aka2026mazyrg",
       "lon": -147.322,
@@ -26,11 +36,11 @@
     {
       "id": "tx2026lzbfyg",
       "lon": -102.046,
-      "lat": 32.076,
-      "depth": 4.2007,
-      "mag": 1.1,
+      "lat": 32.077,
+      "depth": 7.7393,
+      "mag": 1,
       "place": "9 km NNE of Midland, Texas",
-      "time": 1781866149591,
+      "time": 1781866149962,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzbfyg"
     },
     {
@@ -102,6 +112,16 @@
       "place": "35 km SE of Malaga, New Mexico",
       "time": 1781864147747,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
+    },
+    {
+      "id": "tx2026lyzftc",
+      "lon": -104.063,
+      "lat": 31.935,
+      "depth": 6.2537,
+      "mag": 0.5,
+      "place": "32 km S of Malaga, New Mexico",
+      "time": 1781862507035,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzftc"
     },
     {
       "id": "aka2026mawtxr",
@@ -2242,26 +2262,6 @@
       "place": "263 km SE of Chiniak, Alaska",
       "time": 1781782823536,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzfajd"
-    },
-    {
-      "id": "aka2026lzerpl",
-      "lon": -143.85,
-      "lat": 60.604,
-      "depth": 22.1,
-      "mag": 1.6,
-      "place": "104 km E of Cordova, Alaska",
-      "time": 1781782189728,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzerpl"
-    },
-    {
-      "id": "ci41489744",
-      "lon": -116.412,
-      "lat": 33.273,
-      "depth": 5.22,
-      "mag": 0.38,
-      "place": "4 km WNW of Borrego Springs, CA",
-      "time": 1781782162340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489744"
     }
   ]
 }
