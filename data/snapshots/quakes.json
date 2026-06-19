@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T23:15:50Z",
-  "count": 243,
+  "updated": "2026-06-19T23:31:01Z",
+  "count": 245,
   "points": [
+    {
+      "id": "ci41490888",
+      "lon": -116.457,
+      "lat": 33.4708333333333,
+      "depth": 12.24,
+      "mag": 1.23,
+      "place": "22 km ESE of Anza, CA",
+      "time": 1781911378510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490888"
+    },
+    {
+      "id": "ci41490880",
+      "lon": -116.465,
+      "lat": 33.4696666666667,
+      "depth": 11.29,
+      "mag": 2.08,
+      "place": "22 km ESE of Anza, CA",
+      "time": 1781911185560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490880"
+    },
     {
       "id": "aka2026mbydta",
       "lon": -154.856,
@@ -62,6 +82,16 @@
       "place": "4 km WSW of Anza, CA",
       "time": 1781908684250,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490848"
+    },
+    {
+      "id": "av94256158",
+      "lon": -178.5895,
+      "lat": 51.8116666666667,
+      "depth": 15.48,
+      "mag": 1.07,
+      "place": "134 km W of Adak, Alaska",
+      "time": 1781908643410,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256158"
     },
     {
       "id": "hv74986797",
@@ -2422,16 +2452,6 @@
       "place": "1 km E of Big Lake, Alaska",
       "time": 1781825593085,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026macuum"
-    },
-    {
-      "id": "uu80142846",
-      "lon": -110.4055,
-      "lat": 44.7505,
-      "depth": 2.15,
-      "mag": 1.24,
-      "place": "34 km SE of Mammoth, Wyoming",
-      "time": 1781825302530,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142846"
     }
   ]
 }
