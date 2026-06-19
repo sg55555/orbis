@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T15:58:09Z",
+  "updated": "2026-06-19T16:01:15Z",
   "count": 231,
   "points": [
     {
@@ -52,6 +52,16 @@
       "place": "9 km WNW of Cobb, CA",
       "time": 1781882872790,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379626"
+    },
+    {
+      "id": "pr71520603",
+      "lon": -68.414,
+      "lat": 17.8863333333333,
+      "depth": 62.56,
+      "mag": 3.4,
+      "place": "58 km SSE of Boca de Yuma, Dominican Republic",
+      "time": 1781882840790,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520603"
     },
     {
       "id": "ci41490592",
@@ -2302,16 +2312,6 @@
       "place": "75 km W of Nikolski, Alaska",
       "time": 1781798564600,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062219"
-    },
-    {
-      "id": "us7000suci",
-      "lon": 176.1668,
-      "lat": 51.8507,
-      "depth": 10,
-      "mag": 3.7,
-      "place": "231 km ESE of Attu Station, Alaska",
-      "time": 1781798256829,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suci"
     }
   ]
 }
