@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T08:45:50Z",
+  "updated": "2026-06-19T09:01:13Z",
   "count": 225,
   "points": [
+    {
+      "id": "aka2026mavrkh",
+      "lon": -159.817,
+      "lat": 55.924,
+      "depth": 11.9,
+      "mag": 1,
+      "place": "21 km W of Ivanof Bay, Alaska",
+      "time": 1781859542519,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavrkh"
+    },
+    {
+      "id": "aka2026mavoku",
+      "lon": -147.735,
+      "lat": 64.593,
+      "depth": 5.1,
+      "mag": 1,
+      "place": "24 km S of South Van Horn, Alaska",
+      "time": 1781859333812,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavoku"
+    },
+    {
+      "id": "hv74986252",
+      "lon": -155.490173339844,
+      "lat": 19.1730003356934,
+      "depth": 32.1699981689453,
+      "mag": 1.91,
+      "place": "3 km SSW of Pāhala, Hawaii",
+      "time": 1781859162480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986252"
+    },
     {
       "id": "aka2026mavegh",
       "lon": -155.017,
@@ -72,6 +102,16 @@
       "place": "171 km ESE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781855577734,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suii"
+    },
+    {
+      "id": "us7000suij",
+      "lon": 161.0259,
+      "lat": 52.8039,
+      "depth": 10,
+      "mag": 4.5,
+      "place": "163 km E of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781855336138,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suij"
     },
     {
       "id": "us7000suie",
@@ -242,6 +282,16 @@
       "place": "23 km SE of Pāhala, Hawaii",
       "time": 1781849816070,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986182"
+    },
+    {
+      "id": "tx2026lysffl",
+      "lon": -102.023,
+      "lat": 32.354,
+      "depth": 8.0322,
+      "mag": 0.6,
+      "place": "33 km NW of Stanton, Texas",
+      "time": 1781849793040,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lysffl"
     },
     {
       "id": "nc75379496",
@@ -2202,56 +2252,6 @@
       "place": "84 km NNW of Karluk, Alaska",
       "time": 1781773294699,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyztbi"
-    },
-    {
-      "id": "ci41489696",
-      "lon": -117.213833333333,
-      "lat": 34,
-      "depth": 4.64,
-      "mag": 0.87,
-      "place": "7 km SSW of Redlands, CA",
-      "time": 1781773098690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489696"
-    },
-    {
-      "id": "tx2026lxbtyt",
-      "lon": -102.061,
-      "lat": 32.416,
-      "depth": 8.7646,
-      "mag": 0.3,
-      "place": "34 km WSW of Ackerly, Texas",
-      "time": 1781772974205,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxbtyt"
-    },
-    {
-      "id": "nn00920432",
-      "lon": -115.3007,
-      "lat": 37.1175,
-      "depth": 9.7168,
-      "mag": 1.62,
-      "place": "30 km SSW of Alamo, Nevada",
-      "time": 1781772765826,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920432"
-    },
-    {
-      "id": "nc75378956",
-      "lon": -121.364501953125,
-      "lat": 36.6935005187988,
-      "depth": 0.879999995231628,
-      "mag": 1.62,
-      "place": "11 km SSW of Tres Pinos, CA",
-      "time": 1781772635920,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378956"
-    },
-    {
-      "id": "tx2026lxblml",
-      "lon": -104.118,
-      "lat": 31.731,
-      "depth": 7.7405,
-      "mag": 1.6,
-      "place": "49 km W of Mentone, Texas",
-      "time": 1781772386187,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxblml"
     }
   ]
 }
