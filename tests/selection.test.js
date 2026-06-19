@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml, projLabel } from '../js/lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml, projLabel, gdeltEventPopupHtml, gdeltCountryPopupHtml } from '../js/lib/selection.js';
 
 test('escapeHtml: HTMLメタ文字を実体参照に / null→空', () => {
   assert.equal(escapeHtml('<b>"&"</b>'), '&lt;b&gt;&quot;&amp;&quot;&lt;/b&gt;');
@@ -106,4 +106,36 @@ test('shipPopupHtml: 船名無しは MMSI、進路無しは推定不可', () => 
   assert.match(html, /🚢 MMSI 7/);
   assert.match(html, /船種 不明｜速度 —｜航路 —/);
   assert.match(html, /進路推定不可/);
+});
+
+test('gdeltEventPopupHtml: 紛争はサブタイプ括弧・記事リンク http のみ', () => {
+  const html = gdeltEventPopupHtml({ place: 'UP', root: '19', mentions: 92, url: 'https://reuters.com/x' }, 'conflict');
+  assert.match(html, /紛争（戦闘）/);
+  assert.match(html, /ウクライナ/);
+  assert.match(html, /報道 92件/);
+  assert.match(html, /href="https:\/\/reuters\.com\/x"/);
+});
+
+test('gdeltEventPopupHtml: 抗議はサブタイプ無し・不正 url は # に', () => {
+  const html = gdeltEventPopupHtml({ place: 'FR', root: '14', mentions: 5, url: 'javascript:alert(1)' }, 'protests');
+  assert.match(html, /抗議/);
+  assert.doesNotMatch(html, /（/); // サブタイプ括弧なし
+  assert.match(html, /href="#"/);
+  assert.doesNotMatch(html, /javascript:/);
+});
+
+test('gdeltCountryPopupHtml: 国サマリ（件数・最多種類・出典）・紛争のみ最多表示', () => {
+  const c = gdeltCountryPopupHtml({ layerId: 'conflict', country_ja: 'ウクライナ', count: 148, dominantRootJa: '戦闘', topSources: ['reuters.com', 'bbc.com'] });
+  assert.match(c, /紛争 ウクライナ/);
+  assert.match(c, /24h 148件/);
+  assert.match(c, /最多は戦闘/);
+  assert.match(c, /reuters\.com、bbc\.com/);
+  const p = gdeltCountryPopupHtml({ layerId: 'protests', country_ja: 'フランス', count: 31, topSources: [] });
+  assert.match(p, /抗議 フランス/);
+  assert.doesNotMatch(p, /最多は/); // 抗議は最多種類を出さない
+});
+
+test('gdelt popups: null 安全', () => {
+  assert.equal(typeof gdeltEventPopupHtml(null, 'conflict'), 'string');
+  assert.equal(typeof gdeltCountryPopupHtml(null), 'string');
 });

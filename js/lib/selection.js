@@ -1,6 +1,7 @@
 import { pointAlongPath } from './motion.js';
 import { hostnameOf } from './geo.js';
 import { categoryOf } from './news_categories.js';
+import { fipsToJa, rootToJa } from './places.js';
 
 // flyTo 着地点の可視化ヘルパ（純粋関数）。
 // ・selectionPopupHtml: イベント名＋色ドット＋移動ガイドの popup HTML を組む
@@ -172,5 +173,46 @@ export function newsPopupHtml(p) {
     + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
     + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
     + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
+    + '</div>';
+}
+
+const GDELT_LABEL = { conflict: '紛争', protests: '抗議' };
+
+// globe 個別点のクリック詳細（記事リンク付き）。紛争/抗議で共用。
+export function gdeltEventPopupHtml(event, layerId) {
+  const o = event || {};
+  const rgb = LAYER_RGB[layerId] || CYAN;
+  const dot = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  const label = GDELT_LABEL[layerId] || '報道';
+  const sub = layerId === 'conflict' ? `（${rootToJa(o.root)}）` : '';
+  const m = Number(o.mentions) || 0;
+  const host = hostnameOf(o.url);
+  const safeUrl = /^https?:\/\//i.test(o.url || '') ? o.url : '#';
+  // 紛争は fipsToJa（コード付き）、抗議は日本語名のみ（括弧なし）
+  const placeName = layerId === 'conflict' ? fipsToJa(o.place) : (o.place ? fipsToJa(o.place).split('（')[0] : '');
+  return '<div class="sel-popup">'
+    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<span class="sel-title">${escapeHtml(label + sub)}</span></div>`
+    + `<div class="sel-meta">${escapeHtml(placeName)}｜報道 ${m}件</div>`
+    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
+    + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
+    + '<div class="sel-hint">📍 この地点へ移動しました</div>'
+    + '</div>';
+}
+
+// フィード国別行のクリック詳細（国サマリ・記事リンク無し）。
+export function gdeltCountryPopupHtml(group) {
+  const g = group || {};
+  const rgb = LAYER_RGB[g.layerId] || CYAN;
+  const dot = `rgb(${rgb[0]},${rgb[1]},${rgb[2]})`;
+  const label = GDELT_LABEL[g.layerId] || '報道';
+  const dom = (g.layerId === 'conflict' && g.dominantRootJa) ? `・最多は${g.dominantRootJa}` : '';
+  const srcs = (Array.isArray(g.topSources) && g.topSources.length) ? g.topSources.join('、') : '—';
+  return '<div class="sel-popup">'
+    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<span class="sel-title">${escapeHtml(label + ' ' + (g.country_ja || ''))}</span></div>`
+    + `<div class="sel-meta">24h ${Number(g.count) || 0}件${escapeHtml(dom)}</div>`
+    + `<div class="sel-meta">主な出典 ${escapeHtml(srcs)}</div>`
+    + '<div class="sel-hint">📍 この地点へ移動しました</div>'
     + '</div>';
 }
