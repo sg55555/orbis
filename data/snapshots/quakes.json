@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T07:45:49Z",
-  "count": 230,
+  "updated": "2026-06-19T08:01:15Z",
+  "count": 226,
   "points": [
+    {
+      "id": "us7000suie",
+      "lon": -111.9106,
+      "lat": 40.4328,
+      "depth": 5,
+      "mag": 2.3,
+      "place": "6 km SSE of Bluffdale, Utah",
+      "time": 1781854834273,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suie"
+    },
+    {
+      "id": "us7000suia",
+      "lon": 160.8688,
+      "lat": 51.6583,
+      "depth": 10,
+      "mag": 4.4,
+      "place": "218 km SE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781853764997,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suia"
+    },
     {
       "id": "hv74986207",
       "lon": -155.856002807617,
@@ -52,6 +72,16 @@
       "place": "55 km S of Whites City, New Mexico",
       "time": 1781852541574,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytpmo"
+    },
+    {
+      "id": "tx2026lytrzd",
+      "lon": -104.245,
+      "lat": 31.632,
+      "depth": 0,
+      "mag": 1.9,
+      "place": "55 km NW of Toyah, Texas",
+      "time": 1781852503330,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytrzd"
     },
     {
       "id": "ci41490496",
@@ -2232,76 +2262,6 @@
       "place": "9 km E of Cabazon, CA",
       "time": 1781770016500,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489672"
-    },
-    {
-      "id": "aka2026lyxqig",
-      "lon": -152.45,
-      "lat": 60.102,
-      "depth": 81.8,
-      "mag": 1.1,
-      "place": "43 km WNW of Happy Valley, Alaska",
-      "time": 1781769506708,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyxqig"
-    },
-    {
-      "id": "ci41489664",
-      "lon": -117.166166666667,
-      "lat": 34.039,
-      "depth": 10.64,
-      "mag": 0.85,
-      "place": "2 km SE of Redlands, CA",
-      "time": 1781769497910,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489664"
-    },
-    {
-      "id": "aka2026lyxoxb",
-      "lon": -173.295,
-      "lat": 50.892,
-      "depth": 20,
-      "mag": 2.8,
-      "place": "158 km SSE of Atka, Alaska",
-      "time": 1781769398985,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyxoxb"
-    },
-    {
-      "id": "ci41489656",
-      "lon": -117.4785,
-      "lat": 35.6513333333333,
-      "depth": 5.81,
-      "mag": 0.64,
-      "place": "15 km SSW of Searles Valley, CA",
-      "time": 1781769165290,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489656"
-    },
-    {
-      "id": "aka2026lyxhqc",
-      "lon": -155.3,
-      "lat": 57.015,
-      "depth": 12.2,
-      "mag": 1.5,
-      "place": "69 km W of Akhiok, Alaska",
-      "time": 1781768904900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyxhqc"
-    },
-    {
-      "id": "hv74985392",
-      "lon": -155.376495361328,
-      "lat": 19.1264991760254,
-      "depth": 30.1000003814697,
-      "mag": 1.79,
-      "place": "13 km SE of Pāhala, Hawaii",
-      "time": 1781768803460,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985392"
-    },
-    {
-      "id": "uu80142796",
-      "lon": -110.882833333333,
-      "lat": 44.5958333333333,
-      "depth": 8.05,
-      "mag": 0.8,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781768758630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142796"
     }
   ]
 }
