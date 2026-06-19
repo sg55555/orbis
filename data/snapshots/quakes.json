@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T02:01:10Z",
-  "count": 264,
+  "updated": "2026-06-19T02:15:51Z",
+  "count": 265,
   "points": [
+    {
+      "id": "ci41490424",
+      "lon": -116.770833333333,
+      "lat": 33.6633333333333,
+      "depth": 10.66,
+      "mag": 1.02,
+      "place": "10 km SSW of Idyllwild, CA",
+      "time": 1781834656920,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490424"
+    },
+    {
+      "id": "nc75379411",
+      "lon": -122.811996459961,
+      "lat": 38.8071670532227,
+      "depth": 2.04999995231628,
+      "mag": 1.05,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781834542390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379411"
+    },
     {
       "id": "pr71520533",
       "lon": -64.4926666666667,
@@ -214,6 +234,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490352"
     },
     {
+      "id": "av94254098",
+      "lon": -169.9225,
+      "lat": 52.811,
+      "depth": 4.17,
+      "mag": 0.09,
+      "place": "72 km WSW of Nikolski, Alaska",
+      "time": 1781823926880,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254098"
+    },
+    {
       "id": "hv74985987",
       "lon": -155.489334106445,
       "lat": 19.1791667938232,
@@ -222,6 +252,26 @@
       "place": "2 km SSW of Pāhala, Hawaii",
       "time": 1781823764020,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985987"
+    },
+    {
+      "id": "av94254088",
+      "lon": -153.077333333333,
+      "lat": 60.052,
+      "depth": 0.75,
+      "mag": -0.88,
+      "place": "64 km ENE of Pedro Bay, Alaska",
+      "time": 1781823701090,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254088"
+    },
+    {
+      "id": "av94254083",
+      "lon": -178.7985,
+      "lat": 51.7241666666667,
+      "depth": 9.84,
+      "mag": 0.6,
+      "place": "150 km W of Adak, Alaska",
+      "time": 1781823605700,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254083"
     },
     {
       "id": "us7000sugd",
@@ -242,6 +292,16 @@
       "place": "4 km ESE of San Ramon, CA",
       "time": 1781823276760,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379306"
+    },
+    {
+      "id": "av94254068",
+      "lon": -165.9755,
+      "lat": 54.1386666666667,
+      "depth": 3.36,
+      "mag": -0.96,
+      "place": "13 km W of Akutan, Alaska",
+      "time": 1781823049240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254068"
     },
     {
       "id": "ci41490336",
@@ -2592,56 +2652,6 @@
       "place": "16 km W of Ivanof Bay, Alaska",
       "time": 1781749176752,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lymins"
-    },
-    {
-      "id": "ci41489536",
-      "lon": -116.477833333333,
-      "lat": 33.5003333333333,
-      "depth": 5.62,
-      "mag": 0.8,
-      "place": "19 km ESE of Anza, CA",
-      "time": 1781748929280,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489536"
-    },
-    {
-      "id": "av94251943",
-      "lon": -169.804,
-      "lat": 52.8751666666667,
-      "depth": 0.73,
-      "mag": 2.07,
-      "place": "63 km W of Nikolski, Alaska",
-      "time": 1781748824410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251943"
-    },
-    {
-      "id": "hv74985232",
-      "lon": -155.431671142578,
-      "lat": 19.0501670837402,
-      "depth": 45.1599998474121,
-      "mag": 2.06,
-      "place": "15 km E of Naalehu, Hawaii",
-      "time": 1781748646420,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985232"
-    },
-    {
-      "id": "hv74985222",
-      "lon": -155.477661132812,
-      "lat": 19.0454998016357,
-      "depth": 40.1699981689453,
-      "mag": 2.06,
-      "place": "11 km ESE of Naalehu, Hawaii",
-      "time": 1781748358920,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985222"
-    },
-    {
-      "id": "aka2026lylvjn",
-      "lon": -173.05,
-      "lat": 52.242,
-      "depth": 1.5,
-      "mag": 2.7,
-      "place": "78 km E of Atka, Alaska",
-      "time": 1781748271276,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lylvjn"
     }
   ]
 }
