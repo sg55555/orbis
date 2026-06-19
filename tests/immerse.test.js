@@ -2,13 +2,26 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   immerseZoom, immerseSeam, immerseGlow, immerseMediaBg, immerseClasses,
-  atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM,
+  atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM, immerseNeb,
 } from '../js/lib/immerse.js';
 
 // 没入ダイヤルの既定値は実物比較で確定した本番値。URL パラメータで下げ方向に上書きできる。
 
 test('DEFAULT_ZOOM は確定値 2.7（globe を画面の主役に）', () => {
   assert.equal(DEFAULT_ZOOM, 2.7);
+});
+
+test('immerseNeb: 既定3（鮮やか）・?nv=1|2 で切替・不正は既定', () => {
+  const def = immerseNeb('');
+  const n3 = immerseNeb('?nv=3');
+  assert.deepEqual(def, n3); // 既定は 3（鮮やか・ユーザー採用）
+  const n1 = immerseNeb('?nv=1');
+  const n2 = immerseNeb('?nv=2');
+  // a(青)/b(紫) を持ち、濃さは 1<2<3（alpha が単調増加）
+  const al = (s) => Number((/[\d.]+(?=\)$)/.exec(s) || [])[0]);
+  assert.ok(al(n1.a) < al(n2.a) && al(n2.a) < al(n3.a), 'nv が大きいほど青ティント濃い');
+  assert.ok(al(n1.b) < al(n2.b) && al(n2.b) < al(n3.b), 'nv が大きいほど紫ティント濃い');
+  assert.deepEqual(immerseNeb('?nv=9'), def); // 不正は既定
 });
 
 test('immerseZoom: 未指定は既定(2.7)。?gz=55|70|85 で上書き', () => {

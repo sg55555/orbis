@@ -39,6 +39,19 @@ export function immerseMediaBg(search) {
   return m ? m[1].toLowerCase() : 'deep';
 }
 
+// ?nv=1|2|3 → メディア領域(#media)の星雲ティント濃さ。1=控えめ/2=しっかり/3=鮮やか(既定)。
+// 値は --neb-a(青)/--neb-b(紫) の rgba。main.js が :root に setProperty して適用する。
+// 既定=3（ユーザー採用・実物比較で確定）。今後のデザイン監修で全体バランスを再調整予定。
+const NEB_VIVID = {
+  1: { a: 'rgba(46,111,179,0.12)', b: 'rgba(138,92,246,0.08)' },
+  2: { a: 'rgba(58,150,235,0.26)', b: 'rgba(150,100,255,0.20)' },
+  3: { a: 'rgba(70,175,255,0.42)', b: 'rgba(170,115,255,0.34)' },
+};
+export function immerseNeb(search) {
+  const m = /[?&]nv=([123])/.exec(readSearch(search));
+  return NEB_VIVID[m ? m[1] : 3];
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ。
 export function immerseClasses(search) {
   const out = [];

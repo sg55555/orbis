@@ -5,7 +5,7 @@ import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
-import { immerseZoom, immerseClasses, immerseGlow, atmosphereStops, isCompareMode } from './lib/immerse.js';
+import { immerseZoom, immerseClasses, immerseGlow, immerseNeb, atmosphereStops, isCompareMode } from './lib/immerse.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed, applyChips, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
@@ -266,6 +266,10 @@ function boot() {
   // #starfield は深宇宙の暗がり(vignette)＋点の星(canvas)のみ。
   const glow = immerseGlow();
   for (const c of immerseClasses()) document.body.classList.add(c);
+  // メディア星雲ティント濃さ(?nv=1|2|3・既定2＝鮮やか)を :root に適用（applyLookCss の後に上書き）。
+  const neb = immerseNeb();
+  document.documentElement.style.setProperty('--neb-a', neb.a);
+  document.documentElement.style.setProperty('--neb-b', neb.b);
   const { map, overlay } = initMap(
     'map',
     (info) => {
