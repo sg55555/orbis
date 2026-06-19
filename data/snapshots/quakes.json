@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T21:37:52Z",
-  "count": 242,
+  "updated": "2026-06-19T21:45:48Z",
+  "count": 245,
   "points": [
+    {
+      "id": "nc75379841",
+      "lon": -122.792167663574,
+      "lat": 38.8183326721191,
+      "depth": 3.23000001907349,
+      "mag": 0.76,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781905334450,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379841"
+    },
+    {
+      "id": "nc75379836",
+      "lon": -123.249168395996,
+      "lat": 39.3904991149902,
+      "depth": 6.94999980926514,
+      "mag": 1.75,
+      "place": "9 km ESE of Willits, CA",
+      "time": 1781905239600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379836"
+    },
+    {
+      "id": "nc75379831",
+      "lon": -122.793663024902,
+      "lat": 38.8143348693848,
+      "depth": 2.77999997138977,
+      "mag": 0.94,
+      "place": "5 km NW of The Geysers, CA",
+      "time": 1781904970460,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379831"
+    },
     {
       "id": "aka2026mbumki",
       "lon": -149.407,
@@ -274,6 +304,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunx"
     },
     {
+      "id": "aka2026mbogif",
+      "lon": -166.996,
+      "lat": 53.406,
+      "depth": 2.3,
+      "mag": 2.1,
+      "place": "60 km SSW of Unalaska, Alaska",
+      "time": 1781892957670,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbogif"
+    },
+    {
       "id": "pr71520638",
       "lon": -64.2241666666667,
       "lat": 18.2961666666667,
@@ -295,12 +335,12 @@
     },
     {
       "id": "aka2026mbobgi",
-      "lon": -151.183,
-      "lat": 60.137,
-      "depth": 62.4,
-      "mag": 1.7,
-      "place": "15 km SE of Clam Gulch, Alaska",
-      "time": 1781892607259,
+      "lon": -151.195,
+      "lat": 60.152,
+      "depth": 64,
+      "mag": 1.8,
+      "place": "14 km SE of Clam Gulch, Alaska",
+      "time": 1781892607106,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbobgi"
     },
     {
@@ -2412,16 +2452,6 @@
       "place": "16 km S of South Van Horn, Alaska",
       "time": 1781819235114,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzzgyj"
-    },
-    {
-      "id": "aka2026lzzbgh",
-      "lon": -168.872,
-      "lat": 52.8,
-      "depth": 67.8,
-      "mag": 1.7,
-      "place": "15 km S of Nikolski, Alaska",
-      "time": 1781818841203,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzzbgh"
     }
   ]
 }
