@@ -1,7 +1,7 @@
 {
   "layers": {
     "quakes": {
-      "updated": "2026-06-19T12:15:52Z",
+      "updated": "2026-06-19T12:31:08Z",
       "count": 226
     },
     "flights": {
@@ -17,15 +17,15 @@
       "count": 2000
     },
     "ships": {
-      "updated": "2026-06-19T12:15:55Z",
-      "count": 2383
+      "updated": "2026-06-19T12:31:49Z",
+      "count": 2258
     },
     "sst": {
       "updated": "2026-06-19T11:04:35Z",
       "count": 1646
     },
     "news": {
-      "updated": "2026-06-19T12:16:24Z",
+      "updated": "2026-06-19T12:32:18Z",
       "count": 21
     },
     "airtemp": {
