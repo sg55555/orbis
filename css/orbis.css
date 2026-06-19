@@ -163,10 +163,12 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
   display: flex; flex-direction: column; align-items: center; gap: 7px;
   pointer-events: none; z-index: 3; }
 .lc-rows { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
-.lc-row { max-width: 94%; background: rgba(3, 6, 12, .82); color: #f4faff;
-  font-size: clamp(20px, 1.5vw, 30px); font-weight: 600; line-height: 1.5;
-  letter-spacing: .01em; padding: 7px 18px; border-radius: 10px;
-  text-shadow: 0 2px 6px rgba(0, 0, 0, .95), 0 0 3px rgba(0, 0, 0, .9); text-align: center; }
+.lc-row { max-width: 92%; background: rgba(0, 0, 0, .42); color: #fff;
+  font-size: clamp(19px, 1.35vw, 27px); font-weight: 600; line-height: 1.45;
+  letter-spacing: .01em; padding: 5px 15px; border-radius: 9px;
+  /* 背景は薄め（映像を見せる）＋文字に黒アウトラインで可読性を確保 */
+  text-shadow: 0 0 3px rgba(0,0,0,.95), 1px 1px 2px rgba(0,0,0,.9), -1px 1px 2px rgba(0,0,0,.9),
+    1px -1px 2px rgba(0,0,0,.9), -1px -1px 2px rgba(0,0,0,.9); text-align: center; }
 .lc-status { font-size: 12px; color: rgba(190, 208, 228, .85);
   text-shadow: 0 1px 3px rgba(0, 0, 0, .9); min-height: 14px; }
 /* 1画面モードのカメラ名ピル行（表示カメラ切替） */
