@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T00:31:06Z",
-  "count": 257,
+  "updated": "2026-06-19T00:45:47Z",
+  "count": 258,
   "points": [
+    {
+      "id": "nc75379366",
+      "lon": -122.790000915527,
+      "lat": 38.8334999084473,
+      "depth": 1.80999994277954,
+      "mag": 1.02,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781829695880,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379366"
+    },
+    {
+      "id": "nc75379361",
+      "lon": -122.788833618164,
+      "lat": 38.835334777832,
+      "depth": 1.78999996185303,
+      "mag": 0.58,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781829644600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379361"
+    },
+    {
+      "id": "nc75379356",
+      "lon": -122.789169311523,
+      "lat": 38.8331680297852,
+      "depth": 1.76999998092651,
+      "mag": 1.58,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781829534000,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379356"
+    },
+    {
+      "id": "nc75379351",
+      "lon": -122.795669555664,
+      "lat": 38.8334999084473,
+      "depth": 1.79999995231628,
+      "mag": 0.76,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781829352510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379351"
+    },
     {
       "id": "aka2026maegns",
       "lon": -150.198,
@@ -2542,36 +2582,6 @@
       "place": "13 km NW of Ivanof Bay, Alaska",
       "time": 1781743549430,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251818"
-    },
-    {
-      "id": "av94251813",
-      "lon": -159.663833333333,
-      "lat": 55.9841666666667,
-      "depth": 23.48,
-      "mag": 1.05,
-      "place": "14 km NW of Ivanof Bay, Alaska",
-      "time": 1781743493730,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251813"
-    },
-    {
-      "id": "aka2026lyiwic",
-      "lon": -156.322,
-      "lat": 54.968,
-      "depth": 23,
-      "mag": 3.7,
-      "place": "197 km SE of Chignik, Alaska",
-      "time": 1781742929267,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyiwic"
-    },
-    {
-      "id": "av94251788",
-      "lon": -154.894166666667,
-      "lat": 58.3133333333333,
-      "depth": 5.12,
-      "mag": 0.2,
-      "place": "86 km NNW of Karluk, Alaska",
-      "time": 1781742875100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251788"
     }
   ]
 }
