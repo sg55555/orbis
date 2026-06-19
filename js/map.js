@@ -6,10 +6,11 @@ import { getLook } from './lib/look.js';
 
 // globe の外周に大気の発光ハロを付ける（MapLibre v5 native sky）。
 // space は不透明色を置かない＝背面の星雲が透けるよう、sky/horizon/fog のみ設定する。
-// atmosphere-blend はズームで減衰させ、近接時は素のベースマップに戻す。
-export function applyAtmosphere(map, look) {
+// blendStops は atmosphere-blend の補間ストップ [zoom,value,...]。没入ダイヤル glow が決める
+// （強さ＋減衰範囲）。gz で globe を大きく(zoom高)しても大気が消えないよう減衰を遅らせる。
+export function applyAtmosphere(map, look, blendStops = [0, 0.85, 6, 0.45, 9, 0]) {
   if (!map.setSky) return false;
-  const sk = (look && look.sky) || { skyColor: '#0a1f3c', horizonColor: '#2f6fb3', fogColor: '#081428', atmosphere: 0.9 };
+  const sk = (look && look.sky) || { skyColor: '#0a1f3c', horizonColor: '#2f6fb3', fogColor: '#081428' };
   map.setSky({
     'sky-color': sk.skyColor,
     'sky-horizon-blend': 0.6,
@@ -17,17 +18,19 @@ export function applyAtmosphere(map, look) {
     'horizon-fog-blend': 0.6,
     'fog-color': sk.fogColor,
     'fog-ground-blend': 0.4,
-    'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, sk.atmosphere, 5, sk.atmosphere * 0.5, 8, 0],
+    'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], ...blendStops],
   });
   return true;
 }
 
-export function initMap(container, getTooltip, onClick, look = getLook()) {
+// zoom は初期ズーム（没入ダイヤル gz で globe の見かけの大きさを変える）。
+// blendStops は大気の atmosphere-blend ストップ（没入ダイヤル glow）。
+export function initMap(container, getTooltip, onClick, look = getLook(), zoom = 2.7, blendStops) {
   const map = new maplibregl.Map({
     container,
     style: buildBaseStyle(look),
     center: [0, 20],
-    zoom: 1.2,
+    zoom,
     minZoom: 0,
     renderWorldCopies: false,
     attributionControl: true,
@@ -35,7 +38,7 @@ export function initMap(container, getTooltip, onClick, look = getLook()) {
   });
   map.on('style.load', () => {
     if (map.setProjection) map.setProjection({ type: 'globe' });
-    applyAtmosphere(map, look);
+    applyAtmosphere(map, look, blendStops);
   });
 
   const overlay = new deck.MapboxOverlay({

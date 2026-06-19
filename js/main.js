@@ -5,6 +5,7 @@ import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival
 import { loadEnabled, readStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
+import { immerseZoom, immerseClasses, immerseGlow, atmosphereStops, isCompareMode } from './lib/immerse.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
@@ -236,9 +237,11 @@ function motionLoop() {
 function boot() {
   const look = getLook();
   applyLookCss(look); // 星雲・グラスの CSS 変数を :root に適用
-  // 星雲の配置。採用=ring(地球を囲むハロ)。?neb=corners で四隅版にも切替可能
-  const nebClass = /[?&]neb=corners/i.test(location.search) ? 'neb-corners' : 'neb-ring';
-  document.getElementById('starfield').classList.add(nebClass);
+  // 没入ダイヤル: 大気ハロ(glow)を initMap に渡し、body に seam/mbg/glass クラスを付与。
+  // 星雲(面)は globe 拡大時に panel と干渉し四角く見えるため廃止＝アクセントは大気ハロに一本化。
+  // #starfield は深宇宙の暗がり(vignette)＋点の星(canvas)のみ。
+  const glow = immerseGlow();
+  for (const c of immerseClasses()) document.body.classList.add(c);
   const { map, overlay } = initMap(
     'map',
     (info) => {
@@ -286,7 +289,9 @@ function boot() {
         drawAll(overlay);
       }
     },
-    look
+    look,
+    immerseZoom(),
+    atmosphereStops(glow),
   );
   mountStarfield(document.getElementById('starfield'), { reduced: REDUCED });
   window.__orbis = { map, overlay, counts: {} };
@@ -359,7 +364,20 @@ function boot() {
 }
 
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  // ローカル(開発/比較)では SW を無効化：cache-first が古い main.js/css を配信し、変更が
+  // 反映されない問題を避ける。既存 SW があれば解除＋キャッシュ削除し、最新を読むため1回だけ
+  // リロードする（非同期 unregister は当該ページの取得に間に合わないため）。本番(vercel)のみ SW 有効。
+  const local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+  if (isCompareMode(location.search) || local) {
+    navigator.serviceWorker.getRegistrations().then((rs) => {
+      const had = rs.length > 0;
+      rs.forEach((r) => r.unregister());
+      if (window.caches) caches.keys().then((ks) => ks.forEach((k) => caches.delete(k)));
+      if (had) location.reload();
+    });
+  } else {
+    window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
 }
 
 boot();

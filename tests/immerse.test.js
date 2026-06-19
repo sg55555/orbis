@@ -1,0 +1,74 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import {
+  immerseZoom, immerseSeam, immerseGlow, immerseMediaBg, immerseClasses,
+  atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM,
+} from '../js/lib/immerse.js';
+
+// 没入ダイヤルの既定値は実物比較で確定した本番値。URL パラメータで下げ方向に上書きできる。
+
+test('DEFAULT_ZOOM は確定値 2.7（globe を画面の主役に）', () => {
+  assert.equal(DEFAULT_ZOOM, 2.7);
+});
+
+test('immerseZoom: 未指定は既定(2.7)。?gz=55|70|85 で上書き', () => {
+  assert.equal(immerseZoom(''), 2.7);
+  assert.equal(immerseZoom('?gz=55'), 1.7);
+  assert.equal(immerseZoom('?gz=70'), 2.2);
+  assert.equal(immerseZoom('?gz=85'), 2.7);
+  assert.equal(immerseZoom('?gz=99'), 2.7); // 未定義段階は既定
+  assert.equal(immerseZoom('?gz=abc'), 2.7);
+});
+
+test('immerseSeam: 未指定は既定 a。?seam=b|c で上書き（無効も既定 a）', () => {
+  assert.equal(immerseSeam(''), 'a');
+  assert.equal(immerseSeam('?seam=b'), 'b');
+  assert.equal(immerseSeam('?seam=C'), 'c');
+  assert.equal(immerseSeam('?seam=z'), 'a');
+});
+
+test('immerseGlow: 未指定は既定 2。?glow=1|3 で上書き（無効も既定 2）', () => {
+  assert.equal(immerseGlow(''), 2);
+  assert.equal(immerseGlow('?glow=1'), 1);
+  assert.equal(immerseGlow('?glow=3'), 3);
+  assert.equal(immerseGlow('?glow=9'), 2);
+});
+
+test('immerseMediaBg: 未指定は既定 deep。?mbg=black で上書き（無効も既定 deep）', () => {
+  assert.equal(immerseMediaBg(''), 'deep');
+  assert.equal(immerseMediaBg('?mbg=black'), 'black');
+  assert.equal(immerseMediaBg('?mbg=BLACK'), 'black');
+  assert.equal(immerseMediaBg('?mbg=x'), 'deep');
+});
+
+test('immerseClasses: 既定で seam-a・mbg-deep。指定で上書き', () => {
+  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep']);
+  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep']);
+  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a']);
+  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off']);
+  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep']); // glass=on はクラス無し
+});
+
+test('atmosphereStops: glow level で atmosphere-blend のストップ（大きいほど強く・減衰を遅らせ広く）', () => {
+  assert.deepEqual(atmosphereStops(1), [0, 0.55, 4, 0.28, 7, 0]);
+  assert.deepEqual(atmosphereStops(2), [0, 0.85, 6, 0.45, 9, 0]);
+  assert.deepEqual(atmosphereStops(3), [0, 1.0, 10, 0.6, 14, 0]);
+  assert.deepEqual(atmosphereStops(99), atmosphereStops(1));
+});
+
+test('isCompareMode: ?compare=1 のみ true（比較中は SW 無効化の判定）', () => {
+  assert.equal(isCompareMode('?compare=1'), true);
+  assert.equal(isCompareMode('?gz=85&compare=1&seam=a'), true);
+  assert.equal(isCompareMode('?gz=85'), false);
+  assert.equal(isCompareMode(''), false);
+  assert.equal(isCompareMode('?compare=0'), false);
+  assert.equal(isCompareMode('?compare=10'), false);
+});
+
+test('immerseGlass: ?glass=on|soft|off（大小無視）、未指定/無効は on', () => {
+  assert.equal(immerseGlass('?glass=off'), 'off');
+  assert.equal(immerseGlass('?glass=soft'), 'soft');
+  assert.equal(immerseGlass('?glass=ON'), 'on');
+  assert.equal(immerseGlass(''), 'on');
+  assert.equal(immerseGlass('?glass=x'), 'on');
+});

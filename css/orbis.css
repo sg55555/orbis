@@ -1,8 +1,8 @@
 :root {
   --bg: #05080f; --panel: rgba(14, 22, 38, 0.72); --line: #1c2c48;
   --cyan: #39d0ff; --text: #cfe0f5; --muted: #5b7fb0;
-  /* リッチ化: ルック(js/lib/look.js)が上書きする星雲・グラス変数。ここは A プリセットの既定値 */
-  --neb-a: rgba(46,111,179,0.12); --neb-b: rgba(138,92,246,0.08); --neb-base: #05080f;
+  /* 深宇宙 vignette のベース色（#starfield 背景）とグラス変数。ルック(js/lib/look.js)が上書き。 */
+  --neb-base: #05080f;
   --glass-blur: 16px; --glass-bg: rgba(10,18,32,0.55); --glass-rim: rgba(90,200,255,0.22);
 }
 * { box-sizing: border-box; }
@@ -11,29 +11,9 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 #app { display: flex; flex-direction: column; }
 #map-wrap { position: relative; height: 100vh; }
 #map { position: absolute; inset: 0; z-index: 1; background: transparent; }
-/* 星雲: 地球の背後(中心)は素の暗色にし、星雲を地球の「周り」に漂わせる。色味はルック変数で切替。
-   配置は ?neb= で2種を比較: neb-corners=四隅/縁, neb-ring=地球をリング状に囲むハロ。採用=ring */
+/* 深宇宙の暗がり(vignette)。星雲(面)は廃止し、点の星は #starfield の canvas が描く。 */
 #starfield { position: absolute; inset: 0; z-index: 0; pointer-events: none;
   background: radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%); }
-/* 四隅・縁に大きくにじませる（開けた上部中央・下部に強く出る） */
-#starfield.neb-corners {
-  background:
-    radial-gradient(40% 36% at 9% 13%, var(--neb-a) 0%, transparent 60%),
-    radial-gradient(44% 38% at 91% 19%, var(--neb-b) 0%, transparent 60%),
-    radial-gradient(42% 38% at 15% 89%, var(--neb-b) 0%, transparent 60%),
-    radial-gradient(46% 40% at 87% 85%, var(--neb-a) 0%, transparent 62%),
-    radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%); }
-/* 地球のすぐ外側を時計回りに囲む星雲リング（大気ハロと馴染む） */
-#starfield.neb-ring {
-  background:
-    radial-gradient(20% 18% at 50% 10%, var(--neb-a) 0%, transparent 55%),
-    radial-gradient(20% 18% at 71% 19%, var(--neb-b) 0%, transparent 55%),
-    radial-gradient(20% 20% at 29% 19%, var(--neb-b) 0%, transparent 55%),
-    radial-gradient(22% 22% at 23% 50%, var(--neb-a) 0%, transparent 55%),
-    radial-gradient(20% 20% at 30% 76%, var(--neb-a) 0%, transparent 55%),
-    radial-gradient(20% 18% at 50% 82%, var(--neb-b) 0%, transparent 55%),
-    radial-gradient(20% 20% at 70% 76%, var(--neb-b) 0%, transparent 55%),
-    radial-gradient(ellipse at 50% 42%, transparent 28%, #0a1220 52%, var(--neb-base) 86%); }
 #freshness { position: absolute; right: 12px; top: 12px; z-index: 5;
   max-width: 48vw; line-height: 1.45;
   background: var(--glass-bg); border: 1px solid var(--glass-rim); border-radius: 8px;
@@ -265,3 +245,45 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 @media (prefers-reduced-motion: reduce) {
   #panel.side-panel, #feed.side-panel, #sheet-scrim { transition: none; }
 }
+
+/* ===== デスクトップ没入感 比較プロトタイプ（?seam=a|b|c / ?mbg=black|deep） ===== */
+/* body の単一クラスで分岐するので #map-wrap::after の重複定義は衝突しない。z2=map(z1)の手前・panel(z5)の背面 */
+/* seam-a: globe 下端の大気/星雲が media へ溶け込む下向きフェード（境界の死区を埋める） */
+body.seam-a #map-wrap::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 40vh; z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(to bottom,
+    transparent 0%, rgba(57,208,255,0.05) 46%, rgba(24,42,71,0.22) 74%, var(--bg) 100%);
+}
+/* seam-b: globe と media の間に地平線的な光のライン＋下端の薄い締め */
+body.seam-b #media { position: relative; }
+body.seam-b #media::before {
+  content: ''; position: absolute; left: 0; right: 0; top: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(57,208,255,0.55), rgba(138,92,246,0.45), transparent);
+  box-shadow: 0 0 18px rgba(57,208,255,0.35);
+}
+body.seam-b #map-wrap::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 16vh; z-index: 2;
+  pointer-events: none; background: linear-gradient(to bottom, transparent, rgba(10,18,32,0.45));
+}
+/* seam-c: 深宇宙統一（globe 下を media へなだらかに繋ぎ、境界の段差を消す） */
+body.seam-c #map-wrap::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 30vh; z-index: 2;
+  pointer-events: none; background: linear-gradient(to bottom, transparent, var(--neb-base));
+}
+
+/* mbg-deep: media 背景を深宇宙グラデ（上部に星雲の名残、下へ締まる）。globe と地続きに見せる */
+body.mbg-deep #media {
+  background:
+    radial-gradient(120% 80% at 50% -12%, rgba(57,208,255,0.06) 0%, transparent 55%),
+    radial-gradient(90% 70% at 18% 8%, var(--neb-a) 0%, transparent 60%),
+    radial-gradient(90% 70% at 84% 12%, var(--neb-b) 0%, transparent 60%),
+    linear-gradient(to bottom, var(--neb-base) 0%, #06101f 58%, var(--bg) 100%);
+}
+
+/* glass ダイヤル: panel/feed のすりガラス(backdrop-filter:blur)が globe 上で四角い窓に見える
+   問題の検証/調整用。soft=blur弱め＋やや不透明 / off=blur無し＋ほぼ不透明(globe が透けず窓感を消す)。 */
+body.glass-soft #panel.side-panel, body.glass-soft #feed.side-panel {
+  backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); background: rgba(10, 18, 32, 0.76); }
+body.glass-off #panel.side-panel, body.glass-off #feed.side-panel {
+  backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(8, 14, 26, 0.93); }

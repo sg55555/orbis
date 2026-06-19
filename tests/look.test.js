@@ -19,7 +19,7 @@ test('getLook: 各プリセットが sky/water/land/nebula/glass を備える', 
     assert.ok(l.sky && typeof l.sky.atmosphere === 'number', `${id} sky.atmosphere`);
     assert.match(l.water, /^#[0-9a-f]{6}$/i, `${id} water`);
     assert.match(l.land, /^#[0-9a-f]{6}$/i, `${id} land`);
-    assert.ok(l.nebula.a && l.nebula.b && l.nebula.base, `${id} nebula`);
+    assert.ok(l.nebula.base, `${id} nebula.base`);
     assert.ok(typeof l.glass.blur === 'number' && l.glass.bg && l.glass.rim, `${id} glass`);
   }
 });

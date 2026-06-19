@@ -7,6 +7,12 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   await expect(page.locator('#map canvas.maplibregl-canvas')).toBeVisible();
   await expect(page.locator('#starfield')).toBeVisible();
 
+  // 没入(確定値): globe を主役に拡大(zoom>2)・星雲(面)なし(#starfield クラス空)・境界seam-a・media deep
+  expect(await page.evaluate(() => window.__orbis.map.getZoom())).toBeGreaterThan(2);
+  expect(await page.evaluate(() => document.getElementById('starfield').className)).toBe('');
+  expect(await page.evaluate(() => document.body.className)).toContain('seam-a');
+  expect(await page.evaluate(() => document.body.className)).toContain('mbg-deep');
+
   // 左パネルに10レイヤー行（地震/航空/紛争/抗議/貿易/水温/海流/気温/船舶/ニュース）
   await expect(page.locator('#panel .layer-row')).toHaveCount(10);
 
