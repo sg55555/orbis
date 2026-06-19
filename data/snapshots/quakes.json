@@ -1,8 +1,58 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T08:31:05Z",
-  "count": 223,
+  "updated": "2026-06-19T08:45:50Z",
+  "count": 225,
   "points": [
+    {
+      "id": "aka2026mavegh",
+      "lon": -155.017,
+      "lat": 58.257,
+      "depth": 5.8,
+      "mag": 0.5,
+      "place": "83 km NNW of Karluk, Alaska",
+      "time": 1781858630194,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavegh"
+    },
+    {
+      "id": "nc75379531",
+      "lon": -122.816833496094,
+      "lat": 38.8363342285156,
+      "depth": 8.65999984741211,
+      "mag": 0.45,
+      "place": "8 km W of Cobb, CA",
+      "time": 1781858329530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379531"
+    },
+    {
+      "id": "aka2026mauzfo",
+      "lon": -150.666,
+      "lat": 60.875,
+      "depth": 19.3,
+      "mag": 1.6,
+      "place": "5 km SSE of Point Possession, Alaska",
+      "time": 1781858282223,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mauzfo"
+    },
+    {
+      "id": "uw714026831",
+      "lon": -121.59383392334,
+      "lat": 44.363166809082,
+      "depth": 11.1000003814697,
+      "mag": 2.20378398895264,
+      "place": "5 km ESE of Black Butte Ranch, Oregon",
+      "time": 1781858013480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026831"
+    },
+    {
+      "id": "ci41490504",
+      "lon": -117.196833333333,
+      "lat": 34.0113333333333,
+      "depth": 3.53,
+      "mag": 0.89,
+      "place": "5 km SSW of Redlands, CA",
+      "time": 1781857758920,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490504"
+    },
     {
       "id": "us7000suik",
       "lon": 161.06,
@@ -2202,36 +2252,6 @@
       "place": "49 km W of Mentone, Texas",
       "time": 1781772386187,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxblml"
-    },
-    {
-      "id": "tx2026lxbhwx",
-      "lon": -103.785,
-      "lat": 31.228,
-      "depth": 0,
-      "mag": 1.9,
-      "place": "9 km S of Toyah, Texas",
-      "time": 1781772146455,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxbhwx"
-    },
-    {
-      "id": "ci41489688",
-      "lon": -117.539333333333,
-      "lat": 34.1995,
-      "depth": 2.73,
-      "mag": 0.95,
-      "place": "8 km SSW of Lytle Creek, CA",
-      "time": 1781771725040,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489688"
-    },
-    {
-      "id": "pr2026169000",
-      "lon": -64.3773,
-      "lat": 19.5758,
-      "depth": 52,
-      "mag": 4.07,
-      "place": "144 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781771544080,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026169000"
     }
   ]
 }
