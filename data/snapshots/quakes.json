@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T17:15:52Z",
-  "count": 224,
+  "updated": "2026-06-19T17:31:08Z",
+  "count": 225,
   "points": [
     {
       "id": "aka2026mblwmk",
@@ -152,6 +152,16 @@
       "place": "18 km ESE of Anza, CA",
       "time": 1781881999160,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490592"
+    },
+    {
+      "id": "aka2026mbibyt",
+      "lon": 176.138,
+      "lat": 51.766,
+      "depth": 20,
+      "mag": 3.6,
+      "place": "234 km ESE of Attu Station, Alaska",
+      "time": 1781881861115,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbibyt"
     },
     {
       "id": "ci41490584",
@@ -335,12 +345,12 @@
     },
     {
       "id": "aka2026mbclun",
-      "lon": -149.054,
-      "lat": 62.002,
-      "depth": 55.7,
-      "mag": 0.7,
-      "place": "29 km NNW of Sutton-Alpine, Alaska",
-      "time": 1781871747155,
+      "lon": -150.55,
+      "lat": 63.011,
+      "depth": 105,
+      "mag": 1.6,
+      "place": "58 km N of Petersville, Alaska",
+      "time": 1781871730708,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbclun"
     },
     {
@@ -1284,6 +1294,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suh7"
     },
     {
+      "id": "aka2026mahpeh",
+      "lon": -166.89,
+      "lat": 53.001,
+      "depth": 22.8,
+      "mag": 1.6,
+      "place": "100 km SSW of Unalaska, Alaska",
+      "time": 1781834202071,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mahpeh"
+    },
+    {
       "id": "pr71520533",
       "lon": -64.4926666666667,
       "lat": 19.5706666666667,
@@ -1292,16 +1312,6 @@
       "place": "140 km NNE of Cruz Bay, U.S. Virgin Islands",
       "time": 1781833660070,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520533"
-    },
-    {
-      "id": "aka2026mahgyg",
-      "lon": -151.069,
-      "lat": 62.019,
-      "depth": 72.6,
-      "mag": 1.4,
-      "place": "17 km E of Skwentna, Alaska",
-      "time": 1781833627873,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mahgyg"
     },
     {
       "id": "hv74986052",
