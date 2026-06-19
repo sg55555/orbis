@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T22:45:49Z",
-  "count": 250,
+  "updated": "2026-06-19T23:01:16Z",
+  "count": 246,
   "points": [
+    {
+      "id": "ci41490856",
+      "lon": -117.812333333333,
+      "lat": 35.297,
+      "depth": 9,
+      "mag": 1.32,
+      "place": "18 km WSW of Johannesburg, CA",
+      "time": 1781909185680,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490856"
+    },
     {
       "id": "nc75379871",
       "lon": -122.773002624512,
@@ -372,6 +382,16 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781895063150,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379726"
+    },
+    {
+      "id": "av94255753",
+      "lon": -169.874,
+      "lat": 52.8186666666667,
+      "depth": 7.13,
+      "mag": -0.55,
+      "place": "69 km WSW of Nikolski, Alaska",
+      "time": 1781894389480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255753"
     },
     {
       "id": "us7000sup8",
@@ -2442,66 +2462,6 @@
       "place": "64 km ENE of Pedro Bay, Alaska",
       "time": 1781823701090,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254088"
-    },
-    {
-      "id": "av94254083",
-      "lon": -178.7985,
-      "lat": 51.7241666666667,
-      "depth": 9.84,
-      "mag": 0.6,
-      "place": "150 km W of Adak, Alaska",
-      "time": 1781823605700,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254083"
-    },
-    {
-      "id": "us7000sugd",
-      "lon": 72.262,
-      "lat": 37.565,
-      "depth": 189.083,
-      "mag": 4.2,
-      "place": "63 km E of Khorugh, Tajikistan",
-      "time": 1781823603868,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugd"
-    },
-    {
-      "id": "tx2026lydqso",
-      "lon": -101.922,
-      "lat": 31.872,
-      "depth": 5.249,
-      "mag": 0.1,
-      "place": "20 km SE of Midland, Texas",
-      "time": 1781823440804,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lydqso"
-    },
-    {
-      "id": "nc75379306",
-      "lon": -121.941833496094,
-      "lat": 37.7615013122559,
-      "depth": 7.94999980926514,
-      "mag": 2.17,
-      "place": "4 km ESE of San Ramon, CA",
-      "time": 1781823276760,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379306"
-    },
-    {
-      "id": "av94254068",
-      "lon": -165.9755,
-      "lat": 54.1386666666667,
-      "depth": 3.36,
-      "mag": -0.96,
-      "place": "13 km W of Akutan, Alaska",
-      "time": 1781823049240,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254068"
-    },
-    {
-      "id": "ci41490336",
-      "lon": -116.413666666667,
-      "lat": 33.0301666666667,
-      "depth": 8.66,
-      "mag": 1.24,
-      "place": "18 km ESE of Julian, CA",
-      "time": 1781823007990,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490336"
     }
   ]
 }
