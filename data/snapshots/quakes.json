@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T02:31:05Z",
-  "count": 262,
+  "updated": "2026-06-19T02:45:48Z",
+  "count": 260,
   "points": [
+    {
+      "id": "aka2026maiwrf",
+      "lon": -153.258,
+      "lat": 60.206,
+      "depth": 122.1,
+      "mag": 1.2,
+      "place": "58 km E of Port Alsworth, Alaska",
+      "time": 1781836516433,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maiwrf"
+    },
+    {
+      "id": "hv74986077",
+      "lon": -155.371337890625,
+      "lat": 19.0636672973633,
+      "depth": 30.1000003814697,
+      "mag": 1.8,
+      "place": "19 km SE of Pāhala, Hawaii",
+      "time": 1781836361830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986077"
+    },
     {
       "id": "aka2026maihgn",
       "lon": -152.736,
@@ -2582,46 +2602,6 @@
       "place": "62 km SW of Nanwalek, Alaska",
       "time": 1781751319729,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lynnmx"
-    },
-    {
-      "id": "us7000su8c",
-      "lon": -19.2026,
-      "lat": -0.342,
-      "depth": 10,
-      "mag": 5.1,
-      "place": "central Mid-Atlantic Ridge",
-      "time": 1781750683145,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8c"
-    },
-    {
-      "id": "hv74985267",
-      "lon": -155.73583984375,
-      "lat": 19.6011657714844,
-      "depth": 12.25,
-      "mag": 2.17,
-      "place": "20 km NE of Honaunau-Napoopoo, Hawaii",
-      "time": 1781750480090,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985267"
-    },
-    {
-      "id": "aka2026lymzga",
-      "lon": -161.647,
-      "lat": 54.333,
-      "depth": 12.6,
-      "mag": 1.7,
-      "place": "91 km SSE of King Cove, Alaska",
-      "time": 1781750331158,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lymzga"
-    },
-    {
-      "id": "aka2026lymvgi",
-      "lon": -168.573,
-      "lat": 52.015,
-      "depth": 18.8,
-      "mag": 2.9,
-      "place": "104 km S of Nikolski, Alaska",
-      "time": 1781750062763,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lymvgi"
     }
   ]
 }
