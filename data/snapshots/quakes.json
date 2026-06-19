@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T01:31:03Z",
-  "count": 258,
+  "updated": "2026-06-19T01:45:51Z",
+  "count": 260,
   "points": [
     {
       "id": "hv74986052",
@@ -84,6 +84,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379356"
     },
     {
+      "id": "aka2026maeymi",
+      "lon": -177.327,
+      "lat": 51.387,
+      "depth": 38.1,
+      "mag": 2.1,
+      "place": "72 km SW of Adak, Alaska",
+      "time": 1781829444599,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maeymi"
+    },
+    {
       "id": "nc75379351",
       "lon": -122.795669555664,
       "lat": 38.8334999084473,
@@ -132,6 +142,16 @@
       "place": "2 km NE of The Geysers, CA",
       "time": 1781827360000,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379336"
+    },
+    {
+      "id": "aka2026madsuh",
+      "lon": -164.764,
+      "lat": 53.595,
+      "depth": 29.9,
+      "mag": 1.7,
+      "place": "89 km SE of Akutan, Alaska",
+      "time": 1781827256385,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026madsuh"
     },
     {
       "id": "nc75379311",
@@ -434,6 +454,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzwjcb"
     },
     {
+      "id": "av94253748",
+      "lon": -154.9935,
+      "lat": 58.2871666666667,
+      "depth": 2.86,
+      "mag": -0.32,
+      "place": "86 km NNW of Karluk, Alaska",
+      "time": 1781813810410,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253748"
+    },
+    {
       "id": "ci41490176",
       "lon": -116.412,
       "lat": 33.0321666666667,
@@ -462,6 +492,26 @@
       "place": "5 km SSE of Rodeo, CA",
       "time": 1781812763360,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379231"
+    },
+    {
+      "id": "av94253703",
+      "lon": -169.932333333333,
+      "lat": 52.8336666666667,
+      "depth": 7.74,
+      "mag": 0.09,
+      "place": "73 km W of Nikolski, Alaska",
+      "time": 1781812201980,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253703"
+    },
+    {
+      "id": "av94253698",
+      "lon": -169.900333333333,
+      "lat": 52.8213333333333,
+      "depth": 7.1,
+      "mag": 1.19,
+      "place": "71 km W of Nikolski, Alaska",
+      "time": 1781812135570,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253698"
     },
     {
       "id": "aka2026lzvbvo",
@@ -1255,12 +1305,12 @@
     },
     {
       "id": "hv74985552",
-      "lon": -155.492172241211,
-      "lat": 19.9395008087158,
-      "depth": 27.1599998474121,
-      "mag": 2.46,
-      "place": "15 km S of Honoka‘a, Hawaii",
-      "time": 1781784706160,
+      "lon": -155.508,
+      "lat": 19.9625,
+      "depth": 27.34,
+      "mag": 2.76,
+      "place": "13 km SSW of Honoka‘a, Hawaii",
+      "time": 1781784705980,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985552"
     },
     {
@@ -2552,36 +2602,6 @@
       "place": "83 km NW of Ninilchik, Alaska",
       "time": 1781747441090,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251908"
-    },
-    {
-      "id": "tx2026lwnhwv",
-      "lon": -103.402,
-      "lat": 31.925,
-      "depth": 5.6897,
-      "mag": 0.7,
-      "place": "28 km SW of Jal, New Mexico",
-      "time": 1781746786534,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwnhwv"
-    },
-    {
-      "id": "ci41489528",
-      "lon": -117.216,
-      "lat": 34.0051666666667,
-      "depth": 5.49,
-      "mag": 0.94,
-      "place": "6 km SE of Loma Linda, CA",
-      "time": 1781746503680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489528"
-    },
-    {
-      "id": "aka2026lyktso",
-      "lon": -160.094,
-      "lat": 54.309,
-      "depth": 10.1,
-      "mag": 2.3,
-      "place": "117 km SSE of Sand Point, Alaska",
-      "time": 1781746330015,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyktso"
     }
   ]
 }
