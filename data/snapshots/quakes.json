@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T18:45:55Z",
-  "count": 230,
+  "updated": "2026-06-19T19:01:20Z",
+  "count": 232,
   "points": [
+    {
+      "id": "nc75379726",
+      "lon": -122.779502868652,
+      "lat": 38.8083343505859,
+      "depth": 2.21000003814697,
+      "mag": 0.77,
+      "place": "4 km NNW of The Geysers, CA",
+      "time": 1781895063150,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379726"
+    },
     {
       "id": "hv74986627",
       "lon": -155.363662719727,
@@ -42,6 +52,16 @@
       "place": "91 km NE of Atka, Alaska",
       "time": 1781893533218,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunz"
+    },
+    {
+      "id": "us7000sunx",
+      "lon": 137.6686,
+      "lat": 36.815,
+      "depth": 216.301,
+      "mag": 4.5,
+      "place": "20 km SE of Nyūzen, Japan",
+      "time": 1781893015282,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunx"
     },
     {
       "id": "pr71520638",
@@ -1214,6 +1234,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986157"
     },
     {
+      "id": "aka2026maogaq",
+      "lon": -161.181,
+      "lat": 55.94,
+      "depth": 171.1,
+      "mag": 1.8,
+      "place": "6 km SSE of Nelson Lagoon, Alaska",
+      "time": 1781846193652,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maogaq"
+    },
+    {
+      "id": "aka2026manxce",
+      "lon": -177.512,
+      "lat": 51.411,
+      "depth": 32.9,
+      "mag": 2,
+      "place": "79 km SW of Adak, Alaska",
+      "time": 1781845540723,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026manxce"
+    },
+    {
       "id": "nc75379466",
       "lon": -122.807662963867,
       "lat": 38.8235015869141,
@@ -1252,6 +1292,16 @@
       "place": "224 km SSW of Nikolski, Alaska",
       "time": 1781843669774,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamwqv"
+    },
+    {
+      "id": "aka2026mamull",
+      "lon": -169.781,
+      "lat": 52.595,
+      "depth": 14,
+      "mag": 2,
+      "place": "72 km WSW of Nikolski, Alaska",
+      "time": 1781843558322,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamull"
     },
     {
       "id": "aka2026malzeo",
@@ -1392,6 +1442,26 @@
       "place": "16 km ESE of Anza, CA",
       "time": 1781837061510,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490448"
+    },
+    {
+      "id": "av94254448",
+      "lon": -154.941,
+      "lat": 58.2708333333333,
+      "depth": 4.43,
+      "mag": -0.07,
+      "place": "83 km NNW of Karluk, Alaska",
+      "time": 1781836802040,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254448"
+    },
+    {
+      "id": "av94254443",
+      "lon": -153.1145,
+      "lat": 60.0223333333333,
+      "depth": -2.41,
+      "mag": -0.72,
+      "place": "61 km ENE of Pedro Bay, Alaska",
+      "time": 1781836532690,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254443"
     },
     {
       "id": "pr71520543",
@@ -2252,56 +2322,6 @@
       "place": "10 km E of Anza, CA",
       "time": 1781809369920,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490128"
-    },
-    {
-      "id": "aka2026lztpyt",
-      "lon": -148.905,
-      "lat": 62.272,
-      "depth": 20.8,
-      "mag": 2.3,
-      "place": "50 km ENE of Susitna North, Alaska",
-      "time": 1781809066902,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lztpyt"
-    },
-    {
-      "id": "pr2026169001",
-      "lon": -64.3096,
-      "lat": 18.5496,
-      "depth": 55,
-      "mag": 3.88,
-      "place": "56 km ENE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781809013000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026169001"
-    },
-    {
-      "id": "ci41490112",
-      "lon": -117.489333333333,
-      "lat": 35.6865,
-      "depth": 4.92,
-      "mag": 0.72,
-      "place": "12 km SW of Searles Valley, CA",
-      "time": 1781808762900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490112"
-    },
-    {
-      "id": "nc75379196",
-      "lon": -122.85066986084,
-      "lat": 38.824333190918,
-      "depth": 2.16000008583069,
-      "mag": 0.76,
-      "place": "10 km WNW of The Geysers, CA",
-      "time": 1781808737360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379196"
-    },
-    {
-      "id": "tx2026lxvibs",
-      "lon": -103.403,
-      "lat": 31.101,
-      "depth": 3.8656,
-      "mag": 1.5,
-      "place": "32 km SSE of Lindsay, Texas",
-      "time": 1781808566856,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxvibs"
     }
   ]
 }
