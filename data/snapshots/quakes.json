@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T00:01:17Z",
+  "updated": "2026-06-19T00:15:45Z",
   "count": 256,
   "points": [
+    {
+      "id": "pr71520523",
+      "lon": -66.1316666666667,
+      "lat": 17.9705,
+      "depth": 15.78,
+      "mag": 1.43,
+      "place": "2 km SW of Guayama, Puerto Rico",
+      "time": 1781827445340,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520523"
+    },
+    {
+      "id": "nc75379336",
+      "lon": -122.744331359863,
+      "lat": 38.7881660461426,
+      "depth": 1.72000002861023,
+      "mag": 0.8,
+      "place": "2 km NE of The Geysers, CA",
+      "time": 1781827360000,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379336"
+    },
     {
       "id": "nc75379311",
       "lon": -122.795829772949,
@@ -62,6 +82,16 @@
       "place": "18 km ESE of Julian, CA",
       "time": 1781823007990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490336"
+    },
+    {
+      "id": "us7000sug8",
+      "lon": 141.8497,
+      "lat": 37.3601,
+      "depth": 52.127,
+      "mag": 4.3,
+      "place": "73 km E of Tomioka, Japan",
+      "time": 1781821987963,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sug8"
     },
     {
       "id": "hv74985962",
@@ -545,12 +575,12 @@
     },
     {
       "id": "hv74985707",
-      "lon": -155.225830078125,
-      "lat": 19.3104991912842,
-      "depth": 4.34999990463257,
-      "mag": 1.89,
+      "lon": -155.226333333333,
+      "lat": 19.311,
+      "depth": 3,
+      "mag": 1.52,
       "place": "14 km S of Volcano, Hawaii",
-      "time": 1781805038930,
+      "time": 1781805038900,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985707"
     },
     {
@@ -1032,6 +1062,16 @@
       "place": "15 km S of Honoka‘a, Hawaii",
       "time": 1781784706160,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985552"
+    },
+    {
+      "id": "av93062189",
+      "lon": -159.396333333333,
+      "lat": 56.1755,
+      "depth": 16.21,
+      "mag": 0.11,
+      "place": "30 km N of Ivanof Bay, Alaska",
+      "time": 1781783734870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062189"
     },
     {
       "id": "aka2026lzfnfz",
@@ -2184,16 +2224,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985267"
     },
     {
-      "id": "hv74985272",
-      "lon": -155.706497192383,
-      "lat": 19.9360008239746,
-      "depth": -1.92999994754791,
-      "mag": 2.41,
-      "place": "8 km E of Waikoloa, Hawaii",
-      "time": 1781750476590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985272"
-    },
-    {
       "id": "aka2026lymzga",
       "lon": -161.647,
       "lat": 54.333,
@@ -2532,36 +2562,6 @@
       "place": "67 km SE of Punta Cana, Dominican Republic",
       "time": 1781741854410,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520363"
-    },
-    {
-      "id": "hv74985112",
-      "lon": -155.3645,
-      "lat": 19.1733333333333,
-      "depth": 29.32,
-      "mag": 1.99,
-      "place": "12 km ESE of Pāhala, Hawaii",
-      "time": 1781741386050,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985112"
-    },
-    {
-      "id": "aka2026lyhzwt",
-      "lon": -147.06,
-      "lat": 65.038,
-      "depth": 8.4,
-      "mag": 1.4,
-      "place": "18 km N of Two Rivers, Alaska",
-      "time": 1781741381259,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyhzwt"
-    },
-    {
-      "id": "aka2026lyhuzi",
-      "lon": -149.965,
-      "lat": 62.153,
-      "depth": 3,
-      "mag": 1.9,
-      "place": "6 km W of Susitna North, Alaska",
-      "time": 1781741042038,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyhuzi"
     }
   ]
 }
