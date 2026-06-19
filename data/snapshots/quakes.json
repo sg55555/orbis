@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T13:31:10Z",
-  "count": 228,
+  "updated": "2026-06-19T13:45:52Z",
+  "count": 225,
   "points": [
     {
       "id": "nc75379596",
@@ -132,16 +132,6 @@
       "place": "2 km NNW of The Geysers, CA",
       "time": 1781870617240,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379576"
-    },
-    {
-      "id": "tx2026lzdenj",
-      "lon": -104.376,
-      "lat": 31.648,
-      "depth": 4.677,
-      "mag": 1.5,
-      "place": "58 km S of Whites City, New Mexico",
-      "time": 1781869666462,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzdenj"
     },
     {
       "id": "tx2026lzcrdv",
@@ -2262,26 +2252,6 @@
       "place": "11 km SSW of Borrego Springs, CA",
       "time": 1781790706590,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489824"
-    },
-    {
-      "id": "us7000subc",
-      "lon": 120.2957,
-      "lat": -1.0657,
-      "depth": 10,
-      "mag": 4.6,
-      "place": "50 km ESE of Palu, Indonesia",
-      "time": 1781789945592,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000subc"
-    },
-    {
-      "id": "ci41489792",
-      "lon": -119.2015,
-      "lat": 34.7016666666667,
-      "depth": 1.85,
-      "mag": 1.61,
-      "place": "17 km SSW of Pine Mountain Club, CA",
-      "time": 1781789682690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489792"
     }
   ]
 }
