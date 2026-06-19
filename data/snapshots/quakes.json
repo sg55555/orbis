@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T01:45:51Z",
-  "count": 260,
+  "updated": "2026-06-19T02:01:10Z",
+  "count": 264,
   "points": [
+    {
+      "id": "pr71520533",
+      "lon": -64.4926666666667,
+      "lat": 19.5706666666667,
+      "depth": 46.23,
+      "mag": 3.31,
+      "place": "140 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1781833660070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520533"
+    },
+    {
+      "id": "aka2026mahgyg",
+      "lon": -151.069,
+      "lat": 62.019,
+      "depth": 72.6,
+      "mag": 1.4,
+      "place": "17 km E of Skwentna, Alaska",
+      "time": 1781833627873,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mahgyg"
+    },
     {
       "id": "hv74986052",
       "lon": -155.330673217773,
@@ -102,6 +122,16 @@
       "place": "6 km WNW of Cobb, CA",
       "time": 1781829352510,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379351"
+    },
+    {
+      "id": "us7000sugw",
+      "lon": 125.082,
+      "lat": -7.042,
+      "depth": 523.516,
+      "mag": 4.4,
+      "place": "173 km N of Likisá, Timor Leste",
+      "time": 1781829078915,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugw"
     },
     {
       "id": "aka2026maegns",
@@ -274,6 +304,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maagjj"
     },
     {
+      "id": "av94253978",
+      "lon": -152.997666666667,
+      "lat": 60.0251666666667,
+      "depth": 3.82,
+      "mag": -0.48,
+      "place": "67 km ENE of Pedro Bay, Alaska",
+      "time": 1781820726700,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253978"
+    },
+    {
       "id": "ci41490312",
       "lon": -117.268666666667,
       "lat": 34.0568333333333,
@@ -282,6 +322,16 @@
       "place": "1 km NW of Loma Linda, CA",
       "time": 1781820432820,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490312"
+    },
+    {
+      "id": "av94253963",
+      "lon": -169.877833333333,
+      "lat": 52.8148333333333,
+      "depth": 4.59,
+      "mag": 0.88,
+      "place": "69 km WSW of Nikolski, Alaska",
+      "time": 1781820163560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253963"
     },
     {
       "id": "nc75379286",
@@ -422,6 +472,16 @@
       "place": "14 km NW of Parkfield, CA",
       "time": 1781815901070,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379251"
+    },
+    {
+      "id": "av94253788",
+      "lon": -166.939666666667,
+      "lat": 53.877,
+      "depth": 7.66,
+      "mag": -0.15,
+      "place": "26 km W of Dutch Harbor, Alaska",
+      "time": 1781815732560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253788"
     },
     {
       "id": "aka2026lzwqaj",
@@ -2582,26 +2642,6 @@
       "place": "78 km E of Atka, Alaska",
       "time": 1781748271276,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lylvjn"
-    },
-    {
-      "id": "aka2026lyljto",
-      "lon": -157.332,
-      "lat": 55.994,
-      "depth": 19.5,
-      "mag": 1.6,
-      "place": "74 km ESE of Chignik, Alaska",
-      "time": 1781747462669,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyljto"
-    },
-    {
-      "id": "av94251908",
-      "lon": -152.883166666667,
-      "lat": 60.4985,
-      "depth": 5.19,
-      "mag": -0.51,
-      "place": "83 km NW of Ninilchik, Alaska",
-      "time": 1781747441090,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251908"
     }
   ]
 }
