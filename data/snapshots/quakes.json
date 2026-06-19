@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T17:31:08Z",
+  "updated": "2026-06-19T17:45:49Z",
   "count": 225,
   "points": [
     {
@@ -92,6 +92,16 @@
       "place": "23 km N of Borrego Springs, CA",
       "time": 1781884251940,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490608"
+    },
+    {
+      "id": "aka2026mbjdjk",
+      "lon": -171.443,
+      "lat": 53.126,
+      "depth": 233.5,
+      "mag": 2.6,
+      "place": "174 km W of Nikolski, Alaska",
+      "time": 1781883749594,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjdjk"
     },
     {
       "id": "ci41490600",
@@ -2242,16 +2252,6 @@
       "place": "14 km S of Volcano, Hawaii",
       "time": 1781805038900,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985707"
-    },
-    {
-      "id": "aka2026lzqwva",
-      "lon": -149.125,
-      "lat": 64.745,
-      "depth": 5,
-      "mag": 1.1,
-      "place": "15 km N of Four Mile Road, Alaska",
-      "time": 1781804140279,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzqwva"
     }
   ]
 }
