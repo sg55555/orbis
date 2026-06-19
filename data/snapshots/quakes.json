@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T11:31:06Z",
-  "count": 226,
+  "updated": "2026-06-19T11:45:52Z",
+  "count": 230,
   "points": [
+    {
+      "id": "tx2026lzcrdv",
+      "lon": -103.686,
+      "lat": 31.204,
+      "depth": 0.8305,
+      "mag": 1.8,
+      "place": "15 km SE of Toyah, Texas",
+      "time": 1781868726798,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcrdv"
+    },
+    {
+      "id": "tx2026lzcpej",
+      "lon": -102.068,
+      "lat": 31.781,
+      "depth": 1.0371,
+      "mag": 1.4,
+      "place": "24 km S of Midland, Texas",
+      "time": 1781868588365,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcpej"
+    },
+    {
+      "id": "aka2026mbarwi",
+      "lon": -151.037,
+      "lat": 59.117,
+      "depth": 34.4,
+      "mag": 1.2,
+      "place": "52 km ESE of Port Graham, Alaska",
+      "time": 1781868568426,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbarwi"
+    },
     {
       "id": "aka2026mbaltd",
       "lon": -154.168,
@@ -114,6 +144,26 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
     },
     {
+      "id": "tx2026lyzvlu",
+      "lon": -103.796,
+      "lat": 32.007,
+      "depth": 6.9714,
+      "mag": 0.9,
+      "place": "35 km SE of Malaga, New Mexico",
+      "time": 1781863586723,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzvlu"
+    },
+    {
+      "id": "tx2026lyzsdi",
+      "lon": -102.118,
+      "lat": 32.433,
+      "depth": 7.7637,
+      "mag": 0.7,
+      "place": "36 km SSW of Los Ybanez, Texas",
+      "time": 1781863367557,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzsdi"
+    },
+    {
       "id": "tx2026lyzftc",
       "lon": -104.063,
       "lat": 31.935,
@@ -142,6 +192,16 @@
       "place": "13 km S of Honaunau-Napoopoo, Hawaii",
       "time": 1781861289470,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986267"
+    },
+    {
+      "id": "pr71520578",
+      "lon": -67.543,
+      "lat": 18.9543333333333,
+      "depth": 10.18,
+      "mag": 3.02,
+      "place": "69 km NW of San Antonio, Puerto Rico",
+      "time": 1781861064110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520578"
     },
     {
       "id": "aka2026mawmkm",
@@ -2242,26 +2302,6 @@
       "place": "65 km WNW of Beluga, Alaska",
       "time": 1781783449500,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062174"
-    },
-    {
-      "id": "ci41489752",
-      "lon": -117.209833333333,
-      "lat": 34.0141666666667,
-      "depth": 7.06,
-      "mag": 0.7,
-      "place": "5 km SSW of Redlands, CA",
-      "time": 1781782885220,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489752"
-    },
-    {
-      "id": "aka2026lzfajd",
-      "lon": -149.321,
-      "lat": 55.896,
-      "depth": 5,
-      "mag": 2.9,
-      "place": "263 km SE of Chiniak, Alaska",
-      "time": 1781782823536,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzfajd"
     }
   ]
 }
