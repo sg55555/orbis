@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T05:01:13Z",
-  "count": 249,
+  "updated": "2026-06-19T05:15:49Z",
+  "count": 245,
   "points": [
+    {
+      "id": "nc75379466",
+      "lon": -122.807662963867,
+      "lat": 38.8235015869141,
+      "depth": 2.71000003814697,
+      "mag": 1.04,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1781845201390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379466"
+    },
     {
       "id": "ci41490472",
       "lon": -115.555,
@@ -2442,56 +2452,6 @@
       "place": "42 km SSE of Nelchina, Alaska",
       "time": 1781759965594,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lysile"
-    },
-    {
-      "id": "tx2026lwufnb",
-      "lon": -101.918,
-      "lat": 32.255,
-      "depth": 6.5186,
-      "mag": 0.4,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781759317099,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwufnb"
-    },
-    {
-      "id": "tx2026lwuesd",
-      "lon": -103.916,
-      "lat": 32.033,
-      "depth": 7.4841,
-      "mag": 1,
-      "place": "25 km SE of Malaga, New Mexico",
-      "time": 1781759272513,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwuesd"
-    },
-    {
-      "id": "tx2026lwubwc",
-      "lon": -103.527,
-      "lat": 31.322,
-      "depth": 3.1983,
-      "mag": 2.2,
-      "place": "5 km S of Lindsay, Texas",
-      "time": 1781759044169,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwubwc"
-    },
-    {
-      "id": "aka2026lyrvby",
-      "lon": -143.685,
-      "lat": 60.738,
-      "depth": 8.6,
-      "mag": 1.6,
-      "place": "87 km SSW of McCarthy, Alaska",
-      "time": 1781759040667,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyrvby"
-    },
-    {
-      "id": "aka2026lyrukw",
-      "lon": -156.935,
-      "lat": 57.829,
-      "depth": 166.9,
-      "mag": 1.7,
-      "place": "44 km NE of Ugashik, Alaska",
-      "time": 1781759000260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyrukw"
     }
   ]
 }
