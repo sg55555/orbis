@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T20:31:05Z",
-  "count": 231,
+  "updated": "2026-06-19T20:45:51Z",
+  "count": 234,
   "points": [
+    {
+      "id": "nc75379776",
+      "lon": -122.729499816895,
+      "lat": 38.759334564209,
+      "depth": 1.9099999666214,
+      "mag": 1.28,
+      "place": "3 km SE of The Geysers, CA",
+      "time": 1781901104430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379776"
+    },
     {
       "id": "nc75379761",
       "lon": -122.781669616699,
@@ -12,6 +22,16 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781900777670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379761"
+    },
+    {
+      "id": "us7000suq2",
+      "lon": -68.9826,
+      "lat": -21.1053,
+      "depth": 115.513,
+      "mag": 4.7,
+      "place": "76 km W of Ollagüe, Chile",
+      "time": 1781899811327,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suq2"
     },
     {
       "id": "aka2026mbryce",
@@ -822,6 +842,16 @@
       "place": "32 km SE of Malaga, New Mexico",
       "time": 1781864846690,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzange"
+    },
+    {
+      "id": "av93062274",
+      "lon": -154.982833333333,
+      "lat": 58.3008333333333,
+      "depth": 3.67,
+      "mag": 0.4,
+      "place": "87 km NNW of Karluk, Alaska",
+      "time": 1781864740060,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062274"
     },
     {
       "id": "aka2026maymqp",
