@@ -15,9 +15,14 @@ import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs, gdeltEventPopupHtml, gdeltCountryPopupHtml } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
 import { sstAt } from './layers/sst.js';
+import { aggregateByCountry, buildHotspotConfigs } from './lib/aggregate.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
+
+// 紛争 FX プリセット（?cfx=a|b|c で実物比較。既定 b）。emberScale=白熱度、topN=脈動する上位国数。
+const CFX_PRESET = { a: { emberScale: 0.8, topN: 4 }, b: { emberScale: 1.0, topN: 6 }, c: { emberScale: 1.3, topN: 8 } };
+const CFX = CFX_PRESET[((/[?&]cfx=([abc])/i.exec(typeof location !== 'undefined' ? location.search : '') || [])[1] || 'b').toLowerCase()];
 
 const POLL_MS = 60000;
 const POLL_LAYERS = pollLayerIds(); // スナップショットを持つ層（registry から自動導出）
@@ -33,6 +38,7 @@ let motionT = 0;          // 0..1 ループする位相
 let prevIds = {};         // layerId -> Set（前回のid集合。新規検出用）
 let pulses = [];          // { lon, lat, born } 出現パルス
 let _overlay = null;      // rAF ループ用の overlay 参照
+let aggCache = { conflict: [], protests: [] };
 let selected = null;      // フィードで選択中のイベント { lon, lat, title, layerId, at }
 let feedHidden = loadFeedHidden(readFeedFilter()); // フィードフィルタ（非表示layerId の Set）
 let selPopup = null;      // 着地点を示す maplibre ポップアップ（boot で生成）
@@ -74,6 +80,10 @@ function rebuild(overlay) {
     prevIds[id] = new Set(snap.points.map((p) => p.id));
   }
 
+  for (const id of ['conflict', 'protests']) {
+    aggCache[id] = (ENABLED.has(id) && snapshots[id] && snapshots[id].points)
+      ? aggregateByCountry(snapshots[id].points, id) : [];
+  }
   drawAll(overlay);
   window.__orbis.counts = Object.fromEntries(
     Object.entries(snapshots).map(([k, v]) => [k,
@@ -199,7 +209,7 @@ let baseDirty = true;
 const _layerCache = new Map(); // layerId -> deck layer 配列
 function markBaseDirty() { baseDirty = true; }
 function buildBaseLayers(zoom) {
-  const ctx = { zoom, cmap: CMAP, motionT };
+  const ctx = { zoom, cmap: CMAP, motionT, cfx: CFX };
   const toArr = (r) => (Array.isArray(r) ? r : [r]);
   const out = [];
   for (const l of layers) {
@@ -229,6 +239,13 @@ function drawAll(overlay) {
   if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
+  for (const id of ['conflict', 'protests']) {
+    if (!ENABLED.has(id)) continue;
+    const rgb = id === 'conflict' ? [255, 60, 80] : [94, 255, 166];
+    for (const c of buildHotspotConfigs(aggCache[id], motionT, { reduced: REDUCED, topN: CFX.topN, rgb })) {
+      extra.push(new deck.ScatterplotLayer(c));
+    }
+  }
   extra.push(...selectedMarkerLayers(now));
   extra.push(...flightProjectionLayers());
   extra.push(...shipProjectionLayers());
@@ -293,6 +310,16 @@ function boot() {
         if (window.__orbis) window.__orbis.selected = selected;
         map.flyTo({ center: [p.lon, p.lat], zoom: 4, duration: 1500, essential: true });
         if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(newsPopupHtml(p)).addTo(map);
+        drawAll(overlay);
+      }
+      if (info.layer.id === 'conflict' || info.layer.id === 'protests') {
+        const p = info.object;
+        selectedFlight = null;
+        selectedShip = null;
+        selected = { lon: p.lon, lat: p.lat, title: '', layerId: info.layer.id, at: performance.now() };
+        if (window.__orbis) window.__orbis.selected = selected;
+        map.flyTo({ center: [p.lon, p.lat], zoom: 5, duration: 1500, essential: true });
+        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(gdeltEventPopupHtml(p, info.layer.id)).addTo(map);
         drawAll(overlay);
       }
     },
