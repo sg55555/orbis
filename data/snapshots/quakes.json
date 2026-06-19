@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T06:31:07Z",
+  "updated": "2026-06-19T06:45:52Z",
   "count": 234,
   "points": [
+    {
+      "id": "aka2026maqzng",
+      "lon": -155.151,
+      "lat": 57.615,
+      "depth": 69.1,
+      "mag": 1.4,
+      "place": "41 km W of Karluk, Alaska",
+      "time": 1781851108111,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqzng"
+    },
     {
       "id": "nc75379501",
       "lon": -123.502998352051,
@@ -2332,16 +2342,6 @@
       "place": "26 km SSW of Ocotillo Wells, CA",
       "time": 1781765445370,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489624"
-    },
-    {
-      "id": "tx2026lwxdmf",
-      "lon": -102.184,
-      "lat": 32.363,
-      "depth": 8.0811,
-      "mag": 0.8,
-      "place": "33 km ENE of McKinney Acres, Texas",
-      "time": 1781764697976,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwxdmf"
     }
   ]
 }
