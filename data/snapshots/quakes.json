@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T12:01:16Z",
-  "count": 228,
+  "updated": "2026-06-19T12:15:52Z",
+  "count": 226,
   "points": [
+    {
+      "id": "nc75379576",
+      "lon": -122.766670227051,
+      "lat": 38.7923316955566,
+      "depth": 1.57000005245209,
+      "mag": 1.07,
+      "place": "2 km NNW of The Geysers, CA",
+      "time": 1781870617240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379576"
+    },
     {
       "id": "tx2026lzdenj",
       "lon": -104.376,
@@ -2252,36 +2262,6 @@
       "place": "44 km NNW of Valdez, Alaska",
       "time": 1781785272239,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzgkdr"
-    },
-    {
-      "id": "nc75379006",
-      "lon": -122.853164672852,
-      "lat": 38.8206672668457,
-      "depth": 2.42000007629395,
-      "mag": 1.18,
-      "place": "10 km WNW of The Geysers, CA",
-      "time": 1781784892490,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379006"
-    },
-    {
-      "id": "aka2026lzgbsv",
-      "lon": -150.877,
-      "lat": 61.228,
-      "depth": 57.9,
-      "mag": 1.3,
-      "place": "14 km NE of Beluga, Alaska",
-      "time": 1781784735774,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzgbsv"
-    },
-    {
-      "id": "hv74985552",
-      "lon": -155.508,
-      "lat": 19.9625,
-      "depth": 27.34,
-      "mag": 2.76,
-      "place": "13 km SSW of Honoka‘a, Hawaii",
-      "time": 1781784705980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985552"
     }
   ]
 }
