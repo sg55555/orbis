@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T04:31:01Z",
+  "updated": "2026-06-19T04:45:48Z",
   "count": 252,
   "points": [
+    {
+      "id": "ci41490472",
+      "lon": -115.555,
+      "lat": 32.9381666666667,
+      "depth": 5.31,
+      "mag": 1.61,
+      "place": "5 km SSW of Brawley, CA",
+      "time": 1781843946800,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490472"
+    },
+    {
+      "id": "nc75379451",
+      "lon": -122.352333068848,
+      "lat": 38.6873321533203,
+      "depth": 6.82000017166138,
+      "mag": 2.16,
+      "place": "15 km NE of Angwin, CA",
+      "time": 1781843826000,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379451"
+    },
     {
       "id": "aka2026mamcoj",
       "lon": -147.534,
@@ -2502,26 +2522,6 @@
       "place": "15 km NE of Lebec, CA",
       "time": 1781758050510,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489576"
-    },
-    {
-      "id": "uu80142771",
-      "lon": -110.873833333333,
-      "lat": 44.5903333333333,
-      "depth": 8.21,
-      "mag": 0.55,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781757837780,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142771"
-    },
-    {
-      "id": "us7000su8t",
-      "lon": -101.252,
-      "lat": 18.6337,
-      "depth": 77.476,
-      "mag": 4.1,
-      "place": "20 km NE of Aratichanguío, Mexico",
-      "time": 1781757442791,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8t"
     }
   ]
 }
