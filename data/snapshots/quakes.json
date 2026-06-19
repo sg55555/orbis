@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T13:45:52Z",
-  "count": 225,
+  "updated": "2026-06-19T14:01:19Z",
+  "count": 224,
   "points": [
+    {
+      "id": "hv74986372",
+      "lon": -155.108001708984,
+      "lat": 19.2536659240723,
+      "depth": 38.6399993896484,
+      "mag": 1.84,
+      "place": "23 km S of Fern Forest, Hawaii",
+      "time": 1781876831540,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986372"
+    },
     {
       "id": "nc75379596",
       "lon": -122.737831115723,
@@ -572,6 +582,16 @@
       "place": "16 km NW of Parkfield, CA",
       "time": 1781853626510,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379521"
+    },
+    {
+      "id": "tx2026lytzxd",
+      "lon": -102.117,
+      "lat": 32.44,
+      "depth": 7.7393,
+      "mag": 0.3,
+      "place": "36 km SSW of Los Ybanez, Texas",
+      "time": 1781853047066,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytzxd"
     },
     {
       "id": "us7000sui8",
@@ -2222,36 +2242,6 @@
       "place": "31 km W of Ivanof Bay, Alaska",
       "time": 1781791277813,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzjszi"
-    },
-    {
-      "id": "us7000subg",
-      "lon": -179.5739,
-      "lat": 51.3541,
-      "depth": 35.299,
-      "mag": 5,
-      "place": "211 km WSW of Adak, Alaska",
-      "time": 1781791108055,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000subg"
-    },
-    {
-      "id": "nc75379031",
-      "lon": -122.804336547852,
-      "lat": 38.8366661071777,
-      "depth": 1.78999996185303,
-      "mag": 0.72,
-      "place": "7 km WNW of Cobb, CA",
-      "time": 1781790960660,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379031"
-    },
-    {
-      "id": "ci41489824",
-      "lon": -116.4325,
-      "lat": 33.165,
-      "depth": 13.39,
-      "mag": 0.82,
-      "place": "11 km SSW of Borrego Springs, CA",
-      "time": 1781790706590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489824"
     }
   ]
 }
