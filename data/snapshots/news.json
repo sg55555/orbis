@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T03:01:46Z",
+  "updated": "2026-06-19T03:17:01Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/news/liveblog/2026/6/19/iran-war-live-jd-vance-defends-iran-deal-as-us-says-naval-blockade-lifted?traffic_source=rss",
@@ -197,30 +197,69 @@
       "place": "スイス・アルプス"
     },
     {
-      "id": "https://www.france24.com/en/europe/20260619-eu-leaders-back-stronger-trade-defences-amid-china-export-surge",
-      "url": "https://www.france24.com/en/europe/20260619-eu-leaders-back-stronger-trade-defences-amid-china-export-surge",
+      "id": "https://www.france24.com/en/middle-east/20260618-us-forces-lift-iran-ports-blockade-as-uncertainty-clouds-planned-switzerland-talks",
+      "url": "https://www.france24.com/en/middle-east/20260618-us-forces-lift-iran-ports-blockade-as-uncertainty-clouds-planned-switzerland-talks",
       "source": "france24",
-      "time": 1781834558000,
-      "rank": 22,
-      "title_ja": "EU首脳、中国の輸出急増を背景に貿易防衛強化を支持",
-      "summary_ja": "EU指導者らは、中国からの輸出増加に対抗するため、より強力な貿易防衛措置の導入を支持することを決定した。EUは保護主義的な措置を強化し、自国産業の競争力維持を目指す。",
-      "category": "economy",
-      "lon": 4.3517,
-      "lat": 50.8503,
-      "place": "ブリュッセル（ベルギー）"
+      "time": 1781812295000,
+      "rank": 23,
+      "title_ja": "米軍がイラン港湾封鎖を解除、スイスでの協議は不透明なまま",
+      "summary_ja": "米軍がイラン港湾に対する封鎖を解除した。一方、スイスで計画されている協議については依然として不確実性が残っている。",
+      "category": "conflict",
+      "lon": 53.688,
+      "lat": 32.4279,
+      "place": "イラン"
+    },
+    {
+      "id": "https://www.france24.com/en/tv-shows/the-debate/20260618-signing-off-trump-rushes-to-turn-page-on-iran-war",
+      "url": "https://www.france24.com/en/tv-shows/the-debate/20260618-signing-off-trump-rushes-to-turn-page-on-iran-war",
+      "source": "france24",
+      "time": 1781806277000,
+      "rank": 24,
+      "title_ja": "ページをめくる？トランプ氏、イラン戦争から脱却を急ぐ",
+      "summary_ja": "トランプ前大統領がイラン紛争からの決別を急いでいる。イラン情勢をめぐる政策転換の動きが加速している。",
+      "category": "conflict",
+      "lon": 53.688,
+      "lat": 32.4279,
+      "place": "イラン"
+    },
+    {
+      "id": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
+      "url": "https://www.france24.com/en/us-iran-deal-key-questions-remain-over-status-of-strait-of-hormuz",
+      "source": "france24",
+      "time": 1781805751000,
+      "rank": 25,
+      "title_ja": "米イラン協議：ホルムズ海峡の地位をめぐる主要な疑問が残存",
+      "summary_ja": "米国とイランの核合意をめぐる協議の中で、ホルムズ海峡の国際的な地位や通航の自由に関する重要な問題が未解決のままとなっている。この問題は中東地域の安定性と国際的なエネルギー供給に大きな影響を及ぼす可能性がある。",
+      "category": "conflict",
+      "lon": 56.5,
+      "lat": 26.5,
+      "place": "ホルムズ海峡"
     },
     {
       "id": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
       "url": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
       "source": "npr",
       "time": 1781799138000,
-      "rank": 27,
+      "rank": 28,
       "title_ja": "ウクライナがモスクワの石油精製所を含む複数の施設に大規模ドローン攻撃を実施",
       "summary_ja": "ウクライナはモスクワの石油精製所およびその他の施設に対して大規模なドローン攻撃を実施した。この攻撃はロシアのエネルギーインフラを標的とした継続的な作戦の一部である。",
       "category": "conflict",
       "lon": 37.6173,
       "lat": 55.7558,
       "place": "モスクワ、ロシア"
+    },
+    {
+      "id": "https://www.npr.org/2026/06/18/nx-s1-5861723/us-iran-agreement-lebanon-reactions",
+      "url": "https://www.npr.org/2026/06/18/nx-s1-5861723/us-iran-agreement-lebanon-reactions",
+      "source": "npr",
+      "time": 1781772337000,
+      "rank": 29,
+      "title_ja": "レバノンにとって米国とイランの合意はヒズボラ以上の疑問を提起する",
+      "summary_ja": "米国とイランの合意がレバノンに与える影響について、ヒズボラ関連以外の多くの懸念が浮上している。レバノン経済や地域安定への波及効果が注視されている。",
+      "category": "politics",
+      "lon": 35.8623,
+      "lat": 33.8547,
+      "place": "レバノン"
     }
   ]
 }

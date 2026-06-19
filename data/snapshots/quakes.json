@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T03:01:14Z",
-  "count": 259,
+  "updated": "2026-06-19T03:15:51Z",
+  "count": 256,
   "points": [
+    {
+      "id": "aka2026majxip",
+      "lon": -146.782,
+      "lat": 61.404,
+      "depth": 13.2,
+      "mag": 2.9,
+      "place": "38 km NW of Valdez, Alaska",
+      "time": 1781838361258,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majxip"
+    },
     {
       "id": "ci41490456",
       "lon": -116.7645,
@@ -2552,46 +2562,6 @@
       "place": "22 km ESE of Ridgecrest, CA",
       "time": 1781752954050,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489552"
-    },
-    {
-      "id": "nc75378866",
-      "lon": -124.516334533691,
-      "lat": 40.3108329772949,
-      "depth": 14.4200000762939,
-      "mag": 1.71,
-      "place": "20 km W of Petrolia, CA",
-      "time": 1781752444420,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378866"
-    },
-    {
-      "id": "nn00920421",
-      "lon": -114.4147,
-      "lat": 37.3827,
-      "depth": 15.9533,
-      "mag": 1.62,
-      "place": "27 km SSE of Caliente, Nevada",
-      "time": 1781752188082,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920421"
-    },
-    {
-      "id": "ci41489544",
-      "lon": -116.881,
-      "lat": 33.3266666666667,
-      "depth": 9.75,
-      "mag": 2.12,
-      "place": "4 km SSW of Palomar Observatory, CA",
-      "time": 1781752170930,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489544"
-    },
-    {
-      "id": "aka2026lynxgv",
-      "lon": -151.512,
-      "lat": 61.512,
-      "depth": 81.3,
-      "mag": 1.6,
-      "place": "47 km NNW of Beluga, Alaska",
-      "time": 1781751995750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lynxgv"
     }
   ]
 }
