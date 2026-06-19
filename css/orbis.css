@@ -3,6 +3,10 @@
   --cyan: #39d0ff; --text: #cfe0f5; --muted: #5b7fb0;
   /* 深宇宙 vignette のベース色（#starfield 背景）とグラス変数。ルック(js/lib/look.js)が上書き。 */
   --neb-base: #05080f;
+  /* メディア領域(body.mbg-deep #media)の星雲ティント色（青/紫）。没入コミットで定義が誤って
+     削除され、参照だけ残ったため background 宣言が無効化→フラット暗色化していた。復活させて
+     鮮やかさを戻す（globe 側の星雲“面”は廃止のまま＝この変数は #media のティント専用）。 */
+  --neb-a: rgba(46,111,179,0.12); --neb-b: rgba(138,92,246,0.08);
   --glass-blur: 16px; --glass-bg: rgba(10,18,32,0.55); --glass-rim: rgba(90,200,255,0.22);
 }
 * { box-sizing: border-box; }
