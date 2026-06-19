@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T19:45:48Z",
-  "count": 234,
+  "updated": "2026-06-19T20:01:17Z",
+  "count": 230,
   "points": [
+    {
+      "id": "us7000supp",
+      "lon": 127.9523,
+      "lat": 25.0026,
+      "depth": 8.453,
+      "mag": 4.9,
+      "place": "127 km SSE of Itoman, Japan",
+      "time": 1781897790902,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supp"
+    },
     {
       "id": "ci41490776",
       "lon": -117.438666666667,
@@ -844,16 +854,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzftc"
     },
     {
-      "id": "aka2026mawtxr",
-      "lon": -147.758,
-      "lat": 60.392,
-      "depth": 21.7,
-      "mag": 1.4,
-      "place": "38 km NNE of Chenega, Alaska",
-      "time": 1781861513890,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawtxr"
-    },
-    {
       "id": "hv74986267",
       "lon": -155.875671386719,
       "lat": 19.3366661071777,
@@ -874,14 +874,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520578"
     },
     {
-      "id": "aka2026mawmkm",
-      "lon": -149.559,
-      "lat": 61.505,
-      "depth": 28.6,
-      "mag": 1.1,
-      "place": "2 km ESE of Knik-Fairview, Alaska",
-      "time": 1781860995019,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawmkm"
+      "id": "aka2026mawlyu",
+      "lon": -174.213,
+      "lat": 51.767,
+      "depth": 53.1,
+      "mag": 2.7,
+      "place": "47 km S of Atka, Alaska",
+      "time": 1781860964224,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawlyu"
     },
     {
       "id": "pr71520573",
@@ -2302,46 +2302,6 @@
       "place": "32 km ENE of McKinney Acres, Texas",
       "time": 1781813132063,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxxyry"
-    },
-    {
-      "id": "av94253713",
-      "lon": -153.0135,
-      "lat": 60.0643333333333,
-      "depth": 1.46,
-      "mag": -0.59,
-      "place": "68 km ENE of Pedro Bay, Alaska",
-      "time": 1781812797250,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253713"
-    },
-    {
-      "id": "nc75379231",
-      "lon": -122.235832214355,
-      "lat": 37.9911651611328,
-      "depth": 8.22999954223633,
-      "mag": 1.59,
-      "place": "5 km SSE of Rodeo, CA",
-      "time": 1781812763360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379231"
-    },
-    {
-      "id": "av94253703",
-      "lon": -169.932333333333,
-      "lat": 52.8336666666667,
-      "depth": 7.74,
-      "mag": 0.09,
-      "place": "73 km W of Nikolski, Alaska",
-      "time": 1781812201980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253703"
-    },
-    {
-      "id": "av94253698",
-      "lon": -169.900333333333,
-      "lat": 52.8213333333333,
-      "depth": 7.1,
-      "mag": 1.19,
-      "place": "71 km W of Nikolski, Alaska",
-      "time": 1781812135570,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253698"
     }
   ]
 }
