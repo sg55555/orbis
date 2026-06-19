@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T00:45:47Z",
-  "count": 258,
+  "updated": "2026-06-19T01:01:12Z",
+  "count": 255,
   "points": [
     {
       "id": "nc75379366",
@@ -792,6 +792,26 @@
       "place": "1 km SSE of Loma Linda, CA",
       "time": 1781798641680,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489936"
+    },
+    {
+      "id": "av93062229",
+      "lon": -169.898333333333,
+      "lat": 52.8215,
+      "depth": 6.04,
+      "mag": 0.43,
+      "place": "71 km W of Nikolski, Alaska",
+      "time": 1781798588560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062229"
+    },
+    {
+      "id": "av93062219",
+      "lon": -169.967666666667,
+      "lat": 52.8361666666667,
+      "depth": 7.29,
+      "mag": 0.53,
+      "place": "75 km W of Nikolski, Alaska",
+      "time": 1781798564600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062219"
     },
     {
       "id": "us7000suci",
@@ -2532,56 +2552,6 @@
       "place": "56 km WNW of Ninilchik, Alaska",
       "time": 1781744522973,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjthu"
-    },
-    {
-      "id": "aka2026lyjqvn",
-      "lon": 176.298,
-      "lat": 51.985,
-      "depth": 11.7,
-      "mag": 3.3,
-      "place": "232 km ESE of Attu Station, Alaska",
-      "time": 1781744345943,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjqvn"
-    },
-    {
-      "id": "aka2026lyjkpq",
-      "lon": -149.542,
-      "lat": 60.435,
-      "depth": 33.7,
-      "mag": 1.4,
-      "place": "9 km W of Crown Point, Alaska",
-      "time": 1781743922361,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjkpq"
-    },
-    {
-      "id": "nc75378821",
-      "lon": -122.78800201416,
-      "lat": 38.8226661682129,
-      "depth": 1.62999999523163,
-      "mag": 0.79,
-      "place": "6 km W of Cobb, CA",
-      "time": 1781743903680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378821"
-    },
-    {
-      "id": "av93062139",
-      "lon": -176.1355,
-      "lat": 52.0928333333333,
-      "depth": 13.07,
-      "mag": -0.23,
-      "place": "42 km NE of Adak, Alaska",
-      "time": 1781743651350,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062139"
-    },
-    {
-      "id": "av94251818",
-      "lon": -159.6345,
-      "lat": 55.9901666666667,
-      "depth": 25.73,
-      "mag": 0.81,
-      "place": "13 km NW of Ivanof Bay, Alaska",
-      "time": 1781743549430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94251818"
     }
   ]
 }
