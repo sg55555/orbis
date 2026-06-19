@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T05:40:29Z",
-  "count": 242,
+  "updated": "2026-06-19T05:45:50Z",
+  "count": 240,
   "points": [
+    {
+      "id": "ci41490480",
+      "lon": -116.505666666667,
+      "lat": 33.5035,
+      "depth": 14.46,
+      "mag": 0.32,
+      "place": "17 km ESE of Anza, CA",
+      "time": 1781847592340,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490480"
+    },
     {
       "id": "hv74986157",
       "lon": -155.365173339844,
@@ -2392,36 +2402,6 @@
       "place": "20 km ESE of West Yellowstone, Montana",
       "time": 1781761783990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007438"
-    },
-    {
-      "id": "uu80007453",
-      "lon": -113.9745,
-      "lat": 36.871,
-      "depth": 13.28,
-      "mag": 0.92,
-      "place": "4 km WSW of Littlefield, Arizona",
-      "time": 1781761405260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007453"
-    },
-    {
-      "id": "aka2026lytdes",
-      "lon": 176.161,
-      "lat": 51.777,
-      "depth": 20,
-      "mag": 3.6,
-      "place": "235 km ESE of Attu Station, Alaska",
-      "time": 1781761401061,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lytdes"
-    },
-    {
-      "id": "aka2026lytcqr",
-      "lon": 176.233,
-      "lat": 51.922,
-      "depth": 21.2,
-      "mag": 3.3,
-      "place": "231 km ESE of Attu Station, Alaska",
-      "time": 1781761362152,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lytcqr"
     }
   ]
 }
