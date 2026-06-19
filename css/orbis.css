@@ -144,6 +144,15 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .media-player { position: relative; width: 100%; aspect-ratio: 16 / 9; border-radius: 12px;
   overflow: hidden; background: #000; border: 1px solid var(--glass-rim); box-shadow: 0 8px 40px rgba(0, 0, 0, .5); }
 .media-player iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.lc-overlay { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 14px 12px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  pointer-events: none; z-index: 3; }
+.lc-rows { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; }
+.lc-row { max-width: 92%; background: rgba(5, 8, 15, .62); color: #eaf6ff;
+  font-size: 15px; line-height: 1.5; padding: 4px 12px; border-radius: 8px;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .9); text-align: center; }
+.lc-status { font-size: 11px; color: rgba(180, 200, 220, .8);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .8); min-height: 13px; }
 /* 1画面モードのカメラ名ピル行（表示カメラ切替） */
 .cams-one-tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
 .cam-one-tab { background: rgba(10, 18, 32, .6); border: 1px solid var(--line); color: var(--text);

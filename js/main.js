@@ -10,6 +10,7 @@ import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed } from './lib/feed.js';
 import { renderFeed, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
+import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs } from './lib/selection.js';
 import { tempAt } from './layers/airtemp.js';
@@ -349,6 +350,20 @@ function boot() {
         }, { threshold: 0.4 });
         io.observe(mediaRoot);
         if (window.__orbis) window.__orbis.media = mediaApi; // e2e/デバッグ用
+        // AI字幕（ローカル live-translate 経由・既定OFF）。ニュースプレーヤー下端にオーバーレイ。
+        const lcPlayer = mediaRoot.querySelector('#media-news .media-player');
+        const lcToggle = document.getElementById('lc-toggle');
+        if (lcPlayer && lcToggle) {
+          const lc = initLiveCaptions(lcPlayer, lcToggle, {
+            onActivate() {
+              // AI字幕ON時は YouTube cc を OFF にして二重字幕を避ける
+              // （プログラム変更は change を発火しないので setCaptions も明示呼び）。
+              const cc = document.getElementById('media-cc-toggle');
+              if (cc && cc.checked) { cc.checked = false; mediaApi.setCaptions(false); }
+            },
+          });
+          if (window.__orbis) window.__orbis.liveCaptions = lc;
+        }
       } else {
         mediaRoot.style.display = 'none';
       }
