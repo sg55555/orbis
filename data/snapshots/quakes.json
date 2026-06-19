@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T17:45:49Z",
+  "updated": "2026-06-19T18:01:24Z",
   "count": 225,
   "points": [
+    {
+      "id": "aka2026mbnren",
+      "lon": -150.369,
+      "lat": 61.413,
+      "depth": 59.6,
+      "mag": 1.5,
+      "place": "16 km SSE of Susitna, Alaska",
+      "time": 1781891910703,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnren"
+    },
+    {
+      "id": "nc75379696",
+      "lon": -121.675498962402,
+      "lat": 40.798999786377,
+      "depth": 4.80999994277954,
+      "mag": 2.03,
+      "place": "9 km S of Burney, CA",
+      "time": 1781891596680,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379696"
+    },
+    {
+      "id": "aka2026mbnhth",
+      "lon": -151.374,
+      "lat": 60.34,
+      "depth": 62.5,
+      "mag": 1.7,
+      "place": "4 km SW of Cohoe, Alaska",
+      "time": 1781891256660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnhth"
+    },
     {
       "id": "aka2026mblwmk",
       "lon": -151.887,
@@ -1205,12 +1235,12 @@
     },
     {
       "id": "aka2026majxip",
-      "lon": -146.782,
-      "lat": 61.404,
-      "depth": 13.2,
-      "mag": 2.9,
+      "lon": -146.802,
+      "lat": 61.398,
+      "depth": 19.4,
+      "mag": 2.8,
       "place": "38 km NW of Valdez, Alaska",
-      "time": 1781838361258,
+      "time": 1781838361545,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majxip"
     },
     {
@@ -1234,16 +1264,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490448"
     },
     {
-      "id": "aka2026maiwrf",
-      "lon": -153.258,
-      "lat": 60.206,
-      "depth": 122.1,
-      "mag": 1.2,
-      "place": "58 km E of Port Alsworth, Alaska",
-      "time": 1781836516433,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maiwrf"
-    },
-    {
       "id": "pr71520543",
       "lon": -66.2881666666667,
       "lat": 17.9268333333333,
@@ -1265,12 +1285,12 @@
     },
     {
       "id": "aka2026maihgn",
-      "lon": -152.736,
-      "lat": 59.031,
-      "depth": 70.9,
-      "mag": 2.4,
-      "place": "59 km SW of Nanwalek, Alaska",
-      "time": 1781835457382,
+      "lon": -152.794,
+      "lat": 59.044,
+      "depth": 72.2,
+      "mag": 2.5,
+      "place": "60 km SW of Nanwalek, Alaska",
+      "time": 1781835457534,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maihgn"
     },
     {
@@ -2232,26 +2252,6 @@
       "place": "4 km SW of Brawley, CA",
       "time": 1781805724490,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490032"
-    },
-    {
-      "id": "ci41490024",
-      "lon": -114.9865,
-      "lat": 33.0478333333333,
-      "depth": -0.2,
-      "mag": 1.62,
-      "place": "45 km NE of Holtville, CA",
-      "time": 1781805162840,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490024"
-    },
-    {
-      "id": "hv74985707",
-      "lon": -155.226333333333,
-      "lat": 19.311,
-      "depth": 3,
-      "mag": 1.52,
-      "place": "14 km S of Volcano, Hawaii",
-      "time": 1781805038900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985707"
     }
   ]
 }
