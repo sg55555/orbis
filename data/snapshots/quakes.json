@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T15:31:11Z",
-  "count": 226,
+  "updated": "2026-06-19T15:58:09Z",
+  "count": 231,
   "points": [
+    {
+      "id": "ci41490608",
+      "lon": -116.381833333333,
+      "lat": 33.4623333333333,
+      "depth": 6.66,
+      "mag": 0.69,
+      "place": "23 km N of Borrego Springs, CA",
+      "time": 1781884251940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490608"
+    },
+    {
+      "id": "ci41490600",
+      "lon": -116.7465,
+      "lat": 34.026,
+      "depth": 14.28,
+      "mag": 1.08,
+      "place": "13 km NNE of Cabazon, CA",
+      "time": 1781883445880,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490600"
+    },
+    {
+      "id": "tx2026lzkprg",
+      "lon": -104.423,
+      "lat": 31.647,
+      "depth": 6.0486,
+      "mag": 2.1,
+      "place": "58 km S of Whites City, New Mexico",
+      "time": 1781883308867,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzkprg"
+    },
+    {
+      "id": "us7000sul4",
+      "lon": -178.308,
+      "lat": -21.3566,
+      "depth": 467.976,
+      "mag": 4.7,
+      "place": "Fiji region",
+      "time": 1781882935481,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sul4"
+    },
     {
       "id": "nc75379626",
       "lon": -122.824333190918,
@@ -55,12 +95,12 @@
     },
     {
       "id": "tx2026lzitcp",
-      "lon": -102.048,
-      "lat": 32.08,
-      "depth": 4.8619,
-      "mag": 1.5,
+      "lon": -102.049,
+      "lat": 32.079,
+      "depth": 9.0088,
+      "mag": 1.6,
       "place": "9 km NNE of Midland, Texas",
-      "time": 1781879726938,
+      "time": 1781879727512,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzitcp"
     },
     {
@@ -384,6 +424,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzsdi"
     },
     {
+      "id": "uu80142881",
+      "lon": -110.827833333333,
+      "lat": 44.7868333333333,
+      "depth": 4.31,
+      "mag": 0.33,
+      "place": "23 km SSW of Mammoth, Wyoming",
+      "time": 1781862796390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142881"
+    },
+    {
       "id": "tx2026lyzftc",
       "lon": -104.063,
       "lat": 31.935,
@@ -602,6 +652,16 @@
       "place": "163 km E of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781855336138,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suij"
+    },
+    {
+      "id": "aka2026matfpi",
+      "lon": -179.911,
+      "lat": 50.935,
+      "depth": 20,
+      "mag": 2.9,
+      "place": "250 km WSW of Adak, Alaska",
+      "time": 1781855101986,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026matfpi"
     },
     {
       "id": "uu80142861",
@@ -832,6 +892,16 @@
       "place": "12 km NNW of Petrolia, CA",
       "time": 1781849206560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379491"
+    },
+    {
+      "id": "aka2026mapngg",
+      "lon": -162.818,
+      "lat": 52.241,
+      "depth": 10,
+      "mag": 2.6,
+      "place": "288 km SE of Akutan, Alaska",
+      "time": 1781848461476,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mapngg"
     },
     {
       "id": "ci41490488",
@@ -2242,26 +2312,6 @@
       "place": "231 km ESE of Attu Station, Alaska",
       "time": 1781798256829,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suci"
-    },
-    {
-      "id": "hv74985652",
-      "lon": -155.345169067383,
-      "lat": 19.2544994354248,
-      "depth": 29.2399997711182,
-      "mag": 2.69,
-      "place": "15 km ENE of Pāhala, Hawaii",
-      "time": 1781798208850,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985652"
-    },
-    {
-      "id": "ci41489920",
-      "lon": -116.848,
-      "lat": 33.3673333333333,
-      "depth": 10.84,
-      "mag": 0.63,
-      "place": "2 km NE of Palomar Observatory, CA",
-      "time": 1781797772720,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489920"
     }
   ]
 }
