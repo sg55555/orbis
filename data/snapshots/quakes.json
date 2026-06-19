@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T01:01:12Z",
-  "count": 255,
+  "updated": "2026-06-19T01:15:45Z",
+  "count": 254,
   "points": [
+    {
+      "id": "hv74986047",
+      "lon": -155.339492797852,
+      "lat": 19.2616672515869,
+      "depth": 30.3199996948242,
+      "mag": 1.74,
+      "place": "16 km ENE of Pāhala, Hawaii",
+      "time": 1781831477630,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986047"
+    },
+    {
+      "id": "ci41490400",
+      "lon": -117.5005,
+      "lat": 35.7176666666667,
+      "depth": 1.98,
+      "mag": 2.49,
+      "place": "10 km WSW of Searles Valley, CA",
+      "time": 1781831216720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490400"
+    },
     {
       "id": "nc75379366",
       "lon": -122.790000915527,
@@ -52,6 +72,16 @@
       "place": "2 km NE of Trapper Creek, Alaska",
       "time": 1781828203032,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maegns"
+    },
+    {
+      "id": "us7000sugs",
+      "lon": -82.7465,
+      "lat": 3.423,
+      "depth": 10,
+      "mag": 4.6,
+      "place": "south of Panama",
+      "time": 1781827627496,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugs"
     },
     {
       "id": "pr71520523",
@@ -604,6 +634,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379181"
     },
     {
+      "id": "av94253513",
+      "lon": -152.881,
+      "lat": 60.4988333333333,
+      "depth": 5.51,
+      "mag": 0,
+      "place": "83 km NW of Ninilchik, Alaska",
+      "time": 1781806052240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253513"
+    },
+    {
       "id": "nc75379176",
       "lon": -122.935165405273,
       "lat": 38.775333404541,
@@ -722,6 +762,16 @@
       "place": "6 km SSW of Soldotna, Alaska",
       "time": 1781801325845,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzpidb"
+    },
+    {
+      "id": "av93062239",
+      "lon": -169.888166666667,
+      "lat": 52.8975,
+      "depth": 10.99,
+      "mag": 0.64,
+      "place": "69 km W of Nikolski, Alaska",
+      "time": 1781801055010,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062239"
     },
     {
       "id": "tx2026lxqyvq",
@@ -2492,66 +2542,6 @@
       "place": "33 km E of Boconó, Venezuela",
       "time": 1781745809278,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su81"
-    },
-    {
-      "id": "nc75378831",
-      "lon": -122.839996337891,
-      "lat": 38.8214988708496,
-      "depth": 1.33000004291534,
-      "mag": 0.68,
-      "place": "9 km NW of The Geysers, CA",
-      "time": 1781745194260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378831"
-    },
-    {
-      "id": "nm60505773",
-      "lon": -92.623,
-      "lat": 34.6593333333333,
-      "depth": 14.31,
-      "mag": 1.72,
-      "place": "4 km SW of Avilla, Arkansas",
-      "time": 1781745148700,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60505773"
-    },
-    {
-      "id": "aka2026lyjxmj",
-      "lon": 176.19,
-      "lat": 51.847,
-      "depth": 20,
-      "mag": 3.3,
-      "place": "232 km ESE of Attu Station, Alaska",
-      "time": 1781744805153,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjxmj"
-    },
-    {
-      "id": "ci41489520",
-      "lon": -116.761666666667,
-      "lat": 33.6663333333333,
-      "depth": 14.55,
-      "mag": 0.88,
-      "place": "9 km SSW of Idyllwild, CA",
-      "time": 1781744725050,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489520"
-    },
-    {
-      "id": "nm60505768",
-      "lon": -92.6351666666667,
-      "lat": 34.6726666666667,
-      "depth": 13.14,
-      "mag": 2.26,
-      "place": "4 km WSW of Avilla, Arkansas",
-      "time": 1781744608520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60505768"
-    },
-    {
-      "id": "aka2026lyjthu",
-      "lon": -152.651,
-      "lat": 60.165,
-      "depth": 99.3,
-      "mag": 1.8,
-      "place": "56 km WNW of Ninilchik, Alaska",
-      "time": 1781744522973,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyjthu"
     }
   ]
 }

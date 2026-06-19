@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T01:02:22Z",
+  "updated": "2026-06-19T01:16:17Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/news/liveblog/2026/6/19/iran-war-live-jd-vance-defends-iran-deal-as-us-says-naval-blockade-lifted?traffic_source=rss",
@@ -223,24 +223,11 @@
       "place": "中東地域（レバノン・イスラエル周辺）"
     },
     {
-      "id": "https://www.dw.com/en/poland-arrest-after-russian-artist-and-putin-critic-killed/a-77602774?maca=en-rss-en-world-4025-rdf",
-      "url": "https://www.dw.com/en/poland-arrest-after-russian-artist-and-putin-critic-killed/a-77602774?maca=en-rss-en-world-4025-rdf",
-      "source": "dw",
-      "time": 1781779620000,
-      "rank": 26,
-      "title_ja": "ポーランド：ロシア人芸術家でプーチン批評家が殺害され、逮捕者が出る",
-      "summary_ja": "ポーランドでロシア人芸術家でプーチン大統領の批評家が殺害される事件が発生し、容疑者が逮捕された。事件の詳細は現在調査中である。",
-      "category": "conflict",
-      "lon": 21.0122,
-      "lat": 52.2297,
-      "place": "ポーランド（ワルシャワ）"
-    },
-    {
       "id": "https://www.dw.com/en/cuba-approves-economic-reforms-amid-us-pressure/a-77597635?maca=en-rss-en-world-4025-rdf",
       "url": "https://www.dw.com/en/cuba-approves-economic-reforms-amid-us-pressure/a-77597635?maca=en-rss-en-world-4025-rdf",
       "source": "dw",
       "time": 1781773920000,
-      "rank": 27,
+      "rank": 26,
       "title_ja": "キューバが米国の圧力の中、経済改革を承認",
       "summary_ja": "キューバが米国からの圧力を受ける中、経済改革を承認した。この改革はキューバの経済政策の転換を示すものである。",
       "category": "economy",
@@ -253,7 +240,7 @@
       "url": "https://www.france24.com/en/americas/20260619-colombia-peace-breakthrough-100-rebels-hand-over-arms",
       "source": "france24",
       "time": 1781828960000,
-      "rank": 28,
+      "rank": 27,
       "title_ja": "コロンビア、100人の反政府勢力が武器を引き渡し新たな平和の進展",
       "summary_ja": "コロンビアで100人の反政府勢力が武器を引き渡し、同国の平和プロセスが新たな進展を見せている。この動きは政府と反政府勢力の和平交渉の成果を示すものとなっている。",
       "category": "conflict",
