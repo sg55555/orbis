@@ -189,7 +189,7 @@ export function gdeltEventPopupHtml(event, layerId) {
   const host = hostnameOf(o.url);
   const safeUrl = /^https?:\/\//i.test(o.url || '') ? o.url : '#';
   // 紛争は fipsToJa（コード付き）、抗議は日本語名のみ（括弧なし）
-  const placeName = layerId === 'conflict' ? fipsToJa(o.place) : (o.place ? fipsToJa(o.place).split('（')[0] : '');
+  const placeName = o.place ? fipsToJa(o.place).split('（')[0] : '';
   return '<div class="sel-popup">'
     + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(label + sub)}</span></div>`
