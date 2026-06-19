@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T22:31:03Z",
+  "updated": "2026-06-19T22:39:49Z",
   "count": 247,
   "points": [
+    {
+      "id": "hv74986797",
+      "lon": -155.372497558594,
+      "lat": 19.183666229248,
+      "depth": 29.7600002288818,
+      "mag": 2.05,
+      "place": "11 km E of Pāhala, Hawaii",
+      "time": 1781908158660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986797"
+    },
     {
       "id": "aka2026mbwkei",
       "lon": -159.358,
@@ -2462,16 +2472,6 @@
       "place": "18 km ESE of Julian, CA",
       "time": 1781823007990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490336"
-    },
-    {
-      "id": "us7000sug8",
-      "lon": 141.8497,
-      "lat": 37.3601,
-      "depth": 52.127,
-      "mag": 4.3,
-      "place": "73 km E of Tomioka, Japan",
-      "time": 1781821987963,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sug8"
     }
   ]
 }
