@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-18T23:45:50Z",
-  "count": 255,
+  "updated": "2026-06-19T00:01:17Z",
+  "count": 256,
   "points": [
     {
       "id": "nc75379311",
@@ -1042,6 +1042,26 @@
       "place": "81 km NNW of Karluk, Alaska",
       "time": 1781783686432,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzfnfz"
+    },
+    {
+      "id": "av93062179",
+      "lon": -169.895166666667,
+      "lat": 52.881,
+      "depth": 4.54,
+      "mag": 0.89,
+      "place": "69 km W of Nikolski, Alaska",
+      "time": 1781783583280,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062179"
+    },
+    {
+      "id": "av93062174",
+      "lon": -152.236,
+      "lat": 61.3381666666667,
+      "depth": 2.85,
+      "mag": -0.12,
+      "place": "65 km WNW of Beluga, Alaska",
+      "time": 1781783449500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062174"
     },
     {
       "id": "ci41489752",
@@ -2542,16 +2562,6 @@
       "place": "6 km W of Susitna North, Alaska",
       "time": 1781741042038,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyhuzi"
-    },
-    {
-      "id": "tx2026lwjots",
-      "lon": -104.416,
-      "lat": 31.652,
-      "depth": 2.4182,
-      "mag": 0.6,
-      "place": "58 km S of Whites City, New Mexico",
-      "time": 1781740027125,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwjots"
     }
   ]
 }
