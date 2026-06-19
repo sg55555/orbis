@@ -1,16 +1,16 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T23:45:47Z",
-  "count": 246,
+  "updated": "2026-06-19T23:53:29Z",
+  "count": 247,
   "points": [
     {
       "id": "ci41490896",
-      "lon": -116.467666625977,
-      "lat": 33.4681663513184,
-      "depth": 11.0699996948242,
-      "mag": 1.83559399813281,
+      "lon": -116.467166666667,
+      "lat": 33.469,
+      "depth": 11.68,
+      "mag": 1.73,
       "place": "21 km ESE of Anza, CA",
-      "time": 1781912584400,
+      "time": 1781912584360,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490896"
     },
     {
@@ -502,6 +502,16 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781895063150,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379726"
+    },
+    {
+      "id": "aka2026mbpilm",
+      "lon": -150.825,
+      "lat": 59.475,
+      "depth": 10.9,
+      "mag": 1.6,
+      "place": "26 km ESE of Halibut Cove, Alaska",
+      "time": 1781894906819,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbpilm"
     },
     {
       "id": "av94255753",
