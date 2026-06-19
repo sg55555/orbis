@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T14:01:19Z",
-  "count": 224,
+  "updated": "2026-06-19T14:15:54Z",
+  "count": 223,
   "points": [
+    {
+      "id": "tx2026lzhyzg",
+      "lon": -103.743,
+      "lat": 31.211,
+      "depth": 0,
+      "mag": 1.7,
+      "place": "12 km SSE of Toyah, Texas",
+      "time": 1781878323159,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzhyzg"
+    },
+    {
+      "id": "nc75379621",
+      "lon": -122.814331054688,
+      "lat": 38.8321647644043,
+      "depth": 2.25999999046326,
+      "mag": 1.03,
+      "place": "8 km NW of The Geysers, CA",
+      "time": 1781878168600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379621"
+    },
     {
       "id": "hv74986372",
       "lon": -155.108001708984,
@@ -152,16 +172,6 @@
       "place": "15 km SE of Toyah, Texas",
       "time": 1781868726798,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcrdv"
-    },
-    {
-      "id": "tx2026lzcpej",
-      "lon": -102.068,
-      "lat": 31.781,
-      "depth": 1.0371,
-      "mag": 1.4,
-      "place": "24 km S of Midland, Texas",
-      "time": 1781868588365,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcpej"
     },
     {
       "id": "aka2026mbarwi",
@@ -2222,26 +2232,6 @@
       "place": "26 km NNE of Mont-Joli, Canada",
       "time": 1781792481683,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000subl"
-    },
-    {
-      "id": "aka2026lzjwrw",
-      "lon": -162.792,
-      "lat": 53.935,
-      "depth": 7.3,
-      "mag": 2.1,
-      "place": "109 km SSE of False Pass, Alaska",
-      "time": 1781791533561,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzjwrw"
-    },
-    {
-      "id": "aka2026lzjszi",
-      "lon": -159.986,
-      "lat": 55.894,
-      "depth": 60.4,
-      "mag": 2.3,
-      "place": "31 km W of Ivanof Bay, Alaska",
-      "time": 1781791277813,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzjszi"
     }
   ]
 }
