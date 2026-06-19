@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T16:15:55Z",
-  "count": 227,
+  "updated": "2026-06-19T16:24:25Z",
+  "count": 228,
   "points": [
+    {
+      "id": "aka2026mbkkat",
+      "lon": -159.727,
+      "lat": 55.818,
+      "depth": 11.2,
+      "mag": 1.1,
+      "place": "17 km WSW of Ivanof Bay, Alaska",
+      "time": 1781886017105,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkkat"
+    },
     {
       "id": "aka2026mbkdur",
       "lon": -149.252,
