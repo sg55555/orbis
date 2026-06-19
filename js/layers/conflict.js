@@ -3,8 +3,8 @@
 // 面が描画されない）。代わりに半透明・大半径の ScatterplotLayer を加算合成で重ね、
 // 報道が集中するほど明るく発色させて「面」を表現する（[[maplibre-v5-deckgl-globe-version]]）。
 import { hostnameOf, blobRadius, ADDITIVE_BLEND, emberFill } from '../lib/geo.js';
-import { parseGdeltDate } from '../lib/feed.js';
 import { fipsToJa, severityRank } from '../lib/places.js';
+import { aggregateByCountry } from '../lib/aggregate.js';
 
 const RED = [255, 60, 80];
 
@@ -59,10 +59,6 @@ export const conflictLayer = {
     return `紛争 報道集中｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
-    const pts = (snapshot && snapshot.points) ? snapshot.points : [];
-    return pts.map((p) => ({
-      id: p.id, time: parseGdeltDate(p.date), title: `紛争 ${fipsToJa(p.place)}（${hostnameOf(p.url)}）`,
-      layerId: 'conflict', lon: p.lon, lat: p.lat,
-    }));
+    return aggregateByCountry((snapshot && snapshot.points) ? snapshot.points : [], 'conflict');
   },
 };

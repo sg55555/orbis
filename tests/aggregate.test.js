@@ -1,6 +1,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { aggregateByCountry, buildHotspotConfigs } from '../js/lib/aggregate.js';
+import { conflictLayer } from '../js/layers/conflict.js';
+import { protestsLayer } from '../js/layers/protests.js';
 
 const pts = [
   { id: '1', place: 'UP', root: '19', mentions: 10, date: '20260620120000', url: 'https://reuters.com/a', lon: 30, lat: 49 },
@@ -69,4 +71,18 @@ test('buildHotspotConfigs: rgb を線色に使う', () => {
   const c = buildHotspotConfigs(groups, 0.5, { rgb: [94, 255, 166] });
   const col = c[0].getLineColor(groups[0]);
   assert.equal(col[0], 94); assert.equal(col[1], 255); assert.equal(col[2], 166);
+});
+
+test('conflictLayer.toFeedItems: 国別 GroupRow を返す', () => {
+  const rows = conflictLayer.toFeedItems({ points: pts });
+  assert.ok(rows.every((r) => r.kind === 'group' && r.layerId === 'conflict'));
+  const up = rows.find((r) => r.place === 'UP');
+  assert.equal(up.count, 3);
+  assert.equal(up.country_ja, 'ウクライナ');
+});
+
+test('protestsLayer.toFeedItems: layerId=protests・空安全', () => {
+  assert.deepEqual(protestsLayer.toFeedItems({ points: [] }), []);
+  const rows = protestsLayer.toFeedItems({ points: [{ id: 'p', place: 'FR', root: '14', mentions: 1, date: '20260620120000', url: 'https://x.fr/a', lon: 2, lat: 48 }] });
+  assert.equal(rows[0].layerId, 'protests');
 });

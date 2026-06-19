@@ -2,8 +2,8 @@
 // HeatmapLayer が globe 非対応のため ScatterplotLayer の加算合成で「面」を表現
 // （詳細は conflict.js / [[maplibre-v5-deckgl-globe-version]]）。
 import { hostnameOf, blobRadius, ADDITIVE_BLEND, emberFill } from '../lib/geo.js';
-import { parseGdeltDate } from '../lib/feed.js';
 import { fipsToJa } from '../lib/places.js';
+import { aggregateByCountry } from '../lib/aggregate.js';
 
 const GREEN = [94, 255, 166];
 
@@ -58,10 +58,6 @@ export const protestsLayer = {
     return `抗議 報道集中｜${fipsToJa(o.place)}｜出典 ${hostnameOf(o.url)}`;
   },
   toFeedItems(snapshot) {
-    const pts = (snapshot && snapshot.points) ? snapshot.points : [];
-    return pts.map((p) => ({
-      id: p.id, time: parseGdeltDate(p.date), title: `抗議 ${fipsToJa(p.place)}（${hostnameOf(p.url)}）`,
-      layerId: 'protests', lon: p.lon, lat: p.lat,
-    }));
+    return aggregateByCountry((snapshot && snapshot.points) ? snapshot.points : [], 'protests');
   },
 };
