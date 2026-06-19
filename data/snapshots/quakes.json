@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T05:45:50Z",
-  "count": 240,
+  "updated": "2026-06-19T06:01:14Z",
+  "count": 237,
   "points": [
+    {
+      "id": "ci41490488",
+      "lon": -116.2725,
+      "lat": 32.947,
+      "depth": 11.25,
+      "mag": 0.85,
+      "place": "25 km SSW of Ocotillo Wells, CA",
+      "time": 1781848280880,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490488"
+    },
     {
       "id": "ci41490480",
       "lon": -116.505666666667,
@@ -2362,46 +2372,6 @@
       "place": "19 km ESE of West Yellowstone, Montana",
       "time": 1781762882350,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007463"
-    },
-    {
-      "id": "pr71520388",
-      "lon": -66.9641666666667,
-      "lat": 18.1021666666667,
-      "depth": 15.95,
-      "mag": 2.24,
-      "place": "2 km N of Sabana Grande, Puerto Rico",
-      "time": 1781761982140,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520388"
-    },
-    {
-      "id": "uu80007443",
-      "lon": -110.8675,
-      "lat": 44.5858333333333,
-      "depth": 5,
-      "mag": 0.24,
-      "place": "20 km ESE of West Yellowstone, Montana",
-      "time": 1781761861440,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007443"
-    },
-    {
-      "id": "uu80142781",
-      "lon": -110.870166666667,
-      "lat": 44.5856666666667,
-      "depth": 6.94,
-      "mag": 0.67,
-      "place": "20 km ESE of West Yellowstone, Montana",
-      "time": 1781761815370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142781"
-    },
-    {
-      "id": "uu80007438",
-      "lon": -110.868166666667,
-      "lat": 44.5873333333333,
-      "depth": 6.91,
-      "mag": 0.32,
-      "place": "20 km ESE of West Yellowstone, Montana",
-      "time": 1781761783990,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007438"
     }
   ]
 }
