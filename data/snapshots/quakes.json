@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T04:45:48Z",
-  "count": 252,
+  "updated": "2026-06-19T05:01:13Z",
+  "count": 249,
   "points": [
     {
       "id": "ci41490472",
@@ -192,6 +192,16 @@
       "place": "6 km NW of The Geysers, CA",
       "time": 1781834542390,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379411"
+    },
+    {
+      "id": "us7000suh7",
+      "lon": -67.3893,
+      "lat": -24.3095,
+      "depth": 202.231,
+      "mag": 4.1,
+      "place": "109 km W of San Antonio de los Cobres, Argentina",
+      "time": 1781834267722,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suh7"
     },
     {
       "id": "pr71520533",
@@ -2482,46 +2492,6 @@
       "place": "44 km NE of Ugashik, Alaska",
       "time": 1781759000260,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyrukw"
-    },
-    {
-      "id": "ci41489592",
-      "lon": -116.572666666667,
-      "lat": 33.5031666666667,
-      "depth": 12.21,
-      "mag": 0.51,
-      "place": "11 km ESE of Anza, CA",
-      "time": 1781758674630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489592"
-    },
-    {
-      "id": "nc75378881",
-      "lon": -122.761665344238,
-      "lat": 38.8173332214355,
-      "depth": 1.97000002861023,
-      "mag": 0.7,
-      "place": "3 km W of Cobb, CA",
-      "time": 1781758306380,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378881"
-    },
-    {
-      "id": "ci41489584",
-      "lon": -116.5,
-      "lat": 33.5016666666667,
-      "depth": 13.37,
-      "mag": 0.42,
-      "place": "17 km ESE of Anza, CA",
-      "time": 1781758142780,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489584"
-    },
-    {
-      "id": "ci41489576",
-      "lon": -118.748166666667,
-      "lat": 34.9373333333333,
-      "depth": 6.16,
-      "mag": 1.9,
-      "place": "15 km NE of Lebec, CA",
-      "time": 1781758050510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489576"
     }
   ]
 }
