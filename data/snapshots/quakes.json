@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T07:31:03Z",
-  "count": 234,
+  "updated": "2026-06-19T07:45:49Z",
+  "count": 230,
   "points": [
     {
       "id": "hv74986207",
@@ -24,6 +24,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379521"
     },
     {
+      "id": "us7000sui8",
+      "lon": 161.1152,
+      "lat": 52.8235,
+      "depth": 10,
+      "mag": 4.9,
+      "place": "169 km E of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781852745026,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui8"
+    },
+    {
       "id": "uw714026791",
       "lon": -122.169502258301,
       "lat": 47.0595016479492,
@@ -35,12 +45,12 @@
     },
     {
       "id": "tx2026lytpmo",
-      "lon": -104.448,
-      "lat": 31.632,
-      "depth": 3.5599,
-      "mag": 1.8,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781852541405,
+      "lon": -104.431,
+      "lat": 31.673,
+      "depth": 3.9465,
+      "mag": 1.6,
+      "place": "55 km S of Whites City, New Mexico",
+      "time": 1781852541574,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytpmo"
     },
     {
@@ -84,14 +94,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026markyp"
     },
     {
-      "id": "pt26170000",
-      "lon": 160.923,
-      "lat": 52.151,
-      "depth": 10,
-      "mag": 6.6,
-      "place": "185 km SE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781851887000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pt26170000"
+      "id": "us7000sui2",
+      "lon": 160.8644,
+      "lat": 52.69,
+      "depth": 28.383,
+      "mag": 6,
+      "place": "156 km ESE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781851891085,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui2"
     },
     {
       "id": "tx2026lysyqo",
@@ -2292,56 +2302,6 @@
       "place": "19 km ESE of West Yellowstone, Montana",
       "time": 1781768758630,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142796"
-    },
-    {
-      "id": "nc75378931",
-      "lon": -124.328498840332,
-      "lat": 40.2895011901855,
-      "depth": 3.52999997138977,
-      "mag": 1.26,
-      "place": "5 km SW of Petrolia, CA",
-      "time": 1781768331790,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378931"
-    },
-    {
-      "id": "tx2026lwzdld",
-      "lon": -103.363,
-      "lat": 30.958,
-      "depth": 1.2292,
-      "mag": 1.1,
-      "place": "36 km E of Balmorhea, Texas",
-      "time": 1781768207966,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwzdld"
-    },
-    {
-      "id": "aka2026lywwyu",
-      "lon": -148.238,
-      "lat": 62.2,
-      "depth": 12.5,
-      "mag": 1.4,
-      "place": "46 km NNE of Chickaloon, Alaska",
-      "time": 1781768167876,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lywwyu"
-    },
-    {
-      "id": "tx2026lwzbot",
-      "lon": -101.918,
-      "lat": 32.255,
-      "depth": 7.1533,
-      "mag": 0.4,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781768075101,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwzbot"
-    },
-    {
-      "id": "ci41489648",
-      "lon": -116.276,
-      "lat": 32.9495,
-      "depth": 11.55,
-      "mag": 0.43,
-      "place": "25 km SSW of Ocotillo Wells, CA",
-      "time": 1781767852220,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489648"
     }
   ]
 }
