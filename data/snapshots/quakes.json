@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T09:15:48Z",
-  "count": 223,
+  "updated": "2026-06-19T09:31:07Z",
+  "count": 225,
   "points": [
+    {
+      "id": "aka2026mawmkm",
+      "lon": -149.559,
+      "lat": 61.505,
+      "depth": 28.6,
+      "mag": 1.1,
+      "place": "2 km ESE of Knik-Fairview, Alaska",
+      "time": 1781860995019,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mawmkm"
+    },
     {
       "id": "aka2026mavtiv",
       "lon": -147.773,
@@ -114,6 +124,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suik"
     },
     {
+      "id": "us7000suih",
+      "lon": -68.4926,
+      "lat": 19.6107,
+      "depth": 10,
+      "mag": 3.7,
+      "place": "90 km NE of Miches, Dominican Republic",
+      "time": 1781855751167,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suih"
+    },
+    {
       "id": "us7000suii",
       "lon": 161.1149,
       "lat": 52.7355,
@@ -142,6 +162,16 @@
       "place": "6 km SSE of Bluffdale, Utah",
       "time": 1781854834273,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suie"
+    },
+    {
+      "id": "tx2026lyunix",
+      "lon": -100.938,
+      "lat": 32.868,
+      "depth": 5.0049,
+      "mag": 1.3,
+      "place": "16 km N of Snyder, Texas",
+      "time": 1781853979469,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyunix"
     },
     {
       "id": "us7000suia",
@@ -2222,16 +2252,6 @@
       "place": "3 km SE of Redlands, CA",
       "time": 1781775556460,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489704"
-    },
-    {
-      "id": "hv74985457",
-      "lon": -155.286834716797,
-      "lat": 19.3646659851074,
-      "depth": 1.21000003814697,
-      "mag": 1.75,
-      "place": "10 km SSW of Volcano, Hawaii",
-      "time": 1781774646430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985457"
     }
   ]
 }
