@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T16:01:15Z",
-  "count": 231,
+  "updated": "2026-06-19T16:15:55Z",
+  "count": 227,
   "points": [
+    {
+      "id": "aka2026mbkdur",
+      "lon": -149.252,
+      "lat": 61.976,
+      "depth": 1.3,
+      "mag": 1.6,
+      "place": "25 km N of Fishhook, Alaska",
+      "time": 1781885585438,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkdur"
+    },
+    {
+      "id": "aka2026mbjvxo",
+      "lon": -152.871,
+      "lat": 59.951,
+      "depth": 110.8,
+      "mag": 1.7,
+      "place": "61 km WNW of Anchor Point, Alaska",
+      "time": 1781885041046,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjvxo"
+    },
     {
       "id": "ci41490608",
       "lon": -116.381833333333,
@@ -2252,66 +2272,6 @@
       "place": "80 km ENE of Lime Village, Alaska",
       "time": 1781800351323,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzotuc"
-    },
-    {
-      "id": "ci41489944",
-      "lon": -118.819333333333,
-      "lat": 34.7181666666667,
-      "depth": 14.32,
-      "mag": 0.63,
-      "place": "9 km SSE of Gorman, CA",
-      "time": 1781799206870,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489944"
-    },
-    {
-      "id": "nc75379116",
-      "lon": -122.829833984375,
-      "lat": 38.844165802002,
-      "depth": 2.21000003814697,
-      "mag": 0.25,
-      "place": "10 km WNW of Cobb, CA",
-      "time": 1781798897070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379116"
-    },
-    {
-      "id": "nc75379111",
-      "lon": -122.824333190918,
-      "lat": 38.8436660766602,
-      "depth": 2.10999989509583,
-      "mag": 1.94,
-      "place": "9 km WNW of Cobb, CA",
-      "time": 1781798863650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379111"
-    },
-    {
-      "id": "ci41489936",
-      "lon": -117.257,
-      "lat": 34.0356666666667,
-      "depth": 14.88,
-      "mag": 0.88,
-      "place": "1 km SSE of Loma Linda, CA",
-      "time": 1781798641680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489936"
-    },
-    {
-      "id": "av93062229",
-      "lon": -169.898333333333,
-      "lat": 52.8215,
-      "depth": 6.04,
-      "mag": 0.43,
-      "place": "71 km W of Nikolski, Alaska",
-      "time": 1781798588560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062229"
-    },
-    {
-      "id": "av93062219",
-      "lon": -169.967666666667,
-      "lat": 52.8361666666667,
-      "depth": 7.29,
-      "mag": 0.53,
-      "place": "75 km W of Nikolski, Alaska",
-      "time": 1781798564600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062219"
     }
   ]
 }
