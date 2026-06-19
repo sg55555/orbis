@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T19:31:08Z",
+  "updated": "2026-06-19T19:45:48Z",
   "count": 234,
   "points": [
+    {
+      "id": "ci41490776",
+      "lon": -117.438666666667,
+      "lat": 34.1248333333333,
+      "depth": 9.11,
+      "mag": 1.37,
+      "place": "4 km NNE of Fontana, CA",
+      "time": 1781897739480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490776"
+    },
+    {
+      "id": "ci41490768",
+      "lon": -116.987333333333,
+      "lat": 32.6005,
+      "depth": 2.97,
+      "mag": 1.3,
+      "place": "6 km ESE of Chula Vista, CA",
+      "time": 1781897585320,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490768"
+    },
+    {
+      "id": "nc75379736",
+      "lon": -122.732833862305,
+      "lat": 38.7893333435059,
+      "depth": 1.78999996185303,
+      "mag": 1.04,
+      "place": "2 km ENE of The Geysers, CA",
+      "time": 1781897426660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379736"
+    },
     {
       "id": "aka2026mbqpwp",
       "lon": -151.511,
@@ -35,12 +65,12 @@
     },
     {
       "id": "us7000supf",
-      "lon": 153.2914,
-      "lat": -5.4181,
-      "depth": 61.371,
-      "mag": 4.9,
-      "place": "164 km SE of Kokopo, Papua New Guinea",
-      "time": 1781895650939,
+      "lon": 153.2891,
+      "lat": -5.439,
+      "depth": 76.074,
+      "mag": 4.7,
+      "place": "165 km SE of Kokopo, Papua New Guinea",
+      "time": 1781895652549,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supf"
     },
     {
@@ -414,6 +444,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490584"
     },
     {
+      "id": "tx2026lzjbta",
+      "lon": -103.801,
+      "lat": 32.003,
+      "depth": 8.4583,
+      "mag": 1.5,
+      "place": "35 km SE of Malaga, New Mexico",
+      "time": 1781880353496,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzjbta"
+    },
+    {
       "id": "aka2026mbhdig",
       "lon": -156.645,
       "lat": 56.253,
@@ -704,6 +744,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379546"
     },
     {
+      "id": "tx2026lzange",
+      "lon": -103.829,
+      "lat": 32.012,
+      "depth": 7.8943,
+      "mag": 1,
+      "place": "32 km SE of Malaga, New Mexico",
+      "time": 1781864846690,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzange"
+    },
+    {
       "id": "aka2026mayoof",
       "lon": -154.939,
       "lat": 58.279,
@@ -845,12 +895,12 @@
     },
     {
       "id": "aka2026mavtiv",
-      "lon": -147.773,
+      "lon": -147.759,
       "lat": 60.37,
-      "depth": 17.8,
+      "depth": 19.8,
       "mag": 2.1,
       "place": "36 km NNE of Chenega, Alaska",
-      "time": 1781859675161,
+      "time": 1781859675159,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavtiv"
     },
     {
@@ -865,23 +915,13 @@
     },
     {
       "id": "aka2026mavrkh",
-      "lon": -159.817,
-      "lat": 55.924,
-      "depth": 11.9,
+      "lon": -159.776,
+      "lat": 55.912,
+      "depth": 17.6,
       "mag": 1.5,
-      "place": "21 km W of Ivanof Bay, Alaska",
-      "time": 1781859542519,
+      "place": "18 km W of Ivanof Bay, Alaska",
+      "time": 1781859542512,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavrkh"
-    },
-    {
-      "id": "aka2026mavoku",
-      "lon": -147.735,
-      "lat": 64.593,
-      "depth": 5.1,
-      "mag": 1,
-      "place": "24 km S of South Van Horn, Alaska",
-      "time": 1781859333812,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavoku"
     },
     {
       "id": "hv74986252",
@@ -904,16 +944,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavjsg"
     },
     {
-      "id": "aka2026mavegh",
-      "lon": -155.017,
-      "lat": 58.257,
-      "depth": 5.8,
-      "mag": 0.5,
-      "place": "83 km NNW of Karluk, Alaska",
-      "time": 1781858630194,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavegh"
-    },
-    {
       "id": "nc75379531",
       "lon": -122.816833496094,
       "lat": 38.8363342285156,
@@ -925,12 +955,12 @@
     },
     {
       "id": "aka2026mauzfo",
-      "lon": -150.666,
-      "lat": 60.875,
-      "depth": 19.3,
-      "mag": 1.6,
-      "place": "5 km SSE of Point Possession, Alaska",
-      "time": 1781858282223,
+      "lon": -150.671,
+      "lat": 60.874,
+      "depth": 21.7,
+      "mag": 1.7,
+      "place": "5 km S of Point Possession, Alaska",
+      "time": 1781858282439,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mauzfo"
     },
     {
@@ -2312,36 +2342,6 @@
       "place": "71 km W of Nikolski, Alaska",
       "time": 1781812135570,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253698"
-    },
-    {
-      "id": "aka2026lzvbvo",
-      "lon": -164.682,
-      "lat": 53.591,
-      "depth": 11.1,
-      "mag": 3.5,
-      "place": "93 km SE of Akutan, Alaska",
-      "time": 1781811682933,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzvbvo"
-    },
-    {
-      "id": "nc75379216",
-      "lon": -120.531829833984,
-      "lat": 35.974666595459,
-      "depth": 10.6800003051758,
-      "mag": 2.16,
-      "place": "12 km NW of Parkfield, CA",
-      "time": 1781811192510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379216"
-    },
-    {
-      "id": "aka2026lzuukl",
-      "lon": -151.762,
-      "lat": 62.425,
-      "depth": 98.4,
-      "mag": 1.4,
-      "place": "52 km NNW of Skwentna, Alaska",
-      "time": 1781811170709,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzuukl"
     }
   ]
 }
