@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-19T02:46:20Z",
+  "updated": "2026-06-19T03:01:46Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/news/liveblog/2026/6/19/iran-war-live-jd-vance-defends-iran-deal-as-us-says-naval-blockade-lifted?traffic_source=rss",
@@ -67,17 +67,17 @@
       "place": "イラン"
     },
     {
-      "id": "https://www.bbc.com/news/articles/c98291g5rr1o?at_medium=RSS&at_campaign=rss",
-      "url": "https://www.bbc.com/news/articles/c98291g5rr1o?at_medium=RSS&at_campaign=rss",
+      "id": "https://www.bbc.com/news/articles/c74ynmnrwmeo?at_medium=RSS&at_campaign=rss",
+      "url": "https://www.bbc.com/news/articles/c74ynmnrwmeo?at_medium=RSS&at_campaign=rss",
       "source": "bbcworld",
-      "time": 1781797596000,
-      "rank": 9,
-      "title_ja": "ウクライナの大規模攻撃でモスクワで黒い雨、石油精製所が被害",
-      "summary_ja": "ウクライナによるウクライナ最大規模の攻撃によって石油精製所が被撃を受け、モスクワ住民が黒い雨が降ったと報告している。攻撃による環境への影響が深刻化している。",
-      "category": "conflict",
-      "lon": 37.6173,
-      "lat": 55.7558,
-      "place": "モスクワ"
+      "time": 1781792202000,
+      "rank": 10,
+      "title_ja": "武器、資金、船舶：今回のイラン合意は過去のものとどう違うのか",
+      "summary_ja": "イランとの新たな合意の内容と、過去の合意との違いについて解説したニュース。武器取引、資金移動、船舶に関する規制の変化が焦点。",
+      "category": "politics",
+      "lon": 53.688,
+      "lat": 32.4279,
+      "place": "イラン"
     },
     {
       "id": "https://www.bbc.com/news/videos/cgjx87jljqpo?at_medium=RSS&at_campaign=rss",
@@ -110,7 +110,7 @@
       "url": "https://www.theguardian.com/world/live/2026/jun/18/ukraine-russia-moscow-strikes-nato-defence-ministers-hegseth-rutte-latest-news-updates",
       "source": "guardian",
       "time": 1781796066000,
-      "rank": 13,
+      "rank": 14,
       "title_ja": "「ウクライナが燃えれば、モスクワも燃える」ゼレンスキー大統領がロシアへの夜間攻撃後に警告",
       "summary_ja": "ウクライナのゼレンスキー大統領は、ロシア領土への夜間攻撃の後、モスクワに対して報復を警告した。ウクライナはロシアの軍事施設や基盤施設に対する継続的な攻撃を行っている。",
       "category": "conflict",
@@ -123,7 +123,7 @@
       "url": "https://www.theguardian.com/us-news/2026/jun/19/jd-vance-israel-iran-deal-critics",
       "source": "guardian",
       "time": 1781826774000,
-      "rank": 14,
+      "rank": 15,
       "title_ja": "JDバンス副大統領、イスラエルでのイラン核合意批評家に「トランプが世界で唯一の同盟国」と語る",
       "summary_ja": "米国のJDバンス副大統領がイスラエルを訪問し、イラン核合意の批評家に対してトランプ前大統領が世界で唯一の同盟国だと述べた。これはトランプ政権下での対イラン政策の強硬姿勢を示す発言である。",
       "category": "politics",
@@ -132,11 +132,24 @@
       "place": "イスラエル"
     },
     {
+      "id": "https://www.theguardian.com/world/2026/jun/18/iran-announces-plans-to-bring-in-maritime-fees-for-strait-of-hormuz",
+      "url": "https://www.theguardian.com/world/2026/jun/18/iran-announces-plans-to-bring-in-maritime-fees-for-strait-of-hormuz",
+      "source": "guardian",
+      "time": 1781819446000,
+      "rank": 16,
+      "title_ja": "イラン、ホルムズ海峡の海上通行料導入を発表",
+      "summary_ja": "イランはホルムズ海峡を通過する船舶に対して新たな海上通行料を徴収する計画を発表した。この措置は地域の緊張をさらに高める可能性がある。",
+      "category": "politics",
+      "lon": 56.5,
+      "lat": 26.5,
+      "place": "ホルムズ海峡（イラン・オマーン間）"
+    },
+    {
       "id": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
       "url": "https://www.theguardian.com/world/live/2026/jun/18/middle-east-crisis-live-us-iran-presidents-sign-peace-deal-mou-trump-tehran-strait-of-hormuz-toll-lebanon-israel",
       "source": "guardian",
       "time": 1781813077000,
-      "rank": 15,
+      "rank": 17,
       "title_ja": "中東危機ライブ：トランプ大統領、レバノン・ヒズボラ・イスラエルを含むすべての前線での『完全な停戦』を期待すると述べる",
       "summary_ja": "トランプ米大統領は、中東における全面的な停戦を期待していると発表した。この声明は、レバノン、ヒズボラ、イスラエル間の紛争を含む複数の地域での緊張緩和を目指すものである。",
       "category": "conflict",
@@ -149,7 +162,7 @@
       "url": "https://www.theguardian.com/us-news/2026/jun/18/gas-prices-fall-iran-deal",
       "source": "guardian",
       "time": 1781812314000,
-      "rank": 16,
+      "rank": 18,
       "title_ja": "トランプ大統領のイラン戦争終結合意署名後、ガソリン価格が全米平均で4ドル以下に低下",
       "summary_ja": "トランプ大統領がイラン関連の戦争を終結させる合意に署名した後、米国のガソリン価格が平均で1ガロンあたり4ドル以下に低下した。エネルギー市場の安定化により燃料価格が改善された。",
       "category": "economy",
@@ -162,7 +175,7 @@
       "url": "https://www.dw.com/en/israel-says-it-s-cutting-ties-to-eu-s-kaja-kallas/a-77605930?maca=en-rss-en-world-4025-rdf",
       "source": "dw",
       "time": 1781795280000,
-      "rank": 17,
+      "rank": 19,
       "title_ja": "イスラエル、EUのカヤ・カラス議長との関係を断絶すると発表",
       "summary_ja": "イスラエルはEU指導部のカヤ・カラス議長との外交関係を切断することを発表した。両者の政策的対立が背景にあるとみられる。",
       "category": "politics",
@@ -171,11 +184,24 @@
       "place": "イスラエル"
     },
     {
+      "id": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
+      "url": "https://www.dw.com/en/us-iran-talks-hope-and-skepticism-in-the-swiss-alps/a-77610766?maca=en-rss-en-world-4025-rdf",
+      "source": "dw",
+      "time": 1781791920000,
+      "rank": 20,
+      "title_ja": "米国とイランの協議：スイスアルプスでの希望と懐疑",
+      "summary_ja": "スイスアルプスで米国とイランの対話が進められ、外交的な打開の可能性がある一方で、実現性についての懸念も存在している。",
+      "category": "politics",
+      "lon": 8.2275,
+      "lat": 46.8182,
+      "place": "スイス・アルプス"
+    },
+    {
       "id": "https://www.france24.com/en/europe/20260619-eu-leaders-back-stronger-trade-defences-amid-china-export-surge",
       "url": "https://www.france24.com/en/europe/20260619-eu-leaders-back-stronger-trade-defences-amid-china-export-surge",
       "source": "france24",
       "time": 1781834558000,
-      "rank": 18,
+      "rank": 22,
       "title_ja": "EU首脳、中国の輸出急増を背景に貿易防衛強化を支持",
       "summary_ja": "EU指導者らは、中国からの輸出増加に対抗するため、より強力な貿易防衛措置の導入を支持することを決定した。EUは保護主義的な措置を強化し、自国産業の競争力維持を目指す。",
       "category": "economy",
@@ -188,39 +214,13 @@
       "url": "https://www.npr.org/2026/06/18/g-s1-128782/moscow-ukraine-drone-attack-russia-oil-refinery",
       "source": "npr",
       "time": 1781799138000,
-      "rank": 23,
+      "rank": 27,
       "title_ja": "ウクライナがモスクワの石油精製所を含む複数の施設に大規模ドローン攻撃を実施",
       "summary_ja": "ウクライナはモスクワの石油精製所およびその他の施設に対して大規模なドローン攻撃を実施した。この攻撃はロシアのエネルギーインフラを標的とした継続的な作戦の一部である。",
       "category": "conflict",
       "lon": 37.6173,
       "lat": 55.7558,
       "place": "モスクワ、ロシア"
-    },
-    {
-      "id": "https://www.aljazeera.com/video/newsfeed/2026/6/19/obama-opens-presidential-centre-with-call-for-unity?traffic_source=rss",
-      "url": "https://www.aljazeera.com/video/newsfeed/2026/6/19/obama-opens-presidential-centre-with-call-for-unity?traffic_source=rss",
-      "source": "aljazeera",
-      "time": 1781831564000,
-      "rank": 26,
-      "title_ja": "オバマ前大統領が大統領センター開館式で統一への呼びかけ",
-      "summary_ja": "オバマ前大統領は自身の大統領センターの開館式で、国民の統一を呼びかけるスピーチを行った。センターはアメリカの政治と民主主義の歴史を伝える施設となる。",
-      "category": "politics",
-      "lon": -87.5753,
-      "lat": 41.8233,
-      "place": "シカゴ、イリノイ州、アメリカ合衆国"
-    },
-    {
-      "id": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
-      "url": "https://www.aljazeera.com/news/2026/6/19/zimbabwe-bill-to-scrap-presidential-elections-sparks-backlash?traffic_source=rss",
-      "source": "aljazeera",
-      "time": 1781828078000,
-      "rank": 28,
-      "title_ja": "ジンバブエ大統領選挙廃止法案が反発を招く",
-      "summary_ja": "ジンバブエが大統領選挙制度を廃止する法案を提出し、国内外から批判の声が上がっている。民主主義の後退につながるとして懸念されている。",
-      "category": "politics",
-      "lon": 29.1549,
-      "lat": -19.0154,
-      "place": "ジンバブエ"
     }
   ]
 }

@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T02:45:48Z",
-  "count": 260,
+  "updated": "2026-06-19T03:01:14Z",
+  "count": 259,
   "points": [
+    {
+      "id": "ci41490456",
+      "lon": -116.7645,
+      "lat": 33.6668333333333,
+      "depth": 9.11,
+      "mag": 0.22,
+      "place": "9 km SSW of Idyllwild, CA",
+      "time": 1781837646650,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490456"
+    },
+    {
+      "id": "ci41490448",
+      "lon": -116.5075,
+      "lat": 33.5023333333333,
+      "depth": 13.4,
+      "mag": 0.61,
+      "place": "16 km ESE of Anza, CA",
+      "time": 1781837061510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490448"
+    },
     {
       "id": "aka2026maiwrf",
       "lon": -153.258,
@@ -2572,36 +2592,6 @@
       "place": "47 km NNW of Beluga, Alaska",
       "time": 1781751995750,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lynxgv"
-    },
-    {
-      "id": "av94252028",
-      "lon": -152.969,
-      "lat": 60.042,
-      "depth": 5.01,
-      "mag": -0.43,
-      "place": "69 km ENE of Pedro Bay, Alaska",
-      "time": 1781751610730,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252028"
-    },
-    {
-      "id": "av94252023",
-      "lon": -167.084333333333,
-      "lat": 53.5395,
-      "depth": 14.26,
-      "mag": 0.6,
-      "place": "52 km SW of Unalaska, Alaska",
-      "time": 1781751367750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252023"
-    },
-    {
-      "id": "aka2026lynnmx",
-      "lon": -152.821,
-      "lat": 59.035,
-      "depth": 69.8,
-      "mag": 1.7,
-      "place": "62 km SW of Nanwalek, Alaska",
-      "time": 1781751319729,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lynnmx"
     }
   ]
 }
