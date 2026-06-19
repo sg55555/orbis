@@ -6,9 +6,12 @@
 
 const MAX_ROWS = 2;
 
-// WS URL（既定 ws、?lc=wss で wss）。pure・単体テスト対象。
-export function lcWsUrl(search) {
-  const scheme = new URLSearchParams(search || '').get('lc') === 'wss' ? 'wss' : 'ws';
+// WS URL。明示 ?lc=ws|wss が最優先。無ければページが https なら wss・http なら ws
+// （本番https=自動wss／localhost=自動ws でmixed-content回避）。pure・単体テスト用に protocol を渡せる。
+export function lcWsUrl(search, protocol) {
+  const lc = new URLSearchParams(search || '').get('lc');
+  const proto = protocol || (typeof location !== 'undefined' ? location.protocol : 'http:');
+  const scheme = (lc === 'ws' || lc === 'wss') ? lc : (proto === 'https:' ? 'wss' : 'ws');
   return `${scheme}://localhost:8900/ws`;
 }
 
