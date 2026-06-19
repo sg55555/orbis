@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T15:01:19Z",
-  "count": 224,
+  "updated": "2026-06-19T15:15:54Z",
+  "count": 225,
   "points": [
+    {
+      "id": "ci41490584",
+      "lon": -117.479833333333,
+      "lat": 35.9666666666667,
+      "depth": 4.58,
+      "mag": 0.77,
+      "place": "23 km NNW of Searles Valley, CA",
+      "time": 1781881796720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490584"
+    },
     {
       "id": "aka2026mbhdig",
       "lon": -156.645,
@@ -954,6 +964,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lymcio"
     },
     {
+      "id": "aka2026majyyt",
+      "lon": 176.24,
+      "lat": 51.964,
+      "depth": 13.6,
+      "mag": 3.6,
+      "place": "229 km ESE of Attu Station, Alaska",
+      "time": 1781838463141,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majyyt"
+    },
+    {
       "id": "aka2026majxip",
       "lon": -146.782,
       "lat": 61.404,
@@ -1185,12 +1205,12 @@
     },
     {
       "id": "aka2026maegns",
-      "lon": -150.198,
-      "lat": 62.336,
-      "depth": 17.1,
-      "mag": 3.4,
-      "place": "2 km NE of Trapper Creek, Alaska",
-      "time": 1781828203032,
+      "lon": -150.218,
+      "lat": 62.324,
+      "depth": 15.9,
+      "mag": 3.1,
+      "place": "1 km NE of Trapper Creek, Alaska",
+      "time": 1781828203383,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maegns"
     },
     {
@@ -2232,16 +2252,6 @@
       "place": "78 km ENE of Lime Village, Alaska",
       "time": 1781796208432,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzmmew"
-    },
-    {
-      "id": "aka2026lzlxlw",
-      "lon": -153.033,
-      "lat": 60.14,
-      "depth": 137.5,
-      "mag": 2.1,
-      "place": "71 km E of Port Alsworth, Alaska",
-      "time": 1781795229340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzlxlw"
     }
   ]
 }
