@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T07:01:14Z",
-  "count": 234,
+  "updated": "2026-06-19T07:15:49Z",
+  "count": 233,
   "points": [
+    {
+      "id": "uw714026791",
+      "lon": -122.169502258301,
+      "lat": 47.0595016479492,
+      "depth": 7.44999980926514,
+      "mag": 2.26793158054352,
+      "place": "5 km SSE of Orting, Washington",
+      "time": 1781852603090,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026791"
+    },
+    {
+      "id": "tx2026lytpmo",
+      "lon": -104.448,
+      "lat": 31.632,
+      "depth": 3.5599,
+      "mag": 1.8,
+      "place": "60 km S of Whites City, New Mexico",
+      "time": 1781852541405,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytpmo"
+    },
+    {
+      "id": "ci41490496",
+      "lon": -116.2755,
+      "lat": 32.9481666666667,
+      "depth": 11.71,
+      "mag": 0.81,
+      "place": "26 km SSW of Ocotillo Wells, CA",
+      "time": 1781852248690,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490496"
+    },
     {
       "id": "nc75379511",
       "lon": -122.944999694824,
@@ -22,6 +52,16 @@
       "place": "47 km WNW of Nanwalek, Alaska",
       "time": 1781851897444,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026markyp"
+    },
+    {
+      "id": "pt26170000",
+      "lon": 160.923,
+      "lat": 52.151,
+      "depth": 10,
+      "mag": 6.6,
+      "place": "185 km SE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781851887000,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pt26170000"
     },
     {
       "id": "aka2026maqzng",
@@ -215,12 +255,12 @@
     },
     {
       "id": "tx2026lymcio",
-      "lon": -104.448,
-      "lat": 31.631,
-      "depth": 3.3659,
-      "mag": 2.4,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781838729672,
+      "lon": -104.416,
+      "lat": 31.659,
+      "depth": 6.0486,
+      "mag": 2.2,
+      "place": "57 km S of Whites City, New Mexico",
+      "time": 1781838729654,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lymcio"
     },
     {
@@ -2292,56 +2332,6 @@
       "place": "13 km S of Denali Park, Alaska",
       "time": 1781767106073,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lywhqm"
-    },
-    {
-      "id": "aka2026lywduf",
-      "lon": -149.685,
-      "lat": 63.071,
-      "depth": 87,
-      "mag": 1.9,
-      "place": "51 km SW of Cantwell, Alaska",
-      "time": 1781766840202,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lywduf"
-    },
-    {
-      "id": "uu80007448",
-      "lon": -112.041666666667,
-      "lat": 40.735,
-      "depth": 5.94,
-      "mag": 0.29,
-      "place": "5 km ENE of Magna, Utah",
-      "time": 1781766809830,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007448"
-    },
-    {
-      "id": "ci41489640",
-      "lon": -116.276166666667,
-      "lat": 32.9451666666667,
-      "depth": 11.62,
-      "mag": 0.73,
-      "place": "26 km SSW of Ocotillo Wells, CA",
-      "time": 1781766614310,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489640"
-    },
-    {
-      "id": "ci41489632",
-      "lon": -116.2795,
-      "lat": 32.947,
-      "depth": 12.19,
-      "mag": 1.69,
-      "place": "26 km SSW of Ocotillo Wells, CA",
-      "time": 1781766188800,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489632"
-    },
-    {
-      "id": "av93062154",
-      "lon": -169.936,
-      "lat": 52.8376666666667,
-      "depth": 10.29,
-      "mag": 1.04,
-      "place": "73 km W of Nikolski, Alaska",
-      "time": 1781766166840,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062154"
     }
   ]
 }
