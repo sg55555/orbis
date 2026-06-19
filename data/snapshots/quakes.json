@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T18:01:24Z",
+  "updated": "2026-06-19T18:15:52Z",
   "count": 225,
   "points": [
+    {
+      "id": "aka2026mbobgi",
+      "lon": -151.183,
+      "lat": 60.137,
+      "depth": 62.4,
+      "mag": 1.7,
+      "place": "15 km SE of Clam Gulch, Alaska",
+      "time": 1781892607259,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbobgi"
+    },
+    {
+      "id": "nc75379706",
+      "lon": -121.667663574219,
+      "lat": 40.8429985046387,
+      "depth": 5.01000022888184,
+      "mag": 2.23,
+      "place": "4 km S of Burney, CA",
+      "time": 1781892052260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379706"
+    },
     {
       "id": "aka2026mbnren",
       "lon": -150.369,
@@ -62,6 +82,26 @@
       "place": "100 km N of Karluk, Alaska",
       "time": 1781888446629,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbltdd"
+    },
+    {
+      "id": "aka2026mblpot",
+      "lon": 176.165,
+      "lat": 51.818,
+      "depth": 20,
+      "mag": 3.4,
+      "place": "233 km ESE of Attu Station, Alaska",
+      "time": 1781888150935,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblpot"
+    },
+    {
+      "id": "aka2026mbldwr",
+      "lon": 176.119,
+      "lat": 51.823,
+      "depth": 20,
+      "mag": 4.2,
+      "place": "230 km ESE of Attu Station, Alaska",
+      "time": 1781887385129,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbldwr"
     },
     {
       "id": "aka2026mbladx",
@@ -2212,46 +2252,6 @@
       "place": "26 km SW of Alamo, Nevada",
       "time": 1781806660183,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920448"
-    },
-    {
-      "id": "nc75379181",
-      "lon": -122.849830627441,
-      "lat": 38.7784996032715,
-      "depth": 13.0200004577637,
-      "mag": 0.88,
-      "place": "8 km W of The Geysers, CA",
-      "time": 1781806301840,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379181"
-    },
-    {
-      "id": "av94253513",
-      "lon": -152.881,
-      "lat": 60.4988333333333,
-      "depth": 5.51,
-      "mag": 0,
-      "place": "83 km NW of Ninilchik, Alaska",
-      "time": 1781806052240,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253513"
-    },
-    {
-      "id": "nc75379176",
-      "lon": -122.935165405273,
-      "lat": 38.775333404541,
-      "depth": 4.11999988555908,
-      "mag": 1.13,
-      "place": "8 km ESE of Cloverdale, CA",
-      "time": 1781805888960,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379176"
-    },
-    {
-      "id": "ci41490032",
-      "lon": -115.558,
-      "lat": 32.9475,
-      "depth": 3.54,
-      "mag": 1.36,
-      "place": "4 km SW of Brawley, CA",
-      "time": 1781805724490,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490032"
     }
   ]
 }
