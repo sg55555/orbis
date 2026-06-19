@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildFeed, parseGdeltDate } from '../js/lib/feed.js';
+import { buildFeed, parseGdeltDate, feedChipIds, loadFeedHidden, toggleHidden, visibleIds, allActive, applyChips, readFeedFilter, writeFeedFilter } from '../js/lib/feed.js';
 
 test('parseGdeltDate: "YYYYMMDDHHMMSS"(UTC) を epoch ms に', () => {
   assert.equal(parseGdeltDate('20260613173000'), Date.UTC(2026, 5, 13, 17, 30, 0));
@@ -46,4 +46,35 @@ test('buildFeed: toFeedItems を持たない/snapshot欠如レイヤーは無視
   const noFeed = { id: 'flights' };
   const out = buildFeed([noFeed, quakes], {}, new Set(['flights', 'quakes']));
   assert.deepEqual(out, []);
+});
+
+test('feedChipIds: フィード対象かつ有効なレイヤーのみ', () => {
+  const ls = [{ id: 'quakes' }, { id: 'conflict' }, { id: 'news' }];
+  assert.deepEqual(feedChipIds(ls, new Set(['quakes', 'conflict'])), ['quakes', 'conflict']);
+});
+
+test('hidden モデル: toggle/visible/allActive/applyChips', () => {
+  const ids = ['quakes', 'conflict', 'news'];
+  let hidden = loadFeedHidden(null);
+  assert.equal(allActive(ids, hidden), true);
+  hidden = toggleHidden(hidden, 'conflict');
+  assert.equal(allActive(ids, hidden), false);
+  assert.deepEqual(visibleIds(ids, hidden), ['quakes', 'news']);
+  const items = [{ layerId: 'quakes' }, { layerId: 'conflict' }, { layerId: 'news' }];
+  assert.deepEqual(applyChips(items, hidden).map((i) => i.layerId), ['quakes', 'news']);
+  hidden = toggleHidden(hidden, 'conflict'); // 再トグルで戻る
+  assert.equal(allActive(ids, hidden), true);
+});
+
+test('loadFeedHidden: 配列を Set に・新レイヤーは既定表示（hidden に無い）', () => {
+  const hidden = loadFeedHidden(['conflict']);
+  assert.equal(hidden.has('conflict'), true);
+  assert.equal(hidden.has('news'), false); // 既定表示
+});
+
+test('read/write FeedFilter: ラウンドトリップ（偽 storage）', () => {
+  const store = { _v: null, getItem() { return this._v; }, setItem(k, v) { this._v = v; } };
+  writeFeedFilter(new Set(['conflict', 'protests']), store);
+  const back = readFeedFilter(store);
+  assert.deepEqual([...back].sort(), ['conflict', 'protests']);
 });
