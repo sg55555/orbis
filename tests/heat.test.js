@@ -1,7 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildBlobConfig, buildPickConfig } from '../js/layers/conflict.js';
-import { buildBlobConfig as buildBlobP, buildPickConfig as buildPickP } from '../js/layers/protests.js';
+import { buildBlobConfig, buildPickConfig, buildCoreConfig } from '../js/layers/conflict.js';
+import { buildBlobConfig as buildBlobP, buildPickConfig as buildPickP, buildCoreConfig as buildCoreP } from '../js/layers/protests.js';
 
 const snap = { points: [{ id: 'a', lon: 1, lat: 2, mentions: 50 }, { id: 'b', lon: 3, lat: 4, mentions: 0 }] };
 
@@ -36,4 +36,26 @@ test('protests も同形（id=protests-heat / protests・加算合成）', () =>
   assert.equal(buildBlobP(snap).parameters.blendColorOperation, 'add');
   assert.equal(buildPickP(snap).id, 'protests');
   assert.equal(buildPickP(snap).pickable, true);
+});
+
+const sevSnap = { points: [
+  { id: 'a', lon: 1, lat: 2, mentions: 5, root: '18' },   // 暴行・低
+  { id: 'b', lon: 3, lat: 4, mentions: 100, root: '20' }, // 大規模暴力・高 mentions
+] };
+
+test('conflict buildCoreConfig: id=conflict-core・加算・深刻/多mentionsほど明るい', () => {
+  const c = buildCoreConfig(sevSnap, 1);
+  assert.equal(c.id, 'conflict-core');
+  assert.equal(c.parameters.blendColorOperation, 'add');
+  assert.equal(c.pickable, false);
+  const low = c.getFillColor(sevSnap.points[0]);
+  const high = c.getFillColor(sevSnap.points[1]);
+  assert.ok(high[1] > low[1], '大規模暴力＋高mentions→白熱(緑成分増)');
+});
+
+test('protests buildCoreConfig: id=protests-core・緑ベース', () => {
+  const c = buildCoreP(sevSnap, 1);
+  assert.equal(c.id, 'protests-core');
+  const col = c.getFillColor({ mentions: 0, root: '14' });
+  assert.equal(col[1], 200); // 緑ベース(40,200,120)の dim
 });
