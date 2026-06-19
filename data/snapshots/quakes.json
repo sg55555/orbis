@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T13:15:57Z",
-  "count": 229,
+  "updated": "2026-06-19T13:31:10Z",
+  "count": 228,
   "points": [
     {
       "id": "nc75379596",
@@ -1194,6 +1194,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026macuum"
     },
     {
+      "id": "tx2026lyegff",
+      "lon": -102.022,
+      "lat": 32.358,
+      "depth": 5.8594,
+      "mag": 0.3,
+      "place": "33 km NW of Stanton, Texas",
+      "time": 1781824519478,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyegff"
+    },
+    {
       "id": "ci41490352",
       "lon": -116.7145,
       "lat": 33.5326666666667,
@@ -2272,26 +2282,6 @@
       "place": "17 km SSW of Pine Mountain Club, CA",
       "time": 1781789682690,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489792"
-    },
-    {
-      "id": "ci41489784",
-      "lon": -117.458166666667,
-      "lat": 35.6491666666667,
-      "depth": 5.9,
-      "mag": 1.07,
-      "place": "14 km SSW of Searles Valley, CA",
-      "time": 1781789150680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489784"
-    },
-    {
-      "id": "aka2026lzinpv",
-      "lon": -152.657,
-      "lat": 59.17,
-      "depth": 72.7,
-      "mag": 2.6,
-      "place": "46 km WSW of Nanwalek, Alaska",
-      "time": 1781789110242,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzinpv"
     }
   ]
 }
