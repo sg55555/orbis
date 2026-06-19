@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T06:15:50Z",
-  "count": 235,
+  "updated": "2026-06-19T06:31:07Z",
+  "count": 234,
   "points": [
+    {
+      "id": "nc75379501",
+      "lon": -123.502998352051,
+      "lat": 40.5178337097168,
+      "depth": 6.69999980926514,
+      "mag": 1.91,
+      "place": "27 km W of Hayfork, CA",
+      "time": 1781850325370,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379501"
+    },
+    {
+      "id": "hv74986182",
+      "lon": -155.341659545898,
+      "lat": 19.0296669006348,
+      "depth": 35.310001373291,
+      "mag": 1.74,
+      "place": "23 km SE of Pāhala, Hawaii",
+      "time": 1781849816070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986182"
+    },
+    {
+      "id": "nc75379496",
+      "lon": -120.478500366211,
+      "lat": 35.9296684265137,
+      "depth": 3.78999996185303,
+      "mag": 1.83,
+      "place": "5 km NW of Parkfield, CA",
+      "time": 1781849703190,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379496"
+    },
     {
       "id": "nc75379491",
       "lon": -124.358329772949,
@@ -2312,46 +2342,6 @@
       "place": "33 km ENE of McKinney Acres, Texas",
       "time": 1781764697976,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwxdmf"
-    },
-    {
-      "id": "tx2026lwwwic",
-      "lon": -104.627,
-      "lat": 31.717,
-      "depth": 10.1212,
-      "mag": 1.5,
-      "place": "56 km SSW of Whites City, New Mexico",
-      "time": 1781764080255,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lwwwic"
-    },
-    {
-      "id": "nn00920428",
-      "lon": -119.0461,
-      "lat": 39.3146,
-      "depth": 6.2182,
-      "mag": 2.11,
-      "place": "19 km SE of Silver Springs, Nevada",
-      "time": 1781764008945,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920428"
-    },
-    {
-      "id": "ci41489616",
-      "lon": -118.000666666667,
-      "lat": 36.187,
-      "depth": 3.18,
-      "mag": 1.07,
-      "place": "11 km S of Olancha, CA",
-      "time": 1781763952180,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489616"
-    },
-    {
-      "id": "uu80142791",
-      "lon": -110.877166666667,
-      "lat": 44.5888333333333,
-      "depth": 7.79,
-      "mag": 1,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781763772450,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142791"
     }
   ]
 }
