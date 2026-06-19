@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T11:13:25Z",
+  "updated": "2026-06-19T11:15:54Z",
   "count": 226,
   "points": [
     {
@@ -25,12 +25,12 @@
     },
     {
       "id": "tx2026lzbfyg",
-      "lon": -102.045,
-      "lat": 32.071,
-      "depth": 4.4159,
-      "mag": 1,
-      "place": "8 km NNE of Midland, Texas",
-      "time": 1781866149531,
+      "lon": -102.046,
+      "lat": 32.076,
+      "depth": 4.2007,
+      "mag": 1.1,
+      "place": "9 km NNE of Midland, Texas",
+      "time": 1781866149591,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzbfyg"
     },
     {
