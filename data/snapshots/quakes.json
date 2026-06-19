@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T05:15:49Z",
-  "count": 245,
+  "updated": "2026-06-19T05:40:29Z",
+  "count": 242,
   "points": [
+    {
+      "id": "hv74986157",
+      "lon": -155.365173339844,
+      "lat": 19.8206672668457,
+      "depth": 27.9400005340576,
+      "mag": 1.74,
+      "place": "22 km SW of Laupāhoehoe, Hawaii",
+      "time": 1781847259080,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986157"
+    },
     {
       "id": "nc75379466",
       "lon": -122.807662963867,
@@ -592,6 +602,16 @@
       "place": "3 km WSW of Alamo, CA",
       "time": 1781819991030,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379286"
+    },
+    {
+      "id": "us7000sugx",
+      "lon": 160.2797,
+      "lat": 51.7575,
+      "depth": 10,
+      "mag": 4.3,
+      "place": "182 km SE of Vilyuchinsk, Russia",
+      "time": 1781819963887,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugx"
     },
     {
       "id": "aka2026lzzoly",
@@ -2402,56 +2422,6 @@
       "place": "231 km ESE of Attu Station, Alaska",
       "time": 1781761362152,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lytcqr"
-    },
-    {
-      "id": "uu80142776",
-      "lon": -110.877333333333,
-      "lat": 44.5871666666667,
-      "depth": 8.45,
-      "mag": 1.09,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781760878170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142776"
-    },
-    {
-      "id": "aka2026lysrzt",
-      "lon": -152.993,
-      "lat": 60.023,
-      "depth": 119.4,
-      "mag": 1.8,
-      "place": "67 km ENE of Pedro Bay, Alaska",
-      "time": 1781760626268,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lysrzt"
-    },
-    {
-      "id": "aka2026lysnut",
-      "lon": -159.143,
-      "lat": 56.23,
-      "depth": 66.4,
-      "mag": 0.7,
-      "place": "23 km W of Chignik Lake, Alaska",
-      "time": 1781760336514,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lysnut"
-    },
-    {
-      "id": "ci41489600",
-      "lon": -117.304166666667,
-      "lat": 34.0901666666667,
-      "depth": 15.99,
-      "mag": 1.72,
-      "place": "2 km NNE of Colton, CA",
-      "time": 1781759994930,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489600"
-    },
-    {
-      "id": "aka2026lysile",
-      "lon": -146.554,
-      "lat": 61.625,
-      "depth": 19.8,
-      "mag": 1.6,
-      "place": "42 km SSE of Nelchina, Alaska",
-      "time": 1781759965594,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lysile"
     }
   ]
 }
