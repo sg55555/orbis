@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T03:45:51Z",
-  "count": 254,
+  "updated": "2026-06-19T04:01:12Z",
+  "count": 253,
   "points": [
+    {
+      "id": "nc75379446",
+      "lon": -122.848999023438,
+      "lat": 38.848331451416,
+      "depth": 1.42999994754791,
+      "mag": 0.95,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781840646070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379446"
+    },
     {
       "id": "nn00920463",
       "lon": -116.6628,
@@ -12,6 +22,16 @@
       "place": "52 km ENE of Tonopah, Nevada",
       "time": 1781840337838,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920463"
+    },
+    {
+      "id": "us7000suhj",
+      "lon": -126.5732,
+      "lat": 42.3601,
+      "depth": 10,
+      "mag": 2.8,
+      "place": "175 km WSW of Port Orford, Oregon",
+      "time": 1781840187104,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suhj"
     },
     {
       "id": "aka2026makspc",
@@ -2512,36 +2532,6 @@
       "place": "79 km NNW of Karluk, Alaska",
       "time": 1781755276991,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lypsrx"
-    },
-    {
-      "id": "us7000su8l",
-      "lon": -177.5262,
-      "lat": 51.6879,
-      "depth": 71.922,
-      "mag": 3.7,
-      "place": "64 km WSW of Adak, Alaska",
-      "time": 1781754827354,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8l"
-    },
-    {
-      "id": "aka2026lyplkq",
-      "lon": 176.19,
-      "lat": 51.877,
-      "depth": 20,
-      "mag": 4.8,
-      "place": "231 km ESE of Attu Station, Alaska",
-      "time": 1781754753898,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lyplkq"
-    },
-    {
-      "id": "aka2026lypipb",
-      "lon": -149.524,
-      "lat": 62.06,
-      "depth": 43.5,
-      "mag": 1.5,
-      "place": "20 km ESE of Susitna North, Alaska",
-      "time": 1781754578409,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lypipb"
     }
   ]
 }
