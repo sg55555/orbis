@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T10:04:04Z",
-  "count": 225,
+  "updated": "2026-06-19T10:15:54Z",
+  "count": 223,
   "points": [
     {
       "id": "aka2026mawtxr",
@@ -582,6 +582,16 @@
       "place": "58 km E of Port Alsworth, Alaska",
       "time": 1781836516433,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maiwrf"
+    },
+    {
+      "id": "pr71520543",
+      "lon": -66.2881666666667,
+      "lat": 17.9268333333333,
+      "depth": 12.01,
+      "mag": 2.09,
+      "place": "5 km S of Salinas, Puerto Rico",
+      "time": 1781836446100,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520543"
     },
     {
       "id": "hv74986077",
@@ -2222,36 +2232,6 @@
       "place": "13 km ENE of Chenega, Alaska",
       "time": 1781777874350,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzchgj"
-    },
-    {
-      "id": "aka2026lzccor",
-      "lon": -156.206,
-      "lat": 57.985,
-      "depth": 30.8,
-      "mag": 0.6,
-      "place": "73 km ESE of Egegik, Alaska",
-      "time": 1781777551300,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzccor"
-    },
-    {
-      "id": "tx2026lxeedz",
-      "lon": -104.426,
-      "lat": 31.665,
-      "depth": 6.0999,
-      "mag": 1.7,
-      "place": "56 km S of Whites City, New Mexico",
-      "time": 1781777351150,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxeedz"
-    },
-    {
-      "id": "ci41489720",
-      "lon": -117.008166666667,
-      "lat": 33.6475,
-      "depth": 13.25,
-      "mag": 0.03,
-      "place": "10 km SE of Winchester, CA",
-      "time": 1781777033070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489720"
     }
   ]
 }
