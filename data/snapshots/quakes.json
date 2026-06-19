@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T19:01:20Z",
-  "count": 232,
+  "updated": "2026-06-19T19:15:50Z",
+  "count": 233,
   "points": [
+    {
+      "id": "ci41490760",
+      "lon": -117.807166666667,
+      "lat": 35.3063333333333,
+      "depth": 7.9,
+      "mag": 1.05,
+      "place": "17 km WSW of Johannesburg, CA",
+      "time": 1781896161870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490760"
+    },
+    {
+      "id": "ci41490744",
+      "lon": -117.5055,
+      "lat": 33.8628333333333,
+      "depth": 1.93,
+      "mag": 0.94,
+      "place": "2 km SE of Home Gardens, CA",
+      "time": 1781895875440,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490744"
+    },
+    {
+      "id": "us7000supe",
+      "lon": 124.6819,
+      "lat": 1.6659,
+      "depth": 176.504,
+      "mag": 4.4,
+      "place": "27 km NW of Manado, Indonesia",
+      "time": 1781895187411,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supe"
+    },
     {
       "id": "nc75379726",
       "lon": -122.779502868652,
@@ -12,6 +42,16 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781895063150,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379726"
+    },
+    {
+      "id": "us7000sup8",
+      "lon": 125.1837,
+      "lat": 4.9577,
+      "depth": 35,
+      "mag": 4.9,
+      "place": "58 km SSW of Sarangani, Philippines",
+      "time": 1781894303458,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sup8"
     },
     {
       "id": "hv74986627",
@@ -1204,6 +1244,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mapngg"
     },
     {
+      "id": "aka2026mapmcc",
+      "lon": -151.119,
+      "lat": 63.255,
+      "depth": 0.8,
+      "mag": 2,
+      "place": "43 km SE of Denali National Park, Alaska",
+      "time": 1781848377054,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mapmcc"
+    },
+    {
       "id": "ci41490488",
       "lon": -116.2725,
       "lat": 32.947,
@@ -2282,46 +2332,6 @@
       "place": "Izu Islands, Japan region",
       "time": 1781810260105,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suds"
-    },
-    {
-      "id": "nc75379201",
-      "lon": -122.8125,
-      "lat": 38.8276672363281,
-      "depth": 1.00999999046326,
-      "mag": 0.73,
-      "place": "7 km NW of The Geysers, CA",
-      "time": 1781809965010,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379201"
-    },
-    {
-      "id": "av94253603",
-      "lon": -169.866833333333,
-      "lat": 52.8191666666667,
-      "depth": 4.16,
-      "mag": 1.95,
-      "place": "68 km WSW of Nikolski, Alaska",
-      "time": 1781809589490,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253603"
-    },
-    {
-      "id": "ci41490136",
-      "lon": -116.759333333333,
-      "lat": 33.6465,
-      "depth": 14.41,
-      "mag": 0.99,
-      "place": "11 km SSW of Idyllwild, CA",
-      "time": 1781809483120,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490136"
-    },
-    {
-      "id": "ci41490128",
-      "lon": -116.5665,
-      "lat": 33.5411666666667,
-      "depth": 16.35,
-      "mag": 0.8,
-      "place": "10 km E of Anza, CA",
-      "time": 1781809369920,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490128"
     }
   ]
 }
