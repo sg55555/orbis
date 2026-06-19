@@ -72,9 +72,12 @@ export function initLiveCaptions(playerEl, toggleEl, { onActivate } = {}) {
   async function start() {
     enabled = true;
     if (onActivate) onActivate();          // YouTube cc を OFF（await 前に同期実行）
-    clearRows(); setStatus('', 'タブの音声を共有してください…');
+    clearRows(); setStatus('', 'このタブの音声を共有してください…');
     try {
-      stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+      // preferCurrentTab=true: 既定では Chrome は呼び出し元タブ(=Orbis)を共有候補から除外する
+      // (selfBrowserSurface 既定 'exclude')。Orbis のニュースは同タブ内の iframe で鳴るので
+      // 現在のタブ自身を共有する必要があり、これで「このタブを共有」が直接提示される。
+      stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true, preferCurrentTab: true });
       stream.getVideoTracks().forEach((t) => t.stop());
       if (stream.getAudioTracks().length === 0) {
         stream.getTracks().forEach((t) => t.stop()); stream = null;
