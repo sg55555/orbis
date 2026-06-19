@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T21:15:54Z",
-  "count": 245,
+  "updated": "2026-06-19T21:31:06Z",
+  "count": 243,
   "points": [
+    {
+      "id": "aka2026mbumki",
+      "lon": -149.407,
+      "lat": 60.981,
+      "depth": 22,
+      "mag": 1.7,
+      "place": "10 km N of Sunrise, Alaska",
+      "time": 1781904174108,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbumki"
+    },
     {
       "id": "nc75379821",
       "lon": -121.554000854492,
@@ -12,6 +22,16 @@
       "place": "2 km SW of San Juan Bautista, CA",
       "time": 1781903329760,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379821"
+    },
+    {
+      "id": "us7000suqu",
+      "lon": -26.5917,
+      "lat": -59.3446,
+      "depth": 150.333,
+      "mag": 5.1,
+      "place": "South Sandwich Islands region",
+      "time": 1781903309057,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqu"
     },
     {
       "id": "nc75379801",
@@ -42,6 +62,16 @@
       "place": "3 km SE of The Geysers, CA",
       "time": 1781901104430,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379776"
+    },
+    {
+      "id": "us7000suq8",
+      "lon": -164.8937,
+      "lat": 53.6077,
+      "depth": 35,
+      "mag": 3,
+      "place": "82 km SE of Akutan, Alaska",
+      "time": 1781901097838,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suq8"
     },
     {
       "id": "nc75379761",
@@ -325,23 +355,23 @@
     },
     {
       "id": "aka2026mbnhth",
-      "lon": -151.374,
-      "lat": 60.34,
-      "depth": 62.5,
-      "mag": 1.7,
+      "lon": -151.358,
+      "lat": 60.341,
+      "depth": 65.5,
+      "mag": 1.6,
       "place": "4 km SW of Cohoe, Alaska",
-      "time": 1781891256660,
+      "time": 1781891256391,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnhth"
     },
     {
-      "id": "aka2026mblwmk",
-      "lon": -151.887,
-      "lat": 61.419,
-      "depth": 11.7,
-      "mag": 1.3,
-      "place": "53 km NW of Beluga, Alaska",
-      "time": 1781888678572,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblwmk"
+      "id": "aka2026mbmbgs",
+      "lon": -173.622,
+      "lat": 51.448,
+      "depth": 5.6,
+      "mag": 2.4,
+      "place": "92 km SSE of Atka, Alaska",
+      "time": 1781889008871,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbmbgs"
     },
     {
       "id": "hv74986572",
@@ -352,16 +382,6 @@
       "place": "11 km S of Pāhala, Hawaii",
       "time": 1781888664930,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986572"
-    },
-    {
-      "id": "aka2026mbltdd",
-      "lon": -154.513,
-      "lat": 58.474,
-      "depth": 5,
-      "mag": 1,
-      "place": "100 km N of Karluk, Alaska",
-      "time": 1781888446629,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbltdd"
     },
     {
       "id": "aka2026mblpot",
@@ -384,13 +404,23 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbldwr"
     },
     {
+      "id": "aka2026mblbzh",
+      "lon": -176.64,
+      "lat": 51.576,
+      "depth": 60.5,
+      "mag": 1.8,
+      "place": "33 km S of Adak, Alaska",
+      "time": 1781887260600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblbzh"
+    },
+    {
       "id": "aka2026mbladx",
       "lon": -154.251,
-      "lat": 57.323,
-      "depth": 35.8,
+      "lat": 57.334,
+      "depth": 39.5,
       "mag": 2.1,
-      "place": "29 km SW of Larsen Bay, Alaska",
-      "time": 1781887133879,
+      "place": "28 km SW of Larsen Bay, Alaska",
+      "time": 1781887133867,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbladx"
     },
     {
@@ -442,6 +472,16 @@
       "place": "61 km WNW of Anchor Point, Alaska",
       "time": 1781885041046,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjvxo"
+    },
+    {
+      "id": "av94255443",
+      "lon": -169.9105,
+      "lat": 52.8106666666667,
+      "depth": 6.3,
+      "mag": 0.41,
+      "place": "72 km WSW of Nikolski, Alaska",
+      "time": 1781884719430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255443"
     },
     {
       "id": "aka2026mbjpyr",
@@ -2392,66 +2432,6 @@
       "place": "6 km WNW of Cobb, CA",
       "time": 1781818344740,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379271"
-    },
-    {
-      "id": "aka2026lzyrdx",
-      "lon": -169.525,
-      "lat": 52.383,
-      "depth": 40.3,
-      "mag": 2.1,
-      "place": "76 km SW of Nikolski, Alaska",
-      "time": 1781818150337,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzyrdx"
-    },
-    {
-      "id": "hv74985912",
-      "lon": -155.352172851562,
-      "lat": 19.238000869751,
-      "depth": 27.3600006103516,
-      "mag": 2.16,
-      "place": "13 km ENE of Pāhala, Hawaii",
-      "time": 1781818045110,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985912"
-    },
-    {
-      "id": "aka2026lzymqv",
-      "lon": -152.607,
-      "lat": 60.192,
-      "depth": 111.9,
-      "mag": 1.5,
-      "place": "54 km WNW of Ninilchik, Alaska",
-      "time": 1781817829690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzymqv"
-    },
-    {
-      "id": "aka2026lzykcg",
-      "lon": -149.938,
-      "lat": 63.466,
-      "depth": 105.2,
-      "mag": 1.6,
-      "place": "49 km W of Cantwell, Alaska",
-      "time": 1781817655399,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzykcg"
-    },
-    {
-      "id": "ci41490280",
-      "lon": -119.147499084473,
-      "lat": 34.5299987792969,
-      "depth": 0.790000021457672,
-      "mag": 2.13,
-      "place": "13 km NE of Ojai, CA",
-      "time": 1781817492120,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490280"
-    },
-    {
-      "id": "aka2026lzygye",
-      "lon": -164.61,
-      "lat": 53.591,
-      "depth": 18.7,
-      "mag": 2.2,
-      "place": "97 km SE of Akutan, Alaska",
-      "time": 1781817441864,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzygye"
     }
   ]
 }
