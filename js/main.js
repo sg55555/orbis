@@ -7,7 +7,7 @@ import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
 import { immerseZoom, immerseClasses, immerseGlow, immerseNeb, atmosphereStops, isCompareMode } from './lib/immerse.js';
 import { renderPanel, wireCollapse } from './ui/panel.js';
-import { buildFeed, applyChips, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
+import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
 import { initLiveCaptions } from './ui/live-captions.js';
@@ -103,17 +103,18 @@ function refreshFeed() {
   renderChips(document.getElementById('feed-chips'), chipIds, feedHidden,
     (id) => { feedHidden = toggleHidden(feedHidden, id); writeFeedFilter(feedHidden); refreshFeed(); },
     () => { feedHidden = new Set(); writeFeedFilter(feedHidden); refreshFeed(); });
-  const items = applyChips(allItems, feedHidden);
+  const visible = new Set(chipIds.filter((id) => !feedHidden.has(id)));
+  const items = buildFeedBalanced(feedLayers(), snapshots, visible);
+  const maxCount = items.reduce((m, it) => Math.max(m, Number(it.count) || 0), 0);
   renderFeed(document.getElementById('feed-rows'), items, (it) => {
     const at = (typeof performance !== 'undefined') ? performance.now() : Date.now();
     selected = { lon: it.lon, lat: it.lat, title: it.title || it.country_ja || '', layerId: it.layerId, at };
-    if (window.__orbis) window.__orbis.selected = selected; // e2e/デバッグ用に露出
+    if (window.__orbis) window.__orbis.selected = selected;
     map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500, essential: true });
-    // 着地点に「何が・どこに」を示すポップアップを出す（地図に追従）。
     const html = (it.kind === 'group') ? gdeltCountryPopupHtml(it) : selectionPopupHtml(it);
     if (selPopup) selPopup.setLngLat([it.lon, it.lat]).setHTML(html).addTo(map);
-    drawAll(window.__orbis.overlay); // リティクルを即時表示
-  });
+    drawAll(window.__orbis.overlay);
+  }, maxCount);
 }
 
 // trade 航路上を流れる発光トレイル（TripsLayer）。粒子のちらつきを避け滑らかに流す。

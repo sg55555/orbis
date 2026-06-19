@@ -1,16 +1,19 @@
 // 右イベントフィード描画。クリックで地図 flyTo。集約は js/lib/feed.js。
 import { formatFreshness } from '../lib/geo.js';
+import { countBarPct } from '../lib/feed.js';
 
 const COLOR = { quakes: 'rgb(255,176,40)', conflict: 'rgb(255,60,80)', protests: 'rgb(94,255,166)', news: 'var(--cyan)' };
 const LABEL = { quakes: '地震', conflict: '紛争', protests: '抗議', news: 'ニュース' };
 
-export function renderFeed(root, items, onPick) {
+export function renderFeed(root, items, onPick, maxCount = 0) {
   root.innerHTML = items.map((it, i) => {
     const c = COLOR[it.layerId] || 'var(--cyan)';
     const title = it.kind === 'group'
       ? `${LABEL[it.layerId] || ''} ${escapeHtml(it.country_ja || '')}`
       : escapeHtml(it.title);
-    const badge = it.kind === 'group' ? `<span class="feed-count">×${Number(it.count) || 0}</span>` : '';
+    const badge = it.kind === 'group'
+      ? `<span class="feed-count" style="--barw:${countBarPct(it.count, maxCount)}%">${Number(it.count) || 0}件</span>`
+      : '';
     return `<div class="feed-row" data-i="${i}">
       <span class="feed-dot" style="color:${c};background:${c}"></span>
       <span class="feed-title">${title}</span>${badge}
@@ -18,7 +21,6 @@ export function renderFeed(root, items, onPick) {
     </div>`;
   }).join('') || '<div class="feed-empty">イベントなし</div>';
 
-  // イベント委譲（再生成に強い）。直近 items をクロージャで参照。
   if (!root.__wired) {
     root.addEventListener('click', (e) => {
       const row = e.target.closest('.feed-row');

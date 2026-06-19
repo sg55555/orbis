@@ -73,3 +73,28 @@ test('clicking a conflict point shows article popup (best-effort) + hotspot puls
   // headless では picking が外れることがあるため、popup が出れば検証・出なくても落とさない（実画素は手動）
   expect(typeof ok).toBe('boolean');
 });
+
+test('feed is balanced (not all conflict) and shows N件 with count order', async ({ page }) => {
+  test.setTimeout(60000);
+  await page.goto('/');
+  await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
+  await expect.poll(() => page.evaluate(() => window.__orbis?.counts?.conflict ?? 0), { timeout: 15000 }).toBeGreaterThan(0);
+  await expect(page.locator('#feed .feed-row').first()).toBeVisible({ timeout: 15000 });
+
+  // 先頭8行に2種類以上のレイヤー色が混在（紛争一色でない）
+  const colors = await page.$$eval('#feed .feed-row .feed-dot', (ns) => ns.slice(0, 8).map((e) => e.style.background));
+  expect(new Set(colors).size).toBeGreaterThan(1);
+
+  // バッジは「N件」表記（×ではない）
+  const badge = await page.locator('#feed .feed-row .feed-count').first().textContent();
+  expect(badge).toMatch(/^\d+件$/);
+
+  // チップで紛争のみ表示 → 紛争行が件数降順（先頭の件数 ≥ 2番目）
+  // まず他チップをオフにして紛争だけ残す（全→各トグル）
+  await page.locator('#feed-chips .feed-chip[data-chip="quakes"]').click().catch(() => {});
+  await page.locator('#feed-chips .feed-chip[data-chip="protests"]').click().catch(() => {});
+  await page.locator('#feed-chips .feed-chip[data-chip="news"]').click().catch(() => {});
+  await page.waitForTimeout(400);
+  const counts = await page.$$eval('#feed .feed-row .feed-count', (ns) => ns.slice(0, 5).map((e) => parseInt(e.textContent, 10)));
+  for (let i = 1; i < counts.length; i++) expect(counts[i - 1]).toBeGreaterThanOrEqual(counts[i]);
+});
