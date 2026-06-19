@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T22:28:49Z",
-  "count": 248,
+  "updated": "2026-06-19T22:31:03Z",
+  "count": 247,
   "points": [
     {
       "id": "aka2026mbwkei",
@@ -2472,16 +2472,6 @@
       "place": "73 km E of Tomioka, Japan",
       "time": 1781821987963,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sug8"
-    },
-    {
-      "id": "hv74985962",
-      "lon": -155.497329711914,
-      "lat": 19.1666660308838,
-      "depth": 28.3199996948242,
-      "mag": 2.15,
-      "place": "4 km SSW of Pāhala, Hawaii",
-      "time": 1781821740160,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74985962"
     }
   ]
 }
