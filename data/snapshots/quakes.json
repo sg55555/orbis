@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T20:01:17Z",
+  "updated": "2026-06-19T20:21:28Z",
   "count": 230,
   "points": [
+    {
+      "id": "aka2026mbryce",
+      "lon": -152.471,
+      "lat": 61.276,
+      "depth": 5,
+      "mag": 2.2,
+      "place": "75 km WNW of Tyonek, Alaska",
+      "time": 1781899590796,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbryce"
+    },
+    {
+      "id": "us7000supu",
+      "lon": -82.6209,
+      "lat": 4.5309,
+      "depth": 10,
+      "mag": 4.2,
+      "place": "south of Panama",
+      "time": 1781898703834,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supu"
+    },
     {
       "id": "us7000supp",
       "lon": 127.9523,
@@ -454,6 +474,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490584"
     },
     {
+      "id": "aka2026mbhwbl",
+      "lon": -160.233,
+      "lat": 54.507,
+      "depth": 1.4,
+      "mag": 2.1,
+      "place": "93 km S of Sand Point, Alaska",
+      "time": 1781881448781,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbhwbl"
+    },
+    {
       "id": "tx2026lzjbta",
       "lon": -103.801,
       "lat": 32.003,
@@ -466,11 +496,11 @@
     {
       "id": "aka2026mbhdig",
       "lon": -156.645,
-      "lat": 56.253,
-      "depth": 14.7,
-      "mag": 1.9,
+      "lat": 56.258,
+      "depth": 14.4,
+      "mag": 1.8,
       "place": "109 km E of Chignik, Alaska",
-      "time": 1781880153873,
+      "time": 1781880153747,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbhdig"
     },
     {
@@ -664,6 +694,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379576"
     },
     {
+      "id": "aka2026mbbcxq",
+      "lon": -165.413,
+      "lat": 52.264,
+      "depth": 21.7,
+      "mag": 2.9,
+      "place": "194 km SSE of Unalaska, Alaska",
+      "time": 1781869328486,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbbcxq"
+    },
+    {
       "id": "tx2026lzcrdv",
       "lon": -103.686,
       "lat": 31.204,
@@ -675,33 +715,23 @@
     },
     {
       "id": "aka2026mbarwi",
-      "lon": -151.037,
-      "lat": 59.117,
-      "depth": 34.4,
-      "mag": 1.2,
-      "place": "52 km ESE of Port Graham, Alaska",
-      "time": 1781868568426,
+      "lon": -150.99,
+      "lat": 59.116,
+      "depth": 36.2,
+      "mag": 1.7,
+      "place": "54 km SE of Seldovia, Alaska",
+      "time": 1781868568095,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbarwi"
     },
     {
-      "id": "aka2026mbaltd",
-      "lon": -154.168,
-      "lat": 58.438,
-      "depth": 5,
-      "mag": 1,
-      "place": "85 km WNW of Aleneva, Alaska",
-      "time": 1781868144713,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbaltd"
-    },
-    {
-      "id": "aka2026mazyrg",
-      "lon": -147.322,
-      "lat": 64.859,
-      "depth": 5,
-      "mag": 0.9,
-      "place": "11 km ENE of Badger, Alaska",
-      "time": 1781867239252,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mazyrg"
+      "id": "aka2026mbaqka",
+      "lon": -173.244,
+      "lat": 51.702,
+      "depth": 10.8,
+      "mag": 3.1,
+      "place": "85 km SE of Atka, Alaska",
+      "time": 1781868445349,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbaqka"
     },
     {
       "id": "nc75379566",
@@ -764,16 +794,6 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzange"
     },
     {
-      "id": "aka2026mayoof",
-      "lon": -154.939,
-      "lat": 58.279,
-      "depth": 5.8,
-      "mag": 0.8,
-      "place": "84 km NNW of Karluk, Alaska",
-      "time": 1781864740705,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mayoof"
-    },
-    {
       "id": "aka2026maymqp",
       "lon": 178.741,
       "lat": 51.379,
@@ -782,6 +802,16 @@
       "place": "Rat Islands, Aleutian Islands, Alaska",
       "time": 1781864585026,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maymqp"
+    },
+    {
+      "id": "av93062259",
+      "lon": -169.950333333333,
+      "lat": 52.7966666666667,
+      "depth": 6,
+      "mag": 0.69,
+      "place": "75 km WSW of Nikolski, Alaska",
+      "time": 1781864335800,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062259"
     },
     {
       "id": "ci41490520",
@@ -812,6 +842,16 @@
       "place": "35 km SE of Malaga, New Mexico",
       "time": 1781864147747,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
+    },
+    {
+      "id": "aka2026mayerp",
+      "lon": -165.318,
+      "lat": 53.796,
+      "depth": 60.3,
+      "mag": 1.8,
+      "place": "48 km SE of Akutan, Alaska",
+      "time": 1781864064555,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mayerp"
     },
     {
       "id": "tx2026lyzvlu",
@@ -2262,46 +2302,6 @@
       "place": "9 km N of Borrego Springs, CA",
       "time": 1781814413860,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490216"
-    },
-    {
-      "id": "aka2026lzwjcb",
-      "lon": -159.672,
-      "lat": 55.935,
-      "depth": 11.6,
-      "mag": 1.5,
-      "place": "12 km WNW of Ivanof Bay, Alaska",
-      "time": 1781813994655,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzwjcb"
-    },
-    {
-      "id": "av94253748",
-      "lon": -154.9935,
-      "lat": 58.2871666666667,
-      "depth": 2.86,
-      "mag": -0.32,
-      "place": "86 km NNW of Karluk, Alaska",
-      "time": 1781813810410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94253748"
-    },
-    {
-      "id": "ci41490176",
-      "lon": -116.412,
-      "lat": 33.0321666666667,
-      "depth": 8.03,
-      "mag": 1.08,
-      "place": "18 km ESE of Julian, CA",
-      "time": 1781813215590,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490176"
-    },
-    {
-      "id": "tx2026lxxyry",
-      "lon": -102.194,
-      "lat": 32.361,
-      "depth": 8.374,
-      "mag": 0.4,
-      "place": "32 km ENE of McKinney Acres, Texas",
-      "time": 1781813132063,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxxyry"
     }
   ]
 }
