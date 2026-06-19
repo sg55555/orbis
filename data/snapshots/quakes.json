@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T18:19:37Z",
-  "count": 224,
+  "updated": "2026-06-19T18:31:07Z",
+  "count": 225,
   "points": [
+    {
+      "id": "us7000sunw",
+      "lon": -64.2498,
+      "lat": 18.0993,
+      "depth": 10,
+      "mag": 3,
+      "place": "62 km NE of Christiansted, U.S. Virgin Islands",
+      "time": 1781892938977,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunw"
+    },
     {
       "id": "nc75379711",
       "lon": -121.663833618164,
@@ -44,6 +54,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnren"
     },
     {
+      "id": "pr2026170001",
+      "lon": -64.4281,
+      "lat": 19.472,
+      "depth": 50,
+      "mag": 3.65,
+      "place": "132 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1781891682340,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026170001"
+    },
+    {
       "id": "nc75379696",
       "lon": -121.675498962402,
       "lat": 40.798999786377,
@@ -52,6 +72,16 @@
       "place": "9 km S of Burney, CA",
       "time": 1781891596680,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379696"
+    },
+    {
+      "id": "us7000sunf",
+      "lon": -68.7216,
+      "lat": -22.3313,
+      "depth": 112.201,
+      "mag": 4.3,
+      "place": "25 km ENE of Calama, Chile",
+      "time": 1781891377615,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunf"
     },
     {
       "id": "aka2026mbnhth",
@@ -1245,22 +1275,22 @@
     },
     {
       "id": "aka2026maknfj",
-      "lon": -159.717,
-      "lat": 55.992,
-      "depth": 12.8,
-      "mag": 1.4,
-      "place": "17 km NW of Ivanof Bay, Alaska",
-      "time": 1781839458743,
+      "lon": -159.624,
+      "lat": 55.961,
+      "depth": 17.3,
+      "mag": 1.6,
+      "place": "10 km NW of Ivanof Bay, Alaska",
+      "time": 1781839459046,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maknfj"
     },
     {
       "id": "aka2026makhxs",
-      "lon": -159.831,
-      "lat": 56.024,
-      "depth": 5,
-      "mag": 2.1,
-      "place": "25 km WNW of Ivanof Bay, Alaska",
-      "time": 1781839092899,
+      "lon": -159.771,
+      "lat": 55.997,
+      "depth": 12.1,
+      "mag": 2.2,
+      "place": "20 km WNW of Ivanof Bay, Alaska",
+      "time": 1781839093485,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makhxs"
     },
     {
@@ -2222,26 +2252,6 @@
       "place": "13 km SE of Tehachapi, CA",
       "time": 1781807496610,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490088"
-    },
-    {
-      "id": "pr71520458",
-      "lon": -66.648,
-      "lat": 17.9098333333333,
-      "depth": 17.87,
-      "mag": 2.07,
-      "place": "11 km SSW of Ponce, Puerto Rico",
-      "time": 1781807387660,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520458"
-    },
-    {
-      "id": "tx2026lxuoii",
-      "lon": -100.672,
-      "lat": 32.769,
-      "depth": 6.2744,
-      "mag": 1.6,
-      "place": "16 km NNE of Hermleigh, Texas",
-      "time": 1781806978972,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxuoii"
     }
   ]
 }
