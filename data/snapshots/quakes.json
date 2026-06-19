@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T09:45:55Z",
-  "count": 227,
+  "updated": "2026-06-19T10:01:16Z",
+  "count": 225,
   "points": [
     {
       "id": "aka2026mawtxr",
@@ -2252,26 +2252,6 @@
       "place": "10 km SE of Winchester, CA",
       "time": 1781777033070,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489720"
-    },
-    {
-      "id": "nc75378981",
-      "lon": -122.750831604004,
-      "lat": 38.7779998779297,
-      "depth": 1.48000001907349,
-      "mag": 1.03,
-      "place": "0 km E of The Geysers, CA",
-      "time": 1781776640740,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75378981"
-    },
-    {
-      "id": "ci41489712",
-      "lon": -117.152833333333,
-      "lat": 33.9951666666667,
-      "depth": 10.3,
-      "mag": 0.81,
-      "place": "7 km SSE of Redlands, CA",
-      "time": 1781776445350,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489712"
     }
   ]
 }
