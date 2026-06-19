@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T15:15:54Z",
-  "count": 225,
+  "updated": "2026-06-19T15:31:11Z",
+  "count": 226,
   "points": [
+    {
+      "id": "nc75379626",
+      "lon": -122.824333190918,
+      "lat": 38.8418350219727,
+      "depth": 1.58000004291534,
+      "mag": 0.77,
+      "place": "9 km WNW of Cobb, CA",
+      "time": 1781882872790,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379626"
+    },
+    {
+      "id": "ci41490592",
+      "lon": -116.486666666667,
+      "lat": 33.4996666666667,
+      "depth": 11.3,
+      "mag": 0.58,
+      "place": "18 km ESE of Anza, CA",
+      "time": 1781881999160,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490592"
+    },
     {
       "id": "ci41490584",
       "lon": -117.479833333333,
@@ -872,6 +892,16 @@
       "place": "15 km NE of Angwin, CA",
       "time": 1781843826000,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379451"
+    },
+    {
+      "id": "aka2026mamwqv",
+      "lon": -169.915,
+      "lat": 51.032,
+      "depth": 20,
+      "mag": 3.1,
+      "place": "224 km SSW of Nikolski, Alaska",
+      "time": 1781843669774,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamwqv"
     },
     {
       "id": "aka2026mamcoj",
@@ -2232,26 +2262,6 @@
       "place": "2 km NE of Palomar Observatory, CA",
       "time": 1781797772720,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489920"
-    },
-    {
-      "id": "us7000suc2",
-      "lon": 94.3367,
-      "lat": 24.5164,
-      "depth": 10,
-      "mag": 4.6,
-      "place": "28 km ESE of Wāngjing, India",
-      "time": 1781796559872,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suc2"
-    },
-    {
-      "id": "aka2026lzmmew",
-      "lon": -154.138,
-      "lat": 61.686,
-      "depth": 0.2,
-      "mag": 1.7,
-      "place": "78 km ENE of Lime Village, Alaska",
-      "time": 1781796208432,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzmmew"
     }
   ]
 }
