@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T04:01:12Z",
-  "count": 253,
+  "updated": "2026-06-19T04:15:49Z",
+  "count": 252,
   "points": [
+    {
+      "id": "aka2026mamcoj",
+      "lon": -147.534,
+      "lat": 65.118,
+      "depth": 5,
+      "mag": 0.7,
+      "place": "18 km NNE of Fox, Alaska",
+      "time": 1781842320767,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamcoj"
+    },
+    {
+      "id": "ci41490464",
+      "lon": -116.449666666667,
+      "lat": 33.5058333333333,
+      "depth": 2.3,
+      "mag": 0.37,
+      "place": "21 km ESE of Anza, CA",
+      "time": 1781841832630,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490464"
+    },
     {
       "id": "nc75379446",
       "lon": -122.848999023438,
@@ -2502,36 +2522,6 @@
       "place": "20 km NE of Aratichanguío, Mexico",
       "time": 1781757442791,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000su8t"
-    },
-    {
-      "id": "av94252173",
-      "lon": -169.878833333333,
-      "lat": 52.8178333333333,
-      "depth": 5.42,
-      "mag": 0.59,
-      "place": "69 km WSW of Nikolski, Alaska",
-      "time": 1781756071600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252173"
-    },
-    {
-      "id": "av94252163",
-      "lon": -169.903166666667,
-      "lat": 52.8131666666667,
-      "depth": 7.35,
-      "mag": 0.43,
-      "place": "71 km WSW of Nikolski, Alaska",
-      "time": 1781755869830,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94252163"
-    },
-    {
-      "id": "aka2026lypsrx",
-      "lon": -154.908,
-      "lat": 58.245,
-      "depth": 5,
-      "mag": 0.8,
-      "place": "79 km NNW of Karluk, Alaska",
-      "time": 1781755276991,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lypsrx"
     }
   ]
 }
