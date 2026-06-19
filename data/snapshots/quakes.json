@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T19:15:50Z",
-  "count": 233,
+  "updated": "2026-06-19T19:31:08Z",
+  "count": 234,
   "points": [
+    {
+      "id": "aka2026mbqpwp",
+      "lon": -151.511,
+      "lat": 61.231,
+      "depth": 74.7,
+      "mag": 1.5,
+      "place": "25 km WNW of Beluga, Alaska",
+      "time": 1781897218031,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqpwp"
+    },
     {
       "id": "ci41490760",
       "lon": -117.807166666667,
@@ -22,6 +32,16 @@
       "place": "2 km SE of Home Gardens, CA",
       "time": 1781895875440,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490744"
+    },
+    {
+      "id": "us7000supf",
+      "lon": 153.2914,
+      "lat": -5.4181,
+      "depth": 61.371,
+      "mag": 4.9,
+      "place": "164 km SE of Kokopo, Papua New Guinea",
+      "time": 1781895650939,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supf"
     },
     {
       "id": "us7000supe",
@@ -994,6 +1014,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suij"
     },
     {
+      "id": "aka2026matifx",
+      "lon": -154.256,
+      "lat": 58.749,
+      "depth": 100.3,
+      "mag": 1.6,
+      "place": "82 km SSE of Kokhanok, Alaska",
+      "time": 1781855308202,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026matifx"
+    },
+    {
       "id": "aka2026matfpi",
       "lon": -179.911,
       "lat": 50.935,
@@ -1135,12 +1165,12 @@
     },
     {
       "id": "aka2026markyp",
-      "lon": -152.73,
-      "lat": 59.467,
-      "depth": 80.3,
+      "lon": -152.761,
+      "lat": 59.465,
+      "depth": 80.7,
       "mag": 1.8,
-      "place": "47 km WNW of Nanwalek, Alaska",
-      "time": 1781851897444,
+      "place": "49 km WNW of Nanwalek, Alaska",
+      "time": 1781851897441,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026markyp"
     },
     {
@@ -1175,13 +1205,23 @@
     },
     {
       "id": "aka2026maqzng",
-      "lon": -155.151,
-      "lat": 57.615,
+      "lon": -155.15,
+      "lat": 57.61,
       "depth": 69.1,
-      "mag": 1.4,
+      "mag": 1.5,
       "place": "41 km W of Karluk, Alaska",
-      "time": 1781851108111,
+      "time": 1781851108056,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqzng"
+    },
+    {
+      "id": "aka2026maqpjw",
+      "lon": -164.119,
+      "lat": 53.666,
+      "depth": 19.8,
+      "mag": 2.3,
+      "place": "120 km ESE of Akutan, Alaska",
+      "time": 1781850405793,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqpjw"
     },
     {
       "id": "nc75379501",
@@ -1192,6 +1232,16 @@
       "place": "27 km W of Hayfork, CA",
       "time": 1781850325370,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379501"
+    },
+    {
+      "id": "aka2026maqkss",
+      "lon": -164.154,
+      "lat": 53.722,
+      "depth": 18.4,
+      "mag": 3.2,
+      "place": "115 km ESE of Akutan, Alaska",
+      "time": 1781850087808,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqkss"
     },
     {
       "id": "hv74986182",
@@ -2292,46 +2342,6 @@
       "place": "52 km NNW of Skwentna, Alaska",
       "time": 1781811170709,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzuukl"
-    },
-    {
-      "id": "nc75379211",
-      "lon": -122.813499450684,
-      "lat": 38.804500579834,
-      "depth": 2.58999991416931,
-      "mag": 1.08,
-      "place": "6 km WNW of The Geysers, CA",
-      "time": 1781810934160,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379211"
-    },
-    {
-      "id": "aka2026lzupst",
-      "lon": -156.492,
-      "lat": 56.835,
-      "depth": 4.2,
-      "mag": 3.4,
-      "place": "93 km SE of Ugashik, Alaska",
-      "time": 1781810847733,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzupst"
-    },
-    {
-      "id": "tx2026lxwpbl",
-      "lon": -103.722,
-      "lat": 32.08,
-      "depth": 6.5356,
-      "mag": 0.9,
-      "place": "36 km ESE of Malaga, New Mexico",
-      "time": 1781810655975,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxwpbl"
-    },
-    {
-      "id": "us7000suds",
-      "lon": 142.2657,
-      "lat": 30.6099,
-      "depth": 10,
-      "mag": 5.3,
-      "place": "Izu Islands, Japan region",
-      "time": 1781810260105,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suds"
     }
   ]
 }
