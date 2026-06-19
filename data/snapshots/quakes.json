@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T06:01:14Z",
-  "count": 237,
+  "updated": "2026-06-19T06:15:50Z",
+  "count": 235,
   "points": [
+    {
+      "id": "nc75379491",
+      "lon": -124.358329772949,
+      "lat": 40.412166595459,
+      "depth": 20.5599994659424,
+      "mag": 1.89,
+      "place": "12 km NNW of Petrolia, CA",
+      "time": 1781849206560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379491"
+    },
     {
       "id": "ci41490488",
       "lon": -116.2725,
@@ -2342,36 +2352,6 @@
       "place": "19 km ESE of West Yellowstone, Montana",
       "time": 1781763772450,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142791"
-    },
-    {
-      "id": "ci41489608",
-      "lon": -117.2215,
-      "lat": 34.0051666666667,
-      "depth": 5.52,
-      "mag": 0.72,
-      "place": "6 km SE of Loma Linda, CA",
-      "time": 1781763103280,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41489608"
-    },
-    {
-      "id": "uu80142786",
-      "lon": -110.88,
-      "lat": 44.5898333333333,
-      "depth": 7.57,
-      "mag": 1.1,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781762899020,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142786"
-    },
-    {
-      "id": "uu80007463",
-      "lon": -110.8805,
-      "lat": 44.5856666666667,
-      "depth": 7.89,
-      "mag": 0.37,
-      "place": "19 km ESE of West Yellowstone, Montana",
-      "time": 1781762882350,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80007463"
     }
   ]
 }
