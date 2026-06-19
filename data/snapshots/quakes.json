@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-19T16:31:05Z",
-  "count": 229,
+  "updated": "2026-06-19T16:45:47Z",
+  "count": 226,
   "points": [
+    {
+      "id": "aka2026mbladx",
+      "lon": -154.251,
+      "lat": 57.323,
+      "depth": 35.8,
+      "mag": 2.1,
+      "place": "29 km SW of Larsen Bay, Alaska",
+      "time": 1781887133879,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbladx"
+    },
     {
       "id": "aka2026mbkrog",
       "lon": -159.64,
@@ -2252,46 +2262,6 @@
       "place": "6 km SSW of Soldotna, Alaska",
       "time": 1781801325845,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzpidb"
-    },
-    {
-      "id": "av93062239",
-      "lon": -169.888166666667,
-      "lat": 52.8975,
-      "depth": 10.99,
-      "mag": 0.64,
-      "place": "69 km W of Nikolski, Alaska",
-      "time": 1781801055010,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062239"
-    },
-    {
-      "id": "tx2026lxqyvq",
-      "lon": -102.052,
-      "lat": 32.399,
-      "depth": 9.4727,
-      "mag": 1,
-      "place": "34 km WSW of Ackerly, Texas",
-      "time": 1781800549234,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lxqyvq"
-    },
-    {
-      "id": "us7000sucj",
-      "lon": 126.809,
-      "lat": 6.5597,
-      "depth": 10,
-      "mag": 5.3,
-      "place": "63 km ESE of Bobon, Philippines",
-      "time": 1781800438155,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sucj"
-    },
-    {
-      "id": "aka2026lzotuc",
-      "lon": -154.093,
-      "lat": 61.694,
-      "depth": 10,
-      "mag": 2.4,
-      "place": "80 km ENE of Lime Village, Alaska",
-      "time": 1781800351323,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026lzotuc"
     }
   ]
 }
