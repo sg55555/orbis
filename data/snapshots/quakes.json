@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T04:57:54Z",
-  "count": 242,
+  "updated": "2026-06-20T05:01:12Z",
+  "count": 243,
   "points": [
     {
       "id": "aka2026mcjpgr",
@@ -34,6 +34,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490960"
     },
     {
+      "id": "us7000susg",
+      "lon": -25.4839,
+      "lat": -57.9998,
+      "depth": 59.553,
+      "mag": 5.1,
+      "place": "South Sandwich Islands region",
+      "time": 1781930648971,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susg"
+    },
+    {
       "id": "ci41490952",
       "lon": -116.744166666667,
       "lat": 33.3141666666667,
@@ -52,6 +62,16 @@
       "place": "3 km WNW of The Geysers, CA",
       "time": 1781929528940,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379981"
+    },
+    {
+      "id": "tx2026makahe",
+      "lon": -103.734,
+      "lat": 31.714,
+      "depth": 0,
+      "mag": 1.2,
+      "place": "12 km W of Mentone, Texas",
+      "time": 1781929107273,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026makahe"
     },
     {
       "id": "tx2026majzoj",
@@ -2412,16 +2432,6 @@
       "place": "79 km SW of Adak, Alaska",
       "time": 1781845540723,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026manxce"
-    },
-    {
-      "id": "nc75379466",
-      "lon": -122.807662963867,
-      "lat": 38.8235015869141,
-      "depth": 2.71000003814697,
-      "mag": 1.04,
-      "place": "7 km NW of The Geysers, CA",
-      "time": 1781845201390,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379466"
     }
   ]
 }
