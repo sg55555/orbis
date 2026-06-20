@@ -8,6 +8,9 @@
      鮮やかさを戻す（globe 側の星雲“面”は廃止のまま＝この変数は #media のティント専用）。 */
   --neb-a: rgba(46,111,179,0.12); --neb-b: rgba(138,92,246,0.08);
   --glass-blur: 16px; --glass-bg: rgba(10,18,32,0.55); --glass-rim: rgba(90,200,255,0.22);
+  /* デザイン監修 リッチ化(ui-richness): display フォント（body.font-on で見出し/ワードマークに適用）。 */
+  --font-display: 'Saira', system-ui, "Segoe UI", sans-serif;
+  --font-word: 'Orbitron', 'Saira', system-ui, sans-serif;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -476,3 +479,70 @@ body.mp-b .pane-head, body.mp-b .brief-head {
 .preset-chip:hover { opacity: 1; }
 .preset-chip.active { opacity: 1; border-color: var(--cyan, #6cf); box-shadow: 0 0 8px -2px var(--cyan, #6cf); background: rgba(108, 204, 255, .12); }
 .preset-custom { font-size: 10px; opacity: .5; margin-left: 2px; }
+
+/* ===== 本編UI リッチ化（?ui=a|b|off 既定a / ?font=on|off 既定on / immerse.js ui-*,font-*） =====
+   左レイヤーパネル/右フィードを globe の「線/光・オーロラ・グラス」言語でリッチ化。base 不変＝?ui=off(before)。
+   a=大気グラス(cosmic・推奨)／b=計器/オブザバトリ(密度高め)。media/briefing は mp-* が担当・globe 非対象。 */
+
+/* --- display フォント（見出し/タイトル/ワードマーク・?font=on で適用・body は system-ui のまま） --- */
+body.font-on .side-panel h4,
+body.font-on .pane-title,
+body.font-on .brief-h { font-family: var(--font-display); letter-spacing: .06em; }
+body.font-on .boot-word { font-family: var(--font-word); }
+
+/* ===== A/B 共有のリッチ化 ===== */
+/* パネル見出し: muted の小見出し → 明るく大きめ＋先頭に発光ドット（上端オーロラ線 ::before は既存を活用） */
+body.ui-a .side-panel h4, body.ui-b .side-panel h4 {
+  font-size: 12.5px; color: #dcebff; display: flex; align-items: center; gap: 7px;
+  text-shadow: 0 0 12px rgba(57, 208, 255, .22);
+}
+body.ui-a .panel-head h4::before, body.ui-b .panel-head h4::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%; flex: 0 0 auto;
+  background: var(--cyan); box-shadow: 0 0 9px var(--cyan);
+}
+/* フィード行: border-bottom のみ → カテゴリ色の左アクセント＋ホバー浮き＆glow＋ドット強化（brief-card と同言語） */
+body.ui-a .feed-row, body.ui-b .feed-row {
+  position: relative; padding: 5px 6px 5px 11px; margin: 1px 0;
+  border-bottom: 1px solid rgba(28, 44, 72, .40);
+  transition: background .15s, transform .15s, box-shadow .15s;
+}
+body.ui-a .feed-row::before, body.ui-b .feed-row::before {
+  content: ''; position: absolute; left: 2px; top: 5px; bottom: 5px; width: 2px; border-radius: 2px;
+  background: var(--rowcat, var(--cyan)); opacity: .45; transition: opacity .15s, box-shadow .15s;
+}
+body.ui-a .feed-row:hover, body.ui-b .feed-row:hover { background: rgba(57, 208, 255, .10); transform: translateX(2px); }
+body.ui-a .feed-row:hover::before, body.ui-b .feed-row:hover::before { opacity: 1; box-shadow: 0 0 8px var(--rowcat, var(--cyan)); }
+body.ui-a .feed-dot, body.ui-b .feed-dot { box-shadow: 0 0 9px currentColor, 0 0 3px currentColor; }
+/* レイヤー行: ホバーに淡い glow を追加（フィードと統一） */
+body.ui-a .layer-row:hover, body.ui-b .layer-row:hover {
+  box-shadow: inset 0 0 0 1px rgba(57, 208, 255, .12), 0 0 12px -4px rgba(57, 208, 255, .40);
+}
+/* ボタン/チップ/折りたたみ: グラス＋ネオン縁の1言語に統一 */
+body.ui-a .collapse-btn, body.ui-b .collapse-btn {
+  background: rgba(57, 208, 255, .06); border-color: var(--glass-rim); color: #bfe0ff;
+  transition: border-color .15s, box-shadow .15s, color .15s;
+}
+body.ui-a .collapse-btn:hover, body.ui-b .collapse-btn:hover {
+  border-color: var(--cyan); color: var(--cyan); box-shadow: 0 0 10px -2px rgba(57, 208, 255, .50);
+}
+body.ui-a .feed-chip:hover, body.ui-b .feed-chip:hover { opacity: .85; }
+body.ui-a .feed-chip.active, body.ui-b .feed-chip.active {
+  box-shadow: 0 0 10px -1px var(--chip, var(--cyan)), inset 0 0 8px -4px var(--chip, var(--cyan));
+}
+
+/* ===== A: 大気グラス（cosmic・柔らかいオーロラ・丸み維持） ===== */
+body.ui-a .side-panel { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .07), 0 10px 34px rgba(0, 0, 0, .42), 0 0 26px rgba(57, 208, 255, .10); }
+body.ui-a .side-panel::before { opacity: 1; }
+body.ui-a .feed-row { border-radius: 8px; }
+
+/* ===== B: 計器/オブザバトリ（角・密度・数値計器感） ===== */
+body.ui-b .side-panel { box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 10px 30px rgba(0, 0, 0, .50), 0 0 0 1px rgba(57, 208, 255, .10); }
+body.ui-b .feed-row { border-radius: 0; padding-left: 12px; }
+body.ui-b .feed-row::before { width: 3px; left: 0; opacity: .6; }
+body.ui-b .layer-count, body.ui-b .feed-time { font-variant-numeric: tabular-nums; letter-spacing: .03em; }
+body.ui-b .side-panel h4 { letter-spacing: .14em; }
+body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); padding-bottom: 5px; margin-bottom: 4px; }
+
+@media (prefers-reduced-motion: reduce) {
+  body.ui-a .feed-row, body.ui-b .feed-row, body.ui-a .layer-row, body.ui-b .layer-row { transition: none; }
+}

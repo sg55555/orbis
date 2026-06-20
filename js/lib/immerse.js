@@ -60,8 +60,22 @@ export function immerseMediaPolish(search) {
   return m ? m[1].toLowerCase() : 'a';
 }
 
+// ?ui=a|b|off（大小無視）。本編UI(左レイヤーパネル/右フィード＋共有のタイポ/ボタン)のリッチ化。
+// a=大気グラス・リッチ(既定・推奨)／b=計器/オブザバトリ(密度高め)／off=現状(before・base CSS のまま)。
+export function immerseUi(search) {
+  const m = /[?&]ui=(off|a|b)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'a';
+}
+
+// ?font=on|off（大小無視）。タイトル/見出し/ワードマークに宇宙・監視系の display フォント
+// (Orbitron=ワードマーク / Saira=見出し)を適用。既定 on。off は system-ui のまま。
+export function immerseFont(search) {
+  const m = /[?&]font=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
-// mp(メディア仕上げ)は常に付与(既定a)。
+// mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)も常に付与(既定on)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
@@ -69,6 +83,8 @@ export function immerseClasses(search) {
   const glass = immerseGlass(search);
   if (glass !== 'on') out.push('glass-' + glass);
   out.push('mp-' + immerseMediaPolish(search));
+  out.push('ui-' + immerseUi(search));
+  out.push('font-' + immerseFont(search));
   return out;
 }
 
