@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { buildFeed, parseGdeltDate, feedChipIds, loadFeedHidden, toggleHidden, visibleIds, allActive, applyChips, readFeedFilter, writeFeedFilter } from '../js/lib/feed.js';
+import { buildFeed, buildFeedBalanced, parseGdeltDate, feedChipIds, loadFeedHidden, toggleHidden, visibleIds, allActive, applyChips, readFeedFilter, writeFeedFilter, countBarPct } from '../js/lib/feed.js';
 
 test('parseGdeltDate: "YYYYMMDDHHMMSS"(UTC) を epoch ms に', () => {
   assert.equal(parseGdeltDate('20260613173000'), Date.UTC(2026, 5, 13, 17, 30, 0));
@@ -87,4 +87,46 @@ test('read/write FeedFilter: ラウンドトリップ（偽 storage）', () => {
   writeFeedFilter(new Set(['conflict', 'protests']), store);
   const back = readFeedFilter(store);
   assert.deepEqual([...back].sort(), ['conflict', 'protests']);
+});
+
+test('countBarPct: 0..100・log正規化・maxCount=0 ガード・単調', () => {
+  assert.equal(countBarPct(0, 100), 0);
+  assert.equal(countBarPct(50, 0), 0);     // maxCount=0 ガード
+  assert.equal(countBarPct(100, 100), 100); // 最大は満幅
+  assert.ok(countBarPct(10, 100) < countBarPct(50, 100)); // 単調増加
+  assert.ok(countBarPct(1, 100) > 0);       // 小件数でも >0
+});
+
+const balLayers = [
+  { id: 'quakes', toFeedItems: (s) => s.q },
+  { id: 'conflict', toFeedItems: (s) => s.c },
+  { id: 'news', toFeedItems: (s) => s.n },
+];
+const balSnap = {
+  quakes: { q: [{ layerId: 'quakes', time: 100 }, { layerId: 'quakes', time: 300 }] },
+  conflict: { c: [
+    { kind: 'group', layerId: 'conflict', count: 5, time: 200 },
+    { kind: 'group', layerId: 'conflict', count: 50, time: 200 },
+  ] },
+  news: { n: [{ layerId: 'news', time: 250 }] },
+};
+
+test('buildFeedBalanced: ラウンドロビン巡回・層内整列・cap', () => {
+  const out = buildFeedBalanced(balLayers, balSnap, new Set(['quakes', 'conflict', 'news']));
+  // 1周目: quakes先頭(time降順→300), conflict先頭(count降順→50), news(250)
+  assert.equal(out[0].layerId, 'quakes'); assert.equal(out[0].time, 300);
+  assert.equal(out[1].layerId, 'conflict'); assert.equal(out[1].count, 50); // 件数降順で50が先
+  assert.equal(out[2].layerId, 'news');
+  // 2周目: quakes(100), conflict(count5)。news は尽きてスキップ
+  assert.equal(out[3].layerId, 'quakes'); assert.equal(out[3].time, 100);
+  assert.equal(out[4].layerId, 'conflict'); assert.equal(out[4].count, 5);
+  assert.equal(out.length, 5);
+});
+
+test('buildFeedBalanced: visible フィルタ・cap・空安全', () => {
+  const only = buildFeedBalanced(balLayers, balSnap, new Set(['conflict']));
+  assert.ok(only.every((it) => it.layerId === 'conflict'));
+  assert.equal(only[0].count, 50); // 件数降順
+  assert.deepEqual(buildFeedBalanced(balLayers, balSnap, new Set()), []);
+  assert.equal(buildFeedBalanced(balLayers, balSnap, new Set(['quakes', 'conflict', 'news']), 2).length, 2); // cap
 });

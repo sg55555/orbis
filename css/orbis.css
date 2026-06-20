@@ -117,7 +117,14 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 }
 .feed-chip.active { opacity: 1; border-color: var(--chip, var(--cyan)); box-shadow: 0 0 8px -2px var(--chip, var(--cyan)); }
 .feed-chip.chip-all.active { border-color: rgba(160,210,255,.7); box-shadow: none; }
-.feed-count { font-size: 11px; color: #ff9bb0; margin-left: 4px; white-space: nowrap; }
+.feed-count {
+  position: relative; font-size: 11px; color: #ff9bb0; margin-left: 4px;
+  white-space: nowrap; padding-bottom: 3px;
+}
+.feed-count::after {
+  content: ''; position: absolute; left: 0; bottom: 0; height: 2px;
+  width: var(--barw, 0%); background: currentColor; opacity: .55; border-radius: 1px;
+}
 .layer-item { margin: 4px 0 7px; }
 .layer-desc { margin: 1px 0 0 24px; font-size: 10px; line-height: 1.3; color: var(--muted); }
 
