@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T03:01:12Z",
-  "count": 245,
+  "updated": "2026-06-20T03:15:47Z",
+  "count": 244,
   "points": [
+    {
+      "id": "ci41490928",
+      "lon": -116.826333333333,
+      "lat": 33.999,
+      "depth": 10.45,
+      "mag": 1.05,
+      "place": "9 km NNE of Banning, CA",
+      "time": 1781924604900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490928"
+    },
+    {
+      "id": "ci41490936",
+      "lon": -116.8325,
+      "lat": 33.9965,
+      "depth": 10.24,
+      "mag": 1.05,
+      "place": "9 km NNE of Banning, CA",
+      "time": 1781924604860,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490936"
+    },
     {
       "id": "aka2026mcfjlo",
       "lon": -147.332,
@@ -2422,36 +2442,6 @@
       "place": "20 km WNW of Ivanof Bay, Alaska",
       "time": 1781839093485,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makhxs"
-    },
-    {
-      "id": "tx2026lymcio",
-      "lon": -104.416,
-      "lat": 31.659,
-      "depth": 6.0486,
-      "mag": 2.2,
-      "place": "57 km S of Whites City, New Mexico",
-      "time": 1781838729654,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lymcio"
-    },
-    {
-      "id": "aka2026majyyt",
-      "lon": 176.24,
-      "lat": 51.964,
-      "depth": 13.6,
-      "mag": 3.6,
-      "place": "229 km ESE of Attu Station, Alaska",
-      "time": 1781838463141,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majyyt"
-    },
-    {
-      "id": "aka2026majxip",
-      "lon": -146.802,
-      "lat": 61.398,
-      "depth": 19.4,
-      "mag": 2.8,
-      "place": "38 km NW of Valdez, Alaska",
-      "time": 1781838361545,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majxip"
     }
   ]
 }
