@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T13:31:09Z",
-  "count": 219,
+  "updated": "2026-06-20T13:45:49Z",
+  "count": 220,
   "points": [
+    {
+      "id": "aka2026mdaubc",
+      "lon": -151.42,
+      "lat": 61.005,
+      "depth": 73,
+      "mag": 1.5,
+      "place": "16 km WSW of Tyonek, Alaska",
+      "time": 1781962277404,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdaubc"
+    },
     {
       "id": "ci41491136",
       "lon": -117.222333333333,
@@ -1574,14 +1584,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supf"
     },
     {
-      "id": "aka2026mbptee",
-      "lon": -161.319,
-      "lat": 54.616,
-      "depth": 13.7,
-      "mag": 2.6,
-      "place": "81 km SE of King Cove, Alaska",
-      "time": 1781895647297,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbptee"
+      "id": "us7000surk",
+      "lon": -161.3721,
+      "lat": 54.6946,
+      "depth": 26.322,
+      "mag": 2.5,
+      "place": "73 km SE of King Cove, Alaska",
+      "time": 1781895648726,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surk"
     },
     {
       "id": "us7000supe",
