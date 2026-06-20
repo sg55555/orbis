@@ -1,8 +1,68 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T11:15:50Z",
-  "count": 217,
+  "updated": "2026-06-20T11:31:06Z",
+  "count": 223,
   "points": [
+    {
+      "id": "ci41491096",
+      "lon": -116.387333333333,
+      "lat": 33.3658333333333,
+      "depth": 12.14,
+      "mag": 0.29,
+      "place": "12 km N of Borrego Springs, CA",
+      "time": 1781954544060,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491096"
+    },
+    {
+      "id": "nc75380066",
+      "lon": -122.775329589844,
+      "lat": 38.7961654663086,
+      "depth": 3.11999988555908,
+      "mag": 0.81,
+      "place": "3 km NW of The Geysers, CA",
+      "time": 1781954453610,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380066"
+    },
+    {
+      "id": "ci41491088",
+      "lon": -116.406666666667,
+      "lat": 33.3396666666667,
+      "depth": 12.27,
+      "mag": 0.42,
+      "place": "10 km NNW of Borrego Springs, CA",
+      "time": 1781954398620,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491088"
+    },
+    {
+      "id": "nc75380061",
+      "lon": -121.182662963867,
+      "lat": 36.5625,
+      "depth": 2.02999997138977,
+      "mag": 2.49,
+      "place": "5 km NW of Pinnacles, CA",
+      "time": 1781954029870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380061"
+    },
+    {
+      "id": "ci41491080",
+      "lon": -117.215833333333,
+      "lat": 33.999,
+      "depth": 6.12,
+      "mag": 0.97,
+      "place": "7 km SE of Loma Linda, CA",
+      "time": 1781954012560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491080"
+    },
+    {
+      "id": "ci41491072",
+      "lon": -116.402166666667,
+      "lat": 33.3631666666667,
+      "depth": 10.86,
+      "mag": 0.69,
+      "place": "12 km NNW of Borrego Springs, CA",
+      "time": 1781953934510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491072"
+    },
     {
       "id": "aka2026mcvvep",
       "lon": -148.166,
@@ -62,6 +122,16 @@
       "place": "78 km NE of Tonopah, Nevada",
       "time": 1781951763868,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920508"
+    },
+    {
+      "id": "pr71520688",
+      "lon": -64.8098333333333,
+      "lat": 19.1925,
+      "depth": 4.37,
+      "mag": 3.07,
+      "place": "95 km N of Charlotte Amalie, U.S. Virgin Islands",
+      "time": 1781951308120,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520688"
     },
     {
       "id": "ci41491064",
@@ -354,6 +424,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susv"
     },
     {
+      "id": "tx2026maofle",
+      "lon": -101.944,
+      "lat": 32.097,
+      "depth": 4.1817,
+      "mag": 0.8,
+      "place": "15 km WSW of Stanton, Texas",
+      "time": 1781936702734,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maofle"
+    },
+    {
       "id": "us7000suss",
       "lon": -126.4717,
       "lat": 42.4943,
@@ -507,10 +587,10 @@
       "id": "tx2026majzoj",
       "lon": -101.916,
       "lat": 32.259,
-      "depth": 3.7941,
-      "mag": 2,
+      "depth": 4.5385,
+      "mag": 2.1,
       "place": "18 km NW of Stanton, Texas",
-      "time": 1781929055111,
+      "time": 1781929054915,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026majzoj"
     },
     {
@@ -2152,26 +2232,6 @@
       "place": "15 km SE of Toyah, Texas",
       "time": 1781868726798,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcrdv"
-    },
-    {
-      "id": "aka2026mbarwi",
-      "lon": -150.99,
-      "lat": 59.116,
-      "depth": 36.2,
-      "mag": 1.7,
-      "place": "54 km SE of Seldovia, Alaska",
-      "time": 1781868568095,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbarwi"
-    },
-    {
-      "id": "aka2026mbaqka",
-      "lon": -173.244,
-      "lat": 51.702,
-      "depth": 10.8,
-      "mag": 3.1,
-      "place": "85 km SE of Atka, Alaska",
-      "time": 1781868445349,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbaqka"
     }
   ]
 }
