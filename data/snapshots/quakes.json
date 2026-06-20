@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T16:45:51Z",
-  "count": 206,
+  "updated": "2026-06-20T17:05:38Z",
+  "count": 203,
   "points": [
+    {
+      "id": "ci41491272",
+      "lon": -117.6795,
+      "lat": 35.9446666666667,
+      "depth": 4.51,
+      "mag": 0.46,
+      "place": "20 km E of Little Lake, CA",
+      "time": 1781974097640,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491272"
+    },
     {
       "id": "nc75380146",
       "lon": -122.502502441406,
@@ -2022,46 +2032,6 @@
       "place": "59 km NW of Beluga, Alaska",
       "time": 1781888746520,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255563"
-    },
-    {
-      "id": "av94255558",
-      "lon": -151.984,
-      "lat": 61.453,
-      "depth": 2.16,
-      "mag": 0.95,
-      "place": "59 km NW of Beluga, Alaska",
-      "time": 1781888679180,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255558"
-    },
-    {
-      "id": "hv74986572",
-      "lon": -155.459838867188,
-      "lat": 19.0995006561279,
-      "depth": 29.0900001525879,
-      "mag": 1.9,
-      "place": "11 km S of Pāhala, Hawaii",
-      "time": 1781888664930,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986572"
-    },
-    {
-      "id": "us7000sunp",
-      "lon": 176.1953,
-      "lat": 51.8204,
-      "depth": 10,
-      "mag": 3.3,
-      "place": "234 km ESE of Attu Station, Alaska",
-      "time": 1781888149165,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunp"
-    },
-    {
-      "id": "us7000sun0",
-      "lon": 143.6179,
-      "lat": 40.0106,
-      "depth": 10,
-      "mag": 4.7,
-      "place": "149 km ENE of Miyako, Japan",
-      "time": 1781887661099,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sun0"
     }
   ]
 }
