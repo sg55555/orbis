@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T08:45:52Z",
-  "count": 220,
+  "updated": "2026-06-20T09:01:14Z",
+  "count": 217,
   "points": [
+    {
+      "id": "aka2026mcrnqu",
+      "lon": -152.387,
+      "lat": 59.199,
+      "depth": 62.8,
+      "mag": 2,
+      "place": "31 km WSW of Nanwalek, Alaska",
+      "time": 1781945643523,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcrnqu"
+    },
     {
       "id": "ci41491032",
       "lon": -117.194166666667,
@@ -2162,46 +2172,6 @@
       "place": "36 km NNE of Chenega, Alaska",
       "time": 1781859675159,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavtiv"
-    },
-    {
-      "id": "nc75379536",
-      "lon": -122.814331054688,
-      "lat": 38.8266677856445,
-      "depth": 2.14000010490417,
-      "mag": 0.78,
-      "place": "7 km NW of The Geysers, CA",
-      "time": 1781859559770,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379536"
-    },
-    {
-      "id": "aka2026mavrkh",
-      "lon": -159.776,
-      "lat": 55.912,
-      "depth": 17.6,
-      "mag": 1.5,
-      "place": "18 km W of Ivanof Bay, Alaska",
-      "time": 1781859542512,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavrkh"
-    },
-    {
-      "id": "hv74986252",
-      "lon": -155.490173339844,
-      "lat": 19.1730003356934,
-      "depth": 32.1699981689453,
-      "mag": 1.91,
-      "place": "3 km SSW of Pāhala, Hawaii",
-      "time": 1781859162480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986252"
-    },
-    {
-      "id": "aka2026mavjsg",
-      "lon": -149.675,
-      "lat": 56.205,
-      "depth": 5,
-      "mag": 2.7,
-      "place": "222 km SE of Chiniak, Alaska",
-      "time": 1781859016750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavjsg"
     }
   ]
 }
