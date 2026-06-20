@@ -13,6 +13,7 @@ import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/
 import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
 import { renderInstability } from './ui/instability.js';
+import { renderForecasts } from './ui/forecast.js';
 import { initBoot } from './ui/boot.js';
 import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
@@ -472,6 +473,27 @@ function boot() {
       }
     } catch {
       if (insRoot) insRoot.style.display = 'none';
+    }
+
+    // AI FORECASTS（ドメイン別リスク見通し・毎時・instability の下）。
+    const fcRoot = document.getElementById('forecasts');
+    try {
+      const fc = await fetch('data/snapshots/forecast.json').then((r) => r.ok ? r.json() : null).catch(() => null);
+      if (fc && fc.cards && fc.cards.length && fcRoot) {
+        renderForecasts(fcRoot, fc, {
+          onSelect: (card) => {
+            map.flyTo({ center: [card.lon, card.lat], zoom: 4, duration: 1500, essential: true });
+            selected = { lon: card.lon, lat: card.lat, title: card.place_ja || card.place || '', layerId: 'forecast', at: performance.now() };
+            if (window.__orbis) window.__orbis.selected = selected;
+            drawAll(overlay);
+          },
+        });
+        if (window.__orbis) window.__orbis.forecasts = fc;
+      } else if (fcRoot) {
+        fcRoot.style.display = 'none';
+      }
+    } catch {
+      if (fcRoot) fcRoot.style.display = 'none';
     }
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {
