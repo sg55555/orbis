@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T01:45:48Z",
-  "count": 250,
+  "updated": "2026-06-20T02:01:11Z",
+  "count": 249,
   "points": [
+    {
+      "id": "ci41490920",
+      "lon": -117.390166666667,
+      "lat": 35.9556666666667,
+      "depth": 2.43,
+      "mag": 1.16,
+      "place": "21 km N of Searles Valley, CA",
+      "time": 1781920463510,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490920"
+    },
+    {
+      "id": "aka2026mcdmvh",
+      "lon": -136.242,
+      "lat": 57.295,
+      "depth": 6.7,
+      "mag": 1.6,
+      "place": "61 km WNW of Sitka, Alaska",
+      "time": 1781920396173,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcdmvh"
+    },
     {
       "id": "us7000suru",
       "lon": -66.2168,
@@ -2472,36 +2492,6 @@
       "place": "63 km WNW of Nikiski, Alaska",
       "time": 1781834516130,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254393"
-    },
-    {
-      "id": "us7000suh7",
-      "lon": -67.3893,
-      "lat": -24.3095,
-      "depth": 202.231,
-      "mag": 4.1,
-      "place": "109 km W of San Antonio de los Cobres, Argentina",
-      "time": 1781834267722,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suh7"
-    },
-    {
-      "id": "aka2026mahpeh",
-      "lon": -166.89,
-      "lat": 53.001,
-      "depth": 22.8,
-      "mag": 1.6,
-      "place": "100 km SSW of Unalaska, Alaska",
-      "time": 1781834202071,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mahpeh"
-    },
-    {
-      "id": "pr71520533",
-      "lon": -64.4926666666667,
-      "lat": 19.5706666666667,
-      "depth": 46.23,
-      "mag": 3.31,
-      "place": "140 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781833660070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520533"
     }
   ]
 }
