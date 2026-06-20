@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T18:45:59Z",
+  "updated": "2026-06-20T19:01:21Z",
   "count": 202,
   "points": [
+    {
+      "id": "nn00920517",
+      "lon": -116.489,
+      "lat": 38.4711,
+      "depth": 6.8443,
+      "mag": 1.73,
+      "place": "78 km NE of Tonopah, Nevada",
+      "time": 1781981561252,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920517"
+    },
+    {
+      "id": "aka2026mdlfno",
+      "lon": -153.449,
+      "lat": 58.72,
+      "depth": 8,
+      "mag": 1.1,
+      "place": "79 km NNW of Aleneva, Alaska",
+      "time": 1781981063453,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdlfno"
+    },
     {
       "id": "ci41491352",
       "lon": -117.1235,
@@ -42,6 +62,16 @@
       "place": "58 km S of Whites City, New Mexico",
       "time": 1781977928675,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbkzng"
+    },
+    {
+      "id": "us7000suv6",
+      "lon": -90.1501,
+      "lat": 13.0165,
+      "depth": 56.304,
+      "mag": 4.4,
+      "place": "72 km SSW of Acajutla, El Salvador",
+      "time": 1781977908104,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suv6"
     },
     {
       "id": "nc75380176",
@@ -1992,36 +2022,6 @@
       "place": "73 km SE of King Cove, Alaska",
       "time": 1781895648726,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surk"
-    },
-    {
-      "id": "us7000supe",
-      "lon": 124.6819,
-      "lat": 1.6659,
-      "depth": 176.504,
-      "mag": 4.4,
-      "place": "27 km NW of Manado, Indonesia",
-      "time": 1781895187411,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supe"
-    },
-    {
-      "id": "nc75379726",
-      "lon": -122.779502868652,
-      "lat": 38.8083343505859,
-      "depth": 2.21000003814697,
-      "mag": 0.77,
-      "place": "4 km NNW of The Geysers, CA",
-      "time": 1781895063150,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379726"
-    },
-    {
-      "id": "aka2026mbpilm",
-      "lon": -150.825,
-      "lat": 59.475,
-      "depth": 10.9,
-      "mag": 1.6,
-      "place": "26 km ESE of Halibut Cove, Alaska",
-      "time": 1781894906819,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbpilm"
     }
   ]
 }
