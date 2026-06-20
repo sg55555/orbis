@@ -23,6 +23,12 @@ export function bootMinMs(search) {
   return m ? Number(m[1]) : 2400;
 }
 
+// ?bv=a|b（起動画面チューニング版。a=原案 / b=新案・既定）。実物比較用 A/B。
+export function bootVersion(search) {
+  const m = /[?&]bv=([ab])\b/i.exec(readSearch(search) || '');
+  return m ? m[1].toLowerCase() : 'b';
+}
+
 // variant → テレメトリ feed 定義（[表示名, 状態語]）。2=full(7)、その他=slim(5)。
 const FEEDS_FULL = [
   ['地震 USGS', '接続'], ['航空 ADS-B', '同期'], ['紛争・抗議 GDELT', '受信'],

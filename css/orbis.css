@@ -89,6 +89,11 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
 .boot-telemetry li.ok .st { color: #5effa6; text-shadow: 0 0 9px rgba(94,255,166,.45); }
 .boot-telemetry .online { justify-content: center; color: var(--cyan); letter-spacing: .18em;
   font-weight: 600; text-shadow: 0 0 13px rgba(57,208,255,.5); }
+/* 新案b（globe 大きめ）に合わせたテレメトリ/foot 位置と可読性 */
+#loading[data-bv="b"] .boot-foot { bottom: 8vh; }
+#loading[data-bv="b"][data-variant="12"] .boot-telemetry { top: 72%; font-size: 11.5px; }
+#loading[data-bv="b"][data-variant="2"] .boot-telemetry { top: 27%; }
+#loading[data-bv="b"] .boot-telemetry li .nm { color: #dcebff; }
 
 /* 同心リング（variant 3）。多重軌道＋発光コア */
 .boot-rings { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);

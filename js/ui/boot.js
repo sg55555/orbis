@@ -1,8 +1,8 @@
 // js/ui/boot.js — 起動画面（#loading 内）の canvas FX ＋ テレメトリ点呼 ＋ handoff 制御。
-// 採用＝③ 1+2 融合（globe 主導）。?boot=1|2|3|12 / ?bootmin=ms で実機調整可。
+// 採用＝③ 1+2 融合（globe 主導）。?boot=1|2|3|12 / ?bootmin=ms / ?bv=a|b で実機調整可。
 // canvas=星屑/粒子収束/経緯線globe/大気ハロ/データ点/レーダー、DOM=ワードマーク/テレメトリ/リング/バー。
 import {
-  clamp, ease, project, bootFeeds, currentBootVariant, bootMinMs, remainingHold, progressFor,
+  clamp, ease, project, bootFeeds, currentBootVariant, bootMinMs, remainingHold, progressFor, bootVersion,
 } from '../lib/boot-fx.js';
 
 const VARIANTS = {
@@ -12,11 +12,25 @@ const VARIANTS = {
   '3':  { globe: null,         telem: null,   bar: 'shimmer', sub: '世界リアルタイム監視 — 起動中', radar: false },
 };
 
+// チューニング A/B。a=原案（現状）/ b=新案（globe大きめ・ゆっくり・色味リッチ・大気強め）。
+const TUNE = {
+  a: { rHero: 0.17, rSil: 0.19, cyHero: 0.43, cySil: 0.40, speed: 1.0, minMs: 2400, rot: 0.18,
+       atmo: 0.28, atmoR: 1.22, bodyTopA: 0.42, bodyBotA: 0.34, wire: '90,200,255',
+       dotA: '#eafaff', dotB: '#5effc8', purple: 0 },
+  b: { rHero: 0.24, rSil: 0.21, cyHero: 0.46, cySil: 0.42, speed: 1.45, minMs: 3200, rot: 0.11,
+       atmo: 0.36, atmoR: 1.30, bodyTopA: 0.50, bodyBotA: 0.42, wire: '120,212,255',
+       dotA: '#eafaff', dotB: '#ffd98a', purple: 0.12 },
+};
+
 export function initBoot(opts) {
   const reduced = !!(opts && opts.reduced);
   const variant = currentBootVariant();
   const cfg = VARIANTS[variant] || VARIANTS['12'];
-  const minMs = reduced ? 0 : bootMinMs();
+  const ver = bootVersion();
+  const tune = TUNE[ver] || TUNE.b;
+  const sc = tune.speed;
+  const hasBootmin = /[?&]bootmin=\d/.test(typeof location !== 'undefined' ? location.search : '');
+  const minMs = reduced ? 0 : (hasBootmin ? bootMinMs() : tune.minMs);
 
   const loading = document.getElementById('loading');
   const fx = document.getElementById('boot-fx');
@@ -27,9 +41,11 @@ export function initBoot(opts) {
   if (!loading || !fx || !ctx) return { requestHandoff() {}, destroy() {} };
 
   loading.setAttribute('data-variant', variant);
+  loading.setAttribute('data-bv', ver);
   if (subEl) subEl.textContent = cfg.sub || '';
   if (barEl) barEl.className = 'boot-bar ' + (cfg.bar || 'shimmer');
 
+  const sil = cfg.globe === 'silhouette';
   let W = 0, H = 0, DPR = 1, cx = 0, cy = 0, R = 0, stars = [], parts = [], dots = [];
   const rand = (a, b) => a + Math.random() * (b - a);
 
@@ -40,8 +56,8 @@ export function initBoot(opts) {
     fx.style.width = W + 'px'; fx.style.height = H + 'px';
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     cx = W * 0.5;
-    cy = H * (cfg.globe === 'silhouette' ? 0.40 : 0.43);
-    R = Math.min(W, H) * (cfg.globe === 'silhouette' ? 0.19 : 0.17);
+    cy = H * (sil ? tune.cySil : tune.cyHero);
+    R = Math.min(W, H) * (sil ? tune.rSil : tune.rHero);
   }
 
   function gen() {
@@ -78,7 +94,7 @@ export function initBoot(opts) {
 
   function drawConverge(t) {
     for (const p of parts) {
-      const pc = ease(t, p.delay, p.delay + 950);
+      const pc = ease(t, p.delay * sc, (p.delay + 950) * sc);
       if (pc <= 0) continue;
       const sm = pc * pc * (3 - 2 * pc);
       const rr = p.startR + (p.targetR - p.startR) * sm;
@@ -95,20 +111,28 @@ export function initBoot(opts) {
     for (let s = a; s <= b + 0.001; s += step) {
       const q = fn(s);
       if (q.z > 0.02) {
-        ctx.strokeStyle = 'rgba(90,200,255,' + clamp(q.z * 1.4, 0, 1) * alpha + ')';
+        ctx.strokeStyle = 'rgba(' + tune.wire + ',' + clamp(q.z * 1.4, 0, 1) * alpha + ')';
         if (!pen) { ctx.beginPath(); ctx.moveTo(q.x, q.y); pen = true; } else ctx.lineTo(q.x, q.y);
       } else if (pen) { ctx.stroke(); pen = false; }
     }
     if (pen) ctx.stroke();
   }
 
-  function drawGlobe(p, rot, tilt, sil) {
+  function drawGlobe(p, rot, tilt) {
     if (p <= 0) return;
     const latLimit = 6 + p * 90;
+    const topA = p * (sil ? 0.32 : tune.bodyTopA);
+    const botA = p * (sil ? 0.50 : tune.bodyBotA);
     const g = ctx.createRadialGradient(cx - R * 0.3, cy - R * 0.35, R * 0.1, cx, cy, R);
-    g.addColorStop(0, 'rgba(30,70,120,' + (p * (sil ? 0.32 : 0.42)) + ')');
-    g.addColorStop(1, 'rgba(6,18,34,' + (p * (sil ? 0.5 : 0.34)) + ')');
+    g.addColorStop(0, 'rgba(34,84,140,' + topA + ')');
+    g.addColorStop(1, 'rgba(8,18,38,' + botA + ')');
     ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+    if (tune.purple > 0 && !sil) {
+      const pg = ctx.createRadialGradient(cx + R * 0.25, cy + R * 0.2, R * 0.1, cx, cy, R * 1.05);
+      pg.addColorStop(0, 'rgba(150,110,255,' + (p * tune.purple) + ')');
+      pg.addColorStop(1, 'rgba(150,110,255,0)');
+      ctx.fillStyle = pg; ctx.beginPath(); ctx.arc(cx, cy, R * 1.05, 0, Math.PI * 2); ctx.fill();
+    }
     ctx.lineWidth = 1;
     const base = sil ? 0.32 : 0.62;
     for (let lon = -180; lon < 180; lon += 30) {
@@ -123,11 +147,12 @@ export function initBoot(opts) {
   function drawAtmo(p, t) {
     if (p <= 0) return;
     const pulse = reduced ? 1 : (0.92 + 0.08 * Math.sin(t / 700));
-    const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, R * 1.22 * pulse);
+    const r1 = R * tune.atmoR * pulse;
+    const g = ctx.createRadialGradient(cx, cy, R * 0.98, cx, cy, r1);
     g.addColorStop(0, 'rgba(57,208,255,0)');
-    g.addColorStop(0.35, 'rgba(57,208,255,' + (0.28 * p) + ')');
+    g.addColorStop(0.35, 'rgba(57,208,255,' + (tune.atmo * p) + ')');
     g.addColorStop(1, 'rgba(57,208,255,0)');
-    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, R * 1.22 * pulse, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(cx, cy, r1, 0, Math.PI * 2); ctx.fill();
   }
 
   function drawDots(p, t, rot, tilt) {
@@ -137,7 +162,7 @@ export function initBoot(opts) {
       if (q.z <= 0.05) return;
       const tw = reduced ? 0.8 : (0.45 + 0.55 * Math.sin(t / 1000 * d.sp + d.tw));
       ctx.globalAlpha = clamp(p * tw * clamp(q.z * 1.3, 0, 1), 0, 1);
-      ctx.fillStyle = i % 4 === 0 ? '#eafaff' : '#5effc8';
+      ctx.fillStyle = i % 4 === 0 ? tune.dotA : tune.dotB;
       ctx.beginPath(); ctx.arc(q.x, q.y, 1.6, 0, Math.PI * 2); ctx.fill();
     });
     ctx.globalAlpha = 1;
@@ -177,7 +202,7 @@ export function initBoot(opts) {
     if (!telemEl) return;
     const feeds = bootFeeds(variant);
     const slim = cfg.telem === 'slim';
-    const revealStart = slim ? 900 : 650, step = slim ? 240 : 300, okDelay = slim ? 200 : 230;
+    const revealStart = (slim ? 900 : 650) * sc, step = (slim ? 240 : 300) * sc, okDelay = (slim ? 200 : 230) * sc;
     let done = 0;
     feeds.forEach((f, i) => {
       const reveal = () => {
@@ -193,7 +218,7 @@ export function initBoot(opts) {
       if (reduced) reveal(); else after(revealStart + i * step, reveal);
     });
     if (cfg.telem === 'full') {
-      const at = revealStart + (feeds.length - 1) * step + okDelay + 300;
+      const at = revealStart + (feeds.length - 1) * step + okDelay + 300 * sc;
       const online = () => { const li = rowEl('', ''); li.className = 'online'; li.textContent = '観測網 オンライン';
         requestAnimationFrame(() => li.classList.add('in')); };
       if (reduced) online(); else after(at, online);
@@ -209,19 +234,19 @@ export function initBoot(opts) {
     ctx.clearRect(0, 0, W, H);
     drawStars(t);
     if (cfg.globe) {
-      const rot = t / 1000 * 0.18, tilt = -0.36;
+      const rot = t / 1000 * tune.rot, tilt = -0.36;
       drawConverge(t);
-      drawGlobe(ease(t, 600, 1900), rot, tilt, cfg.globe === 'silhouette');
+      drawGlobe(ease(t, 600 * sc, 1900 * sc), rot, tilt);
       if (cfg.radar) drawRadar(t);
-      drawAtmo(ease(t, 1600, 2500), t);
-      drawDots(ease(t, 2100, 2900), t, rot, tilt);
+      drawAtmo(ease(t, 1600 * sc, 2500 * sc), t);
+      drawDots(ease(t, 2100 * sc, 2900 * sc), t, rot, tilt);
     }
     if (running) raf = requestAnimationFrame(frame);
   }
 
   function drawStatic() {
     ctx.clearRect(0, 0, W, H); drawStars(3000);
-    if (cfg.globe) { drawGlobe(1, 0.6, -0.36, cfg.globe === 'silhouette'); drawAtmo(1, 3000); drawDots(1, 3000, 0.6, -0.36); }
+    if (cfg.globe) { drawGlobe(1, 0.6, -0.36); drawAtmo(1, 3000); drawDots(1, 3000, 0.6, -0.36); }
   }
 
   layout(); gen();

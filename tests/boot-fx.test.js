@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   clamp, smooth, ease, currentBootVariant, bootMinMs,
-  bootFeeds, remainingHold, progressFor, project,
+  bootFeeds, remainingHold, progressFor, project, bootVersion,
 } from '../js/lib/boot-fx.js';
 
 test('clamp: 範囲内/外', () => {
@@ -73,4 +73,11 @@ test('project: 正面中心は z>0、裏面は z<0、縁は z≈0', () => {
   assert.ok(back.z < 0);
   const limb = project(0, 90, 0, 0, 100, 200, 200); // 縁
   assert.ok(Math.abs(limb.z) < 1e-9);
+});
+
+test('bootVersion: ?bv を読む・既定は b', () => {
+  assert.equal(bootVersion('?bv=a'), 'a');
+  assert.equal(bootVersion('?bv=B'), 'b');
+  assert.equal(bootVersion(''), 'b');
+  assert.equal(bootVersion('?bv=z'), 'b');
 });
