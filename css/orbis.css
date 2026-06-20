@@ -314,3 +314,23 @@ body.glass-soft #panel.side-panel, body.glass-soft #feed.side-panel {
   backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); background: rgba(10, 18, 32, 0.76); }
 body.glass-off #panel.side-panel, body.glass-off #feed.side-panel {
   backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(8, 14, 26, 0.93); }
+
+/* AI ワールド・ブリーフィング（メディアの下） */
+#ai-brief.brief-section { width: 100%; max-width: 1100px; margin: 0 auto; padding: 28px 18px 60px; }
+.brief-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
+.brief-h { margin: 0; font-size: 18px; color: var(--text); }
+.brief-note { font-size: 11px; color: rgba(190, 208, 228, .7); }
+.brief-lead { color: var(--text); line-height: 1.7; font-size: 15px; margin: 0 0 16px;
+  background: rgba(10, 16, 28, .5); border: 1px solid var(--glass-rim); border-radius: 10px; padding: 12px 14px; }
+.brief-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+.brief-card { text-align: left; display: flex; gap: 10px; padding: 10px 12px; cursor: pointer;
+  background: rgba(10, 16, 28, .55); border: 1px solid var(--glass-rim);
+  border-left: 3px solid var(--cat, #7aa); border-radius: 10px; color: var(--text); font: inherit; }
+.brief-card.no-loc { cursor: default; }
+.brief-card[data-severity="5"] { box-shadow: 0 0 12px color-mix(in srgb, var(--cat) 45%, transparent); }
+.brief-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--cat); flex: 0 0 auto; margin-top: 5px;
+  box-shadow: 0 0 6px var(--cat); }
+.brief-title { font-size: 14px; font-weight: 600; line-height: 1.45; }
+.brief-sum { font-size: 12.5px; color: rgba(220, 230, 244, .85); line-height: 1.5; margin-top: 3px; }
+.brief-meta { font-size: 11px; color: rgba(190, 208, 228, .7); margin-top: 5px; }
+@media (max-width: 768px) { #ai-brief.brief-section { padding: 20px 12px 48px; } }

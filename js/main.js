@@ -10,6 +10,7 @@ import { renderPanel, wireCollapse } from './ui/panel.js';
 import { buildFeed, applyChips, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
+import { renderBriefing } from './ui/briefing.js';
 import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs, gdeltEventPopupHtml, gdeltCountryPopupHtml } from './lib/selection.js';
@@ -408,6 +409,27 @@ function boot() {
       }
     } catch {
       mediaRoot.style.display = 'none';
+    }
+
+    // AI ワールド・ブリーフィング（毎時 Sonnet 合成・メディアの下）。
+    const briefRoot = document.getElementById('ai-brief');
+    try {
+      const brief = await fetch('data/snapshots/briefing.json').then((r) => r.json()).catch(() => null);
+      if (brief && (brief.lead || (brief.cards && brief.cards.length)) && briefRoot) {
+        renderBriefing(briefRoot, brief, {
+          onSelect: (c) => {
+            map.flyTo({ center: [c.lon, c.lat], zoom: 4, duration: 1500, essential: true });
+            selected = { lon: c.lon, lat: c.lat, title: c.title_ja, layerId: 'brief', at: performance.now() };
+            if (window.__orbis) window.__orbis.selected = selected;
+            drawAll(overlay);
+          },
+        });
+        if (window.__orbis) window.__orbis.brief = brief;
+      } else if (briefRoot) {
+        briefRoot.style.display = 'none';
+      }
+    } catch {
+      if (briefRoot) briefRoot.style.display = 'none';
     }
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {
