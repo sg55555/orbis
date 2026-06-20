@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T02:31:00Z",
-  "count": 247,
+  "updated": "2026-06-20T02:45:51Z",
+  "count": 245,
   "points": [
+    {
+      "id": "nc75379951",
+      "lon": -122.810997009277,
+      "lat": 38.8393325805664,
+      "depth": 2.0699999332428,
+      "mag": 0.72,
+      "place": "8 km WNW of Cobb, CA",
+      "time": 1781923379090,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379951"
+    },
+    {
+      "id": "tx2026magjzv",
+      "lon": -104.457,
+      "lat": 31.63,
+      "depth": 3.0604,
+      "mag": 2.4,
+      "place": "60 km S of Whites City, New Mexico",
+      "time": 1781922548735,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026magjzv"
+    },
     {
       "id": "nc75379931",
       "lon": -122.839668273926,
@@ -52,6 +72,16 @@
       "place": "west of Macquarie Island",
       "time": 1781919992273,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sury"
+    },
+    {
+      "id": "us7000surx",
+      "lon": 102.9796,
+      "lat": -4.913,
+      "depth": 55.123,
+      "mag": 5,
+      "place": "102 km SSW of Pagar Alam, Indonesia",
+      "time": 1781919607238,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surx"
     },
     {
       "id": "us7000suru",
@@ -2422,56 +2452,6 @@
       "place": "9 km SSW of Idyllwild, CA",
       "time": 1781837646650,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490456"
-    },
-    {
-      "id": "ci41490448",
-      "lon": -116.5075,
-      "lat": 33.5023333333333,
-      "depth": 13.4,
-      "mag": 0.61,
-      "place": "16 km ESE of Anza, CA",
-      "time": 1781837061510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490448"
-    },
-    {
-      "id": "av94254448",
-      "lon": -154.941,
-      "lat": 58.2708333333333,
-      "depth": 4.43,
-      "mag": -0.07,
-      "place": "83 km NNW of Karluk, Alaska",
-      "time": 1781836802040,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254448"
-    },
-    {
-      "id": "av94254443",
-      "lon": -153.1145,
-      "lat": 60.0223333333333,
-      "depth": -2.41,
-      "mag": -0.72,
-      "place": "61 km ENE of Pedro Bay, Alaska",
-      "time": 1781836532690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254443"
-    },
-    {
-      "id": "pr71520543",
-      "lon": -66.2881666666667,
-      "lat": 17.9268333333333,
-      "depth": 12.01,
-      "mag": 2.09,
-      "place": "5 km S of Salinas, Puerto Rico",
-      "time": 1781836446100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520543"
-    },
-    {
-      "id": "hv74986077",
-      "lon": -155.371337890625,
-      "lat": 19.0636672973633,
-      "depth": 30.1000003814697,
-      "mag": 1.8,
-      "place": "19 km SE of Pāhala, Hawaii",
-      "time": 1781836361830,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986077"
     }
   ]
 }
