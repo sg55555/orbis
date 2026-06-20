@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T14:15:47Z",
-  "count": 218,
+  "updated": "2026-06-20T14:47:12Z",
+  "count": 215,
   "points": [
+    {
+      "id": "ci41491184",
+      "lon": -115.553833333333,
+      "lat": 32.951,
+      "depth": 7.16,
+      "mag": 1.52,
+      "place": "4 km SW of Brawley, CA",
+      "time": 1781965962950,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491184"
+    },
     {
       "id": "ci41491168",
       "lon": -116.622,
@@ -1924,6 +1934,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbladx"
     },
     {
+      "id": "us7000sumw",
+      "lon": 148.5243,
+      "lat": -5.67,
+      "depth": 148.953,
+      "mag": 4.6,
+      "place": "123 km NE of Finschhafen, Papua New Guinea",
+      "time": 1781887042115,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sumw"
+    },
+    {
       "id": "aka2026mbkrog",
       "lon": -159.709,
       "lat": 55.952,
@@ -2132,56 +2152,6 @@
       "place": "93 km S of Sand Point, Alaska",
       "time": 1781881448781,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbhwbl"
-    },
-    {
-      "id": "tx2026lzjbta",
-      "lon": -103.801,
-      "lat": 32.003,
-      "depth": 8.4583,
-      "mag": 1.5,
-      "place": "35 km SE of Malaga, New Mexico",
-      "time": 1781880353496,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzjbta"
-    },
-    {
-      "id": "aka2026mbhdig",
-      "lon": -156.645,
-      "lat": 56.258,
-      "depth": 14.4,
-      "mag": 1.8,
-      "place": "109 km E of Chignik, Alaska",
-      "time": 1781880153747,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbhdig"
-    },
-    {
-      "id": "ci41490568",
-      "lon": -117.584666666667,
-      "lat": 35.7523333333333,
-      "depth": 7.03,
-      "mag": 0.67,
-      "place": "16 km W of Searles Valley, CA",
-      "time": 1781879887240,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490568"
-    },
-    {
-      "id": "tx2026lzitcp",
-      "lon": -102.049,
-      "lat": 32.079,
-      "depth": 9.0088,
-      "mag": 1.6,
-      "place": "9 km NNE of Midland, Texas",
-      "time": 1781879727512,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzitcp"
-    },
-    {
-      "id": "tx2026lzimmm",
-      "lon": -103.484,
-      "lat": 31.246,
-      "depth": 4.7156,
-      "mag": 1.4,
-      "place": "14 km SSE of Lindsay, Texas",
-      "time": 1781879266542,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzimmm"
     }
   ]
 }
