@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T22:15:50Z",
-  "count": 202,
+  "updated": "2026-06-20T22:20:09Z",
+  "count": 200,
   "points": [
     {
       "id": "nc75380316",
@@ -2002,26 +2002,6 @@
       "place": "8 km ENE of Ivanof Bay, Alaska",
       "time": 1781907617700,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwkei"
-    },
-    {
-      "id": "nn00920493",
-      "lon": -119.1699,
-      "lat": 39.6807,
-      "depth": 0.3325,
-      "mag": 1.51,
-      "place": "10 km NE of Fernley, Nevada",
-      "time": 1781907514353,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920493"
-    },
-    {
-      "id": "aka2026mbwhds",
-      "lon": -177.066,
-      "lat": 51.516,
-      "depth": 47.5,
-      "mag": 2.1,
-      "place": "49 km SW of Adak, Alaska",
-      "time": 1781907408493,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwhds"
     }
   ]
 }
