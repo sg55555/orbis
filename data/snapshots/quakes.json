@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T17:43:19Z",
-  "count": 204,
+  "updated": "2026-06-20T17:45:55Z",
+  "count": 205,
   "points": [
     {
       "id": "aka2026mdizzw",
@@ -12,6 +12,16 @@
       "place": "17 km WNW of Ivanof Bay, Alaska",
       "time": 1781977090195,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdizzw"
+    },
+    {
+      "id": "us7000suuz",
+      "lon": -104.9782,
+      "lat": 37.0228,
+      "depth": 4.028,
+      "mag": 3.8,
+      "place": "15 km SSE of Stonewall Gap, Colorado",
+      "time": 1781976731560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuz"
     },
     {
       "id": "ci41491320",
