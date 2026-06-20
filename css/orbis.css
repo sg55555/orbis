@@ -11,8 +11,9 @@
   /* デザイン監修 リッチ化(ui-richness): display フォント（body.font-on で見出し/ワードマークに適用）。 */
   --font-display: 'Saira', system-ui, "Segoe UI", sans-serif;
   --font-word: 'Orbitron', 'Saira', system-ui, sans-serif;
-  /* 下部セクション幅（body.sec-on）。media=全幅ショーケース／report-row=brief|instability 2カラムの中央幅。 */
-  --media-w: 1840px; --report-w: 1500px;
+  /* 下部セクション（body.sec-on）の左右パディング。media と report-row で共有＝両者の端を一致させ、
+     どちらも全幅(4Kでも画面いっぱい)に。画面幅に応じて余白を可変（小さい画面は詰め、大画面は少し空ける）。 */
+  --edge-pad: clamp(16px, 1.6vw, 44px);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -583,17 +584,17 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 /* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
 body:not(.sec-on) .media-head { display: none; }
 
-/* (2) 幅・リズム：media は大きく(全幅ショーケース)、brief|instability は 2カラム横並びで互いに揃える。
-   ＝太田さん方針「ライブメディアは幅いっぱい大きく／それ以外は横に並べてサイズ感を揃える」。globe は対象外。 */
+/* (2) 幅・リズム：media（全幅ショーケース）と report-row（brief|instability 2カラム）を「同じ全幅＋共通端
+   パディング」で揃える＝太田さんFB「4Kでも画面いっぱい／2つ合わせた幅をメディアと一致」。globe は対象外。 */
 body.sec-on #media {
-  width: 100%; max-width: var(--media-w, 1840px); margin-left: auto; margin-right: auto;
-  padding-left: 28px; padding-right: 28px;
+  width: 100%; max-width: none; margin-left: 0; margin-right: 0;
+  padding-left: var(--edge-pad); padding-right: var(--edge-pad);
 }
-/* report-row: #ai-brief｜#instability を 50/50 横並び（互いに揃える）・中央寄せ。
-   各セクションの個別 max-width/margin は flex 子として上書き。 */
+/* report-row: media と同じ全幅・同じ端パディングで内側に #ai-brief｜#instability を 50/50。＝外形は media と一致。 */
 body.sec-on .report-row {
-  position: relative; display: flex; flex-wrap: wrap; gap: 28px; align-items: start;
-  width: 100%; max-width: var(--report-w, 1500px); margin: 24px auto 0; padding: 22px 18px 0;
+  position: relative; display: flex; flex-wrap: wrap; gap: clamp(20px, 2vw, 36px); align-items: start;
+  width: 100%; max-width: none; margin: 24px 0 0;
+  padding-left: var(--edge-pad); padding-right: var(--edge-pad); padding-top: 22px;
 }
 body.sec-on .report-row > #ai-brief, body.sec-on .report-row > #instability {
   flex: 1 1 0; min-width: 0; width: auto; max-width: none; margin: 0;
@@ -617,7 +618,7 @@ body.sec-on .media-note, body.sec-on .brief-note, body.sec-on .ins-note {
 
 /* (3) セクション区切り：media→report の境界に1本のオーロラ地平線（report-row の頭）。media 頭は seam-a が担う */
 body.sec-on .report-row::before {
-  content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 1px; pointer-events: none;
+  content: ''; position: absolute; top: 0; left: var(--edge-pad); right: var(--edge-pad); height: 1px; pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(57, 208, 255, .5), rgba(138, 92, 246, .4), transparent);
   box-shadow: 0 0 14px rgba(57, 208, 255, .22);
 }
