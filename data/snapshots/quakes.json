@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T01:01:12Z",
+  "updated": "2026-06-20T01:15:47Z",
   "count": 248,
   "points": [
     {
@@ -244,6 +244,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920491"
     },
     {
+      "id": "aka2026mbwdxf",
+      "lon": -149.829,
+      "lat": 63.621,
+      "depth": 123.3,
+      "mag": 1.6,
+      "place": "46 km WSW of Denali Park, Alaska",
+      "time": 1781907185441,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwdxf"
+    },
+    {
       "id": "ci41490840",
       "lon": -117.164833333333,
       "lat": 33.9698333333333,
@@ -272,16 +282,6 @@
       "place": "12 km WNW of Dutch Harbor, Alaska",
       "time": 1781906592610,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256098"
-    },
-    {
-      "id": "aka2026mbvhbc",
-      "lon": -152.549,
-      "lat": 59.412,
-      "depth": 80.5,
-      "mag": 1.4,
-      "place": "36 km W of Nanwalek, Alaska",
-      "time": 1781905605245,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbvhbc"
     },
     {
       "id": "nc75379841",
@@ -314,13 +314,33 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379831"
     },
     {
+      "id": "aka2026mbutzg",
+      "lon": -150.576,
+      "lat": 60.8,
+      "depth": 43.5,
+      "mag": 1.5,
+      "place": "15 km SSE of Point Possession, Alaska",
+      "time": 1781904698995,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbutzg"
+    },
+    {
+      "id": "aka2026mbuonq",
+      "lon": -169.758,
+      "lat": 53.195,
+      "depth": 205.4,
+      "mag": 1.9,
+      "place": "66 km WNW of Nikolski, Alaska",
+      "time": 1781904309937,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbuonq"
+    },
+    {
       "id": "aka2026mbumki",
-      "lon": -149.407,
-      "lat": 60.981,
-      "depth": 22,
+      "lon": -149.375,
+      "lat": 60.971,
+      "depth": 26,
       "mag": 1.7,
-      "place": "10 km N of Sunrise, Alaska",
-      "time": 1781904174108,
+      "place": "9 km NNE of Sunrise, Alaska",
+      "time": 1781904174316,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbumki"
     },
     {
@@ -2462,26 +2482,6 @@
       "place": "7 km NW of The Geysers, CA",
       "time": 1781831803810,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379391"
-    },
-    {
-      "id": "hv74986047",
-      "lon": -155.339492797852,
-      "lat": 19.2616672515869,
-      "depth": 30.3199996948242,
-      "mag": 1.74,
-      "place": "16 km ENE of Pāhala, Hawaii",
-      "time": 1781831477630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986047"
-    },
-    {
-      "id": "ci41490400",
-      "lon": -117.5005,
-      "lat": 35.7176666666667,
-      "depth": 1.98,
-      "mag": 2.49,
-      "place": "10 km WSW of Searles Valley, CA",
-      "time": 1781831216720,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490400"
     }
   ]
 }
