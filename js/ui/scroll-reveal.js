@@ -10,7 +10,8 @@
 (function () {
   const body = document.body;
   if (!body) return;
-  const targets = ['#media', '#ai-brief', '#instability']
+  // #media（全幅ショーケース）と .report-row（brief|instability の2カラム）を各1単位で reveal。
+  const targets = ['#media', '.report-row']
     .map((s) => document.querySelector(s))
     .filter(Boolean);
   if (!targets.length) return;

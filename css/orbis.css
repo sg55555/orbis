@@ -11,8 +11,8 @@
   /* デザイン監修 リッチ化(ui-richness): display フォント（body.font-on で見出し/ワードマークに適用）。 */
   --font-display: 'Saira', system-ui, "Segoe UI", sans-serif;
   --font-word: 'Orbitron', 'Saira', system-ui, sans-serif;
-  /* 下部セクション(#media/#ai-brief/#instability)を揃える共通 content 幅（body.sec-on で適用）。 */
-  --content-w: 1200px;
+  /* 下部セクション幅（body.sec-on）。media=全幅ショーケース／report-row=brief|instability 2カラムの中央幅。 */
+  --media-w: 1840px; --report-w: 1500px;
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -583,13 +583,22 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 /* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
 body:not(.sec-on) .media-head { display: none; }
 
-/* (2) 幅・リズム統一：共通 content 幅に中央寄せ（globe は対象外）。
-   width:100% は必須＝#app の flex 列で margin:auto の子が content 幅に縮むのを防ぎ max-width まで伸ばす
-   （#instability はカードで width 未指定のため縮んでいた）。 */
-body.sec-on #media, body.sec-on #ai-brief, body.sec-on #instability {
-  width: 100%; max-width: var(--content-w, 1200px); margin-left: auto; margin-right: auto;
+/* (2) 幅・リズム：media は大きく(全幅ショーケース)、brief|instability は 2カラム横並びで互いに揃える。
+   ＝太田さん方針「ライブメディアは幅いっぱい大きく／それ以外は横に並べてサイズ感を揃える」。globe は対象外。 */
+body.sec-on #media {
+  width: 100%; max-width: var(--media-w, 1840px); margin-left: auto; margin-right: auto;
+  padding-left: 28px; padding-right: 28px;
 }
-body.sec-on #media { padding-left: 20px; padding-right: 20px; }
+/* report-row: #ai-brief｜#instability を 50/50 横並び（互いに揃える）・中央寄せ。
+   各セクションの個別 max-width/margin は flex 子として上書き。 */
+body.sec-on .report-row {
+  position: relative; display: flex; flex-wrap: wrap; gap: 28px; align-items: start;
+  width: 100%; max-width: var(--report-w, 1500px); margin: 24px auto 0; padding: 22px 18px 0;
+}
+body.sec-on .report-row > #ai-brief, body.sec-on .report-row > #instability {
+  flex: 1 1 0; min-width: 0; width: auto; max-width: none; margin: 0;
+}
+@media (max-width: 900px) { body.sec-on .report-row { flex-direction: column; gap: 22px; } }
 
 /* (1) 統一セクションヘッダー：media に新設＋brief/ins を同 look に（Saira タイトル＋オーロラ下線） */
 body.sec-on .media-head { flex: 0 0 100%; }
@@ -606,9 +615,8 @@ body.sec-on .media-note, body.sec-on .brief-note, body.sec-on .ins-note {
   color: rgba(160, 185, 220, .82); font-size: 11.5px; letter-spacing: .04em;
 }
 
-/* (3) セクション区切り：章頭のオーロラ地平線（brief/ins の頭・media は seam-a が担う） */
-body.sec-on #ai-brief, body.sec-on #instability { position: relative; }
-body.sec-on #ai-brief::before, body.sec-on #instability::before {
+/* (3) セクション区切り：media→report の境界に1本のオーロラ地平線（report-row の頭）。media 頭は seam-a が担う */
+body.sec-on .report-row::before {
   content: ''; position: absolute; top: 0; left: 18px; right: 18px; height: 1px; pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(57, 208, 255, .5), rgba(138, 92, 246, .4), transparent);
   box-shadow: 0 0 14px rgba(57, 208, 255, .22);
