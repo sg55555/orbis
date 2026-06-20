@@ -104,6 +104,16 @@ export function blobRadius(mentions) {
   return Math.round(12 + Math.min(40, Math.log10(m + 1) * 26));
 }
 
+// 引き(globe)で加算ブロブが飽和→赤洪水になるのを抑える減衰係数(0..1)。
+// 低ズーム=強く減衰(min)、高ズーム=1.0(現状維持)。線形ランプ。z1>z0 を前提。
+// zoom が非数のときは 1（減衰なし＝安全側）。
+export function densityScale(zoom, { z0 = 2.5, z1 = 5, min = 0.22 } = {}) {
+  const z = Number(zoom);
+  if (!Number.isFinite(z)) return 1;
+  const t = (z - z0) / (z1 - z0);
+  return Math.max(min, Math.min(1, t));
+}
+
 // deck.gl(luma.gl v9) の加算合成パラメータ。半透明の円が重なるほど明るく発色する。
 // HeatmapLayer(globe非対応)の代替として ScatterplotLayer に適用する。
 export const ADDITIVE_BLEND = {
