@@ -31,31 +31,98 @@ html, body { margin: 0; background: var(--bg); color: var(--text);
   align-items: center; justify-content: center; transition: opacity .6s;
   background: radial-gradient(ellipse at 50% 45%, #0a1426 0%, #05080f 75%); }
 #loading.hidden { opacity: 0; pointer-events: none; }
-/* 起動演出: 同心リング＋軌道スイープ＋ワードマーク＋進捗シマー（描画言語＝光リング） */
-.boot { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-.boot-rings { position: relative; width: 96px; height: 96px; }
-.boot-rings span { position: absolute; inset: 0; margin: auto; border-radius: 50%;
-  border: 1px solid rgba(57,208,255,.18); }
-.boot-rings span:nth-child(1) { width: 96px; height: 96px; }
-.boot-rings span:nth-child(2) { width: 66px; height: 66px; border-color: rgba(138,92,246,.22); }
-.boot-rings span:nth-child(3) { width: 36px; height: 36px; border-color: rgba(57,208,255,.30); }
-/* 軌道スイープ: 外周を回る発光弧 */
-.boot-rings i { position: absolute; inset: 0; border-radius: 50%;
-  border: 2px solid transparent; border-top-color: var(--cyan);
-  box-shadow: 0 0 14px rgba(57,208,255,.5); animation: boot-spin 1.1s linear infinite; }
-.boot-word { font-size: 22px; font-weight: 700; letter-spacing: .42em; color: #eaf4ff;
-  text-shadow: 0 0 18px rgba(57,208,255,.55); padding-left: .42em; }
-.boot-sub { font-size: 10px; letter-spacing: .18em; color: var(--muted); }
-.boot-bar { width: 168px; height: 2px; border-radius: 2px; overflow: hidden;
-  background: rgba(57,208,255,.12); }
-.boot-bar b { display: block; width: 38%; height: 100%; border-radius: 2px;
+/* 起動演出（③ 地球生成＋観測網テレメトリ融合）。?boot=1|2|3|12 で variant 切替。 */
+.boot-fx { position: absolute; inset: 0; z-index: 1; }
+.boot-overlay { position: absolute; inset: 0; z-index: 2; }
+
+/* オーロラの淡い光（背面で浮遊） */
+.boot-aurora { position: absolute; border-radius: 50%; filter: blur(85px); opacity: .16;
+  pointer-events: none; z-index: 0; animation: boot-aufloat 9s ease-in-out infinite; }
+.boot-aurora.a1 { width: 520px; height: 300px; background: var(--cyan); top: 28%; left: 26%; }
+.boot-aurora.a2 { width: 480px; height: 280px; background: #8a5cf6; top: 42%; right: 24%; animation-delay: -4.5s; }
+@keyframes boot-aufloat { 0%,100% { transform: translateY(0) scale(1); } 50% { transform: translateY(28px) scale(1.06); } }
+
+/* foot＝ワードマーク/サブ/バーを下部中央へ */
+.boot-foot { position: absolute; left: 0; right: 0; bottom: 12vh; display: flex;
+  flex-direction: column; align-items: center; gap: 13px; }
+#loading[data-variant="3"] .boot-foot { bottom: 14vh; }
+
+/* ワードマーク：字間が広→収束し glow が bloom */
+.boot-word { font-size: 26px; font-weight: 700; letter-spacing: 1.1em; color: #eaf4ff;
+  padding-left: 1.1em; opacity: 0; animation: boot-wordin 1.15s cubic-bezier(.2,.7,.2,1) .9s forwards; }
+@keyframes boot-wordin {
+  0% { opacity: 0; letter-spacing: 1.1em; filter: blur(7px); }
+  55% { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; letter-spacing: .42em;
+    text-shadow: 0 0 22px rgba(57,208,255,.55), 0 0 46px rgba(138,92,246,.32); }
+}
+.boot-sub { font-size: 11px; letter-spacing: .2em; color: var(--muted); opacity: 0;
+  text-align: center; animation: boot-fadein .8s ease 1.55s forwards; }
+@keyframes boot-fadein { to { opacity: 1; } }
+
+/* 進捗バー */
+.boot-bar { width: 194px; height: 2px; border-radius: 2px; overflow: hidden;
+  background: rgba(57,208,255,.12); opacity: 1; }
+.boot-bar b { display: block; height: 100%; border-radius: 2px; }
+.boot-bar.shimmer b { width: 40%;
   background: linear-gradient(90deg, transparent, var(--cyan), rgba(138,92,246,.9), transparent);
   animation: boot-shimmer 1.3s ease-in-out infinite; }
-@keyframes boot-spin { to { transform: rotate(360deg); } }
 @keyframes boot-shimmer { 0% { transform: translateX(-120%); } 100% { transform: translateX(320%); } }
+.boot-bar.fill b { width: var(--p, 0%);
+  background: linear-gradient(90deg, var(--cyan), #8a5cf6); box-shadow: 0 0 10px rgba(57,208,255,.4);
+  transition: width .35s ease; }
+
+/* テレメトリ（観測網点呼） */
+.boot-telemetry { position: absolute; left: 50%; transform: translateX(-50%);
+  list-style: none; margin: 0; padding: 0; display: none; flex-direction: column; gap: 6px;
+  font-size: 12.5px; font-variant-numeric: tabular-nums; width: min(440px, 82vw); }
+#loading[data-variant="2"] .boot-telemetry { display: flex; top: 31%; }
+#loading[data-variant="12"] .boot-telemetry { display: flex; top: 57%; gap: 3px; font-size: 11px;
+  width: min(360px, 78vw); opacity: .95; }
+.boot-telemetry li { display: flex; align-items: center; gap: 9px; opacity: 0; transform: translateY(5px);
+  color: var(--muted); letter-spacing: .02em; }
+.boot-telemetry li.in { opacity: 1; transform: none; transition: opacity .32s, transform .32s; }
+.boot-telemetry li .nm { color: var(--text); }
+#loading[data-variant="2"] .boot-telemetry li .nm { min-width: 182px; }
+.boot-telemetry li .dots { flex: 1; color: #21344c; overflow: hidden; white-space: nowrap; letter-spacing: .18em; }
+.boot-telemetry li .st { color: var(--muted); min-width: 42px; text-align: right; }
+.boot-telemetry li.ok .st { color: #5effa6; text-shadow: 0 0 9px rgba(94,255,166,.45); }
+.boot-telemetry .online { justify-content: center; color: var(--cyan); letter-spacing: .18em;
+  font-weight: 600; text-shadow: 0 0 13px rgba(57,208,255,.5); }
+/* 新案b（globe 大きめ）に合わせたテレメトリ/foot 位置と可読性 */
+#loading[data-bv="b"] .boot-foot { bottom: 8vh; }
+#loading[data-bv="b"][data-variant="12"] .boot-telemetry { top: 72%; font-size: 11.5px; }
+#loading[data-bv="b"][data-variant="2"] .boot-telemetry { top: 27%; }
+#loading[data-bv="b"] .boot-telemetry li .nm { color: #dcebff; }
+
+/* 同心リング（variant 3）。多重軌道＋発光コア */
+.boot-rings { position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+  width: 118px; height: 118px; display: none; }
+#loading[data-variant="3"] .boot-rings { display: block; }
+.boot-rings span { position: absolute; inset: 0; margin: auto; border-radius: 50%;
+  border: 1px solid rgba(57,208,255,.16); }
+.boot-rings span:nth-child(1) { width: 118px; height: 118px; }
+.boot-rings span:nth-child(2) { width: 80px; height: 80px; border-color: rgba(138,92,246,.22); }
+.boot-rings span:nth-child(3) { width: 44px; height: 44px; border-color: rgba(57,208,255,.30); }
+.boot-rings .boot-arc { position: absolute; inset: 0; margin: auto; border-radius: 50%;
+  border: 2px solid transparent; }
+.boot-rings .boot-arc.a1 { width: 118px; height: 118px; border-top-color: var(--cyan);
+  box-shadow: 0 0 16px rgba(57,208,255,.5); animation: boot-spin 1.5s linear infinite; }
+.boot-rings .boot-arc.a2 { width: 80px; height: 80px; border-bottom-color: rgba(138,92,246,.85);
+  box-shadow: 0 0 14px rgba(138,92,246,.45); animation: boot-spin 2.3s linear infinite reverse; }
+.boot-rings .boot-core { position: absolute; left: 50%; top: 50%; width: 8px; height: 8px;
+  border-radius: 50%; transform: translate(-50%, -50%); background: var(--cyan);
+  box-shadow: 0 0 16px 3px rgba(57,208,255,.7); animation: boot-corepulse 1.8s ease-in-out infinite; }
+@keyframes boot-spin { to { transform: rotate(360deg); } }
+@keyframes boot-corepulse { 0%,100% { opacity: .6; transform: translate(-50%,-50%) scale(.8); }
+  50% { opacity: 1; transform: translate(-50%,-50%) scale(1.25); } }
+
 @media (prefers-reduced-motion: reduce) {
-  .boot-rings i { animation: none; border-top-color: rgba(57,208,255,.4); }
-  .boot-bar b { animation: none; width: 100%; opacity: .5; }
+  .boot-aurora, .boot-bar.shimmer b, .boot-rings .boot-arc.a1, .boot-rings .boot-arc.a2,
+  .boot-rings .boot-core { animation: none; }
+  .boot-word { animation: none; opacity: 1; letter-spacing: .42em;
+    text-shadow: 0 0 22px rgba(57,208,255,.55); }
+  .boot-sub { animation: none; opacity: 1; }
 }
 .side-panel { position: absolute; left: 12px; top: 12px; z-index: 5; width: 220px;
   background: var(--glass-bg); border: 1px solid var(--glass-rim); border-radius: 12px;

@@ -11,6 +11,7 @@ import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
+import { initBoot } from './ui/boot.js';
 import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs, gdeltEventPopupHtml, gdeltCountryPopupHtml } from './lib/selection.js';
@@ -263,6 +264,7 @@ function motionLoop() {
 }
 
 function boot() {
+  const bootCtl = initBoot({ reduced: REDUCED });
   const look = getLook();
   applyLookCss(look); // 星雲・グラスの CSS 変数を :root に適用
   // 没入ダイヤル: 大気ハロ(glow)を initMap に渡し、body に seam/mbg/glass クラスを付与。
@@ -358,7 +360,7 @@ function boot() {
   map.on('zoom', () => { markBaseDirty(); drawAll(overlay); });
 
   map.on('load', async () => {
-    document.getElementById('loading').classList.add('hidden');
+    bootCtl.requestHandoff();
 
     // 静的レイヤー（static:true の trade/currents 等）を各自の fetch() で一度だけ読み込む。
     // registry から自動導出するので、静的レイヤー追加時に main.js を編集する必要がない。
