@@ -25,6 +25,17 @@ export function renderPanel(root, layers, getEnabled, getCounts, onChange, descF
     onChange(next);
   });
 
+  // ⓘ：説明の開閉（タッチで確実）。<label> 内なので既定動作とバブリングを止めてチェック誤作動を防ぐ。
+  root.addEventListener('click', (e) => {
+    const info = e.target.closest('.layer-info');
+    if (!info) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const item = info.closest('.layer-item');
+    const open = item.classList.toggle('desc-open');
+    info.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+
   return {
     updateCounts() {
       const counts = getCounts();
@@ -37,7 +48,7 @@ export function renderPanel(root, layers, getEnabled, getCounts, onChange, descF
   };
 }
 
-// 1レイヤー行の HTML（Task 3 で ⓘ を追加）。
+// 1レイヤー行の HTML（説明あり層は ⓘ で開閉）。
 function rowHtml(l, descFor) {
   const sw = l.swatchColor || ((l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)');
   const marker = l.marker || 'dot'; // dot | ring | triangle
@@ -48,6 +59,7 @@ function rowHtml(l, descFor) {
         <span class="swatch swatch-${marker}" style="color:${sw}"></span>
         <span class="layer-label">${l.label}</span>
         <span class="layer-count" data-count="${l.id}">–</span>
+        ${desc ? `<button type="button" class="layer-info" aria-label="説明" aria-expanded="false">ⓘ</button>` : ''}
       </label>
       ${desc ? `<div class="layer-desc">${desc}</div>` : ''}
     </div>`;
