@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T20:31:11Z",
-  "count": 211,
+  "updated": "2026-06-20T20:45:51Z",
+  "count": 206,
   "points": [
     {
       "id": "us7000suwa",
@@ -412,16 +412,6 @@
       "place": "172 km SW of Hihifo, Tonga",
       "time": 1781974760438,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuw"
-    },
-    {
-      "id": "aka2026mdhohu",
-      "lon": 176.186,
-      "lat": 51.877,
-      "depth": 20,
-      "mag": 3.5,
-      "place": "231 km ESE of Attu Station, Alaska",
-      "time": 1781974466409,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdhohu"
     },
     {
       "id": "ci41491272",
@@ -2072,46 +2062,6 @@
       "place": "26 km SSW of Trapper Creek, Alaska",
       "time": 1781902297678,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbtlhj"
-    },
-    {
-      "id": "us7000suqe",
-      "lon": 145.3692,
-      "lat": 42.8784,
-      "depth": 80.981,
-      "mag": 4.3,
-      "place": "45 km ESE of Akkeshi, Japan",
-      "time": 1781901542527,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqe"
-    },
-    {
-      "id": "aka2026mbswye",
-      "lon": -164.733,
-      "lat": 53.452,
-      "depth": 27.2,
-      "mag": 2,
-      "place": "102 km SE of Akutan, Alaska",
-      "time": 1781901309840,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbswye"
-    },
-    {
-      "id": "nc75379776",
-      "lon": -122.729499816895,
-      "lat": 38.759334564209,
-      "depth": 1.9099999666214,
-      "mag": 1.28,
-      "place": "3 km SE of The Geysers, CA",
-      "time": 1781901104430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379776"
-    },
-    {
-      "id": "us7000suq8",
-      "lon": -164.8937,
-      "lat": 53.6077,
-      "depth": 35,
-      "mag": 3,
-      "place": "82 km SE of Akutan, Alaska",
-      "time": 1781901097838,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suq8"
     }
   ]
 }
