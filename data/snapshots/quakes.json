@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T03:31:06Z",
-  "count": 242,
+  "updated": "2026-06-20T03:45:49Z",
+  "count": 241,
   "points": [
+    {
+      "id": "ci41490944",
+      "lon": -116.738,
+      "lat": 33.6578333333333,
+      "depth": 12.21,
+      "mag": 0.34,
+      "place": "9 km S of Idyllwild, CA",
+      "time": 1781926735720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490944"
+    },
+    {
+      "id": "tx2026maiiwx",
+      "lon": -101.92,
+      "lat": 32.254,
+      "depth": 4.0439,
+      "mag": 1.6,
+      "place": "18 km NW of Stanton, Texas",
+      "time": 1781926096172,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maiiwx"
+    },
     {
       "id": "nc75379961",
       "lon": -122.807334899902,
@@ -2392,36 +2412,6 @@
       "place": "35 km SW of Ivanof Bay, Alaska",
       "time": 1781841691455,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maltkz"
-    },
-    {
-      "id": "nc75379446",
-      "lon": -122.848999023438,
-      "lat": 38.848331451416,
-      "depth": 1.42999994754791,
-      "mag": 0.95,
-      "place": "11 km NW of The Geysers, CA",
-      "time": 1781840646070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379446"
-    },
-    {
-      "id": "nn00920463",
-      "lon": -116.6628,
-      "lat": 38.2248,
-      "depth": 6.4075,
-      "mag": 2.02,
-      "place": "52 km ENE of Tonopah, Nevada",
-      "time": 1781840337838,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920463"
-    },
-    {
-      "id": "us7000suhj",
-      "lon": -126.5732,
-      "lat": 42.3601,
-      "depth": 10,
-      "mag": 2.8,
-      "place": "175 km WSW of Port Orford, Oregon",
-      "time": 1781840187104,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suhj"
     }
   ]
 }
