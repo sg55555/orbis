@@ -10,10 +10,12 @@
 (function () {
   const body = document.body;
   if (!body) return;
-  // #media（全幅ショーケース）と .report-row（brief|instability の2カラム）を各1単位で reveal。
-  const targets = ['#media', '.report-row']
-    .map((s) => document.querySelector(s))
-    .filter(Boolean);
+  // #app 直下の全 <section>（#media＋将来追加の全幅セクション）と .report-row（2カラム単位）を reveal。
+  // ＝将来セクションを #app 直下 or .report-row 内に置けば自動で演出対象になる（太田さん「増えても綺麗に」）。
+  const targets = [
+    ...document.querySelectorAll('#app > section'),
+    ...document.querySelectorAll('.report-row'),
+  ];
   if (!targets.length) return;
 
   body.classList.add('reveal-ready');

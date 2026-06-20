@@ -584,40 +584,48 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 /* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
 body:not(.sec-on) .media-head { display: none; }
 
-/* (2) 幅・リズム：media（全幅ショーケース）と report-row（brief|instability 2カラム）を「同じ全幅＋共通端
-   パディング」で揃える＝太田さんFB「4Kでも画面いっぱい／2つ合わせた幅をメディアと一致」。globe は対象外。 */
-body.sec-on #media {
-  width: 100%; max-width: none; margin-left: 0; margin-right: 0;
+/* === 将来セクション追加の規約（太田さん「増えても綺麗にはまるよう」）===
+   ・全幅セクション: #app 直下に <section> を置くだけで「全幅＋共通端パディング＋章区切り＋reveal」が自動。
+   ・2カラムに並べる: .report-row 内に <section> を追加すれば等幅で横並び（3つ目以降も flex で自動分割/折返し）。
+   ・統一見出し: <div class="sec-head"><h3 class="sec-h">…</h3><span class="sec-note">…</span></div> で Saira＋オーロラ下線。
+     （既存 #ai-brief/#instability は他セッション所有ゆえ .brief-head/.ins-head を直接ターゲットして統一） */
+
+/* (2) 幅・リズム：全幅セクション(#media と将来の #app 直下 section)＝全幅＋共通端パディング。
+   report-row(brief|instability 2カラム)も同じ全幅＋同端パディングで外形を media と一致（太田さんFB＝4Kいっぱい／幅一致）。 */
+body.sec-on #app > section {
+  position: relative; width: 100%; max-width: none; margin-left: 0; margin-right: 0;
   padding-left: var(--edge-pad); padding-right: var(--edge-pad);
 }
-/* report-row: media と同じ全幅・同じ端パディングで内側に #ai-brief｜#instability を 50/50。＝外形は media と一致。 */
 body.sec-on .report-row {
   position: relative; display: flex; flex-wrap: wrap; gap: clamp(20px, 2vw, 36px); align-items: start;
   width: 100%; max-width: none; margin: 24px 0 0;
   padding-left: var(--edge-pad); padding-right: var(--edge-pad); padding-top: 22px;
 }
-body.sec-on .report-row > #ai-brief, body.sec-on .report-row > #instability {
-  flex: 1 1 0; min-width: 0; width: auto; max-width: none; margin: 0;
+/* report-row 内のセクションは等幅 flex カラムに。各セクション固有の max-width/margin/ID 指定を上書き（!important で
+   ID 由来の高 specificity に勝つ＝新セクションを入れても自動で等幅になる）。 */
+body.sec-on .report-row > section {
+  flex: 1 1 0 !important; min-width: 0; width: auto !important; max-width: none !important; margin: 0 !important;
 }
 @media (max-width: 900px) { body.sec-on .report-row { flex-direction: column; gap: 22px; } }
 
-/* (1) 統一セクションヘッダー：media に新設＋brief/ins を同 look に（Saira タイトル＋オーロラ下線） */
-body.sec-on .media-head { flex: 0 0 100%; }
-body.sec-on .media-head, body.sec-on .brief-head, body.sec-on .ins-head {
+/* (1) 統一セクションヘッダー：汎用 .sec-head（将来セクション）＋既存 .brief-head/.ins-head を同 look に（Saira＋オーロラ下線） */
+body.sec-on .sec-head { flex: 0 0 100%; } /* flex セクション(media 等)で見出しを全幅行に。block では無害 */
+body.sec-on .sec-head, body.sec-on .brief-head, body.sec-on .ins-head {
   display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   margin: 0 0 14px; padding-bottom: 10px;
   border-bottom: 1px solid rgba(57, 208, 255, .18); box-shadow: 0 1px 0 rgba(57, 208, 255, .08);
 }
-body.sec-on .media-h, body.sec-on .brief-h, body.sec-on .ins-h {
+body.sec-on .sec-h, body.sec-on .brief-h, body.sec-on .ins-h {
   margin: 0; font-size: 22px; line-height: 1.2; color: #e7f3ff; text-shadow: 0 0 16px rgba(57, 208, 255, .28);
 }
-body.font-on .media-h, body.font-on .ins-h { font-family: var(--font-display); letter-spacing: .04em; }
-body.sec-on .media-note, body.sec-on .brief-note, body.sec-on .ins-note {
+body.font-on .sec-h, body.font-on .ins-h { font-family: var(--font-display); letter-spacing: .04em; }
+body.sec-on .sec-note, body.sec-on .brief-note, body.sec-on .ins-note {
   color: rgba(160, 185, 220, .82); font-size: 11.5px; letter-spacing: .04em;
 }
 
-/* (3) セクション区切り：media→report の境界に1本のオーロラ地平線（report-row の頭）。media 頭は seam-a が担う */
-body.sec-on .report-row::before {
+/* (3) セクション区切り：report-row 頭＋将来の全幅セクション(#media 以外)の頭にオーロラ地平線。media 頭は seam-a が担う */
+body.sec-on .report-row::before,
+body.sec-on #app > section:not(#media)::before {
   content: ''; position: absolute; top: 0; left: var(--edge-pad); right: var(--edge-pad); height: 1px; pointer-events: none;
   background: linear-gradient(90deg, transparent, rgba(57, 208, 255, .5), rgba(138, 92, 246, .4), transparent);
   box-shadow: 0 0 14px rgba(57, 208, 255, .22);
