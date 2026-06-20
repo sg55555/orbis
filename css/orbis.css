@@ -11,6 +11,9 @@
   /* デザイン監修 リッチ化(ui-richness): display フォント（body.font-on で見出し/ワードマークに適用）。 */
   --font-display: 'Saira', system-ui, "Segoe UI", sans-serif;
   --font-word: 'Orbitron', 'Saira', system-ui, sans-serif;
+  /* 下部セクション（body.sec-on）の左右パディング。media と report-row で共有＝両者の端を一致させ、
+     どちらも全幅(4Kでも画面いっぱい)に。画面幅に応じて余白を可変（小さい画面は詰め、大画面は少し空ける）。 */
+  --edge-pad: clamp(16px, 1.6vw, 44px);
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text);
@@ -572,4 +575,84 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 
 @media (prefers-reduced-motion: reduce) {
   body.ui-a .feed-row, body.ui-b .feed-row, body.ui-a .layer-row, body.ui-b .layer-row { transition: none; }
+}
+
+/* ===== セクション構造リッチ化（?sec=on|off 既定on / immerse.js sec-*） =====
+   下部セクション(#media/#ai-brief/#instability)を「共通幅の柱＋統一セクション見出し＋オーロラ区切り
+   ＋メディアボタン統一＋スクロール演出」で1つの系に。base 不変＝?sec=off(before)。globe は全幅ヒーロー維持。 */
+
+/* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
+body:not(.sec-on) .media-head { display: none; }
+
+/* === 将来セクション追加の規約（太田さん「増えても綺麗にはまるよう」）===
+   ・全幅セクション: #app 直下に <section> を置くだけで「全幅＋共通端パディング＋章区切り＋reveal」が自動。
+   ・2カラムに並べる: .report-row 内に <section> を追加すれば等幅で横並び（3つ目以降も flex で自動分割/折返し）。
+   ・統一見出し: <div class="sec-head"><h3 class="sec-h">…</h3><span class="sec-note">…</span></div> で Saira＋オーロラ下線。
+     （既存 #ai-brief/#instability は他セッション所有ゆえ .brief-head/.ins-head を直接ターゲットして統一） */
+
+/* (2) 幅・リズム：全幅セクション(#media と将来の #app 直下 section)＝全幅＋共通端パディング。
+   report-row(brief|instability 2カラム)も同じ全幅＋同端パディングで外形を media と一致（太田さんFB＝4Kいっぱい／幅一致）。 */
+body.sec-on #app > section {
+  position: relative; width: 100%; max-width: none; margin-left: 0; margin-right: 0;
+  padding-left: var(--edge-pad); padding-right: var(--edge-pad);
+}
+body.sec-on .report-row {
+  position: relative; display: flex; flex-wrap: wrap; gap: clamp(20px, 2vw, 36px); align-items: start;
+  width: 100%; max-width: none; margin: 24px 0 0;
+  padding-left: var(--edge-pad); padding-right: var(--edge-pad); padding-top: 22px;
+}
+/* report-row 内のセクションは等幅 flex カラムに。各セクション固有の max-width/margin/ID 指定を上書き（!important で
+   ID 由来の高 specificity に勝つ＝新セクションを入れても自動で等幅になる）。 */
+body.sec-on .report-row > section {
+  flex: 1 1 0 !important; min-width: 0; width: auto !important; max-width: none !important; margin: 0 !important;
+}
+@media (max-width: 900px) { body.sec-on .report-row { flex-direction: column; gap: 22px; } }
+
+/* (1) 統一セクションヘッダー：汎用 .sec-head（将来セクション）＋既存 .brief-head/.ins-head を同 look に（Saira＋オーロラ下線） */
+body.sec-on .sec-head { flex: 0 0 100%; } /* flex セクション(media 等)で見出しを全幅行に。block では無害 */
+body.sec-on .sec-head, body.sec-on .brief-head, body.sec-on .ins-head {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin: 0 0 14px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(57, 208, 255, .18); box-shadow: 0 1px 0 rgba(57, 208, 255, .08);
+}
+body.sec-on .sec-h, body.sec-on .brief-h, body.sec-on .ins-h {
+  margin: 0; font-size: 22px; line-height: 1.2; color: #e7f3ff; text-shadow: 0 0 16px rgba(57, 208, 255, .28);
+}
+body.font-on .sec-h, body.font-on .ins-h { font-family: var(--font-display); letter-spacing: .04em; }
+body.sec-on .sec-note, body.sec-on .brief-note, body.sec-on .ins-note {
+  color: rgba(160, 185, 220, .82); font-size: 11.5px; letter-spacing: .04em;
+}
+
+/* (3) セクション区切り：report-row 頭＋将来の全幅セクション(#media 以外)の頭にオーロラ地平線。media 頭は seam-a が担う */
+body.sec-on .report-row::before,
+body.sec-on #app > section:not(#media)::before {
+  content: ''; position: absolute; top: 0; left: var(--edge-pad); right: var(--edge-pad); height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, transparent, rgba(57, 208, 255, .5), rgba(138, 92, 246, .4), transparent);
+  box-shadow: 0 0 14px rgba(57, 208, 255, .22);
+}
+
+/* (4) メディアのボタン/タブ統一（本編パネルと同じ「グラス＋ネオン縁」言語） */
+body.sec-on .news-tab, body.sec-on .area-tab, body.sec-on .mode-btn, body.sec-on .cam-one-tab {
+  transition: border-color .15s, box-shadow .15s, color .15s, background .15s;
+}
+body.sec-on .news-tab:hover, body.sec-on .area-tab:hover, body.sec-on .mode-btn:hover, body.sec-on .cam-one-tab:hover {
+  border-color: rgba(57, 208, 255, .6); box-shadow: 0 0 10px -3px rgba(57, 208, 255, .5);
+}
+body.sec-on .news-tab.active, body.sec-on .area-tab.active, body.sec-on .mode-btn.active, body.sec-on .cam-one-tab.active {
+  box-shadow: 0 0 12px -2px rgba(57, 208, 255, .5), inset 0 0 8px -4px rgba(57, 208, 255, .4);
+}
+
+/* (5) スクロール演出：初回 intersect で fade+rise（reveal-ready ガード＝JS失敗時は常時表示） */
+body.sec-on.reveal-ready .reveal {
+  opacity: 0; transform: translateY(26px);
+  transition: opacity .7s cubic-bezier(.2, .7, .2, 1), transform .7s cubic-bezier(.2, .7, .2, 1);
+}
+body.sec-on.reveal-ready .reveal.revealed { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  body.sec-on.reveal-ready .reveal { opacity: 1 !important; transform: none !important; transition: none; }
+}
+
+/* モバイル：共通幅は端まで・余白控えめ */
+@media (max-width: 768px) {
+  body.sec-on #media { padding-left: 12px; padding-right: 12px; }
 }
