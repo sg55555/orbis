@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {
   immerseZoom, immerseSeam, immerseGlow, immerseMediaBg, immerseClasses,
   atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM, immerseNeb,
+  immerseMediaPolish,
 } from '../js/lib/immerse.js';
 
 // 没入ダイヤルの既定値は実物比較で確定した本番値。URL パラメータで下げ方向に上書きできる。
@@ -54,12 +55,23 @@ test('immerseMediaBg: 未指定は既定 deep。?mbg=black で上書き（無効
   assert.equal(immerseMediaBg('?mbg=x'), 'deep');
 });
 
-test('immerseClasses: 既定で seam-a・mbg-deep。指定で上書き', () => {
-  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep']);
-  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep']);
-  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a']);
-  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off']);
-  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep']); // glass=on はクラス無し
+test('immerseMediaPolish: 未指定は既定 a（大気グロー）。?mp=b|off で上書き（無効も既定 a）', () => {
+  assert.equal(immerseMediaPolish(''), 'a');
+  assert.equal(immerseMediaPolish('?mp=a'), 'a');
+  assert.equal(immerseMediaPolish('?mp=b'), 'b');
+  assert.equal(immerseMediaPolish('?mp=off'), 'off');
+  assert.equal(immerseMediaPolish('?mp=OFF'), 'off'); // 大小無視
+  assert.equal(immerseMediaPolish('?mp=x'), 'a'); // 不正は既定
+});
+
+test('immerseClasses: 既定で seam-a・mbg-deep・mp-a。指定で上書き', () => {
+  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep', 'mp-a']);
+  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep', 'mp-a']);
+  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a', 'mp-a']);
+  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off', 'mp-a']);
+  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep', 'mp-a']); // glass=on はクラス無し
+  assert.deepEqual(immerseClasses('?mp=off'), ['seam-a', 'mbg-deep', 'mp-off']); // before
+  assert.deepEqual(immerseClasses('?mp=b'), ['seam-a', 'mbg-deep', 'mp-b']); // ネオン強め
 });
 
 test('atmosphereStops: glow level で atmosphere-blend のストップ（大きいほど強く・減衰を遅らせ広く）', () => {
