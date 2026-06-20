@@ -1,7 +1,7 @@
 name: collect-briefing
 on:
   schedule:
-    - cron: '17 * * * *'      # 毎時:17（collect/collect-slow と別オフセット）
+    - cron: '17 */2 * * *'    # 2時間毎:17（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット）
   workflow_dispatch: {}
 permissions:
   contents: write
