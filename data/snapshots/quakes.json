@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T20:45:51Z",
-  "count": 206,
+  "updated": "2026-06-20T21:01:19Z",
+  "count": 204,
   "points": [
+    {
+      "id": "ci41491424",
+      "lon": -116.819333333333,
+      "lat": 33.703,
+      "depth": 16.63,
+      "mag": 1.14,
+      "place": "8 km SE of Valle Vista, CA",
+      "time": 1781989003020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491424"
+    },
     {
       "id": "us7000suwa",
       "lon": -98.0491,
@@ -2032,36 +2042,6 @@
       "place": "South Sandwich Islands region",
       "time": 1781903309057,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqu"
-    },
-    {
-      "id": "nc75379801",
-      "lon": -122.807830810547,
-      "lat": 38.7939987182617,
-      "depth": 3.8199999332428,
-      "mag": 0.78,
-      "place": "5 km WNW of The Geysers, CA",
-      "time": 1781902710900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379801"
-    },
-    {
-      "id": "us7000suqj",
-      "lon": -104.1739,
-      "lat": 32.3365,
-      "depth": 5.495,
-      "mag": 2.9,
-      "place": "6 km SSE of Livingston Wheeler, New Mexico",
-      "time": 1781902429398,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqj"
-    },
-    {
-      "id": "aka2026mbtlhj",
-      "lon": -150.454,
-      "lat": 62.102,
-      "depth": 9.4,
-      "mag": 2.1,
-      "place": "26 km SSW of Trapper Creek, Alaska",
-      "time": 1781902297678,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbtlhj"
     }
   ]
 }
