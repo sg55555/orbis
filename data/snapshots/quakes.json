@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T06:01:12Z",
-  "count": 242,
+  "updated": "2026-06-20T06:15:49Z",
+  "count": 240,
   "points": [
     {
       "id": "nc75380016",
@@ -2402,26 +2402,6 @@
       "place": "33 km NW of Stanton, Texas",
       "time": 1781849793040,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lysffl"
-    },
-    {
-      "id": "nc75379496",
-      "lon": -120.478500366211,
-      "lat": 35.9296684265137,
-      "depth": 3.78999996185303,
-      "mag": 1.83,
-      "place": "5 km NW of Parkfield, CA",
-      "time": 1781849703190,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379496"
-    },
-    {
-      "id": "nc75379491",
-      "lon": -124.358329772949,
-      "lat": 40.412166595459,
-      "depth": 20.5599994659424,
-      "mag": 1.89,
-      "place": "12 km NNW of Petrolia, CA",
-      "time": 1781849206560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379491"
     }
   ]
 }
