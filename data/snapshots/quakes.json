@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T22:01:15Z",
-  "count": 205,
+  "updated": "2026-06-20T22:15:50Z",
+  "count": 202,
   "points": [
+    {
+      "id": "nc75380316",
+      "lon": -122.793830871582,
+      "lat": 38.8188323974609,
+      "depth": 2.9300000667572,
+      "mag": 1.23,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781993127910,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380316"
+    },
+    {
+      "id": "ci41491472",
+      "lon": -117.432502746582,
+      "lat": 33.7983322143555,
+      "depth": 14.6199998855591,
+      "mag": 1.29750376486013,
+      "place": "12 km SW of Woodcrest, CA",
+      "time": 1781992895840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491472"
+    },
     {
       "id": "aka2026mdrqlk",
       "lon": -147.473,
@@ -2002,56 +2022,6 @@
       "place": "49 km SW of Adak, Alaska",
       "time": 1781907408493,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwhds"
-    },
-    {
-      "id": "nn00920491",
-      "lon": -119.1863,
-      "lat": 39.6685,
-      "depth": 2.2412,
-      "mag": 1.56,
-      "place": "8 km NE of Fernley, Nevada",
-      "time": 1781907209610,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920491"
-    },
-    {
-      "id": "aka2026mbwdxf",
-      "lon": -149.829,
-      "lat": 63.621,
-      "depth": 123.3,
-      "mag": 1.6,
-      "place": "46 km WSW of Denali Park, Alaska",
-      "time": 1781907185441,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwdxf"
-    },
-    {
-      "id": "ci41490840",
-      "lon": -117.164833333333,
-      "lat": 33.9698333333333,
-      "depth": 16.79,
-      "mag": 1.09,
-      "place": "8 km NE of Moreno Valley, CA",
-      "time": 1781907181550,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490840"
-    },
-    {
-      "id": "hv74986777",
-      "lon": -155.489333333333,
-      "lat": 19.205,
-      "depth": 32.82,
-      "mag": 1.82,
-      "place": "1 km WNW of Pāhala, Hawaii",
-      "time": 1781906877480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986777"
-    },
-    {
-      "id": "av94256098",
-      "lon": -166.721166666667,
-      "lat": 53.9281666666667,
-      "depth": 3.15,
-      "mag": -0.54,
-      "place": "12 km WNW of Dutch Harbor, Alaska",
-      "time": 1781906592610,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256098"
     }
   ]
 }
