@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T19:31:12Z",
-  "count": 199,
+  "updated": "2026-06-20T19:45:51Z",
+  "count": 198,
   "points": [
+    {
+      "id": "nc75380236",
+      "lon": -121.387001037598,
+      "lat": 35.8199996948242,
+      "depth": 3.86999988555908,
+      "mag": 1.37,
+      "place": "26 km NW of San Simeon, CA",
+      "time": 1781984343830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380236"
+    },
+    {
+      "id": "aka2026mdmucv",
+      "lon": -149.929,
+      "lat": 61.793,
+      "depth": 26.5,
+      "mag": 1.2,
+      "place": "7 km NE of Willow, Alaska",
+      "time": 1781983871914,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdmucv"
+    },
     {
       "id": "nc75380221",
       "lon": -122.766998291016,
@@ -62,6 +82,16 @@
       "place": "79 km NNW of Aleneva, Alaska",
       "time": 1781981063453,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdlfno"
+    },
+    {
+      "id": "pr71520753",
+      "lon": -66.957,
+      "lat": 17.8731666666667,
+      "depth": 7.8,
+      "mag": 2.14,
+      "place": "12 km SSW of Guánica, Puerto Rico",
+      "time": 1781980489740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520753"
     },
     {
       "id": "ci41491352",
@@ -1952,46 +1982,6 @@
       "place": "south of Panama",
       "time": 1781898703834,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supu"
-    },
-    {
-      "id": "aka2026mbraof",
-      "lon": -159.883,
-      "lat": 55.974,
-      "depth": 118.2,
-      "mag": 1.8,
-      "place": "26 km WNW of Ivanof Bay, Alaska",
-      "time": 1781897956697,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbraof"
-    },
-    {
-      "id": "us7000supp",
-      "lon": 127.9523,
-      "lat": 25.0026,
-      "depth": 8.453,
-      "mag": 4.9,
-      "place": "127 km SSE of Itoman, Japan",
-      "time": 1781897790902,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supp"
-    },
-    {
-      "id": "ci41490776",
-      "lon": -117.438666666667,
-      "lat": 34.1248333333333,
-      "depth": 9.11,
-      "mag": 1.37,
-      "place": "4 km NNE of Fontana, CA",
-      "time": 1781897739480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490776"
-    },
-    {
-      "id": "ci41490768",
-      "lon": -116.987333333333,
-      "lat": 32.6005,
-      "depth": 2.97,
-      "mag": 1.3,
-      "place": "6 km ESE of Chula Vista, CA",
-      "time": 1781897585320,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490768"
     }
   ]
 }
