@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T02:15:50Z",
+  "updated": "2026-06-20T02:31:00Z",
   "count": 247,
   "points": [
+    {
+      "id": "nc75379931",
+      "lon": -122.839668273926,
+      "lat": 38.8523330688477,
+      "depth": 0.829999983310699,
+      "mag": 1.48,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1781922135260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379931"
+    },
     {
       "id": "nn00920494",
       "lon": -115.7361,
@@ -355,12 +365,12 @@
     },
     {
       "id": "hv74986777",
-      "lon": -155.501007080078,
-      "lat": 19.1870002746582,
-      "depth": 31.8899993896484,
-      "mag": 2.24,
-      "place": "2 km SW of Pāhala, Hawaii",
-      "time": 1781906877390,
+      "lon": -155.489333333333,
+      "lat": 19.205,
+      "depth": 32.82,
+      "mag": 1.82,
+      "place": "1 km WNW of Pāhala, Hawaii",
+      "time": 1781906877480,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986777"
     },
     {
@@ -2462,16 +2472,6 @@
       "place": "19 km SE of Pāhala, Hawaii",
       "time": 1781836361830,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986077"
-    },
-    {
-      "id": "aka2026maihgn",
-      "lon": -152.794,
-      "lat": 59.044,
-      "depth": 72.2,
-      "mag": 2.5,
-      "place": "60 km SW of Nanwalek, Alaska",
-      "time": 1781835457534,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maihgn"
     }
   ]
 }
