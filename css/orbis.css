@@ -603,14 +603,18 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 .fc-up { color: #ff7a7a; } .fc-down { color: #7adba0; } .fc-flat { color: #8ea3c4; }
 .fc-bar { height: 6px; border-radius: 4px; background: rgba(255,255,255,.08); overflow: hidden; margin-bottom: 6px; }
 .fc-fill { display: block; height: 100%; background: var(--lvl, #678); }
+.fc-meta { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: .72rem;
+  margin-bottom: 6px; }
+.fc-score { color: #eaf1ff; font-weight: 600; }
 .fc-conf { font-size: .72rem; color: #8ea3c4; }
+.fc-hz { margin-left: auto; color: #b9c8e6; }
 .fc-out, .fc-rat { margin: 4px 0 0; font-size: .78rem; color: #c7d6f0; }
 .fc-rat { color: #9fb2d4; font-size: .74rem; }
 .fc-ai { font-size: .70rem; color: #a0b4d8; background: rgba(57,208,255,.08);
   border: 1px solid rgba(57,208,255,.20); border-radius: 4px; padding: 1px 6px; margin-left: auto; }
 .fc-sig { font-size: .70rem; color: #8ea3c4; background: rgba(100,120,160,.12);
   border-radius: 3px; padding: 1px 5px; }
-.fc-signals { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+.fc-sigs { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
 .fc-watchmsg { margin: 0; font-size: .78rem; color: #8ea3c4; font-style: italic; }
 .fc-log { margin-top: 14px; font-size: .80rem; color: #8ea3c4;
   border-top: 1px solid rgba(57, 208, 255, .10); padding-top: 10px; }
