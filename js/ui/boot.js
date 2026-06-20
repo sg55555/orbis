@@ -17,7 +17,7 @@ const TUNE = {
   a: { rHero: 0.17, rSil: 0.19, cyHero: 0.43, cySil: 0.40, speed: 1.0, minMs: 2400, rot: 0.18,
        atmo: 0.28, atmoR: 1.22, bodyTopA: 0.42, bodyBotA: 0.34, wire: '90,200,255',
        dotA: '#eafaff', dotB: '#5effc8', purple: 0 },
-  b: { rHero: 0.24, rSil: 0.21, cyHero: 0.46, cySil: 0.42, speed: 1.45, minMs: 3200, rot: 0.11,
+  b: { rHero: 0.24, rSil: 0.21, cyHero: 0.46, cySil: 0.42, speed: 1.45, minMs: 4000, rot: 0.11,
        atmo: 0.36, atmoR: 1.30, bodyTopA: 0.50, bodyBotA: 0.42, wire: '120,212,255',
        dotA: '#eafaff', dotB: '#ffd98a', purple: 0.12 },
 };
