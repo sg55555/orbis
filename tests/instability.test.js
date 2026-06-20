@@ -42,3 +42,13 @@ test('rowHtml: 国名/スコアを含み、url は http(s) のみ', () => {
   assert.match(html, /87/);
   assert.doesNotMatch(html, /javascript:bad/); // 危険 URL は出さない
 });
+
+test('rowHtml: XSS エスケープ（name_ja/narrative_ja）', () => {
+  const html = rowHtml({ code: 'XX', name_ja: '<script>alert(1)</script>', score: 50,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 },
+    trend: { isNew: true }, narrative_ja: '"><img src=x onerror=alert(1)>' });
+  assert.doesNotMatch(html, /<script>/);          // 生タグが出ない
+  assert.match(html, /&lt;script&gt;/);            // エスケープ済み
+  assert.doesNotMatch(html, /<img src=x/);         // 生の img が出ない
+  assert.match(html, /&quot;|&gt;/);               // 引用符/不等号がエスケープ
+});

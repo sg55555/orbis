@@ -43,8 +43,8 @@ function esc(s) {
 function _trendBadges(tr) {
   if (!tr || tr.isNew) return '<span class="ins-new">新規</span>';
   const parts = [];
-  if (tr.dod) parts.push(`<span class="ins-tr ins-${tr.dod.dir}">${trendArrow(tr.dod.dir)}昨日比${tr.dod.delta > 0 ? '+' : ''}${tr.dod.delta}</span>`);
-  if (tr.normal) parts.push(`<span class="ins-tr ins-${tr.normal.dir}">${trendArrow(tr.normal.dir)}平常比${fmtSignedPct(tr.normal.deltaPct)}</span>`);
+  if (tr.dod) parts.push(`<span class="ins-tr ins-${esc(tr.dod.dir)}">${trendArrow(tr.dod.dir)}昨日比${tr.dod.delta > 0 ? '+' : ''}${tr.dod.delta}</span>`);
+  if (tr.normal) parts.push(`<span class="ins-tr ins-${esc(tr.normal.dir)}">${trendArrow(tr.normal.dir)}平常比${fmtSignedPct(tr.normal.deltaPct)}</span>`);
   return parts.join(' ');
 }
 export function rowHtml(country) {
