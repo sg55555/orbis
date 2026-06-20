@@ -1,8 +1,108 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T19:45:51Z",
-  "count": 198,
+  "updated": "2026-06-20T20:15:51Z",
+  "count": 204,
   "points": [
+    {
+      "id": "hv74987362",
+      "lon": -155.322006225586,
+      "lat": 19.0598335266113,
+      "depth": 36.2400016784668,
+      "mag": 1.7,
+      "place": "22 km SE of Pāhala, Hawaii",
+      "time": 1781986241940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987362"
+    },
+    {
+      "id": "hv74987357",
+      "lon": -155.364501953125,
+      "lat": 19.0538330078125,
+      "depth": 29.3400001525879,
+      "mag": 1.94,
+      "place": "20 km SE of Pāhala, Hawaii",
+      "time": 1781986003070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987357"
+    },
+    {
+      "id": "aka2026mdnvls",
+      "lon": -147.271,
+      "lat": 61.206,
+      "depth": 16.2,
+      "mag": 1.6,
+      "place": "49 km NW of Tatitlek, Alaska",
+      "time": 1781985764468,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdnvls"
+    },
+    {
+      "id": "hv74987347",
+      "lon": -155.412338256836,
+      "lat": 19.2151660919189,
+      "depth": 46.6399993896484,
+      "mag": 1.82,
+      "place": "7 km E of Pāhala, Hawaii",
+      "time": 1781985483030,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987347"
+    },
+    {
+      "id": "uw714027811",
+      "lon": -121.136169433594,
+      "lat": 46.7433319091797,
+      "depth": -1.77999997138977,
+      "mag": 1.7468638420105,
+      "place": "17 km WSW of Nile, Washington",
+      "time": 1781985436600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714027811"
+    },
+    {
+      "id": "aka2026mdnlua",
+      "lon": -159.758,
+      "lat": 55.971,
+      "depth": 10.7,
+      "mag": 2,
+      "place": "18 km WNW of Ivanof Bay, Alaska",
+      "time": 1781985091474,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdnlua"
+    },
+    {
+      "id": "tx2026mboxyj",
+      "lon": -103.52,
+      "lat": 31.087,
+      "depth": 0,
+      "mag": 1.6,
+      "place": "24 km ENE of Balmorhea, Texas",
+      "time": 1781985060436,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mboxyj"
+    },
+    {
+      "id": "us7000suvv",
+      "lon": -71.2603,
+      "lat": -35.137,
+      "depth": 96.986,
+      "mag": 4.3,
+      "place": "3 km SE of Molina, Chile",
+      "time": 1781984725228,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suvv"
+    },
+    {
+      "id": "nc75380241",
+      "lon": -122.843330383301,
+      "lat": 38.8448333740234,
+      "depth": 1.66999995708466,
+      "mag": 0.84,
+      "place": "11 km NW of The Geysers, CA",
+      "time": 1781984644350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380241"
+    },
+    {
+      "id": "hv74987337",
+      "lon": -155.428329467773,
+      "lat": 19.3075008392334,
+      "depth": 28.8799991607666,
+      "mag": 2.23,
+      "place": "12 km NNE of Pāhala, Hawaii",
+      "time": 1781984620200,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987337"
+    },
     {
       "id": "nc75380236",
       "lon": -121.387001037598,
@@ -1942,46 +2042,6 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781900777670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379761"
-    },
-    {
-      "id": "aka2026mbsdfu",
-      "lon": -161.427,
-      "lat": 54.389,
-      "depth": 2.8,
-      "mag": 2,
-      "place": "94 km SE of King Cove, Alaska",
-      "time": 1781899939683,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbsdfu"
-    },
-    {
-      "id": "us7000suq2",
-      "lon": -68.9826,
-      "lat": -21.1053,
-      "depth": 115.513,
-      "mag": 4.7,
-      "place": "76 km W of Ollagüe, Chile",
-      "time": 1781899811327,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suq2"
-    },
-    {
-      "id": "aka2026mbryce",
-      "lon": -152.471,
-      "lat": 61.276,
-      "depth": 5,
-      "mag": 2.2,
-      "place": "75 km WNW of Tyonek, Alaska",
-      "time": 1781899590796,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbryce"
-    },
-    {
-      "id": "us7000supu",
-      "lon": -82.6209,
-      "lat": 4.5309,
-      "depth": 10,
-      "mag": 4.2,
-      "place": "south of Panama",
-      "time": 1781898703834,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supu"
     }
   ]
 }
