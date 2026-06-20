@@ -29,3 +29,12 @@ test('confBadge maps level', () => {
   assert.match(confBadge('high'), /高/);
   assert.ok(domainColor('conflict'));
 });
+
+// Task 10
+import { tabsHtml } from '../js/ui/forecast.js';
+test('tabsHtml marks active and lists all domains', () => {
+  const h = tabsHtml('conflict');
+  assert.match(h, /data-dom="all"/);
+  assert.match(h, /data-dom="conflict"[^>]*fc-tab-active/);
+  assert.match(h, /data-dom="cyber"/);
+});

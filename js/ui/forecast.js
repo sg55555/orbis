@@ -16,6 +16,34 @@ export function filterByDomain(cards, domain){
   const list=(cards||[]).slice().sort((a,b)=>(b.attention_score||0)-(a.attention_score||0));
   return domain==='all'?list:list.filter((c)=>c.domain===domain);
 }
+const TAB_ORDER = ['all','conflict','political','infra','supply_chain','military','market','cyber'];
+export function tabsHtml(active){
+  return TAB_ORDER.map((d)=>`<button type="button" data-dom="${d}" class="fc-tab${d===active?' fc-tab-active':''}">`
+    +`${esc(DOMAIN_LABEL[d]||d)}</button>`).join('');
+}
+export function renderForecasts(rootEl, data, { onSelect } = {}){
+  if(!rootEl) return;
+  const cards=(data&&data.cards)||[];
+  const tabs=rootEl.querySelector('.fc-tabs');
+  const list=rootEl.querySelector('.fc-list');
+  if(!tabs||!list) return;
+  let active='all';
+  const draw=()=>{
+    tabs.innerHTML=tabsHtml(active);
+    list.innerHTML='';
+    filterByDomain(cards, active).forEach((c)=>{
+      const el=document.createElement('button'); el.type='button'; el.className='fc-cardbtn';
+      el.innerHTML=cardHtml(c);
+      if(typeof c.lat==='number'&&typeof c.lon==='number'&&(c.lat||c.lon)&&onSelect){
+        el.addEventListener('click',()=>onSelect(c));
+      } else { el.disabled=true; }
+      list.appendChild(el);
+    });
+    tabs.querySelectorAll('.fc-tab').forEach((b)=>b.addEventListener('click',()=>{active=b.dataset.dom;draw();}));
+  };
+  draw();
+}
+
 export function cardHtml(card){
   const c=card||{}; const col=domainColor(c.domain);
   const sig=(c.signals||[]).map((s)=>`<span class="fc-sig">${esc(s.label)}</span>`).join('');
