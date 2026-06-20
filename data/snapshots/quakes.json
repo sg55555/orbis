@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T08:31:05Z",
-  "count": 222,
+  "updated": "2026-06-20T08:45:52Z",
+  "count": 220,
   "points": [
+    {
+      "id": "ci41491032",
+      "lon": -117.194166666667,
+      "lat": 34.0115,
+      "depth": 3.46,
+      "mag": 1.57,
+      "place": "5 km SSW of Redlands, CA",
+      "time": 1781944421210,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491032"
+    },
+    {
+      "id": "ci41491024",
+      "lon": -116.429,
+      "lat": 33.274,
+      "depth": 4.92,
+      "mag": 0.78,
+      "place": "5 km WNW of Borrego Springs, CA",
+      "time": 1781944181680,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491024"
+    },
     {
       "id": "aka2026mcqgsg",
       "lon": -159.869,
@@ -2182,46 +2202,6 @@
       "place": "222 km SE of Chiniak, Alaska",
       "time": 1781859016750,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mavjsg"
-    },
-    {
-      "id": "nc75379531",
-      "lon": -122.816833496094,
-      "lat": 38.8363342285156,
-      "depth": 8.65999984741211,
-      "mag": 0.45,
-      "place": "8 km W of Cobb, CA",
-      "time": 1781858329530,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379531"
-    },
-    {
-      "id": "aka2026mauzfo",
-      "lon": -150.671,
-      "lat": 60.874,
-      "depth": 21.7,
-      "mag": 1.7,
-      "place": "5 km S of Point Possession, Alaska",
-      "time": 1781858282439,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mauzfo"
-    },
-    {
-      "id": "uw714026831",
-      "lon": -121.59383392334,
-      "lat": 44.363166809082,
-      "depth": 11.1000003814697,
-      "mag": 2.20378398895264,
-      "place": "5 km ESE of Black Butte Ranch, Oregon",
-      "time": 1781858013480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026831"
-    },
-    {
-      "id": "tx2026lywrek",
-      "lon": -97.732,
-      "lat": 28.904,
-      "depth": 8.8027,
-      "mag": 1.2,
-      "place": "2 km NW of Runge, Texas",
-      "time": 1781857864295,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lywrek"
     }
   ]
 }
