@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T16:01:17Z",
+  "updated": "2026-06-20T16:04:44Z",
   "count": 208,
   "points": [
+    {
+      "id": "nc75380136",
+      "lon": -121.294830322266,
+      "lat": 35.8296661376953,
+      "depth": 8.98999977111816,
+      "mag": 0.95,
+      "place": "23 km NNW of San Simeon, CA",
+      "time": 1781971316800,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380136"
+    },
     {
       "id": "ci41491216",
       "lon": -117.7755,
@@ -2072,16 +2082,6 @@
       "place": "4 km SE of Adak, Alaska",
       "time": 1781885124637,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjxdc"
-    },
-    {
-      "id": "aka2026mbjvxo",
-      "lon": -152.871,
-      "lat": 59.951,
-      "depth": 110.8,
-      "mag": 1.7,
-      "place": "61 km WNW of Anchor Point, Alaska",
-      "time": 1781885041046,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjvxo"
     }
   ]
 }
