@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T10:15:51Z",
-  "count": 219,
+  "updated": "2026-06-20T10:31:05Z",
+  "count": 215,
   "points": [
+    {
+      "id": "ci41491064",
+      "lon": -118.284333333333,
+      "lat": 32.7151666666667,
+      "depth": 13.89,
+      "mag": 2.56,
+      "place": "13 km SSE of San Clemente Is. (SE tip), CA",
+      "time": 1781950862970,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491064"
+    },
+    {
+      "id": "ci41491056",
+      "lon": -116.458333333333,
+      "lat": 33.4736666666667,
+      "depth": 10.55,
+      "mag": 0.66,
+      "place": "22 km ESE of Anza, CA",
+      "time": 1781950576620,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491056"
+    },
     {
       "id": "nc75380046",
       "lon": -122.764335632324,
@@ -452,6 +472,16 @@
       "place": "9 km S of Idyllwild, CA",
       "time": 1781926735720,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490944"
+    },
+    {
+      "id": "pr71520673",
+      "lon": -66.9573333333333,
+      "lat": 17.9583333333333,
+      "depth": 13.96,
+      "mag": 1.87,
+      "place": "5 km WSW of Guánica, Puerto Rico",
+      "time": 1781926639150,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520673"
     },
     {
       "id": "tx2026maiiwx",
@@ -2122,76 +2152,6 @@
       "place": "70 km W of Nikolski, Alaska",
       "time": 1781865459260,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062269"
-    },
-    {
-      "id": "tx2026lzange",
-      "lon": -103.829,
-      "lat": 32.012,
-      "depth": 7.8943,
-      "mag": 1,
-      "place": "32 km SE of Malaga, New Mexico",
-      "time": 1781864846690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzange"
-    },
-    {
-      "id": "av93062274",
-      "lon": -154.982833333333,
-      "lat": 58.3008333333333,
-      "depth": 3.67,
-      "mag": 0.4,
-      "place": "87 km NNW of Karluk, Alaska",
-      "time": 1781864740060,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062274"
-    },
-    {
-      "id": "aka2026maymqp",
-      "lon": 178.741,
-      "lat": 51.379,
-      "depth": 50.2,
-      "mag": 2.9,
-      "place": "Rat Islands, Aleutian Islands, Alaska",
-      "time": 1781864585026,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maymqp"
-    },
-    {
-      "id": "av93062264",
-      "lon": -169.909833333333,
-      "lat": 52.7941666666667,
-      "depth": 5.42,
-      "mag": 0.69,
-      "place": "72 km WSW of Nikolski, Alaska",
-      "time": 1781864335950,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062264"
-    },
-    {
-      "id": "ci41490520",
-      "lon": -116.7155,
-      "lat": 33.9468333333333,
-      "depth": 15.87,
-      "mag": 0.55,
-      "place": "7 km ENE of Cabazon, CA",
-      "time": 1781864315510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490520"
-    },
-    {
-      "id": "ci41490512",
-      "lon": -117.893833333333,
-      "lat": 36.0943333333333,
-      "depth": 5.7,
-      "mag": 0.95,
-      "place": "7 km NE of Coso Junction, CA",
-      "time": 1781864286200,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490512"
-    },
-    {
-      "id": "tx2026lzadfx",
-      "lon": -103.802,
-      "lat": 32.003,
-      "depth": 7.6508,
-      "mag": 1.1,
-      "place": "35 km SE of Malaga, New Mexico",
-      "time": 1781864147747,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
     }
   ]
 }
