@@ -63,3 +63,24 @@ def test_market_cyber_one_article_one_count():
     assert "market:GLOBAL" in agg
     assert agg["market:GLOBAL"]["counts"]["news"] == 1, \
         f"1記事は counts['news']=1 のはず。得られた値: {agg['market:GLOBAL']['counts']}"
+
+
+def test_momentum_boosts_rising_signal():
+    agg = {"conflict:UP": {"domain":"conflict","place_key":"UP","scope":"country",
+            "raw":30.0,"signals":[],"counts":{"conflict":3},"lat":49,"lon":32,"place_ja":None}}
+    # 平常 raw 中央値 10 → 今 30 は +200%
+    hist = {"conflict:UP": [{"t":1,"raw":10,"score":20},{"t":2,"raw":9,"score":18},
+                            {"t":3,"raw":11,"score":22}]}
+    instab = {"countries":[{"code":"UP","score":70}]}
+    out = F.score_attention(agg, hist, instab, CFG)
+    assert out[0]["place_key"] == "UP"
+    assert out[0]["score"] > 0 and 1 <= out[0]["level"] <= 5
+    assert out[0]["momentum"] > 1.0  # 上昇
+
+
+def test_first_run_no_history_neutral_momentum():
+    agg = {"market:GLOBAL": {"domain":"market","place_key":"GLOBAL","scope":"global",
+            "raw":5.0,"signals":[],"counts":{"news":5}}}
+    out = F.score_attention(agg, {}, {}, CFG)  # 履歴なし
+    assert out[0]["momentum"] == 1.0  # 中立
+    assert out[0]["score"] >= 0

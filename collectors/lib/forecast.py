@@ -1,7 +1,7 @@
 """AI FORECASTS: 信号集約（8ドメイン×地理単位）。"""
 import math
 from collectors.lib.geo_country import point_country
-from collectors.lib.instability import _conflict_contrib, _protest_contrib, _quake_contrib
+from collectors.lib.instability import _conflict_contrib, _protest_contrib, _quake_contrib, _percentile, _median
 
 
 def _haversine_km(lat1, lon1, lat2, lon2):
@@ -108,3 +108,44 @@ def aggregate_signals(snaps, polys, instab, cfg):
         if b["scope"] in ("country", "point", "chokepoint") and w > 0:
             b["lat"] = round(la / w, 3); b["lon"] = round(lo / w, 3)
     return acc
+
+
+def _instab_score(instab, code):
+    for c in (instab or {}).get("countries", []):
+        if c.get("code") == code:
+            return c.get("score", 0)
+    return 0
+
+
+def score_attention(agg, history, instab, cfg):
+    """各 Bucket にモメンタム主軸の注視度スコア(0-100)/level(1-5)/momentum を付与し score 降順で返す。"""
+    w = cfg["weights"]
+    bl = cfg["baseline"]
+    items = []
+    for key, b in agg.items():
+        hist = history.get(key, [])
+        raws = [h["raw"] for h in hist]
+        if len(raws) >= bl["min_samples"]:
+            med = _median(raws)
+            momentum = min(cfg["momentum_clamp"], b["raw"] / med) if med > 0 else \
+                       (cfg["momentum_clamp"] if b["raw"] > 0 else 1.0)
+        else:
+            momentum = 1.0  # 履歴不足→中立（絶対水準主体）
+        level_term = math.log1p(b["raw"])
+        instab_term = (_instab_score(instab, b["place_key"]) / 100.0) \
+            if b["domain"] in cfg["instab_domains"] and b["scope"] == "country" else 0.0
+        raw_att = w["momentum"] * (momentum - 1.0) * level_term + w["level"] * level_term + w["instab"] * instab_term * 5.0
+        b2 = dict(b)
+        b2["key"] = key
+        b2["raw_att"] = max(0.0, raw_att)
+        b2["momentum"] = round(momentum, 2)
+        items.append(b2)
+    base = _percentile([i["raw_att"] for i in items if i["raw_att"] > 0], cfg["normalize_pct"])
+    th = cfg["level_thresholds"]
+    for i in items:
+        score = 0 if base <= 0 else max(0, min(100, round(100 * i["raw_att"] / base)))
+        lvl = 1 + sum(1 for t in th if score >= t)
+        i["score"] = int(score)
+        i["level"] = int(lvl)
+    items.sort(key=lambda i: (-i["score"], -sum(i["counts"].values())))
+    return items
