@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T12:15:51Z",
-  "count": 224,
+  "updated": "2026-06-20T12:21:05Z",
+  "count": 226,
   "points": [
+    {
+      "id": "nc75380091",
+      "lon": -121.176170349121,
+      "lat": 36.5646667480469,
+      "depth": 2.24000000953674,
+      "mag": 1.16,
+      "place": "5 km NW of Pinnacles, CA",
+      "time": 1781957836200,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380091"
+    },
+    {
+      "id": "ci41491104",
+      "lon": -116.803,
+      "lat": 33.9988333333333,
+      "depth": 13.02,
+      "mag": 0.56,
+      "place": "9 km N of Cabazon, CA",
+      "time": 1781957728980,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491104"
+    },
     {
       "id": "nc75380086",
       "lon": -122.782836914062,
@@ -985,12 +1005,12 @@
     },
     {
       "id": "tx2026lzzopu",
-      "lon": -104.445,
-      "lat": 31.634,
-      "depth": 3.5646,
+      "lon": -104.423,
+      "lat": 31.65,
+      "depth": 6.0999,
       "mag": 1.6,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781910203044,
+      "place": "58 km S of Whites City, New Mexico",
+      "time": 1781910202757,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzzopu"
     },
     {
