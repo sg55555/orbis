@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T07:01:11Z",
+  "updated": "2026-06-20T07:15:50Z",
   "count": 228,
   "points": [
+    {
+      "id": "tx2026maptdw",
+      "lon": -104.431,
+      "lat": 31.599,
+      "depth": 1.6588,
+      "mag": 1.4,
+      "place": "64 km S of Whites City, New Mexico",
+      "time": 1781939468593,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maptdw"
+    },
+    {
+      "id": "nc75380026",
+      "lon": -122.848503112793,
+      "lat": 38.8513336181641,
+      "depth": 1.24000000953674,
+      "mag": 0.95,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1781939117640,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380026"
+    },
+    {
+      "id": "ci41490992",
+      "lon": -116.791333333333,
+      "lat": 33.3235,
+      "depth": 15.42,
+      "mag": 0.96,
+      "place": "8 km ESE of Palomar Observatory, CA",
+      "time": 1781938911150,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490992"
+    },
+    {
+      "id": "us7000susv",
+      "lon": -13.2711,
+      "lat": -7.0346,
+      "depth": 10,
+      "mag": 5.5,
+      "place": "160 km NE of Georgetown, Saint Helena",
+      "time": 1781937797271,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susv"
+    },
     {
       "id": "us7000suss",
       "lon": -126.4717,
@@ -2242,46 +2282,6 @@
       "place": "16 km NW of Parkfield, CA",
       "time": 1781853626510,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379521"
-    },
-    {
-      "id": "tx2026lytzxd",
-      "lon": -102.117,
-      "lat": 32.44,
-      "depth": 7.7393,
-      "mag": 0.3,
-      "place": "36 km SSW of Los Ybanez, Texas",
-      "time": 1781853047066,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytzxd"
-    },
-    {
-      "id": "us7000sui8",
-      "lon": 161.1152,
-      "lat": 52.8235,
-      "depth": 10,
-      "mag": 4.9,
-      "place": "169 km E of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781852745026,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui8"
-    },
-    {
-      "id": "uw714026791",
-      "lon": -122.169502258301,
-      "lat": 47.0595016479492,
-      "depth": 7.44999980926514,
-      "mag": 2.26793158054352,
-      "place": "5 km SSE of Orting, Washington",
-      "time": 1781852603090,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714026791"
-    },
-    {
-      "id": "tx2026lytpmo",
-      "lon": -104.431,
-      "lat": 31.673,
-      "depth": 3.9465,
-      "mag": 1.6,
-      "place": "55 km S of Whites City, New Mexico",
-      "time": 1781852541574,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytpmo"
     }
   ]
 }
