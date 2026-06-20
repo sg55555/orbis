@@ -1,4 +1,5 @@
 """国家不安定性インデックス（純粋）。集約→スコア→トレンド→ナラティブ。"""
+import json as _json
 import math
 
 from collectors.lib.geo_country import point_country
@@ -180,4 +181,37 @@ def update_history(history, countries, now_ms, cfg):
         lst = [x for x in history.get(c["code"], []) if x["t"] >= cutoff]
         lst.append({"t": int(now_ms), "score": int(c["score"])})
         out[c["code"]] = lst
+    return out
+
+
+NARRATIVE_SYSTEM = ("あなたは地政学アナリスト。与えたデータのみを根拠に日本語で簡潔に。"
+                    "捏造・予測・助言は禁止。JSON のみ返す。")
+
+
+def narrative_prompt(countries, cfg):
+    top = countries[: cfg["top_n_narrative"]]
+    lines = []
+    for c in top:
+        ct = c["counts"]
+        ev = "; ".join(e["title"] for e in c.get("top_events", []) if e.get("title"))
+        lines.append(f'{c["code"]} {c.get("name_ja", c["code"])} score={c["score"]} '
+                     f'紛争{ct["conflict"]}/抗議{ct["protests"]}/報道{ct["news"]}/地震{ct["quakes"]}'
+                     + (f' 例: {ev}' if ev else ''))
+    body = "\n".join(lines)
+    return ('次の各国について、与えたデータのみを根拠に「なぜ不安定か」を日本語1文で説明してください。'
+            '捏造・予測・助言は禁止。出力は {"国コード":"説明文"} の JSON のみ。\n\n' + body)
+
+
+def parse_narratives(text):
+    from collectors.lib.intel import _strip_fence
+    try:
+        d = _json.loads(_strip_fence(text))
+    except (ValueError, TypeError):
+        return {}
+    if not isinstance(d, dict):
+        return {}
+    out = {}
+    for k, v in d.items():
+        if isinstance(k, str) and isinstance(v, str) and v.strip():
+            out[k] = v.strip()[:160]
     return out

@@ -91,3 +91,20 @@ def test_update_history_appends_and_trims():
     ts = [x["t"] for x in new["IZ"]]
     assert -10 * DAY not in ts        # 7日より古いものは除去
     assert new["IZ"][-1] == {"t": 0, "score": 30}
+
+def test_narrative_prompt_includes_top_n_only():
+    countries = [{"code": f"C{i}", "name_ja": f"国{i}", "score": 100 - i,
+                  "counts": {"conflict": i, "protests": 0, "news": 0, "quakes": 0},
+                  "top_events": []} for i in range(12)]
+    p = I.narrative_prompt(countries, CFG)
+    assert "C0" in p and "C7" in p          # 上位8
+    assert "C8" not in p                     # 9番目以降は含めない
+    assert "JSON" in p
+
+def test_parse_narratives_filters_and_caps():
+    text = '```json\n{"IZ": "  説明  ", "US": 5, "FR": "x"}\n```'
+    out = I.parse_narratives(text)
+    assert out["IZ"] == "説明"               # trim・フェンス除去
+    assert "US" not in out                    # 文字列でない→除外
+    assert out["FR"] == "x"
+    assert I.parse_narratives("not json") == {}
