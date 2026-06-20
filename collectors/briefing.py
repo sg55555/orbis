@@ -28,7 +28,7 @@ def _ask(prompt):
     import anthropic
     client = anthropic.Anthropic()
     msg = client.messages.create(
-        model=MODEL, max_tokens=1500, temperature=0,
+        model=MODEL, max_tokens=4000, temperature=0,
         system=BRIEFING_SYSTEM, messages=[{"role": "user", "content": prompt}],
     )
     return msg.content[0].text
