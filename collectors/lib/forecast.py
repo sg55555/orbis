@@ -83,6 +83,15 @@ def aggregate_signals(snaps, polys, instab, cfg):
             if e.get("lat") is not None and e.get("lon") is not None and \
                _haversine_km(cp["lat"], cp["lon"], e["lat"], e["lon"]) <= cp["radius_km"]:
                 b["raw"] += _conflict_contrib(e, cfg); b["counts"]["conflict"] = b["counts"].get("conflict", 0) + 1
+        for q in quakes:
+            c = _quake_contrib(q.get("mag"), cfg)
+            if c <= 0:
+                continue
+            lat, lon = q.get("lat"), q.get("lon")
+            if lat is None or lon is None:
+                continue
+            if _haversine_km(cp["lat"], cp["lon"], lat, lon) <= cp["radius_km"]:
+                b["raw"] += c; b["counts"]["quakes"] = b["counts"].get("quakes", 0) + 1
     # market / cyber：news キーワード（GLOBAL）
     for dom in ("market", "cyber"):
         kws = cfg["keywords"][dom]
