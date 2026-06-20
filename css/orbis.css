@@ -583,9 +583,11 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 /* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
 body:not(.sec-on) .media-head { display: none; }
 
-/* (2) 幅・リズム統一：共通 content 幅に中央寄せ（globe は対象外） */
+/* (2) 幅・リズム統一：共通 content 幅に中央寄せ（globe は対象外）。
+   width:100% は必須＝#app の flex 列で margin:auto の子が content 幅に縮むのを防ぎ max-width まで伸ばす
+   （#instability はカードで width 未指定のため縮んでいた）。 */
 body.sec-on #media, body.sec-on #ai-brief, body.sec-on #instability {
-  max-width: var(--content-w, 1200px); margin-left: auto; margin-right: auto;
+  width: 100%; max-width: var(--content-w, 1200px); margin-left: auto; margin-right: auto;
 }
 body.sec-on #media { padding-left: 20px; padding-right: 20px; }
 
