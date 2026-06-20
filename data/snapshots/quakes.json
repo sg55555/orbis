@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T18:31:14Z",
-  "count": 201,
+  "updated": "2026-06-20T18:45:59Z",
+  "count": 202,
   "points": [
     {
       "id": "ci41491352",
@@ -134,6 +134,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuw"
     },
     {
+      "id": "aka2026mdhohu",
+      "lon": 176.186,
+      "lat": 51.877,
+      "depth": 20,
+      "mag": 3.5,
+      "place": "231 km ESE of Attu Station, Alaska",
+      "time": 1781974466409,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdhohu"
+    },
+    {
       "id": "ci41491272",
       "lon": -117.6795,
       "lat": 35.9446666666667,
@@ -244,6 +254,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380126"
     },
     {
+      "id": "aka2026mdesji",
+      "lon": -166.343,
+      "lat": 53.307,
+      "depth": 58.3,
+      "mag": 2,
+      "place": "64 km SSE of Unalaska, Alaska",
+      "time": 1781969345985,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdesji"
+    },
+    {
       "id": "aka2026mddwnv",
       "lon": -150.174,
       "lat": 61.203,
@@ -302,6 +322,16 @@
       "place": "13 km SSW of Balangonan, Philippines",
       "time": 1781964321780,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suub"
+    },
+    {
+      "id": "aka2026mdbjve",
+      "lon": 179.683,
+      "lat": 51.117,
+      "depth": 20,
+      "mag": 4.1,
+      "place": "269 km WSW of Adak, Alaska",
+      "time": 1781963378606,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdbjve"
     },
     {
       "id": "aka2026mdaubc",
@@ -382,6 +412,16 @@
       "place": "7 km SE of Loma Linda, CA",
       "time": 1781958839530,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491112"
+    },
+    {
+      "id": "aka2026mcyqto",
+      "lon": -164.484,
+      "lat": 53.082,
+      "depth": 19.9,
+      "mag": 2.5,
+      "place": "144 km SE of Akutan, Alaska",
+      "time": 1781958451271,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcyqto"
     },
     {
       "id": "aka2026mcypgy",
@@ -1982,36 +2022,6 @@
       "place": "26 km ESE of Halibut Cove, Alaska",
       "time": 1781894906819,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbpilm"
-    },
-    {
-      "id": "av94255753",
-      "lon": -169.874,
-      "lat": 52.8186666666667,
-      "depth": 7.13,
-      "mag": -0.55,
-      "place": "69 km WSW of Nikolski, Alaska",
-      "time": 1781894389480,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255753"
-    },
-    {
-      "id": "us7000sup8",
-      "lon": 125.1837,
-      "lat": 4.9577,
-      "depth": 35,
-      "mag": 4.9,
-      "place": "58 km SSW of Sarangani, Philippines",
-      "time": 1781894303458,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sup8"
-    },
-    {
-      "id": "hv74986627",
-      "lon": -155.363662719727,
-      "lat": 19.0523338317871,
-      "depth": 33.3800010681152,
-      "mag": 1.79,
-      "place": "20 km SE of Pāhala, Hawaii",
-      "time": 1781894013650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986627"
     }
   ]
 }
