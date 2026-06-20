@@ -1,0 +1,35 @@
+# .github/workflows/collect-instability.yml
+name: collect-instability
+on:
+  schedule:
+    - cron: '37 * * * *'      # 毎時:37（collect/collect-slow/briefing と別オフセット）
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: collect              # 既存と共有して直列化（push 競合回避）
+  cancel-in-progress: false
+jobs:
+  instability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements.txt
+      - name: Collect instability
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m collectors.instability || echo "instability skipped"
+      - name: Commit snapshot
+        run: |
+          git config user.name "orbis-bot"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
+          git add data/snapshots/*.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: refresh instability [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
