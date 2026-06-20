@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T12:45:52Z",
-  "count": 221,
+  "updated": "2026-06-20T13:01:14Z",
+  "count": 220,
   "points": [
+    {
+      "id": "aka2026mczifa",
+      "lon": -159.744,
+      "lat": 55.873,
+      "depth": 8.4,
+      "mag": 1.3,
+      "place": "16 km WSW of Ivanof Bay, Alaska",
+      "time": 1781959657885,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mczifa"
+    },
     {
       "id": "ci41491112",
       "lon": -117.216166666667,
@@ -2192,26 +2202,6 @@
       "place": "35 km SE of Malaga, New Mexico",
       "time": 1781874067990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzfpwc"
-    },
-    {
-      "id": "nc75379591",
-      "lon": -122.844833374023,
-      "lat": 38.8251647949219,
-      "depth": 1.75999999046326,
-      "mag": 0.26,
-      "place": "9 km NW of The Geysers, CA",
-      "time": 1781873897660,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379591"
-    },
-    {
-      "id": "av93062289",
-      "lon": -154.895166666667,
-      "lat": 58.3096666666667,
-      "depth": 4.86,
-      "mag": 0.14,
-      "place": "86 km NNW of Karluk, Alaska",
-      "time": 1781873312820,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062289"
     }
   ]
 }
