@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T04:15:46Z",
-  "count": 240,
+  "updated": "2026-06-20T04:26:21Z",
+  "count": 241,
   "points": [
+    {
+      "id": "tx2026majzoj",
+      "lon": -101.916,
+      "lat": 32.259,
+      "depth": 3.7941,
+      "mag": 2,
+      "place": "18 km NW of Stanton, Texas",
+      "time": 1781929055111,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026majzoj"
+    },
     {
       "id": "nc75379971",
       "lon": -122.877502441406,
