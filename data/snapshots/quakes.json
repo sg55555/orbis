@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T10:01:19Z",
+  "updated": "2026-06-20T10:15:51Z",
   "count": 219,
   "points": [
+    {
+      "id": "nc75380046",
+      "lon": -122.764335632324,
+      "lat": 38.7881660461426,
+      "depth": 2.26999998092651,
+      "mag": 1.09,
+      "place": "1 km NNW of The Geysers, CA",
+      "time": 1781949815720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380046"
+    },
+    {
+      "id": "nc75380041",
+      "lon": -122.764663696289,
+      "lat": 38.7878341674805,
+      "depth": 2.15000009536743,
+      "mag": 0.77,
+      "place": "1 km NNW of The Geysers, CA",
+      "time": 1781949712560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380041"
+    },
     {
       "id": "ci41491048",
       "lon": -116.867,
@@ -22,6 +42,16 @@
       "place": "10 km S of Kastrí, Greece",
       "time": 1781948244290,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sutj"
+    },
+    {
+      "id": "us7000suti",
+      "lon": 24.2303,
+      "lat": 34.6941,
+      "depth": 10,
+      "mag": 4.9,
+      "place": "20 km SE of Kastrí, Greece",
+      "time": 1781947868478,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suti"
     },
     {
       "id": "aka2026mcsfev",
@@ -2162,36 +2192,6 @@
       "place": "35 km SE of Malaga, New Mexico",
       "time": 1781864147747,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzadfx"
-    },
-    {
-      "id": "aka2026mayerp",
-      "lon": -165.318,
-      "lat": 53.796,
-      "depth": 60.3,
-      "mag": 1.8,
-      "place": "48 km SE of Akutan, Alaska",
-      "time": 1781864064555,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mayerp"
-    },
-    {
-      "id": "tx2026lyzvlu",
-      "lon": -103.796,
-      "lat": 32.007,
-      "depth": 6.9714,
-      "mag": 0.9,
-      "place": "35 km SE of Malaga, New Mexico",
-      "time": 1781863586723,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzvlu"
-    },
-    {
-      "id": "tx2026lyzsdi",
-      "lon": -102.118,
-      "lat": 32.433,
-      "depth": 7.7637,
-      "mag": 0.7,
-      "place": "36 km SSW of Los Ybanez, Texas",
-      "time": 1781863367557,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lyzsdi"
     }
   ]
 }
