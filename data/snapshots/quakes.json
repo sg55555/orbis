@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T01:31:02Z",
-  "count": 249,
+  "updated": "2026-06-20T01:45:48Z",
+  "count": 250,
   "points": [
+    {
+      "id": "us7000suru",
+      "lon": -66.2168,
+      "lat": -22.4725,
+      "depth": 245.282,
+      "mag": 4.5,
+      "place": "60 km WNW of Abra Pampa, Argentina",
+      "time": 1781918541881,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suru"
+    },
     {
       "id": "hv74986917",
       "lon": -155.479827880859,
@@ -105,10 +115,10 @@
     },
     {
       "id": "hv74986837",
-      "lon": -155.446334838867,
-      "lat": 19.4076671600342,
-      "depth": 5.34000015258789,
-      "mag": 1.74,
+      "lon": -155.444166666667,
+      "lat": 19.4128333333333,
+      "depth": 5.5,
+      "mag": 1.44,
       "place": "22 km W of Volcano, Hawaii",
       "time": 1781912235730,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986837"
