@@ -2,25 +2,17 @@
 // 純粋な状態操作は js/lib/state.js（loadEnabled/toggleEnabled）に委譲。
 import { toggleEnabled, writeStored } from '../lib/state.js';
 import { PRESETS, applyPreset, activePresetId } from '../lib/presets.js';
+import { groupLayers } from '../lib/categories.js';
 
 // layers: レイヤー配列, getEnabled: ()=>Set, getCounts: ()=>{id:number}, onChange(nextSet): トグル時コールバック。
 // descFor: (id)=>string — 非専門家向け一行説明（省略可）。
 // 要素は一度だけ生成し、件数更新は updateCounts で textContent だけ差し替える（入力要素を作り直さない）。
 export function renderPanel(root, layers, getEnabled, getCounts, onChange, descFor) {
-  root.innerHTML = layers.map((l) => {
-    const sw = l.swatchColor || ((l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)');
-    const marker = l.marker || 'dot'; // dot | ring | triangle（マップのマーカー形状に対応）
-    const desc = descFor ? descFor(l.id) : '';
-    return `<div class="layer-item">
-      <label class="layer-row" data-id="${l.id}">
-        <input type="checkbox" class="layer-toggle" />
-        <span class="swatch swatch-${marker}" style="color:${sw}"></span>
-        <span class="layer-label">${l.label}</span>
-        <span class="layer-count" data-count="${l.id}">–</span>
-      </label>
-      ${desc ? `<div class="layer-desc">${desc}</div>` : ''}
-    </div>`;
-  }).join('');
+  const groups = groupLayers(layers);
+  root.innerHTML = groups.map((g) => `<div class="layer-cat" data-cat="${g.id}">
+      <div class="layer-cat-head">${g.label}</div>
+      ${g.layers.map((l) => rowHtml(l, descFor)).join('')}
+    </div>`).join('');
 
   syncChecks(root, getEnabled());
 
@@ -43,6 +35,22 @@ export function renderPanel(root, layers, getEnabled, getCounts, onChange, descF
     },
     syncChecks() { syncChecks(root, getEnabled()); },
   };
+}
+
+// 1レイヤー行の HTML（Task 3 で ⓘ を追加）。
+function rowHtml(l, descFor) {
+  const sw = l.swatchColor || ((l.legend && l.legend[0]) ? l.legend[0].color : 'var(--cyan)');
+  const marker = l.marker || 'dot'; // dot | ring | triangle
+  const desc = descFor ? descFor(l.id) : '';
+  return `<div class="layer-item">
+      <label class="layer-row" data-id="${l.id}">
+        <input type="checkbox" class="layer-toggle" />
+        <span class="swatch swatch-${marker}" style="color:${sw}"></span>
+        <span class="layer-label">${l.label}</span>
+        <span class="layer-count" data-count="${l.id}">–</span>
+      </label>
+      ${desc ? `<div class="layer-desc">${desc}</div>` : ''}
+    </div>`;
 }
 
 function syncChecks(root, enabled) {
