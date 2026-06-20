@@ -43,6 +43,8 @@ def aggregate_signals(snaps, polys, instab, cfg):
         c = _conflict_contrib(e, cfg)
         for dom in ("conflict", "military"):
             b = _bucket(acc, f"{dom}:{code}", dom, "country", code)
+            if dom == "military":
+                b["approx"] = True  # 紛争データ流用＝近似（spec §6）
             _add(b, "conflict", c, e.get("lon"), e.get("lat"))
     # political
     for e in (snaps.get("protests") or {}).get("points", []) or []:
@@ -98,9 +100,8 @@ def aggregate_signals(snaps, polys, instab, cfg):
         b = _bucket(acc, f"{dom}:GLOBAL", dom, "global", "GLOBAL")
         for it in (snaps.get("news") or {}).get("items", []) or []:
             text = f"{it.get('title_ja','')} {it.get('summary_ja','')}"
-            for k in kws:
-                if k in text:
-                    _add(b, "news", 0.5)
+            if any(k in text for k in kws):  # 1記事=1カウント（複数KWマッチでも加算1回）
+                _add(b, "news", 1.0)
     # 重心確定（point/country）
     for b in acc.values():
         w = b.pop("_w"); lo = b.pop("_lon"); la = b.pop("_lat")
