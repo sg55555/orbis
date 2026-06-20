@@ -154,3 +154,19 @@ def test_is_advice_detects_recommendation():
     assert F.is_advice("今すぐ株を買うべきだ") is True
     assert F.is_advice("攻撃を推奨する") is True
     assert F.is_advice("紛争件数が平常比で増加している") is False
+
+
+def test_is_advice_detects_colloquial_forms():
+    """口語・活用形の助言を検出（TDD: 新パターン）。"""
+    # True: 助言と判定すべき形式
+    assert F.is_advice("今は売りだ") is True, "selling advice: 売りだ"
+    assert F.is_advice("購入を勧めます") is True, "recommendation: 勧めます"
+    assert F.is_advice("お勧めの銘柄") is True, "お勧め usage"
+    assert F.is_advice("株を買いだ") is True, "buying advice: 買いだ"
+    assert F.is_advice("購入すべき企業です") is True, "購入すべき"
+
+    # False: 誤検出しない＝正常なFORECASTSナラティブ
+    assert F.is_advice("今後注視すべき地域") is False, "should not block 注視すべき"
+    assert F.is_advice("緊張が高まる恐れがある") is False, "normal outlook"
+    assert F.is_advice("情勢が悪化しうる") is False, "normal uncertainty expression"
+    assert F.is_advice("警戒すべき状況が続く") is False, "should not block 警戒すべき"

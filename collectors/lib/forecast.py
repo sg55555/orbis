@@ -1,4 +1,5 @@
 """AI FORECASTS: 信号集約（8ドメイン×地理単位）。"""
+import re
 import math
 from collectors.lib.geo_country import point_country
 from collectors.lib.instability import _conflict_contrib, _protest_contrib, _quake_contrib, _percentile, _median
@@ -277,12 +278,14 @@ def parse_narratives(text):
     return out
 
 
-_ADVICE_RE = None
+_ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買[うい]|売[るり]|投資すべき|購入すべき|攻撃せよ|攻撃を推奨|おすすめ|お勧め|勧める|勧めます)")
+
 def is_advice(text):
-    import re
-    global _ADVICE_RE
-    if _ADVICE_RE is None:
-        _ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買う|売る|投資すべき|攻撃せよ|攻撃を推奨|おすすめ)")
+    """テキストが投資・軍事などの具体的な行動助言を含むかチェック。
+
+    注意：「〜すべき」単体は追加しない（"注視すべき"等の正常なナラティブを誤検出するため）。
+    行動助言は「投資すべき」「購入すべき」など具体動詞付きのみを検出。
+    """
     return bool(_ADVICE_RE.search(text or ""))
 
 
