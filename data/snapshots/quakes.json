@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T11:31:06Z",
-  "count": 223,
+  "updated": "2026-06-20T11:45:51Z",
+  "count": 221,
   "points": [
+    {
+      "id": "aka2026mcwudj",
+      "lon": -152.478,
+      "lat": 60.111,
+      "depth": 98.8,
+      "mag": 1.8,
+      "place": "45 km WNW of Happy Valley, Alaska",
+      "time": 1781955086232,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcwudj"
+    },
     {
       "id": "ci41491096",
       "lon": -116.387333333333,
@@ -2202,36 +2212,6 @@
       "place": "2 km NNW of The Geysers, CA",
       "time": 1781870617240,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379576"
-    },
-    {
-      "id": "aka2026mbbcxq",
-      "lon": -165.413,
-      "lat": 52.264,
-      "depth": 21.7,
-      "mag": 2.9,
-      "place": "194 km SSE of Unalaska, Alaska",
-      "time": 1781869328486,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbbcxq"
-    },
-    {
-      "id": "av93062279",
-      "lon": -169.908333333333,
-      "lat": 52.824,
-      "depth": 5.69,
-      "mag": 0.39,
-      "place": "71 km W of Nikolski, Alaska",
-      "time": 1781869067370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062279"
-    },
-    {
-      "id": "tx2026lzcrdv",
-      "lon": -103.686,
-      "lat": 31.204,
-      "depth": 0.8305,
-      "mag": 1.8,
-      "place": "15 km SE of Toyah, Texas",
-      "time": 1781868726798,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzcrdv"
     }
   ]
 }
