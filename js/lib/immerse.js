@@ -74,8 +74,16 @@ export function immerseFont(search) {
   return m ? m[1].toLowerCase() : 'on';
 }
 
+// ?sec=on|off（大小無視）。下部セクション(#media/#ai-brief/#instability)の section 構造リッチ化。
+// on=共通幅に揃え＋統一セクション見出し＋オーロラ区切り＋メディアボタン統一＋スクロール演出（既定）。
+// off=現状(before・base CSS のまま)。
+export function immerseSec(search) {
+  const m = /[?&]sec=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
-// mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)も常に付与(既定on)。
+// mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
@@ -85,6 +93,7 @@ export function immerseClasses(search) {
   out.push('mp-' + immerseMediaPolish(search));
   out.push('ui-' + immerseUi(search));
   out.push('font-' + immerseFont(search));
+  out.push('sec-' + immerseSec(search));
   return out;
 }
 
