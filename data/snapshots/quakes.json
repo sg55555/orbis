@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T07:45:47Z",
-  "count": 224,
+  "updated": "2026-06-20T08:01:18Z",
+  "count": 220,
   "points": [
     {
       "id": "aka2026mcozpl",
@@ -2202,46 +2202,6 @@
       "place": "167 km ESE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781856220851,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suik"
-    },
-    {
-      "id": "pr2026170000",
-      "lon": -68.72,
-      "lat": 18.9648,
-      "depth": 138,
-      "mag": 4.14,
-      "place": "34 km E of Miches, Dominican Republic",
-      "time": 1781855752960,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026170000"
-    },
-    {
-      "id": "us7000suii",
-      "lon": 161.1149,
-      "lat": 52.7355,
-      "depth": 10,
-      "mag": 5.8,
-      "place": "171 km ESE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781855577734,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suii"
-    },
-    {
-      "id": "us7000suij",
-      "lon": 161.0259,
-      "lat": 52.8039,
-      "depth": 10,
-      "mag": 4.5,
-      "place": "163 km E of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781855336138,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suij"
-    },
-    {
-      "id": "aka2026matifx",
-      "lon": -154.256,
-      "lat": 58.749,
-      "depth": 100.3,
-      "mag": 1.6,
-      "place": "82 km SSE of Kokhanok, Alaska",
-      "time": 1781855308202,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026matifx"
     }
   ]
 }
