@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T06:45:49Z",
-  "count": 234,
+  "updated": "2026-06-20T07:01:11Z",
+  "count": 228,
   "points": [
     {
       "id": "us7000suss",
@@ -2282,66 +2282,6 @@
       "place": "55 km S of Whites City, New Mexico",
       "time": 1781852541574,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lytpmo"
-    },
-    {
-      "id": "ci41490496",
-      "lon": -116.2755,
-      "lat": 32.9481666666667,
-      "depth": 11.71,
-      "mag": 0.81,
-      "place": "26 km SSW of Ocotillo Wells, CA",
-      "time": 1781852248690,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490496"
-    },
-    {
-      "id": "nc75379511",
-      "lon": -122.944999694824,
-      "lat": 38.7719993591309,
-      "depth": 4.44999980926514,
-      "mag": 1.11,
-      "place": "7 km ESE of Cloverdale, CA",
-      "time": 1781852006070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379511"
-    },
-    {
-      "id": "us7000sui3",
-      "lon": 160.5652,
-      "lat": 52.7943,
-      "depth": 10,
-      "mag": 6.6,
-      "place": "133 km ESE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781851951597,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui3"
-    },
-    {
-      "id": "aka2026markyp",
-      "lon": -152.761,
-      "lat": 59.465,
-      "depth": 80.7,
-      "mag": 1.8,
-      "place": "49 km WNW of Nanwalek, Alaska",
-      "time": 1781851897441,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026markyp"
-    },
-    {
-      "id": "us7000sui2",
-      "lon": 160.8644,
-      "lat": 52.69,
-      "depth": 28.383,
-      "mag": 6,
-      "place": "156 km ESE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781851891085,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sui2"
-    },
-    {
-      "id": "nm60623021",
-      "lon": -89.6778333333333,
-      "lat": 36.1643333333333,
-      "depth": 7.14,
-      "mag": 2.25,
-      "place": "3 km SSW of Caruthersville, Missouri",
-      "time": 1781851668180,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60623021"
     }
   ]
 }
