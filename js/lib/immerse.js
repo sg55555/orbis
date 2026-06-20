@@ -52,13 +52,23 @@ export function immerseNeb(search) {
   return NEB_VIVID[m ? m[1] : 3];
 }
 
-// body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ。
+// ?mp=a|b|off（大小無視）。下部メディア＋ブリーフィング帯(#media/#ai-brief)の視覚仕上げ。
+// a=大気グロー(既定・採用)／b=ネオン強め／off=現状(before・base CSS のまま)。
+// プレーヤー/カメラセルを「黒い穴」→「縁に光が乗ったガラス」にし、nv tint を縁で活かす。
+export function immerseMediaPolish(search) {
+  const m = /[?&]mp=(off|a|b)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'a';
+}
+
+// body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
+// mp(メディア仕上げ)は常に付与(既定a)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
   if (immerseMediaBg(search) === 'deep') out.push('mbg-deep');
   const glass = immerseGlass(search);
   if (glass !== 'on') out.push('glass-' + glass);
+  out.push('mp-' + immerseMediaPolish(search));
   return out;
 }
 

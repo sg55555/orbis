@@ -1,20 +1,22 @@
 // 抗議レイヤー（緑の加算合成ブロブ＝globe対応のヒート風の面＋薄い pickable 点）。
 // HeatmapLayer が globe 非対応のため ScatterplotLayer の加算合成で「面」を表現
 // （詳細は conflict.js / [[maplibre-v5-deckgl-globe-version]]）。
-import { hostnameOf, blobRadius, ADDITIVE_BLEND, emberFill } from '../lib/geo.js';
+import { hostnameOf, blobRadius, ADDITIVE_BLEND, emberFill, densityScale } from '../lib/geo.js';
 import { fipsToJa } from '../lib/places.js';
 import { aggregateByCountry } from '../lib/aggregate.js';
 
 const GREEN = [94, 255, 166];
 
-export function buildBlobConfig(snapshot) {
+export function buildBlobConfig(snapshot, zoom, dens) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
+  const s = densityScale(zoom, dens);
+  const rk = 0.55 + 0.45 * s;
   return {
     id: 'protests-heat', data, radiusUnits: 'pixels',
     getPosition: (p) => [p.lon, p.lat],
-    getRadius: (p) => blobRadius(p.mentions),
+    getRadius: (p) => blobRadius(p.mentions) * rk,
     radiusMinPixels: 10, radiusMaxPixels: 60, stroked: false, pickable: false,
-    getFillColor: () => [GREEN[0], GREEN[1], GREEN[2], 42],
+    getFillColor: () => [GREEN[0], GREEN[1], GREEN[2], Math.round(42 * s)],
     parameters: ADDITIVE_BLEND,
   };
 }
@@ -28,14 +30,19 @@ export function buildPickConfig(snapshot) {
 }
 
 // ember コア（白熱度＝mentions・加算合成）。protestsは severityRank が無いため0固定。
-export function buildCoreConfig(snapshot, emberScale = 1) {
+export function buildCoreConfig(snapshot, emberScale = 1, zoom, dens) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
+  const s = densityScale(zoom, dens);
+  const rk = 0.55 + 0.45 * s;
   return {
     id: 'protests-core', data, radiusUnits: 'pixels',
     getPosition: (p) => [p.lon, p.lat],
-    getRadius: (p) => Math.max(3, blobRadius(p.mentions) * 0.45),
+    getRadius: (p) => Math.max(3, blobRadius(p.mentions) * 0.45) * rk,
     radiusMinPixels: 3, radiusMaxPixels: 26, stroked: false, pickable: false,
-    getFillColor: (p) => emberFill(p.mentions, 0, emberScale, [40, 200, 120]),
+    getFillColor: (p) => {
+      const c = emberFill(p.mentions, 0, emberScale, [40, 200, 120]);
+      return [c[0], c[1], c[2], Math.round(c[3] * s)];
+    },
     parameters: ADDITIVE_BLEND,
   };
 }
@@ -47,9 +54,11 @@ export const protestsLayer = {
   async fetch(getSnapshot) { return getSnapshot('protests'); },
   toDeckLayer(snapshot, ctx) {
     const scale = (ctx && ctx.cfx && ctx.cfx.emberScale) || 1;
+    const zoom = ctx && ctx.zoom;
+    const dens = ctx && ctx.dens;
     return [
-      new deck.ScatterplotLayer(buildBlobConfig(snapshot)),
-      new deck.ScatterplotLayer(buildCoreConfig(snapshot, scale)),
+      new deck.ScatterplotLayer(buildBlobConfig(snapshot, zoom, dens)),
+      new deck.ScatterplotLayer(buildCoreConfig(snapshot, scale, zoom, dens)),
       new deck.ScatterplotLayer(buildPickConfig(snapshot)),
     ];
   },

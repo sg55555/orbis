@@ -1,9 +1,13 @@
 // ENABLED（有効レイヤー集合）の純粋操作と localStorage 薄ラッパ。
 const KEY = 'orbis.enabled.v1';
 
-// stored: 有効idの配列（保存形式）。null/不正なら defaultOff を除く全 ON。
-export function loadEnabled(allIds, stored, defaultOff = []) {
-  if (!Array.isArray(stored)) return new Set(allIds.filter((id) => !defaultOff.includes(id)));
+// stored: 有効idの配列（保存形式）。null/不正なら:
+//   defaultOn 指定時は defaultOn の集合、未指定時は defaultOff を除く全 ON。
+export function loadEnabled(allIds, stored, defaultOff = [], defaultOn = null) {
+  if (!Array.isArray(stored)) {
+    if (Array.isArray(defaultOn)) return new Set(allIds.filter((id) => defaultOn.includes(id)));
+    return new Set(allIds.filter((id) => !defaultOff.includes(id)));
+  }
   return new Set(allIds.filter((id) => stored.includes(id)));
 }
 

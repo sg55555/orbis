@@ -1,6 +1,7 @@
 // 左トグルパネル。各レイヤー = チェック + 凡例スウォッチ + ライブ件数 + 説明文。
 // 純粋な状態操作は js/lib/state.js（loadEnabled/toggleEnabled）に委譲。
 import { toggleEnabled, writeStored } from '../lib/state.js';
+import { PRESETS, applyPreset, activePresetId } from '../lib/presets.js';
 
 // layers: レイヤー配列, getEnabled: ()=>Set, getCounts: ()=>{id:number}, onChange(nextSet): トグル時コールバック。
 // descFor: (id)=>string — 非専門家向け一行説明（省略可）。
@@ -57,4 +58,31 @@ export function wireCollapse(panelEl, btnEl) {
     panelEl.classList.toggle('collapsed');
     btnEl.textContent = panelEl.classList.contains('collapsed') ? '›' : '‹';
   });
+}
+
+// プリセット chip 行。クリックでそのプリセットの層だけ ON（排他）。アクティブ強調＋カスタム表示。
+// root: #panel-presets, getEnabled: ()=>Set, onApply(nextSet): 適用コールバック。
+export function renderPresets(root, getEnabled, onApply) {
+  if (!root) return { refresh() {} };
+  root.innerHTML = PRESETS.map((p) =>
+    `<button type="button" class="preset-chip" data-preset="${p.id}">${p.label}</button>`
+  ).join('') + '<span class="preset-custom" hidden>カスタム</span>';
+
+  root.addEventListener('click', (e) => {
+    const btn = e.target.closest('.preset-chip');
+    if (!btn) return;
+    onApply(applyPreset(btn.dataset.preset));
+  });
+
+  const api = {
+    refresh() {
+      const active = activePresetId(getEnabled());
+      root.querySelectorAll('.preset-chip').forEach((b) =>
+        b.classList.toggle('active', b.dataset.preset === active));
+      const custom = root.querySelector('.preset-custom');
+      if (custom) custom.hidden = active != null;
+    },
+  };
+  api.refresh();
+  return api;
 }
