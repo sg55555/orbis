@@ -42,3 +42,18 @@ test('loadEnabled: stored 指定時は defaultOff を無視し stored を尊重'
   const e = loadEnabled(['quakes', 'airtemp'], ['airtemp'], ['airtemp']);
   assert.deepEqual([...e], ['airtemp']);
 });
+
+test('loadEnabled: stored=null かつ defaultOn 指定で defaultOn の集合になる', () => {
+  const e = loadEnabled(['quakes', 'flights', 'conflict', 'news'], null, [], ['quakes', 'news']);
+  assert.deepEqual([...e].sort(), ['news', 'quakes']);
+});
+
+test('loadEnabled: defaultOn は allIds に無いidを含めない', () => {
+  const e = loadEnabled(['quakes', 'news'], null, [], ['quakes', 'ghost']);
+  assert.deepEqual([...e], ['quakes']);
+});
+
+test('loadEnabled: stored 指定時は defaultOn を無視', () => {
+  const e = loadEnabled(['quakes', 'news'], ['news'], [], ['quakes']);
+  assert.deepEqual([...e], ['news']);
+});
