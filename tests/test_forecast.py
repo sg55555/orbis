@@ -106,3 +106,31 @@ def test_update_history_appends_and_trims():
     items = [{"key":"conflict:UP","raw":9.0,"score":55}]
     out = F.update_history(old, items, now_ms=10_000_000_000, cfg=CFG)
     assert out["conflict:UP"][-1] == {"t": 10_000_000_000, "raw": 9.0, "score": 55}
+
+
+def test_build_cards_shape_and_watch():
+    items = [{"key":"conflict:UP","domain":"conflict","place_key":"UP","scope":"country",
+              "raw":30.0,"score":80,"level":5,"momentum":2.0,"lat":49,"lon":32,
+              "counts":{"conflict":3,"news":1},"place_ja":None},
+             {"key":"cyber:GLOBAL","domain":"cyber","place_key":"GLOBAL","scope":"global",
+              "raw":0.0,"score":0,"level":1,"momentum":1.0,"counts":{},"place_ja":None}]
+    cards = F.build_cards(items, history={}, fips_ja={"UP":"ウクライナ"}, now_ms=1, cfg=CFG)
+    c0 = [c for c in cards if c["place_key"]=="UP"][0]
+    assert c0["place_ja"] == "ウクライナ" and c0["scope"] == "country"
+    assert c0["confidence"] in ("low","med","high") and c0["trend"] == "new"
+    assert c0["status"] == "active" and c0["ai_generated"] is False
+    assert any("紛争" in s["label"] for s in c0["signals"])
+    cy = [c for c in cards if c["domain"]=="cyber"][0]
+    assert cy["status"] == "watch"
+
+
+def test_build_cards_approx_military():
+    """military カード（approx=True）の signals に近似を明示するエントリがあること（spec §6）。"""
+    items = [{"key":"military:UP","domain":"military","place_key":"UP","scope":"country",
+              "raw":20.0,"score":60,"level":4,"momentum":1.5,"lat":49,"lon":32,
+              "counts":{"conflict":2},"place_ja":None,"approx":True}]
+    cards = F.build_cards(items, history={}, fips_ja={"UP":"ウクライナ"}, now_ms=1, cfg=CFG)
+    assert len(cards) == 1
+    c = cards[0]
+    assert any("近似" in s["label"] for s in c["signals"]), \
+        f"approx=True のカードの signals に '近似' ラベルが存在しない: {c['signals']}"

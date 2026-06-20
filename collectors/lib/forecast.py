@@ -177,6 +177,59 @@ def trend_of(score_now, hist, cfg):
     return "up" if d >= t["up_delta"] else "down" if d <= -t["down_delta"] else "flat"
 
 
+_SIG_LABEL = {"conflict": "紛争", "protests": "抗議", "news": "報道", "quakes": "地震", "ships": "船舶"}
+_SIG_SRC = {"conflict": "GDELT", "protests": "GDELT", "news": "news", "quakes": "USGS", "ships": "AIS"}
+
+
+def _signals_from_counts(item):
+    out = []
+    for src, n in (item.get("counts") or {}).items():
+        if n:
+            out.append({"label": f"{_SIG_LABEL.get(src, src)} {n}件",
+                        "source": _SIG_SRC.get(src, src), "kind": src})
+    if item.get("momentum", 1.0) > 1.2:
+        out.append({"label": f"勢い ×{item['momentum']}", "source": "trend", "kind": "momentum"})
+    if item.get("approx"):
+        out.append({"label": "※近似(紛争データ流用)", "source": "conflict", "kind": "meta"})
+    return out
+
+
+def _place_ja(item, fips_ja):
+    s = item["scope"]
+    if s == "country":
+        return fips_ja.get(item["place_key"], item["place_key"])
+    if s == "global":
+        return "グローバル"
+    return item.get("place_ja") or item["place_key"]
+
+
+def build_cards(items, history, fips_ja, now_ms, cfg):
+    """各 item を Card 化し、ドメインごとに上位 domain_show 件に絞って返す。"""
+    by_dom = {}
+    cards = []
+    for it in items:
+        dom = it["domain"]
+        by_dom[dom] = by_dom.get(dom, 0) + 1
+        if by_dom[dom] > cfg["domain_show"]:
+            continue
+        no_signal = not any((it.get("counts") or {}).values())
+        watch = it["score"] < cfg["watch_score_min"] or no_signal
+        card = {
+            "domain": dom, "scope": it["scope"],
+            "place_ja": _place_ja(it, fips_ja), "place_key": it["place_key"],
+            "attention_score": int(it["score"]), "attention_level": int(it["level"]),
+            "trend": trend_of(it["score"], history.get(it["key"], []), cfg),
+            "confidence": confidence_of(it, cfg), "horizon": "24-72h",
+            "signals": _signals_from_counts(it),
+            "outlook_ja": "", "rationale_ja": "", "ai_generated": False,
+            "status": "watch" if watch else "active"}
+        if isinstance(it.get("lat"), (int, float)) and isinstance(it.get("lon"), (int, float)) \
+                and (it["lat"] or it["lon"]):
+            card["lat"] = float(it["lat"]); card["lon"] = float(it["lon"])
+        cards.append(card)
+    return cards
+
+
 def update_history(history, items, now_ms, cfg):
     """history を items で更新し、cfg["history_days"] の FIFO で整理。
 
