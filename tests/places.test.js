@@ -34,6 +34,22 @@ test('FIPS_JA: 罠コードがISOではなくFIPSの意味を持つ', () => {
   assert.equal(FIPS_JA.AU, 'オーストリア'); // FIPSのAUはオーストリア
 });
 
+test('FIPS_JA: 補完した係争地・属領コード（GDELT 出現・FIPS 10-4）を収載', () => {
+  assert.equal(FIPS_JA.GZ, 'ガザ地区');   // ガザ地区（WE=ヨルダン川西岸 と対）
+  assert.equal(FIPS_JA.JE, 'ジャージー'); // チャネル諸島
+  assert.equal(FIPS_JA.KV, 'コソボ');     // FIPS 10-4 で Kosovo は KV
+  assert.equal(FIPS_JA.GK, 'ガーンジー'); // チャネル諸島
+  assert.equal(FIPS_JA.IM, 'マン島');     // クラウン属領
+});
+
+test('fipsToJa: 補完コードを「日本語名（CODE）」に展開（生コード露出の解消）', () => {
+  assert.equal(fipsToJa('GZ'), 'ガザ地区（GZ）');
+  assert.equal(fipsToJa('JE'), 'ジャージー（JE）');
+  assert.equal(fipsToJa('KV'), 'コソボ（KV）');
+  assert.equal(fipsToJa('GK'), 'ガーンジー（GK）');
+  assert.equal(fipsToJa('IM'), 'マン島（IM）');
+});
+
 test('rootToJa: 18/19/20→暴行/戦闘/大規模暴力・他は紛争', () => {
   assert.equal(rootToJa('18'), '暴行');
   assert.equal(rootToJa('19'), '戦闘');
