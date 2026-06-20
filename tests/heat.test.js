@@ -59,3 +59,29 @@ test('protests buildCoreConfig: id=protests-core・緑ベース', () => {
   const col = c.getFillColor({ mentions: 0, root: '14' });
   assert.equal(col[1], 200); // 緑ベース(40,200,120)の dim
 });
+
+test('conflict buildBlobConfig: 引き(低zoom)で alpha/半径が減衰、寄り(高zoom)で復帰', () => {
+  const p = snap.points[0]; // mentions 50
+  const lo = buildBlobConfig(snap, 2.5); // s=0.22
+  const hi = buildBlobConfig(snap, 5);   // s=1
+  assert.ok(lo.getFillColor(p)[3] < hi.getFillColor(p)[3], '引きでalpha減');
+  assert.ok(lo.getRadius(p) < hi.getRadius(p), '引きで半径減');
+  assert.equal(hi.getFillColor(p)[3], 42, '寄りは現状alpha=42');
+});
+
+test('conflict buildCoreConfig: 引きで alpha/半径が減衰', () => {
+  const p = sevSnap.points[1]; // mentions 100
+  const lo = buildCoreConfig(sevSnap, 1, 2.5);
+  const hi = buildCoreConfig(sevSnap, 1, 5);
+  assert.ok(lo.getFillColor(p)[3] < hi.getFillColor(p)[3], '引きでcore alpha減');
+  assert.ok(lo.getRadius(p) < hi.getRadius(p), '引きでcore半径減');
+});
+
+test('protests もズーム連動で減衰', () => {
+  const p = snap.points[0];
+  assert.ok(buildBlobP(snap, 2.5).getFillColor(p)[3] < buildBlobP(snap, 5).getFillColor(p)[3]);
+});
+
+test('zoom 未指定（従来呼び出し）は減衰なし＝alpha 42', () => {
+  assert.equal(buildBlobConfig(snap).getFillColor(snap.points[0])[3], 42);
+});
