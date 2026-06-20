@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T11:45:51Z",
-  "count": 221,
+  "updated": "2026-06-20T12:01:14Z",
+  "count": 225,
   "points": [
+    {
+      "id": "nc75380086",
+      "lon": -122.782836914062,
+      "lat": 38.839168548584,
+      "depth": 0.959999978542328,
+      "mag": 0.7,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781956317530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380086"
+    },
+    {
+      "id": "aka2026mcxlmb",
+      "lon": -152.262,
+      "lat": 61.045,
+      "depth": 117.6,
+      "mag": 1.8,
+      "place": "60 km W of Tyonek, Alaska",
+      "time": 1781956285826,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcxlmb"
+    },
+    {
+      "id": "nc75380081",
+      "lon": -122.789169311523,
+      "lat": 38.8351669311523,
+      "depth": 1.92999994754791,
+      "mag": 0.74,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1781955974630,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380081"
+    },
+    {
+      "id": "nc75380076",
+      "lon": -122.270668029785,
+      "lat": 37.8894996643066,
+      "depth": 3.47000002861023,
+      "mag": 1.11,
+      "place": "2 km N of Berkeley, CA",
+      "time": 1781955971290,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380076"
+    },
     {
       "id": "aka2026mcwudj",
       "lon": -152.478,
@@ -596,11 +636,11 @@
     {
       "id": "tx2026majzoj",
       "lon": -101.916,
-      "lat": 32.259,
-      "depth": 4.5385,
+      "lat": 32.255,
+      "depth": 7.9346,
       "mag": 2.1,
       "place": "18 km NW of Stanton, Texas",
-      "time": 1781929054915,
+      "time": 1781929055464,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026majzoj"
     },
     {
@@ -715,12 +755,12 @@
     },
     {
       "id": "tx2026magjzv",
-      "lon": -104.457,
-      "lat": 31.63,
-      "depth": 3.0604,
-      "mag": 2.4,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781922548735,
+      "lon": -104.437,
+      "lat": 31.656,
+      "depth": 5.946,
+      "mag": 2.3,
+      "place": "57 km S of Whites City, New Mexico",
+      "time": 1781922548557,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026magjzv"
     },
     {
