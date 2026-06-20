@@ -36,12 +36,21 @@
         <button class="mobile-tab" data-sheet="feed" aria-controls="feed" aria-expanded="false">≡ フィード</button>
       </nav>
       <button id="media-hint" type="button" aria-label="下部のメディアへ移動">▼ メディア</button>
-      <div id="loading">
-        <div class="boot">
-          <div class="boot-rings"><span></span><span></span><span></span><i></i></div>
-          <div class="boot-word">ORBIS</div>
-          <div class="boot-sub">世界リアルタイム監視 — 起動中</div>
-          <div class="boot-bar"><b></b></div>
+      <div id="loading" data-variant="12">
+        <canvas id="boot-fx" class="boot-fx"></canvas>
+        <div class="boot-overlay">
+          <div class="boot-aurora a1"></div>
+          <div class="boot-aurora a2"></div>
+          <div class="boot-rings">
+            <span></span><span></span><span></span>
+            <i class="boot-arc a1"></i><i class="boot-arc a2"></i><b class="boot-core"></b>
+          </div>
+          <ul id="boot-telemetry" class="boot-telemetry"></ul>
+          <div class="boot-foot">
+            <div class="boot-word">ORBIS</div>
+            <div class="boot-sub" id="boot-sub">世界リアルタイム監視 — 起動中</div>
+            <div class="boot-bar" id="boot-bar"><b></b></div>
+          </div>
         </div>
       </div>
     </div>
