@@ -14,7 +14,7 @@ export function renderFeed(root, items, onPick, maxCount = 0) {
     const badge = it.kind === 'group'
       ? `<span class="feed-count" style="--barw:${countBarPct(it.count, maxCount)}%">${Number(it.count) || 0}件</span>`
       : '';
-    return `<div class="feed-row" data-i="${i}">
+    return `<div class="feed-row" data-i="${i}" style="--rowcat:${c}">
       <span class="feed-dot" style="color:${c};background:${c}"></span>
       <span class="feed-title">${title}</span>${badge}
       <span class="feed-time">${it.time ? formatFreshness(new Date(it.time).toISOString()) : ''}</span>
