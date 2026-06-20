@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-20T00:46:19Z",
+  "updated": "2026-06-20T01:02:22Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/news/liveblog/2026/6/20/iran-war-live-tehran-says-us-must-ensure-israel-ends-attacks-on-lebanon?traffic_source=rss",
@@ -145,17 +145,17 @@
       "place": "オーストラリア"
     },
     {
-      "id": "https://www.theguardian.com/australia-news/2026/jun/19/australia-bird-flu-deadly-h5n1-first-suspected-case-wa",
-      "url": "https://www.theguardian.com/australia-news/2026/jun/19/australia-bird-flu-deadly-h5n1-first-suspected-case-wa",
+      "id": "https://www.theguardian.com/world/2026/jun/19/israel-hezbollah-renew-ceasefire-lebanon-us-iran-agreement",
+      "url": "https://www.theguardian.com/world/2026/jun/19/israel-hezbollah-renew-ceasefire-lebanon-us-iran-agreement",
       "source": "guardian",
-      "time": 1781859379000,
+      "time": 1781891691000,
       "rank": 11,
-      "title_ja": "豪本土初のH5N1感染疑い例を調査、海鳥の鳥インフルエンザ陽性反応受け",
-      "summary_ja": "オーストラリア本土で初めてH5N1鳥インフルエンザの感染が疑われる事例が報告され、調査が開始された。海鳥からウイルスが検出されたことを受けた対応である。",
-      "category": "science",
-      "lon": 133.7751,
-      "lat": -25.2744,
-      "place": "オーストラリア"
+      "title_ja": "イスラエルとヒズボラ、暴力の再燃後に停戦更新に合意",
+      "summary_ja": "イスラエルとレバノンのヒズボラが、最近の暴力の激化を受けて停戦の更新に合意した。両者は既存の停戦合意を継続することで一致した。",
+      "category": "conflict",
+      "lon": 35.4623,
+      "lat": 33.8547,
+      "place": "イスラエル・レバノン国境地域"
     },
     {
       "id": "https://www.theguardian.com/world/2026/jun/19/us-iran-talks-in-switzerland-cancelled",
@@ -197,17 +197,17 @@
       "place": "レバノン"
     },
     {
-      "id": "https://www.dw.com/en/months-of-war-fundamentally-change-iran-gulf-ties/a-77626785?maca=en-rss-en-world-4025-rdf",
-      "url": "https://www.dw.com/en/months-of-war-fundamentally-change-iran-gulf-ties/a-77626785?maca=en-rss-en-world-4025-rdf",
-      "source": "dw",
-      "time": 1781870460000,
+      "id": "https://www.france24.com/en/europe/20260619-poland-strips-zelensky-of-highest-honour-escalating-world-war-ii-era-row",
+      "url": "https://www.france24.com/en/europe/20260619-poland-strips-zelensky-of-highest-honour-escalating-world-war-ii-era-row",
+      "source": "france24",
+      "time": 1781900456000,
       "rank": 16,
-      "title_ja": "数ヶ月の戦争がイラン・湾岸関係を根本的に変える",
-      "summary_ja": "イスラエルとイランの軍事衝突を含む数ヶ月間の戦争により、イランと湾岸諸国の関係が根本的な変化を遂げている。地域の政治的バランスと外交関係が大きく再編成されている。",
-      "category": "conflict",
-      "lon": 50.5577,
-      "lat": 26.0667,
-      "place": "ペルシャ湾地域（イラン・湾岸諸国）"
+      "title_ja": "ポーランド、ゼレンスキー大統領から国家最高勲章を剥奪 第二次世界大戦時代の対立が深刻化",
+      "summary_ja": "ポーランドはウクライナのゼレンスキー大統領から国の最高栄誉を剥奪した。これは第二次世界大戦時代の歴史解釈をめぐるポーランドとウクライナ間の対立が深刻化したことを示している。",
+      "category": "politics",
+      "lon": 21.0122,
+      "lat": 52.2297,
+      "place": "ポーランド"
     },
     {
       "id": "https://www.france24.com/en/africa/20260619-dr-congo-ebola-outbreak-evolving-fast-who-warns",
@@ -234,6 +234,19 @@
       "lon": -77.0369,
       "lat": 38.9072,
       "place": "米国ワシントンD.C."
+    },
+    {
+      "id": "https://www.aljazeera.com/video/newsfeed/2026/6/19/italian-prime-minister-says-she-didnt-beg-trump-for-g7-photograph?traffic_source=rss",
+      "url": "https://www.aljazeera.com/video/newsfeed/2026/6/19/italian-prime-minister-says-she-didnt-beg-trump-for-g7-photograph?traffic_source=rss",
+      "source": "aljazeera",
+      "time": 1781902424000,
+      "rank": 23,
+      "title_ja": "イタリア首相、トランプ前大統領とのG7記念写真について「懇願していない」と主張",
+      "summary_ja": "イタリアのメローニ首相は、先日のG7サミットでドナルド・トランプ前大統領との記念写真撮影をめぐる報道に対して、自分が懇願したわけではないと述べた。この発言は、国際的な政治的影響力についての議論を反映している。",
+      "category": "politics",
+      "lon": 12.4964,
+      "lat": 41.9028,
+      "place": "イタリア（ローマ）"
     },
     {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/19/the-uk-no-10-revolving-door?traffic_source=rss",

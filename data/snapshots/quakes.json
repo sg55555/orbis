@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T00:45:48Z",
-  "count": 244,
+  "updated": "2026-06-20T01:01:12Z",
+  "count": 248,
   "points": [
+    {
+      "id": "nc75379921",
+      "lon": -124.400833129883,
+      "lat": 40.2921676635742,
+      "depth": 23.8400001525879,
+      "mag": 1.72,
+      "place": "10 km WSW of Petrolia, CA",
+      "time": 1781916786750,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379921"
+    },
     {
       "id": "ci41490904",
       "lon": -116.557,
@@ -314,6 +324,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbumki"
     },
     {
+      "id": "aka2026mbucls",
+      "lon": -160.822,
+      "lat": 54.317,
+      "depth": 0.9,
+      "mag": 2.3,
+      "place": "115 km S of Sand Point, Alaska",
+      "time": 1781903491245,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbucls"
+    },
+    {
       "id": "uu80142906",
       "lon": -112.576833333333,
       "lat": 38.1996666666667,
@@ -322,6 +342,16 @@
       "place": "10 km SSE of Beaver, Utah",
       "time": 1781903364990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142906"
+    },
+    {
+      "id": "aka2026mbuail",
+      "lon": -160.027,
+      "lat": 54.566,
+      "depth": 0.7,
+      "mag": 2.2,
+      "place": "90 km SSE of Sand Point, Alaska",
+      "time": 1781903339708,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbuail"
     },
     {
       "id": "nc75379821",
@@ -365,12 +395,12 @@
     },
     {
       "id": "aka2026mbtlhj",
-      "lon": -150.445,
-      "lat": 62.101,
+      "lon": -150.454,
+      "lat": 62.102,
       "depth": 9.4,
-      "mag": 2,
+      "mag": 2.1,
       "place": "26 km SSW of Trapper Creek, Alaska",
-      "time": 1781902297610,
+      "time": 1781902297678,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbtlhj"
     },
     {
@@ -382,6 +412,16 @@
       "place": "45 km ESE of Akkeshi, Japan",
       "time": 1781901542527,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqe"
+    },
+    {
+      "id": "aka2026mbswye",
+      "lon": -164.733,
+      "lat": 53.452,
+      "depth": 27.2,
+      "mag": 2,
+      "place": "102 km SE of Akutan, Alaska",
+      "time": 1781901309840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbswye"
     },
     {
       "id": "nc75379776",
