@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T18:15:51Z",
-  "count": 202,
+  "updated": "2026-06-20T18:31:14Z",
+  "count": 201,
   "points": [
+    {
+      "id": "ci41491352",
+      "lon": -117.1235,
+      "lat": 34.0306666666667,
+      "depth": 7.01,
+      "mag": 1.24,
+      "place": "4 km SSE of Mentone, CA",
+      "time": 1781979704130,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491352"
+    },
+    {
+      "id": "us7000suvc",
+      "lon": -104.9398,
+      "lat": 37.0163,
+      "depth": 9.319,
+      "mag": 2.4,
+      "place": "15 km SSW of Weston, Colorado",
+      "time": 1781979341649,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suvc"
+    },
     {
       "id": "ci41491344",
       "lon": -117.218333333333,
@@ -364,6 +384,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491112"
     },
     {
+      "id": "aka2026mcypgy",
+      "lon": -178.755,
+      "lat": 51.109,
+      "depth": 22.4,
+      "mag": 2.3,
+      "place": "170 km WSW of Adak, Alaska",
+      "time": 1781958339606,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcypgy"
+    },
+    {
       "id": "nc75380091",
       "lon": -121.176170349121,
       "lat": 36.5646667480469,
@@ -572,6 +602,16 @@
       "place": "13 km SSE of San Clemente Is. (SE tip), CA",
       "time": 1781950862970,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491064"
+    },
+    {
+      "id": "aka2026mcujpe",
+      "lon": -176.223,
+      "lat": 51.178,
+      "depth": 18.8,
+      "mag": 2.1,
+      "place": "82 km SSE of Adak, Alaska",
+      "time": 1781950768276,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcujpe"
     },
     {
       "id": "ci41491056",
@@ -1972,56 +2012,6 @@
       "place": "20 km SE of Pāhala, Hawaii",
       "time": 1781894013650,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986627"
-    },
-    {
-      "id": "ci41490712",
-      "lon": -116.433666666667,
-      "lat": 33.0188333333333,
-      "depth": 12.99,
-      "mag": 0.92,
-      "place": "17 km ESE of Julian, CA",
-      "time": 1781893778520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490712"
-    },
-    {
-      "id": "us7000sunz",
-      "lon": -173.418,
-      "lat": 52.8621,
-      "depth": 232.09,
-      "mag": 4.4,
-      "place": "91 km NE of Atka, Alaska",
-      "time": 1781893533218,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunz"
-    },
-    {
-      "id": "aka2026mbomaf",
-      "lon": -167.845,
-      "lat": 52.826,
-      "depth": 28.6,
-      "mag": 3.1,
-      "place": "69 km E of Nikolski, Alaska",
-      "time": 1781893350937,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbomaf"
-    },
-    {
-      "id": "us7000sunx",
-      "lon": 137.6686,
-      "lat": 36.815,
-      "depth": 216.301,
-      "mag": 4.5,
-      "place": "20 km SE of Nyūzen, Japan",
-      "time": 1781893015282,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunx"
-    },
-    {
-      "id": "aka2026mbogif",
-      "lon": -166.996,
-      "lat": 53.406,
-      "depth": 2.3,
-      "mag": 2.1,
-      "place": "60 km SSW of Unalaska, Alaska",
-      "time": 1781892957670,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbogif"
     }
   ]
 }
