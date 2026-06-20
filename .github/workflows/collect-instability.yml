@@ -2,7 +2,7 @@
 name: collect-instability
 on:
   schedule:
-    - cron: '37 * * * *'      # 毎時:37（collect/collect-slow/briefing と別オフセット）
+    - cron: '47 * * * *'      # 毎時:47（collect/collect-slow/briefing と別オフセット・push直列はgroup collectで担保）
   workflow_dispatch: {}
 permissions:
   contents: write
