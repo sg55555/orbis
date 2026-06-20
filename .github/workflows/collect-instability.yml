@@ -2,7 +2,7 @@
 name: collect-instability
 on:
   schedule:
-    - cron: '47 * * * *'      # 毎時:47（collect/collect-slow/briefing と別オフセット・push直列はgroup collectで担保）
+    - cron: '47 */2 * * *'    # 2時間毎:47（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット・push直列はgroup collect）
   workflow_dispatch: {}
 permissions:
   contents: write
