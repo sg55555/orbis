@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T11:01:17Z",
-  "count": 216,
+  "updated": "2026-06-20T11:15:50Z",
+  "count": 217,
   "points": [
+    {
+      "id": "aka2026mcvvep",
+      "lon": -148.166,
+      "lat": 61.699,
+      "depth": 3.5,
+      "mag": 1.4,
+      "place": "19 km SE of Chickaloon, Alaska",
+      "time": 1781953360884,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcvvep"
+    },
+    {
+      "id": "hv74987142",
+      "lon": -155.363006591797,
+      "lat": 19.291166305542,
+      "depth": 30.4799995422363,
+      "mag": 1.86,
+      "place": "15 km NE of Pāhala, Hawaii",
+      "time": 1781953320490,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987142"
+    },
     {
       "id": "aka2026mcvpef",
       "lon": -151.42,
@@ -2152,16 +2172,6 @@
       "place": "85 km SE of Atka, Alaska",
       "time": 1781868445349,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbaqka"
-    },
-    {
-      "id": "nc75379566",
-      "lon": -122.791168212891,
-      "lat": 38.8373336791992,
-      "depth": 2.21000003814697,
-      "mag": 0.87,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781866860850,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379566"
     }
   ]
 }
