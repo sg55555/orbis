@@ -1,0 +1,35 @@
+# .github/workflows/collect-forecast.yml
+name: collect-forecast
+on:
+  schedule:
+    - cron: '37 * * * *'    # 毎時:37（既存ANTHROPIC_API_KEY流用）
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: collect              # 既存と共有して直列化（push 競合回避）
+  cancel-in-progress: false
+jobs:
+  forecast:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements.txt
+      - name: Collect forecast
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m collectors.forecast || echo "forecast skipped"
+      - name: Commit snapshot
+        run: |
+          git config user.name "orbis-bot"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
+          git add data/snapshots/*.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: refresh forecast [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
