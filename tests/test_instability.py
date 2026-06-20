@@ -64,3 +64,30 @@ def test_score_all_zero_safe():
                                     "counts": {"conflict": 0, "protests": 0, "news": 0, "quakes": 0},
                                     "lat": 0, "lon": 0, "top_events": []}}, CFG, {})
     assert out[0]["score"] == 0 and out[0]["level"] == 1
+
+# トレンド関数テスト
+H = 3600_000
+DAY = 86400_000
+
+def test_trend_dod_and_normal():
+    countries = [{"code": "IZ", "score": 80}]
+    hist = {"IZ": [{"t": -DAY, "score": 50}] + [{"t": -i * H, "score": 50} for i in range(1, 6)]}
+    # now_ms=0、24h前(-DAY)に score50 → dod +30(up)。中央値50 → +60%(up)
+    I.apply_trend(countries, hist, 0, CFG)
+    tr = countries[0]["trend"]
+    assert tr["dod"]["delta"] == 30 and tr["dod"]["dir"] == "up"
+    assert tr["normal"]["dir"] == "up" and tr["normal"]["deltaPct"] >= 15
+    assert tr["isNew"] is False
+
+def test_trend_new_country():
+    countries = [{"code": "ZZ", "score": 40}]
+    I.apply_trend(countries, {}, 0, CFG)
+    tr = countries[0]["trend"]
+    assert tr["dod"] is None and tr["normal"] is None and tr["isNew"] is True
+
+def test_update_history_appends_and_trims():
+    hist = {"IZ": [{"t": -10 * DAY, "score": 10}, {"t": -1 * H, "score": 20}]}
+    new = I.update_history(hist, [{"code": "IZ", "score": 30}], 0, CFG)
+    ts = [x["t"] for x in new["IZ"]]
+    assert -10 * DAY not in ts        # 7日より古いものは除去
+    assert new["IZ"][-1] == {"t": 0, "score": 30}

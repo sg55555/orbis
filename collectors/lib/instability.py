@@ -135,3 +135,49 @@ def score_countries(agg, cfg, fips_ja):
     for i, c in enumerate(out):
         c["rank"] = i + 1
     return out
+
+
+def _median(vals):
+    s = sorted(vals)
+    n = len(s)
+    if n == 0:
+        return 0
+    return s[n // 2] if n % 2 else (s[n // 2 - 1] + s[n // 2]) / 2
+
+
+def _trend_for(score_now, hist, now_ms, t):
+    dod = None
+    if hist:
+        target = now_ms - t["dod_hours"] * 3600_000
+        tol = t["dod_tol_hours"] * 3600_000
+        cand = [h for h in hist if abs(h["t"] - target) <= tol]
+        if cand:
+            ref = min(cand, key=lambda h: abs(h["t"] - target))["score"]
+            d = score_now - ref
+            dod = {"delta": int(d),
+                   "dir": "up" if d >= t["dod_delta"] else "down" if d <= -t["dod_delta"] else "flat"}
+    normal = None
+    scores = [h["score"] for h in hist]
+    if len(scores) >= t["normal_min_samples"]:
+        med = _median(scores)
+        pct = round(100 * (score_now - med) / max(med, 1))
+        normal = {"deltaPct": int(pct),
+                  "dir": "up" if pct >= t["normal_pct"] else "down" if pct <= -t["normal_pct"] else "flat"}
+    is_new = dod is None and normal is None
+    return {"dod": dod, "normal": normal, "isNew": bool(is_new)}
+
+
+def apply_trend(countries, history, now_ms, cfg):
+    t = cfg["trend"]
+    for c in countries:
+        c["trend"] = _trend_for(c["score"], history.get(c["code"], []), now_ms, t)
+
+
+def update_history(history, countries, now_ms, cfg):
+    cutoff = now_ms - cfg["history_days"] * 86400_000
+    out = {}
+    for c in countries:
+        lst = [x for x in history.get(c["code"], []) if x["t"] >= cutoff]
+        lst.append({"t": int(now_ms), "score": int(c["score"])})
+        out[c["code"]] = lst
+    return out
