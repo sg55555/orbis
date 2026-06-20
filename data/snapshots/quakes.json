@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T00:31:02Z",
-  "count": 247,
+  "updated": "2026-06-20T00:45:48Z",
+  "count": 244,
   "points": [
+    {
+      "id": "ci41490904",
+      "lon": -116.557,
+      "lat": 33.4796666666667,
+      "depth": 10.56,
+      "mag": 0.82,
+      "place": "14 km SE of Anza, CA",
+      "time": 1781915985640,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490904"
+    },
+    {
+      "id": "hv74986912",
+      "lon": -155.373001098633,
+      "lat": 19.0400009155273,
+      "depth": 31.2399997711182,
+      "mag": 1.71,
+      "place": "21 km SSE of Pāhala, Hawaii",
+      "time": 1781915880670,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986912"
+    },
     {
       "id": "aka2026mcaemz",
       "lon": -147.506,
@@ -392,6 +412,16 @@
       "place": "4 km NNW of The Geysers, CA",
       "time": 1781900777670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379761"
+    },
+    {
+      "id": "aka2026mbsdfu",
+      "lon": -161.427,
+      "lat": 54.389,
+      "depth": 2.8,
+      "mag": 2,
+      "place": "94 km SE of King Cove, Alaska",
+      "time": 1781899939683,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbsdfu"
     },
     {
       "id": "us7000suq2",
@@ -2412,66 +2442,6 @@
       "place": "10 km WSW of Searles Valley, CA",
       "time": 1781831216720,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490400"
-    },
-    {
-      "id": "nc75379366",
-      "lon": -122.790000915527,
-      "lat": 38.8334999084473,
-      "depth": 1.80999994277954,
-      "mag": 1.02,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781829695880,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379366"
-    },
-    {
-      "id": "nc75379361",
-      "lon": -122.788833618164,
-      "lat": 38.835334777832,
-      "depth": 1.78999996185303,
-      "mag": 0.58,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781829644600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379361"
-    },
-    {
-      "id": "nc75379356",
-      "lon": -122.789169311523,
-      "lat": 38.8331680297852,
-      "depth": 1.76999998092651,
-      "mag": 1.58,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781829534000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379356"
-    },
-    {
-      "id": "aka2026maeymi",
-      "lon": -177.327,
-      "lat": 51.387,
-      "depth": 38.1,
-      "mag": 2.1,
-      "place": "72 km SW of Adak, Alaska",
-      "time": 1781829444599,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maeymi"
-    },
-    {
-      "id": "nc75379351",
-      "lon": -122.795669555664,
-      "lat": 38.8334999084473,
-      "depth": 1.79999995231628,
-      "mag": 0.76,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781829352510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379351"
-    },
-    {
-      "id": "us7000sugw",
-      "lon": 125.082,
-      "lat": -7.042,
-      "depth": 523.516,
-      "mag": 4.4,
-      "place": "173 km N of Likisá, Timor Leste",
-      "time": 1781829078915,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugw"
     }
   ]
 }
