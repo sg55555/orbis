@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T23:15:51Z",
-  "count": 196,
+  "updated": "2026-06-20T23:31:05Z",
+  "count": 194,
   "points": [
     {
       "id": "nc75380346",
@@ -56,11 +56,11 @@
     {
       "id": "tx2026mbukll",
       "lon": -101.389,
-      "lat": 32.181,
-      "depth": 3.3554,
-      "mag": 1.5,
-      "place": "8 km NNW of Forsan, Texas",
-      "time": 1781995049101,
+      "lat": 32.179,
+      "depth": 3.255,
+      "mag": 1.6,
+      "place": "7 km NNW of Forsan, Texas",
+      "time": 1781995049215,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbukll"
     },
     {
@@ -1942,26 +1942,6 @@
       "place": "22 km W of Volcano, Hawaii",
       "time": 1781912235730,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986837"
-    },
-    {
-      "id": "ci41490888",
-      "lon": -116.457,
-      "lat": 33.4708333333333,
-      "depth": 12.24,
-      "mag": 1.23,
-      "place": "22 km ESE of Anza, CA",
-      "time": 1781911378510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490888"
-    },
-    {
-      "id": "ci41490880",
-      "lon": -116.465,
-      "lat": 33.4696666666667,
-      "depth": 11.29,
-      "mag": 2.08,
-      "place": "22 km ESE of Anza, CA",
-      "time": 1781911185560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490880"
     }
   ]
 }
