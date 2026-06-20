@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T00:15:48Z",
-  "count": 245,
+  "updated": "2026-06-20T00:31:02Z",
+  "count": 247,
   "points": [
     {
       "id": "aka2026mcaemz",
@@ -424,6 +424,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supu"
     },
     {
+      "id": "aka2026mbraof",
+      "lon": -159.883,
+      "lat": 55.974,
+      "depth": 118.2,
+      "mag": 1.8,
+      "place": "26 km WNW of Ivanof Bay, Alaska",
+      "time": 1781897956697,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbraof"
+    },
+    {
       "id": "us7000supp",
       "lon": 127.9523,
       "lat": 25.0026,
@@ -465,13 +475,23 @@
     },
     {
       "id": "aka2026mbqpwp",
-      "lon": -151.511,
-      "lat": 61.231,
-      "depth": 74.7,
+      "lon": -151.532,
+      "lat": 61.238,
+      "depth": 77.6,
       "mag": 1.5,
-      "place": "25 km WNW of Beluga, Alaska",
-      "time": 1781897218031,
+      "place": "26 km WNW of Beluga, Alaska",
+      "time": 1781897217718,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqpwp"
+    },
+    {
+      "id": "aka2026mbqatd",
+      "lon": -151.38,
+      "lat": 59.428,
+      "depth": 57.2,
+      "mag": 1.5,
+      "place": "16 km ESE of Seldovia Village, Alaska",
+      "time": 1781896171700,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqatd"
     },
     {
       "id": "ci41490760",
@@ -502,6 +522,16 @@
       "place": "165 km SE of Kokopo, Papua New Guinea",
       "time": 1781895652549,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supf"
+    },
+    {
+      "id": "aka2026mbptee",
+      "lon": -161.319,
+      "lat": 54.616,
+      "depth": 13.7,
+      "mag": 2.6,
+      "place": "81 km SE of King Cove, Alaska",
+      "time": 1781895647297,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbptee"
     },
     {
       "id": "us7000supe",
@@ -2442,16 +2472,6 @@
       "place": "173 km N of Likisá, Timor Leste",
       "time": 1781829078915,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugw"
-    },
-    {
-      "id": "aka2026maegns",
-      "lon": -150.218,
-      "lat": 62.324,
-      "depth": 15.9,
-      "mag": 3.1,
-      "place": "1 km NE of Trapper Creek, Alaska",
-      "time": 1781828203383,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maegns"
     }
   ]
 }
