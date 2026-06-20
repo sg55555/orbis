@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T21:15:52Z",
-  "count": 202,
+  "updated": "2026-06-20T21:31:15Z",
+  "count": 204,
   "points": [
+    {
+      "id": "aka2026mdqrgl",
+      "lon": -147.696,
+      "lat": 63.164,
+      "depth": 0.3,
+      "mag": 2,
+      "place": "67 km ESE of Cantwell, Alaska",
+      "time": 1781990870736,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdqrgl"
+    },
+    {
+      "id": "aka2026mdqmpy",
+      "lon": -148.22,
+      "lat": 62.205,
+      "depth": 5,
+      "mag": 1.5,
+      "place": "47 km NNE of Chickaloon, Alaska",
+      "time": 1781990549338,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdqmpy"
+    },
+    {
+      "id": "nc75380291",
+      "lon": -122.796333312988,
+      "lat": 38.8368339538574,
+      "depth": 1.97000002861023,
+      "mag": 1.05,
+      "place": "7 km WNW of Cobb, CA",
+      "time": 1781990268310,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380291"
+    },
+    {
+      "id": "hv74987397",
+      "lon": -155.371994018555,
+      "lat": 19.1306667327881,
+      "depth": 41.8400001525879,
+      "mag": 1.83,
+      "place": "13 km SE of Pāhala, Hawaii",
+      "time": 1781990142910,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987397"
+    },
     {
       "id": "aka2026mdqexi",
       "lon": -154.022,
@@ -2002,26 +2042,6 @@
       "place": "15 km SSE of Point Possession, Alaska",
       "time": 1781904698995,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbutzg"
-    },
-    {
-      "id": "aka2026mbuonq",
-      "lon": -169.758,
-      "lat": 53.195,
-      "depth": 205.4,
-      "mag": 1.9,
-      "place": "66 km WNW of Nikolski, Alaska",
-      "time": 1781904309937,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbuonq"
-    },
-    {
-      "id": "aka2026mbumki",
-      "lon": -149.375,
-      "lat": 60.971,
-      "depth": 26,
-      "mag": 1.7,
-      "place": "9 km NNE of Sunrise, Alaska",
-      "time": 1781904174316,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbumki"
     }
   ]
 }
