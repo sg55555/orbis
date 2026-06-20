@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T14:01:13Z",
-  "count": 219,
+  "updated": "2026-06-20T14:15:47Z",
+  "count": 218,
   "points": [
+    {
+      "id": "ci41491168",
+      "lon": -116.622,
+      "lat": 33.5915,
+      "depth": 12.97,
+      "mag": 0.72,
+      "place": "6 km NE of Anza, CA",
+      "time": 1781964622320,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491168"
+    },
     {
       "id": "aka2026mdaubc",
       "lon": -151.42,
@@ -2172,26 +2182,6 @@
       "place": "14 km SSE of Lindsay, Texas",
       "time": 1781879266542,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzimmm"
-    },
-    {
-      "id": "tx2026lzhyzg",
-      "lon": -103.743,
-      "lat": 31.211,
-      "depth": 0,
-      "mag": 1.7,
-      "place": "12 km SSE of Toyah, Texas",
-      "time": 1781878323159,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzhyzg"
-    },
-    {
-      "id": "nc75379621",
-      "lon": -122.814331054688,
-      "lat": 38.8321647644043,
-      "depth": 2.25999999046326,
-      "mag": 1.03,
-      "place": "8 km NW of The Geysers, CA",
-      "time": 1781878168600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379621"
     }
   ]
 }
