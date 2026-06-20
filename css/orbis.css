@@ -389,6 +389,62 @@ body.glass-soft #panel.side-panel, body.glass-soft #feed.side-panel {
 body.glass-off #panel.side-panel, body.glass-off #feed.side-panel {
   backdrop-filter: none; -webkit-backdrop-filter: none; background: rgba(8, 14, 26, 0.93); }
 
+/* ===== メディア＋ブリーフィング帯 視覚仕上げ（?mp=a|b|off・既定 a / immerse.js mp-*） =====
+   下半分(#media/#ai-brief)を globe の「縁に光が乗ったガラス」言語に揃える。プレーヤー/カメラセルの
+   純黒ドロップシャドウ（黒い穴）→ 外側のオーロラ発光＋明るめ rim＋上端ハイライト。投資済みの nv tint
+   (青 neb-a / 紫 neb-b)を縁の発光色として活かす。見出しを強化し3ゾーン共通のネオン区切り線で揃える。
+   base CSS は不変＝?mp=off(現状/before)。globe は非編集。a=大気グロー(cosmic・推奨)／b=ネオン強め。 */
+
+/* --- A: 大気グロー（柔らかいオーロラ光・cyan #46afff/purple #aa73ff と同調・控えめに上質） --- */
+body.mp-a .media-player {
+  border-color: rgba(90, 200, 255, .34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, .07),
+    0 0 26px -8px rgba(70, 175, 255, .34),
+    0 16px 52px -16px rgba(170, 115, 255, .22),
+    0 8px 40px rgba(0, 0, 0, .42);
+}
+body.mp-a .cam-cell {
+  border-color: rgba(90, 200, 255, .22);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .05), 0 0 16px -7px rgba(70, 175, 255, .30);
+}
+body.mp-a .cam-cell.active {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 0 16px rgba(57, 208, 255, .42);
+}
+body.mp-a .brief-lead { box-shadow: 0 0 22px -11px rgba(70, 175, 255, .28); }
+/* 見出し強化＋ネオン区切り線（pane=ニュース/カメラ・brief=ワールド・ブリーフィング） */
+body.mp-a .pane-title { font-size: 17px; color: #e7f3ff; text-shadow: 0 0 14px rgba(57, 208, 255, .28); }
+body.mp-a .brief-h { font-size: 21px; color: #e7f3ff; text-shadow: 0 0 16px rgba(57, 208, 255, .30); }
+body.mp-a .pane-head, body.mp-a .brief-head {
+  border-bottom: 1px solid rgba(57, 208, 255, .16); padding-bottom: 9px;
+  box-shadow: 0 1px 0 rgba(57, 208, 255, .08);
+}
+
+/* --- B: ネオン強め（定義のはっきりした強い縁＋常時発光の脈動・nexus 寄り） --- */
+body.mp-b .media-player {
+  border: 1.5px solid rgba(57, 208, 255, .68);
+  box-shadow: inset 0 0 18px rgba(57, 208, 255, .10), 0 0 22px rgba(57, 208, 255, .34), 0 8px 40px rgba(0, 0, 0, .4);
+  animation: mp-glow-pulse 3.6s ease-in-out infinite;
+}
+body.mp-b .cam-cell {
+  border: 1.5px solid rgba(57, 208, 255, .46);
+  box-shadow: inset 0 0 12px rgba(57, 208, 255, .08), 0 0 13px rgba(57, 208, 255, .26);
+}
+body.mp-b .cam-cell.active { box-shadow: inset 0 0 14px rgba(57, 208, 255, .12), 0 0 18px rgba(57, 208, 255, .5); }
+body.mp-b .brief-lead { box-shadow: 0 0 24px -10px rgba(57, 208, 255, .34); }
+body.mp-b .pane-title { font-size: 17px; color: #eaf6ff; text-shadow: 0 0 18px rgba(57, 208, 255, .55); }
+body.mp-b .brief-h { font-size: 22px; color: #eaf6ff; text-shadow: 0 0 20px rgba(57, 208, 255, .6); }
+body.mp-b .pane-head, body.mp-b .brief-head {
+  border-bottom: 1px solid rgba(57, 208, 255, .35); padding-bottom: 9px;
+  box-shadow: 0 1px 11px -2px rgba(57, 208, 255, .38);
+}
+/* 常時発光の脈動（0 に戻さず底上げ・reduced-motion で静止 [[app-design-patterns]] nexus 流儀） */
+@keyframes mp-glow-pulse {
+  0%, 100% { box-shadow: inset 0 0 18px rgba(57, 208, 255, .10), 0 0 18px rgba(57, 208, 255, .26), 0 8px 40px rgba(0, 0, 0, .4); }
+  50%      { box-shadow: inset 0 0 22px rgba(57, 208, 255, .14), 0 0 30px rgba(57, 208, 255, .44), 0 8px 40px rgba(0, 0, 0, .4); }
+}
+@media (prefers-reduced-motion: reduce) { body.mp-b .media-player { animation: none; } }
+
 /* AI ワールド・ブリーフィング（メディアの下） */
 #ai-brief.brief-section { width: 100%; max-width: 1100px; margin: 0 auto; padding: 28px 18px 60px; }
 .brief-head { display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px; }
