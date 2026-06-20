@@ -1,5 +1,7 @@
 import { test, expect } from '@playwright/test';
 
+test.use({ hasTouch: true }); // ⓘ閉時に @media(hover:hover) の reveal が干渉しないようタッチ環境で検証（mobile-nav と同パターン）
+
 async function ready(page) {
   await page.addInitScript(() => localStorage.clear());
   await page.goto('/');
