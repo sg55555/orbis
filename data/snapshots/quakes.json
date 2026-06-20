@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T15:31:10Z",
-  "count": 212,
+  "updated": "2026-06-20T15:45:54Z",
+  "count": 210,
   "points": [
+    {
+      "id": "ci41491208",
+      "lon": -116.280334472656,
+      "lat": 34.0048332214355,
+      "depth": 9.60999965667725,
+      "mag": 1.11559209746977,
+      "place": "15 km SSE of Joshua Tree, CA",
+      "time": 1781970136110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491208"
+    },
+    {
+      "id": "nn00920512",
+      "lon": -119.059,
+      "lat": 39.3145,
+      "depth": 8.3477,
+      "mag": 1.91,
+      "place": "18 km SE of Silver Springs, Nevada",
+      "time": 1781969829601,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920512"
+    },
+    {
+      "id": "nc75380126",
+      "lon": -122.843330383301,
+      "lat": 38.8211669921875,
+      "depth": 1.63999998569489,
+      "mag": 1.1,
+      "place": "9 km WNW of The Geysers, CA",
+      "time": 1781969453020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380126"
+    },
     {
       "id": "aka2026mddwnv",
       "lon": -150.174,
@@ -2072,56 +2102,6 @@
       "place": "23 km N of Borrego Springs, CA",
       "time": 1781884251940,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490608"
-    },
-    {
-      "id": "us7000sun8",
-      "lon": -171.3556,
-      "lat": 53.0547,
-      "depth": 235.571,
-      "mag": 2.7,
-      "place": "167 km W of Nikolski, Alaska",
-      "time": 1781883749463,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sun8"
-    },
-    {
-      "id": "aka2026mbjbtw",
-      "lon": -166.999,
-      "lat": 53.415,
-      "depth": 5.1,
-      "mag": 1.6,
-      "place": "59 km SSW of Unalaska, Alaska",
-      "time": 1781883646714,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjbtw"
-    },
-    {
-      "id": "aka2026mbizve",
-      "lon": -139.94,
-      "lat": 60.582,
-      "depth": 1.2,
-      "mag": 2.5,
-      "place": "115 km N of Yakutat, Alaska",
-      "time": 1781883512115,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbizve"
-    },
-    {
-      "id": "ci41490600",
-      "lon": -116.7465,
-      "lat": 34.026,
-      "depth": 14.28,
-      "mag": 1.08,
-      "place": "13 km NNE of Cabazon, CA",
-      "time": 1781883445880,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490600"
-    },
-    {
-      "id": "tx2026lzkprg",
-      "lon": -104.423,
-      "lat": 31.647,
-      "depth": 6.0486,
-      "mag": 2.1,
-      "place": "58 km S of Whites City, New Mexico",
-      "time": 1781883308867,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzkprg"
     }
   ]
 }
