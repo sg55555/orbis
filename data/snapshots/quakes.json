@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T14:47:12Z",
+  "updated": "2026-06-20T15:01:18Z",
   "count": 215,
   "points": [
     {
@@ -1904,14 +1904,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblpot"
     },
     {
-      "id": "aka2026mbldwr",
-      "lon": 176.119,
-      "lat": 51.823,
-      "depth": 20,
-      "mag": 4.2,
-      "place": "230 km ESE of Attu Station, Alaska",
-      "time": 1781887385129,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbldwr"
+      "id": "us7000sumz",
+      "lon": 176.3143,
+      "lat": 52.1102,
+      "depth": 10,
+      "mag": 4.3,
+      "place": "227 km ESE of Attu Station, Alaska",
+      "time": 1781887385110,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sumz"
     },
     {
       "id": "aka2026mblbzh",
