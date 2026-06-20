@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T04:01:12Z",
-  "count": 242,
+  "updated": "2026-06-20T04:15:46Z",
+  "count": 240,
   "points": [
     {
       "id": "nc75379971",
@@ -12,6 +12,16 @@
       "place": "13 km NW of The Geysers, CA",
       "time": 1781927402560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379971"
+    },
+    {
+      "id": "us7000susb",
+      "lon": 160.6412,
+      "lat": 52.7287,
+      "depth": 35,
+      "mag": 5.8,
+      "place": "140 km ESE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781927346278,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susb"
     },
     {
       "id": "ci41490944",
@@ -2392,36 +2402,6 @@
       "place": "72 km WSW of Nikolski, Alaska",
       "time": 1781843558322,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamull"
-    },
-    {
-      "id": "aka2026malzeo",
-      "lon": -178.116,
-      "lat": 51.398,
-      "depth": 8.4,
-      "mag": 2.1,
-      "place": "115 km WSW of Adak, Alaska",
-      "time": 1781842086747,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026malzeo"
-    },
-    {
-      "id": "ci41490464",
-      "lon": -116.449666666667,
-      "lat": 33.5058333333333,
-      "depth": 2.3,
-      "mag": 0.37,
-      "place": "21 km ESE of Anza, CA",
-      "time": 1781841832630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490464"
-    },
-    {
-      "id": "aka2026maltkz",
-      "lon": -159.853,
-      "lat": 55.657,
-      "depth": 5.6,
-      "mag": 1.6,
-      "place": "35 km SW of Ivanof Bay, Alaska",
-      "time": 1781841691455,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maltkz"
     }
   ]
 }
