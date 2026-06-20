@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T16:15:56Z",
-  "count": 210,
+  "updated": "2026-06-20T16:31:14Z",
+  "count": 208,
   "points": [
     {
       "id": "aka2026mdgaud",
@@ -2082,26 +2082,6 @@
       "place": "123 km NE of Finschhafen, Papua New Guinea",
       "time": 1781887042115,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sumw"
-    },
-    {
-      "id": "aka2026mbkrog",
-      "lon": -159.709,
-      "lat": 55.952,
-      "depth": 16.1,
-      "mag": 1.6,
-      "place": "15 km WNW of Ivanof Bay, Alaska",
-      "time": 1781886540161,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkrog"
-    },
-    {
-      "id": "aka2026mbkkat",
-      "lon": -159.788,
-      "lat": 55.913,
-      "depth": 10.8,
-      "mag": 1.6,
-      "place": "19 km W of Ivanof Bay, Alaska",
-      "time": 1781886018085,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkkat"
     }
   ]
 }
