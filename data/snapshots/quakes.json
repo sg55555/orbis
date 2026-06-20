@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T10:39:14Z",
+  "updated": "2026-06-20T10:45:50Z",
   "count": 215,
   "points": [
+    {
+      "id": "nc75380056",
+      "lon": -121.939666748047,
+      "lat": 36.435001373291,
+      "depth": 6.05000019073486,
+      "mag": 2.13,
+      "place": "13 km S of Carmel By The Sea, CA",
+      "time": 1781952193170,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380056"
+    },
+    {
+      "id": "nn00920508",
+      "lon": -116.4863,
+      "lat": 38.469,
+      "depth": 3.3919,
+      "mag": 1.75,
+      "place": "78 km NE of Tonopah, Nevada",
+      "time": 1781951763868,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920508"
+    },
     {
       "id": "ci41491064",
       "lon": -118.284333333333,
@@ -2132,26 +2152,6 @@
       "place": "15 km NE of Pāhala, Hawaii",
       "time": 1781866078560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986317"
-    },
-    {
-      "id": "us7000suk6",
-      "lon": 160.5822,
-      "lat": 53.0001,
-      "depth": 30.853,
-      "mag": 4.4,
-      "place": "131 km E of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781865620816,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suk6"
-    },
-    {
-      "id": "nc75379546",
-      "lon": -122.792999267578,
-      "lat": 38.8235015869141,
-      "depth": 2.73000001907349,
-      "mag": 1.84,
-      "place": "6 km NNW of The Geysers, CA",
-      "time": 1781865570380,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379546"
     }
   ]
 }
