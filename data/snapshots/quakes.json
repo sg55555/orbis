@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T12:21:05Z",
-  "count": 226,
+  "updated": "2026-06-20T12:31:04Z",
+  "count": 223,
   "points": [
     {
       "id": "nc75380091",
@@ -892,6 +892,16 @@
       "place": "21 km SSE of Pāhala, Hawaii",
       "time": 1781915880670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986912"
+    },
+    {
+      "id": "tx2026mabyxi",
+      "lon": -101.792,
+      "lat": 32.133,
+      "depth": 8.5449,
+      "mag": 0.8,
+      "place": "0 km NW of Stanton, Texas",
+      "time": 1781914544266,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mabyxi"
     },
     {
       "id": "aka2026mcaemz",
@@ -2222,46 +2232,6 @@
       "place": "68 km ENE of Fallon Station, Nevada",
       "time": 1781872643803,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920487"
-    },
-    {
-      "id": "ci41490528",
-      "lon": -117.043166666667,
-      "lat": 34.2248333333333,
-      "depth": 2.58,
-      "mag": 1.64,
-      "place": "6 km ENE of Running Springs, CA",
-      "time": 1781872131070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490528"
-    },
-    {
-      "id": "hv74986352",
-      "lon": -154.746826171875,
-      "lat": 19.3939990997314,
-      "depth": 39.1800003051758,
-      "mag": 2.03,
-      "place": "19 km ESE of Leilani Estates, Hawaii",
-      "time": 1781871989160,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986352"
-    },
-    {
-      "id": "aka2026mbclun",
-      "lon": -150.55,
-      "lat": 63.011,
-      "depth": 105,
-      "mag": 1.6,
-      "place": "58 km N of Petersville, Alaska",
-      "time": 1781871730708,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbclun"
-    },
-    {
-      "id": "nc75379581",
-      "lon": -122.793502807617,
-      "lat": 38.8224983215332,
-      "depth": 2.94000005722046,
-      "mag": 0.31,
-      "place": "6 km NNW of The Geysers, CA",
-      "time": 1781871724330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379581"
     }
   ]
 }
