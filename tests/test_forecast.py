@@ -92,3 +92,17 @@ def test_confidence_by_signal_diversity():
     assert F.confidence_of({"domain":"conflict","counts":{"conflict":3}}, CFG) == "low"
     assert F.confidence_of({"domain":"market","counts":{"news":9}}, CFG) == "low"
     assert F.confidence_of({"domain":"cyber","counts":{"news":9}}, CFG) == "low"
+
+
+def test_trend_up_flat_down_new():
+    assert F.trend_of(50, [], CFG) == "new"
+    assert F.trend_of(50, [{"t":1,"raw":5,"score":40}], CFG) == "up"     # +10 >= up_delta(8)
+    assert F.trend_of(40, [{"t":1,"raw":5,"score":42}], CFG) == "flat"   # -2
+    assert F.trend_of(30, [{"t":1,"raw":5,"score":45}], CFG) == "down"   # -15
+
+
+def test_update_history_appends_and_trims():
+    old = {"conflict:UP": [{"t": 1, "raw": 5, "score": 40}]}
+    items = [{"key":"conflict:UP","raw":9.0,"score":55}]
+    out = F.update_history(old, items, now_ms=10_000_000_000, cfg=CFG)
+    assert out["conflict:UP"][-1] == {"t": 10_000_000_000, "raw": 9.0, "score": 55}

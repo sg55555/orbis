@@ -156,3 +156,44 @@ def score_attention(agg, history, instab, cfg):
         i["level"] = int(lvl)
     items.sort(key=lambda i: (-i["score"], -sum(i["counts"].values())))
     return items
+
+
+def trend_of(score_now, hist, cfg):
+    """直近 hist の最新 score と比較して trend 判定を返す。
+
+    Args:
+        score_now: 現在のスコア
+        hist: [{t, raw, score}, ...] の履歴リスト（昇順）
+        cfg: 設定辞書（"trend": {"up_delta": 8, "down_delta": 8} を含む）
+
+    Returns:
+        "new" / "up" / "down" / "flat"
+    """
+    if not hist:
+        return "new"
+    ref = hist[-1]["score"]
+    d = score_now - ref
+    t = cfg["trend"]
+    return "up" if d >= t["up_delta"] else "down" if d <= -t["down_delta"] else "flat"
+
+
+def update_history(history, items, now_ms, cfg):
+    """history を items で更新し、cfg["history_days"] の FIFO で整理。
+
+    Args:
+        history: {key: [{t, raw, score}, ...]} の履歴辞書
+        items: 新規アイテム {key, raw, score} のリスト
+        now_ms: 現在時刻（ミリ秒）
+        cfg: 設定辞書（"history_days": 7 を含む）
+
+    Returns:
+        更新後の history 辞書
+    """
+    cutoff = now_ms - cfg["history_days"] * 86400_000
+    out = {}
+    for it in items:
+        k = it["key"]
+        lst = [x for x in history.get(k, []) if x["t"] >= cutoff]
+        lst.append({"t": int(now_ms), "raw": round(float(it["raw"]), 3), "score": int(it["score"])})
+        out[k] = lst
+    return out
