@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T17:31:14Z",
-  "count": 202,
+  "updated": "2026-06-20T17:43:19Z",
+  "count": 204,
   "points": [
+    {
+      "id": "aka2026mdizzw",
+      "lon": -159.757,
+      "lat": 55.951,
+      "depth": 13,
+      "mag": 1.4,
+      "place": "17 km WNW of Ivanof Bay, Alaska",
+      "time": 1781977090195,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdizzw"
+    },
+    {
+      "id": "ci41491320",
+      "lon": -117.008833333333,
+      "lat": 33.6483333333333,
+      "depth": 12.94,
+      "mag": 0.56,
+      "place": "10 km SE of Winchester, CA",
+      "time": 1781976556440,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491320"
+    },
     {
       "id": "aka2026mdiqyz",
       "lon": -154.211,
