@@ -12,6 +12,7 @@ import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
+import { renderInstability } from './ui/instability.js';
 import { initBoot } from './ui/boot.js';
 import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
@@ -450,6 +451,27 @@ function boot() {
       }
     } catch {
       if (briefRoot) briefRoot.style.display = 'none';
+    }
+
+    // 国家不安定性インデックス（毎時・メディア/briefing の下）。
+    const insRoot = document.getElementById('instability');
+    try {
+      const ins = await fetch('data/snapshots/instability.json').then((r) => r.json()).catch(() => null);
+      if (ins && ins.countries && ins.countries.length && insRoot) {
+        renderInstability(insRoot, ins, {
+          onSelect: (c) => {
+            map.flyTo({ center: [c.lon, c.lat], zoom: 4, duration: 1500, essential: true });
+            selected = { lon: c.lon, lat: c.lat, title: c.name_ja, layerId: 'instability', at: performance.now() };
+            if (window.__orbis) window.__orbis.selected = selected;
+            drawAll(overlay);
+          },
+        });
+        if (window.__orbis) window.__orbis.instability = ins;
+      } else if (insRoot) {
+        insRoot.style.display = 'none';
+      }
+    } catch {
+      if (insRoot) insRoot.style.display = 'none';
     }
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {

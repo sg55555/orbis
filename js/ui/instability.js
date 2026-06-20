@@ -64,3 +64,30 @@ export function rowHtml(country) {
     + '</div>'
   );
 }
+
+// rootEl=#instability。data={updated, countries:[...]}。onSelect(country) は座標ありでクリック時。
+export function renderInstability(rootEl, data, { onSelect } = {}) {
+  if (!rootEl) return;
+  const countries = (data && data.countries) || [];
+  const rankWrap = rootEl.querySelector('.ins-rank-list');
+  const moveWrap = rootEl.querySelector('.ins-mover-list');
+  if (!rankWrap || !moveWrap) return;
+  rankWrap.innerHTML = '';
+  moveWrap.innerHTML = '';
+  const mkRow = (c) => {
+    const el = document.createElement('button');
+    el.type = 'button';
+    el.className = 'ins-rowbtn';
+    el.innerHTML = rowHtml(c);
+    if (typeof c.lat === 'number' && typeof c.lon === 'number' && (c.lat || c.lon) && onSelect) {
+      el.addEventListener('click', () => onSelect(c));
+    } else {
+      el.disabled = true;
+    }
+    return el;
+  };
+  rankTop(countries, 15).forEach((c) => rankWrap.appendChild(mkRow(c)));
+  const movers = topMovers(countries, 5);
+  moveWrap.parentElement.style.display = movers.length ? '' : 'none';
+  movers.forEach((c) => moveWrap.appendChild(mkRow(c)));
+}
