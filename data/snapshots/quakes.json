@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T02:01:11Z",
-  "count": 249,
+  "updated": "2026-06-20T02:15:50Z",
+  "count": 247,
   "points": [
+    {
+      "id": "nn00920494",
+      "lon": -115.7361,
+      "lat": 36.7214,
+      "depth": 0.0219,
+      "mag": 1.94,
+      "place": "17 km NNW of Indian Springs, Nevada",
+      "time": 1781921236609,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920494"
+    },
     {
       "id": "ci41490920",
       "lon": -117.390166666667,
@@ -22,6 +32,16 @@
       "place": "61 km WNW of Sitka, Alaska",
       "time": 1781920396173,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcdmvh"
+    },
+    {
+      "id": "us7000sury",
+      "lon": 147.9179,
+      "lat": -57.129,
+      "depth": 10,
+      "mag": 5.7,
+      "place": "west of Macquarie Island",
+      "time": 1781919992273,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sury"
     },
     {
       "id": "us7000suru",
@@ -2452,46 +2472,6 @@
       "place": "60 km SW of Nanwalek, Alaska",
       "time": 1781835457534,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maihgn"
-    },
-    {
-      "id": "ci41490424",
-      "lon": -116.770833333333,
-      "lat": 33.6633333333333,
-      "depth": 10.66,
-      "mag": 1.02,
-      "place": "10 km SSW of Idyllwild, CA",
-      "time": 1781834656920,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490424"
-    },
-    {
-      "id": "av94254398",
-      "lon": -169.893833333333,
-      "lat": 52.8156666666667,
-      "depth": 3.73,
-      "mag": 0.54,
-      "place": "70 km WSW of Nikolski, Alaska",
-      "time": 1781834627780,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254398"
-    },
-    {
-      "id": "nc75379411",
-      "lon": -122.811996459961,
-      "lat": 38.8071670532227,
-      "depth": 2.04999995231628,
-      "mag": 1.05,
-      "place": "6 km NW of The Geysers, CA",
-      "time": 1781834542390,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379411"
-    },
-    {
-      "id": "av94254393",
-      "lon": -152.303833333333,
-      "lat": 60.9658333333333,
-      "depth": 9.72,
-      "mag": 0.37,
-      "place": "63 km WNW of Nikiski, Alaska",
-      "time": 1781834516130,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94254393"
     }
   ]
 }
