@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T03:15:47Z",
-  "count": 244,
+  "updated": "2026-06-20T03:31:06Z",
+  "count": 242,
   "points": [
+    {
+      "id": "nc75379961",
+      "lon": -122.807334899902,
+      "lat": 38.7973327636719,
+      "depth": 3.41000008583069,
+      "mag": 1.05,
+      "place": "5 km WNW of The Geysers, CA",
+      "time": 1781925738410,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379961"
+    },
     {
       "id": "ci41490928",
       "lon": -116.826333333333,
@@ -2412,36 +2422,6 @@
       "place": "175 km WSW of Port Orford, Oregon",
       "time": 1781840187104,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suhj"
-    },
-    {
-      "id": "aka2026makspc",
-      "lon": -149.072,
-      "lat": 61.921,
-      "depth": 22.9,
-      "mag": 2.3,
-      "place": "21 km NNE of Fishhook, Alaska",
-      "time": 1781839831714,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makspc"
-    },
-    {
-      "id": "aka2026maknfj",
-      "lon": -159.624,
-      "lat": 55.961,
-      "depth": 17.3,
-      "mag": 1.6,
-      "place": "10 km NW of Ivanof Bay, Alaska",
-      "time": 1781839459046,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maknfj"
-    },
-    {
-      "id": "aka2026makhxs",
-      "lon": -159.771,
-      "lat": 55.997,
-      "depth": 12.1,
-      "mag": 2.2,
-      "place": "20 km WNW of Ivanof Bay, Alaska",
-      "time": 1781839093485,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026makhxs"
     }
   ]
 }
