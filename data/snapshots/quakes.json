@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T06:15:49Z",
-  "count": 240,
+  "updated": "2026-06-20T06:31:06Z",
+  "count": 236,
   "points": [
+    {
+      "id": "us7000suss",
+      "lon": -126.4717,
+      "lat": 42.4943,
+      "depth": 10,
+      "mag": 2.9,
+      "place": "164 km W of Port Orford, Oregon",
+      "time": 1781935461760,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suss"
+    },
     {
       "id": "nc75380016",
       "lon": -122.705833435059,
@@ -2352,56 +2362,6 @@
       "place": "41 km W of Karluk, Alaska",
       "time": 1781851108056,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqzng"
-    },
-    {
-      "id": "aka2026maqpjw",
-      "lon": -164.119,
-      "lat": 53.666,
-      "depth": 19.8,
-      "mag": 2.3,
-      "place": "120 km ESE of Akutan, Alaska",
-      "time": 1781850405793,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqpjw"
-    },
-    {
-      "id": "nc75379501",
-      "lon": -123.502998352051,
-      "lat": 40.5178337097168,
-      "depth": 6.69999980926514,
-      "mag": 1.91,
-      "place": "27 km W of Hayfork, CA",
-      "time": 1781850325370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379501"
-    },
-    {
-      "id": "aka2026maqkss",
-      "lon": -164.154,
-      "lat": 53.722,
-      "depth": 18.4,
-      "mag": 3.2,
-      "place": "115 km ESE of Akutan, Alaska",
-      "time": 1781850087808,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqkss"
-    },
-    {
-      "id": "hv74986182",
-      "lon": -155.341659545898,
-      "lat": 19.0296669006348,
-      "depth": 35.310001373291,
-      "mag": 1.74,
-      "place": "23 km SE of Pāhala, Hawaii",
-      "time": 1781849816070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986182"
-    },
-    {
-      "id": "tx2026lysffl",
-      "lon": -102.023,
-      "lat": 32.354,
-      "depth": 8.0322,
-      "mag": 0.6,
-      "place": "33 km NW of Stanton, Texas",
-      "time": 1781849793040,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lysffl"
     }
   ]
 }
