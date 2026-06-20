@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T19:15:52Z",
+  "updated": "2026-06-20T19:31:12Z",
   "count": 199,
   "points": [
+    {
+      "id": "nc75380221",
+      "lon": -122.766998291016,
+      "lat": 38.824333190918,
+      "depth": 1.78999996185303,
+      "mag": 1.76,
+      "place": "4 km W of Cobb, CA",
+      "time": 1781983081770,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380221"
+    },
+    {
+      "id": "aka2026mdmfwy",
+      "lon": -150.719,
+      "lat": 63.078,
+      "depth": 109.7,
+      "mag": 1.7,
+      "place": "64 km N of Petersville, Alaska",
+      "time": 1781982887596,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdmfwy"
+    },
     {
       "id": "aka2026mdmcvo",
       "lon": -148.153,
@@ -374,14 +394,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suub"
     },
     {
-      "id": "aka2026mdbjve",
-      "lon": 179.683,
-      "lat": 51.117,
-      "depth": 20,
-      "mag": 4.1,
-      "place": "269 km WSW of Adak, Alaska",
-      "time": 1781963378606,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdbjve"
+      "id": "us7000suvi",
+      "lon": 179.7082,
+      "lat": 51.1021,
+      "depth": 40.031,
+      "mag": 3.8,
+      "place": "268 km WSW of Adak, Alaska",
+      "time": 1781963378448,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suvi"
     },
     {
       "id": "aka2026mdaubc",
@@ -1972,26 +1992,6 @@
       "place": "6 km ESE of Chula Vista, CA",
       "time": 1781897585320,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490768"
-    },
-    {
-      "id": "nc75379736",
-      "lon": -122.732833862305,
-      "lat": 38.7893333435059,
-      "depth": 1.78999996185303,
-      "mag": 1.04,
-      "place": "2 km ENE of The Geysers, CA",
-      "time": 1781897426660,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379736"
-    },
-    {
-      "id": "aka2026mbqpwp",
-      "lon": -151.532,
-      "lat": 61.238,
-      "depth": 77.6,
-      "mag": 1.5,
-      "place": "26 km WNW of Beluga, Alaska",
-      "time": 1781897217718,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqpwp"
     }
   ]
 }
