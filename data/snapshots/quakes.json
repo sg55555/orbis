@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T04:26:21Z",
-  "count": 241,
+  "updated": "2026-06-20T04:31:05Z",
+  "count": 243,
   "points": [
+    {
+      "id": "ci41490952",
+      "lon": -116.742668151855,
+      "lat": 33.3171653747559,
+      "depth": 18.3700008392334,
+      "mag": 1.16974812443111,
+      "place": "9 km NNE of Lake Henshaw, CA",
+      "time": 1781929652830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490952"
+    },
+    {
+      "id": "nc75379981",
+      "lon": -122.790336608887,
+      "lat": 38.78466796875,
+      "depth": 0.699999988079071,
+      "mag": 0.97,
+      "place": "3 km WNW of The Geysers, CA",
+      "time": 1781929528940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379981"
+    },
     {
       "id": "tx2026majzoj",
       "lon": -101.916,
