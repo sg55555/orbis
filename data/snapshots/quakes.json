@@ -1,16 +1,46 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T04:31:05Z",
-  "count": 243,
+  "updated": "2026-06-20T04:57:54Z",
+  "count": 242,
   "points": [
     {
+      "id": "aka2026mcjpgr",
+      "lon": -154.911,
+      "lat": 57.716,
+      "depth": 72,
+      "mag": 1.1,
+      "place": "31 km WNW of Karluk, Alaska",
+      "time": 1781931359966,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcjpgr"
+    },
+    {
+      "id": "ci41490968",
+      "lon": -117.810166666667,
+      "lat": 35.2956666666667,
+      "depth": 7.89,
+      "mag": 1.26,
+      "place": "18 km WSW of Johannesburg, CA",
+      "time": 1781931244750,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490968"
+    },
+    {
+      "id": "ci41490960",
+      "lon": -118.389166666667,
+      "lat": 36.6451666666667,
+      "depth": 3.07,
+      "mag": 1.73,
+      "place": "24 km SW of Independence, CA",
+      "time": 1781930929680,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490960"
+    },
+    {
       "id": "ci41490952",
-      "lon": -116.742668151855,
-      "lat": 33.3171653747559,
-      "depth": 18.3700008392334,
-      "mag": 1.16974812443111,
-      "place": "9 km NNE of Lake Henshaw, CA",
-      "time": 1781929652830,
+      "lon": -116.744166666667,
+      "lat": 33.3141666666667,
+      "depth": 17.36,
+      "mag": 0.99,
+      "place": "8 km NNE of Lake Henshaw, CA",
+      "time": 1781929652900,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490952"
     },
     {
@@ -2392,46 +2422,6 @@
       "place": "7 km NW of The Geysers, CA",
       "time": 1781845201390,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379466"
-    },
-    {
-      "id": "ci41490472",
-      "lon": -115.555,
-      "lat": 32.9381666666667,
-      "depth": 5.31,
-      "mag": 1.61,
-      "place": "5 km SSW of Brawley, CA",
-      "time": 1781843946800,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490472"
-    },
-    {
-      "id": "nc75379451",
-      "lon": -122.352333068848,
-      "lat": 38.6873321533203,
-      "depth": 6.82000017166138,
-      "mag": 2.16,
-      "place": "15 km NE of Angwin, CA",
-      "time": 1781843826000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379451"
-    },
-    {
-      "id": "aka2026mamwqv",
-      "lon": -169.915,
-      "lat": 51.032,
-      "depth": 20,
-      "mag": 3.1,
-      "place": "224 km SSW of Nikolski, Alaska",
-      "time": 1781843669774,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamwqv"
-    },
-    {
-      "id": "aka2026mamull",
-      "lon": -169.781,
-      "lat": 52.595,
-      "depth": 14,
-      "mag": 2,
-      "place": "72 km WSW of Nikolski, Alaska",
-      "time": 1781843558322,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mamull"
     }
   ]
 }
