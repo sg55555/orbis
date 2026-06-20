@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T21:45:53Z",
-  "count": 204,
+  "updated": "2026-06-20T22:01:15Z",
+  "count": 205,
   "points": [
+    {
+      "id": "aka2026mdrqlk",
+      "lon": -147.473,
+      "lat": 64.954,
+      "depth": 4.5,
+      "mag": 1,
+      "place": "6 km E of Fox, Alaska",
+      "time": 1781992614034,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdrqlk"
+    },
     {
       "id": "aka2026mdqzou",
       "lon": -153.297,
