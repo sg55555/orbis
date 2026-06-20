@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T06:31:06Z",
-  "count": 236,
+  "updated": "2026-06-20T06:45:49Z",
+  "count": 234,
   "points": [
     {
       "id": "us7000suss",
@@ -2342,26 +2342,6 @@
       "place": "3 km SSW of Caruthersville, Missouri",
       "time": 1781851668180,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nm60623021"
-    },
-    {
-      "id": "tx2026lysyqo",
-      "lon": -102.027,
-      "lat": 32.356,
-      "depth": 8.1787,
-      "mag": 0.9,
-      "place": "33 km NW of Stanton, Texas",
-      "time": 1781851176284,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lysyqo"
-    },
-    {
-      "id": "aka2026maqzng",
-      "lon": -155.15,
-      "lat": 57.61,
-      "depth": 69.1,
-      "mag": 1.5,
-      "place": "41 km W of Karluk, Alaska",
-      "time": 1781851108056,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maqzng"
     }
   ]
 }
