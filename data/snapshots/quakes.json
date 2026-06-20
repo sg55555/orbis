@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T22:20:09Z",
-  "count": 200,
+  "updated": "2026-06-20T22:40:57Z",
+  "count": 194,
   "points": [
     {
       "id": "nc75380316",
@@ -1942,66 +1942,6 @@
       "place": "2 km NW of The Geysers, CA",
       "time": 1781908946490,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379871"
-    },
-    {
-      "id": "ci41490848",
-      "lon": -116.7105,
-      "lat": 33.5428333333333,
-      "depth": 5.64,
-      "mag": 0.61,
-      "place": "4 km WSW of Anza, CA",
-      "time": 1781908684250,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490848"
-    },
-    {
-      "id": "av94256158",
-      "lon": -178.5895,
-      "lat": 51.8116666666667,
-      "depth": 15.48,
-      "mag": 1.07,
-      "place": "134 km W of Adak, Alaska",
-      "time": 1781908643410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256158"
-    },
-    {
-      "id": "aka2026mbwxdu",
-      "lon": -164.694,
-      "lat": 53.559,
-      "depth": 22.8,
-      "mag": 2.2,
-      "place": "95 km SE of Akutan, Alaska",
-      "time": 1781908509578,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwxdu"
-    },
-    {
-      "id": "hv74986797",
-      "lon": -155.372497558594,
-      "lat": 19.183666229248,
-      "depth": 29.7600002288818,
-      "mag": 2.05,
-      "place": "11 km E of Pāhala, Hawaii",
-      "time": 1781908158660,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986797"
-    },
-    {
-      "id": "pr71520668",
-      "lon": -64.6346666666667,
-      "lat": 18.5705,
-      "depth": 8.58,
-      "mag": 1.74,
-      "place": "31 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781907734940,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520668"
-    },
-    {
-      "id": "aka2026mbwkei",
-      "lon": -159.367,
-      "lat": 55.944,
-      "depth": 108.7,
-      "mag": 1.8,
-      "place": "8 km ENE of Ivanof Bay, Alaska",
-      "time": 1781907617700,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbwkei"
     }
   ]
 }
