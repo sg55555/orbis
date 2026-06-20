@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T12:31:04Z",
-  "count": 223,
+  "updated": "2026-06-20T12:45:52Z",
+  "count": 221,
   "points": [
+    {
+      "id": "ci41491112",
+      "lon": -117.216166666667,
+      "lat": 34.0003333333333,
+      "depth": 6.51,
+      "mag": 0.9,
+      "place": "7 km SE of Loma Linda, CA",
+      "time": 1781958839530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491112"
+    },
     {
       "id": "nc75380091",
       "lon": -121.176170349121,
@@ -445,12 +455,12 @@
     },
     {
       "id": "tx2026maqecs",
-      "lon": -104.436,
-      "lat": 31.63,
-      "depth": 7.666,
-      "mag": 1.7,
-      "place": "60 km S of Whites City, New Mexico",
-      "time": 1781940234078,
+      "lon": -104.428,
+      "lat": 31.647,
+      "depth": 6.3049,
+      "mag": 1.6,
+      "place": "58 km S of Whites City, New Mexico",
+      "time": 1781940234758,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqecs"
     },
     {
@@ -2202,36 +2212,6 @@
       "place": "86 km NNW of Karluk, Alaska",
       "time": 1781873312820,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062289"
-    },
-    {
-      "id": "hv74986357",
-      "lon": -155.505996704102,
-      "lat": 19.154167175293,
-      "depth": 27.8400001525879,
-      "mag": 1.86,
-      "place": "6 km SSW of Pāhala, Hawaii",
-      "time": 1781872840920,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986357"
-    },
-    {
-      "id": "nc75379586",
-      "lon": -122.8056640625,
-      "lat": 38.7980003356934,
-      "depth": 2.32999992370605,
-      "mag": 1.06,
-      "place": "5 km WNW of The Geysers, CA",
-      "time": 1781872787960,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379586"
-    },
-    {
-      "id": "nn00920487",
-      "lon": -117.9903,
-      "lat": 39.6807,
-      "depth": 12.0654,
-      "mag": 2.06,
-      "place": "68 km ENE of Fallon Station, Nevada",
-      "time": 1781872643803,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920487"
     }
   ]
 }
