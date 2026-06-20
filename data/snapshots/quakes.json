@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T17:15:52Z",
-  "count": 200,
+  "updated": "2026-06-20T17:31:14Z",
+  "count": 202,
   "points": [
+    {
+      "id": "aka2026mdiqyz",
+      "lon": -154.211,
+      "lat": 57.599,
+      "depth": 83.1,
+      "mag": 1.1,
+      "place": "14 km ENE of Karluk, Alaska",
+      "time": 1781976451614,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdiqyz"
+    },
+    {
+      "id": "ci41491304",
+      "lon": -118.523833333333,
+      "lat": 34.7035,
+      "depth": 11.23,
+      "mag": 1.13,
+      "place": "8 km WNW of Lake Hughes, CA",
+      "time": 1781975910990,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491304"
+    },
+    {
+      "id": "ci41491296",
+      "lon": -117.194333333333,
+      "lat": 34.0126666666667,
+      "depth": 3.11,
+      "mag": 0.97,
+      "place": "5 km SSW of Redlands, CA",
+      "time": 1781975759430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491296"
+    },
     {
       "id": "aka2026mdhyvn",
       "lon": -156.924,
@@ -12,6 +42,16 @@
       "place": "191 km SE of Perryville, Alaska",
       "time": 1781975197792,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdhyvn"
+    },
+    {
+      "id": "us7000suuw",
+      "lon": -175.0194,
+      "lat": -16.9741,
+      "depth": 272.579,
+      "mag": 4.8,
+      "place": "172 km SW of Hihifo, Tonga",
+      "time": 1781974760438,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuw"
     },
     {
       "id": "ci41491272",
@@ -1982,26 +2022,6 @@
       "place": "4 km SW of Cohoe, Alaska",
       "time": 1781891256391,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnhth"
-    },
-    {
-      "id": "av94255593",
-      "lon": -151.989333333333,
-      "lat": 61.4516666666667,
-      "depth": 2.12,
-      "mag": -0.07,
-      "place": "59 km NW of Beluga, Alaska",
-      "time": 1781889544370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255593"
-    },
-    {
-      "id": "av94255588",
-      "lon": -174.116166666667,
-      "lat": 52.4346666666667,
-      "depth": 2.96,
-      "mag": 0.72,
-      "place": "27 km NNE of Atka, Alaska",
-      "time": 1781889365910,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255588"
     }
   ]
 }
