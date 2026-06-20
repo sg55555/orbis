@@ -8,7 +8,8 @@ test('flight click projects ~20min ahead, repeatable across flights', async ({ p
   await page.goto('/');
   await expect(page.locator('#loading')).toHaveClass(/hidden/, { timeout: 15000 });
 
-  // flights は既定 ON。データ到着を待つ。
+  // flights は概観既定では OFF。明示的に ON にしてから検証する（描画＝クリック対象が要る）。
+  await page.locator('.layer-row[data-id="flights"] .layer-toggle').check();
   await expect.poll(
     async () => page.evaluate(() => window.__orbis?.counts?.flights ?? 0),
     { timeout: 15000 }

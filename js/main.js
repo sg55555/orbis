@@ -2,11 +2,12 @@ import { initMap, setDeckLayers } from './map.js';
 import { layers, tooltipFor, feedLayers, descFor, allLayerIds, pollLayerIds, staticLayers } from './layers/registry.js';
 import { startPolling } from './snapshot.js';
 import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival, formatLatLon } from './lib/geo.js';
-import { loadEnabled, readStored } from './lib/state.js';
+import { loadEnabled, readStored, writeStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
 import { immerseZoom, immerseClasses, immerseGlow, immerseNeb, atmosphereStops, isCompareMode } from './lib/immerse.js';
-import { renderPanel, wireCollapse } from './ui/panel.js';
+import { renderPanel, renderPresets, wireCollapse } from './ui/panel.js';
+import { presetById, DEFAULT_PRESET } from './lib/presets.js';
 import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { renderMedia } from './ui/media.js';
@@ -26,10 +27,20 @@ const CMAP = (typeof location !== 'undefined'
 const CFX_PRESET = { a: { emberScale: 0.8, topN: 4 }, b: { emberScale: 1.0, topN: 6 }, c: { emberScale: 1.3, topN: 8 } };
 const CFX = CFX_PRESET[((/[?&]cfx=([abc])/i.exec(typeof location !== 'undefined' ? location.search : '') || [])[1] || 'b').toLowerCase()];
 
+// ズーム連動密度ダイヤル（?dens=z0,z1,min で実物比較。未指定=既定 z0=2.5,z1=5,min=0.22）。
+function parseDens(search) {
+  const m = /[?&]dens=([\d.]+),([\d.]+),([\d.]+)/i.exec(search || '');
+  if (!m) return undefined;
+  const z0 = parseFloat(m[1]), z1 = parseFloat(m[2]), min = parseFloat(m[3]);
+  if (![z0, z1, min].every(Number.isFinite) || z1 <= z0) return undefined;
+  return { z0, z1, min };
+}
+const DENS = parseDens(typeof location !== 'undefined' ? location.search : '');
+
 const POLL_MS = 60000;
 const POLL_LAYERS = pollLayerIds(); // スナップショットを持つ層（registry から自動導出）
 const ALL_IDS = allLayerIds();      // 全トグル対象レイヤー（registry から自動導出）
-let ENABLED = loadEnabled(ALL_IDS, readStored(), ['airtemp', 'ships', 'sst']);
+let ENABLED = loadEnabled(ALL_IDS, readStored(), [], presetById(DEFAULT_PRESET).layers);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 let panel;
@@ -214,7 +225,7 @@ let baseDirty = true;
 const _layerCache = new Map(); // layerId -> deck layer 配列
 function markBaseDirty() { baseDirty = true; }
 function buildBaseLayers(zoom) {
-  const ctx = { zoom, cmap: CMAP, motionT, cfx: CFX };
+  const ctx = { zoom, cmap: CMAP, motionT, cfx: CFX, dens: DENS };
   const toArr = (r) => (Array.isArray(r) ? r : [r]);
   const out = [];
   for (const l of layers) {
@@ -346,13 +357,19 @@ function boot() {
   // 'close' で選択解除すると2回目以降のクリックで選択が即消え進路が描けない。よって close 解除はしない。
   // 推定進路は次の機体/船クリック（相互排他）まで残す（航空の従来挙動）。
 
+  let presetsApi;
   panel = renderPanel(
     document.getElementById('panel-rows'),
     layers,
     () => ENABLED,
     () => window.__orbis.counts,
-    (next) => { ENABLED = next; rebuild(overlay); },
+    (next) => { ENABLED = next; rebuild(overlay); if (presetsApi) presetsApi.refresh(); },
     descFor
+  );
+  presetsApi = renderPresets(
+    document.getElementById('panel-presets'),
+    () => ENABLED,
+    (next) => { ENABLED = next; writeStored(next); rebuild(overlay); panel.syncChecks(); presetsApi.refresh(); }
   );
   wireCollapse(document.getElementById('panel'), document.getElementById('panel-toggle'));
   wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));

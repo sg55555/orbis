@@ -69,7 +69,9 @@ test('globe boots, layers render, panel toggles, feed flies', async ({ page }) =
   });
   expect(drift).toBeLessThan(2);
 
-  // 航空=飛行機シルエット(SolidPolygon) が deck に存在（flights は ON のまま）
+  // 航空=飛行機シルエット(SolidPolygon)。概観既定では OFF なので ON にしてから存在を確認。
+  await page.locator('.layer-row[data-id="flights"] .layer-toggle').check();
+  await page.waitForTimeout(300);
   const hasFlights = await page.evaluate(() => {
     const o = window.__orbis.overlay;
     return ((o._props && o._props.layers) || []).some((l) => l.id === 'flights');
