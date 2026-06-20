@@ -1,0 +1,6 @@
+[
+  {"id": "news", "file": "news.json", "key": "items", "take": 18, "fields": ["title_ja", "summary_ja", "category", "place"]},
+  {"id": "quakes", "file": "quakes.json", "key": "points", "sort_by": "mag", "take": 5, "fields": ["mag", "place"]},
+  {"id": "conflict", "file": "conflict.json", "key": "points", "group_by": "place", "weight": "mentions", "top": 8},
+  {"id": "protests", "file": "protests.json", "key": "points", "group_by": "place", "weight": "mentions", "top": 8}
+]

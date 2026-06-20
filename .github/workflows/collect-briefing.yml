@@ -1,0 +1,34 @@
+name: collect-briefing
+on:
+  schedule:
+    - cron: '17 * * * *'      # 毎時:17（collect/collect-slow と別オフセット）
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  group: collect              # collect/collect-slow と共有して直列化（push 競合回避）
+  cancel-in-progress: false
+jobs:
+  briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements.txt
+      - name: Collect briefing
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m collectors.briefing || echo "briefing skipped"
+      - name: Commit snapshot
+        run: |
+          git config user.name "orbis-bot"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
+          git add data/snapshots/*.json
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: refresh briefing [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi
