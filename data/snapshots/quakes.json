@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T21:01:19Z",
-  "count": 204,
+  "updated": "2026-06-20T21:15:52Z",
+  "count": 202,
   "points": [
+    {
+      "id": "aka2026mdqexi",
+      "lon": -154.022,
+      "lat": 58.792,
+      "depth": 16.1,
+      "mag": 1.3,
+      "place": "84 km SSE of Kokhanok, Alaska",
+      "time": 1781990015885,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdqexi"
+    },
+    {
+      "id": "ci41491448",
+      "lon": -117.810666666667,
+      "lat": 35.3096666666667,
+      "depth": 7.86,
+      "mag": 1.09,
+      "place": "17 km WSW of Johannesburg, CA",
+      "time": 1781989827300,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491448"
+    },
+    {
+      "id": "ci41491432",
+      "lon": -116.766833333333,
+      "lat": 33.6698333333333,
+      "depth": 15.65,
+      "mag": 0.32,
+      "place": "9 km SSW of Idyllwild, CA",
+      "time": 1781989154120,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491432"
+    },
     {
       "id": "ci41491424",
       "lon": -116.819333333333,
@@ -1992,56 +2022,6 @@
       "place": "9 km NNE of Sunrise, Alaska",
       "time": 1781904174316,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbumki"
-    },
-    {
-      "id": "aka2026mbucls",
-      "lon": -160.822,
-      "lat": 54.317,
-      "depth": 0.9,
-      "mag": 2.3,
-      "place": "115 km S of Sand Point, Alaska",
-      "time": 1781903491245,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbucls"
-    },
-    {
-      "id": "uu80142906",
-      "lon": -112.576833333333,
-      "lat": 38.1996666666667,
-      "depth": 9.24,
-      "mag": 1.52,
-      "place": "10 km SSE of Beaver, Utah",
-      "time": 1781903364990,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142906"
-    },
-    {
-      "id": "aka2026mbuail",
-      "lon": -160.027,
-      "lat": 54.566,
-      "depth": 0.7,
-      "mag": 2.2,
-      "place": "90 km SSE of Sand Point, Alaska",
-      "time": 1781903339708,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbuail"
-    },
-    {
-      "id": "nc75379821",
-      "lon": -121.554000854492,
-      "lat": 36.8361663818359,
-      "depth": 7.69000005722046,
-      "mag": 2.09,
-      "place": "2 km SW of San Juan Bautista, CA",
-      "time": 1781903329760,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379821"
-    },
-    {
-      "id": "us7000suqu",
-      "lon": -26.5917,
-      "lat": -59.3446,
-      "depth": 150.333,
-      "mag": 5.1,
-      "place": "South Sandwich Islands region",
-      "time": 1781903309057,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suqu"
     }
   ]
 }
