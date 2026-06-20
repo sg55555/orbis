@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T05:15:49Z",
-  "count": 245,
+  "updated": "2026-06-20T05:31:01Z",
+  "count": 246,
   "points": [
+    {
+      "id": "ci41490984",
+      "lon": -116.735336303711,
+      "lat": 33.6988334655762,
+      "depth": 17.3199996948242,
+      "mag": 1.05558190955454,
+      "place": "5 km SSW of Idyllwild, CA",
+      "time": 1781933241430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490984"
+    },
+    {
+      "id": "ci41490976",
+      "lon": -118.023333333333,
+      "lat": 36.1783333333333,
+      "depth": 2.74,
+      "mag": 2.09,
+      "place": "12 km S of Olancha, CA",
+      "time": 1781932897330,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490976"
+    },
     {
       "id": "hv74987007",
       "lon": -155.599838256836,
@@ -2442,16 +2462,6 @@
       "place": "22 km SW of Laupāhoehoe, Hawaii",
       "time": 1781847259080,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986157"
-    },
-    {
-      "id": "aka2026maogaq",
-      "lon": -161.181,
-      "lat": 55.94,
-      "depth": 171.1,
-      "mag": 1.8,
-      "place": "6 km SSE of Nelson Lagoon, Alaska",
-      "time": 1781846193652,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maogaq"
     }
   ]
 }
