@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T05:45:50Z",
-  "count": 244,
+  "updated": "2026-06-20T06:01:12Z",
+  "count": 242,
   "points": [
+    {
+      "id": "nc75380016",
+      "lon": -122.705833435059,
+      "lat": 38.7488327026367,
+      "depth": 2.19000005722046,
+      "mag": 1.41,
+      "place": "3 km SSW of Anderson Springs, CA",
+      "time": 1781934519700,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380016"
+    },
     {
       "id": "ci41490984",
       "lon": -116.736,
@@ -2412,36 +2422,6 @@
       "place": "12 km NNW of Petrolia, CA",
       "time": 1781849206560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379491"
-    },
-    {
-      "id": "aka2026mapngg",
-      "lon": -162.818,
-      "lat": 52.241,
-      "depth": 10,
-      "mag": 2.6,
-      "place": "288 km SE of Akutan, Alaska",
-      "time": 1781848461476,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mapngg"
-    },
-    {
-      "id": "aka2026mapmcc",
-      "lon": -151.119,
-      "lat": 63.255,
-      "depth": 0.8,
-      "mag": 2,
-      "place": "43 km SE of Denali National Park, Alaska",
-      "time": 1781848377054,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mapmcc"
-    },
-    {
-      "id": "ci41490488",
-      "lon": -116.2725,
-      "lat": 32.947,
-      "depth": 11.25,
-      "mag": 0.85,
-      "place": "25 km SSW of Ocotillo Wells, CA",
-      "time": 1781848280880,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490488"
     }
   ]
 }

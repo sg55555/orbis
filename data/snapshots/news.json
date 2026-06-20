@@ -1,5 +1,5 @@
 {
-  "updated": "2026-06-20T05:47:00Z",
+  "updated": "2026-06-20T06:01:44Z",
   "items": [
     {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/20/un-meeting-erupts-over-sexual-violence-allegations-against-israel?traffic_source=rss",
@@ -223,11 +223,24 @@
       "place": "コロンビア"
     },
     {
+      "id": "https://www.france24.com/en/france/20260619-paris-police-ban-iranian-opposition-rally-citing-tense-international-context",
+      "url": "https://www.france24.com/en/france/20260619-paris-police-ban-iranian-opposition-rally-citing-tense-international-context",
+      "source": "france24",
+      "time": 1781883251000,
+      "rank": 20,
+      "title_ja": "パリ警察がイラン野党集会を禁止、『緊迫した国際情勢』を理由に",
+      "summary_ja": "パリ警察はイラン野党勢力による集会を禁止する決定を下した。緊迫した国際情勢を理由として挙げられている。",
+      "category": "politics",
+      "lon": 2.3522,
+      "lat": 48.8566,
+      "place": "パリ、フランス"
+    },
+    {
       "id": "https://www.aljazeera.com/video/newsfeed/2026/6/20/inferno-rips-through-dominican-republic-beach-resort?traffic_source=rss",
       "url": "https://www.aljazeera.com/video/newsfeed/2026/6/20/inferno-rips-through-dominican-republic-beach-resort?traffic_source=rss",
       "source": "aljazeera",
       "time": 1781930458000,
-      "rank": 22,
+      "rank": 24,
       "title_ja": "ドミニカ共和国のビーチリゾートで大火災",
       "summary_ja": "ドミニカ共和国のビーチリゾートで大規模な火災が発生した。詳細は記事を参照。",
       "category": "disaster",
@@ -240,7 +253,7 @@
       "url": "https://www.aljazeera.com/news/2026/6/20/israel-fetes-somalilands-leader-as-it-seeks-to-expand-red-sea-influence?traffic_source=rss",
       "source": "aljazeera",
       "time": 1781929840000,
-      "rank": 23,
+      "rank": 25,
       "title_ja": "イスラエル、ソマリランド指導者を迎え紅海での影響力拡大を模索",
       "summary_ja": "イスラエルはソマリランドの指導者を招待し、紅海地域における戦略的な影響力拡大を目指している。この動きは中東での地政学的な利権確保の一環と見られている。",
       "category": "politics",
@@ -253,7 +266,7 @@
       "url": "https://www.aljazeera.com/sports/2026/6/20/mexico-city-looks-to-rein-in-street-drinking-after-massive-world-cup-party?traffic_source=rss",
       "source": "aljazeera",
       "time": 1781927001000,
-      "rank": 24,
+      "rank": 26,
       "title_ja": "メキシコシティ、ワールドカップの大規模パーティー後に路上飲酒の取り締まりを強化",
       "summary_ja": "メキシコシティがワールドカップ開催に伴う大規模なパーティーの後、路上飲酒を規制するための取り組みを開始した。公共の場での飲酒行為の秩序維持が課題となっている。",
       "category": "society",
@@ -266,26 +279,13 @@
       "url": "https://www.aljazeera.com/video/newsfeed/2026/6/20/one-dead-and-89-injured-following-train-collision-in-bedford-uk?traffic_source=rss",
       "source": "aljazeera",
       "time": 1781924661000,
-      "rank": 26,
+      "rank": 28,
       "title_ja": "英国ベッドフォードで列車衝突、1人死亡89人負傷",
       "summary_ja": "英国ベッドフォードで列車同士が衝突し、1人が死亡、89人が負傷した。現在、当局が事故の原因究明を進めている。",
       "category": "disaster",
       "lon": -0.4656,
       "lat": 52.1381,
       "place": "ベッドフォード、英国"
-    },
-    {
-      "id": "https://www.aljazeera.com/video/newsfeed/2026/6/20/lebanese-influencer-organises-world-cup-event-amid-israels-attack-on-leban?traffic_source=rss",
-      "url": "https://www.aljazeera.com/video/newsfeed/2026/6/20/lebanese-influencer-organises-world-cup-event-amid-israels-attack-on-leban?traffic_source=rss",
-      "source": "aljazeera",
-      "time": 1781917545000,
-      "rank": 28,
-      "title_ja": "レバノン系インフルエンサーがイスラエルのレバノン攻撃の最中にワールドカップイベントを開催",
-      "summary_ja": "レバノンのインフルエンサーがイスラエルの攻撃が続く中、ワールドカップ関連のイベントを企画・開催している。紛争下での日常活動継続の事例として注目を集めている。",
-      "category": "conflict",
-      "lon": 35.8623,
-      "lat": 33.8547,
-      "place": "レバノン"
     }
   ]
 }
