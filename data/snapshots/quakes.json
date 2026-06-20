@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T10:45:50Z",
-  "count": 215,
+  "updated": "2026-06-20T11:01:17Z",
+  "count": 216,
   "points": [
+    {
+      "id": "aka2026mcvpef",
+      "lon": -151.42,
+      "lat": 62.173,
+      "depth": 83,
+      "mag": 2.2,
+      "place": "20 km N of Skwentna, Alaska",
+      "time": 1781952942070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcvpef"
+    },
+    {
+      "id": "tx2026mawtvm",
+      "lon": -104.454,
+      "lat": 31.641,
+      "depth": 7.9845,
+      "mag": 1.1,
+      "place": "59 km S of Whites City, New Mexico",
+      "time": 1781952220744,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mawtvm"
+    },
     {
       "id": "nc75380056",
       "lon": -121.939666748047,
@@ -432,6 +452,16 @@
       "place": "8 km NNE of Lake Henshaw, CA",
       "time": 1781929652900,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490952"
+    },
+    {
+      "id": "pr71520683",
+      "lon": -68.5605,
+      "lat": 18.1091666666667,
+      "depth": 70.35,
+      "mag": 3.43,
+      "place": "30 km S of Boca de Yuma, Dominican Republic",
+      "time": 1781929622720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520683"
     },
     {
       "id": "nc75379981",
@@ -2132,26 +2162,6 @@
       "place": "6 km WNW of Cobb, CA",
       "time": 1781866860850,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379566"
-    },
-    {
-      "id": "tx2026lzbfyg",
-      "lon": -102.046,
-      "lat": 32.077,
-      "depth": 7.7393,
-      "mag": 1,
-      "place": "9 km NNE of Midland, Texas",
-      "time": 1781866149962,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzbfyg"
-    },
-    {
-      "id": "hv74986317",
-      "lon": -155.359664916992,
-      "lat": 19.2908325195312,
-      "depth": 30.7000007629395,
-      "mag": 1.72,
-      "place": "15 km NE of Pāhala, Hawaii",
-      "time": 1781866078560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986317"
     }
   ]
 }
