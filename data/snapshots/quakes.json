@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T20:15:51Z",
-  "count": 204,
+  "updated": "2026-06-20T20:22:40Z",
+  "count": 208,
   "points": [
+    {
+      "id": "aka2026mdoiih",
+      "lon": -153.147,
+      "lat": 58.813,
+      "depth": 61.1,
+      "mag": 2.3,
+      "place": "85 km N of Aleneva, Alaska",
+      "time": 1781986655345,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdoiih"
+    },
+    {
+      "id": "nc75380261",
+      "lon": -122.832000732422,
+      "lat": 38.8573341369629,
+      "depth": 0.699999988079071,
+      "mag": 1.49,
+      "place": "10 km WNW of Cobb, CA",
+      "time": 1781986585940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380261"
+    },
+    {
+      "id": "nc75380256",
+      "lon": -122.826332092285,
+      "lat": 38.8678321838379,
+      "depth": -0.259999990463257,
+      "mag": 1.6,
+      "place": "10 km WNW of Cobb, CA",
+      "time": 1781986497840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380256"
+    },
+    {
+      "id": "nc75380246",
+      "lon": -122.830665588379,
+      "lat": 38.8600006103516,
+      "depth": 0.860000014305115,
+      "mag": 2.27,
+      "place": "10 km WNW of Cobb, CA",
+      "time": 1781986447390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380246"
+    },
     {
       "id": "hv74987362",
       "lon": -155.322006225586,
