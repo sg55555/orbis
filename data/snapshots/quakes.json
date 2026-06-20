@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T16:31:14Z",
-  "count": 208,
+  "updated": "2026-06-20T16:45:51Z",
+  "count": 206,
   "points": [
+    {
+      "id": "nc75380146",
+      "lon": -122.502502441406,
+      "lat": 37.6568336486816,
+      "depth": 7.84000015258789,
+      "mag": 1.4,
+      "place": "4 km WSW of Colma, CA",
+      "time": 1781973436200,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380146"
+    },
+    {
+      "id": "ci41491264",
+      "lon": -116.035666666667,
+      "lat": 33.177,
+      "depth": 5.78,
+      "mag": 0.7,
+      "place": "10 km ENE of Ocotillo Wells, CA",
+      "time": 1781973065670,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491264"
+    },
     {
       "id": "aka2026mdgaud",
       "lon": -147.903,
@@ -2042,46 +2062,6 @@
       "place": "149 km ENE of Miyako, Japan",
       "time": 1781887661099,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sun0"
-    },
-    {
-      "id": "us7000sumz",
-      "lon": 176.3143,
-      "lat": 52.1102,
-      "depth": 10,
-      "mag": 4.3,
-      "place": "227 km ESE of Attu Station, Alaska",
-      "time": 1781887385110,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sumz"
-    },
-    {
-      "id": "aka2026mblbzh",
-      "lon": -176.64,
-      "lat": 51.576,
-      "depth": 60.5,
-      "mag": 1.8,
-      "place": "33 km S of Adak, Alaska",
-      "time": 1781887260600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mblbzh"
-    },
-    {
-      "id": "aka2026mbladx",
-      "lon": -154.251,
-      "lat": 57.334,
-      "depth": 39.5,
-      "mag": 2.1,
-      "place": "28 km SW of Larsen Bay, Alaska",
-      "time": 1781887133867,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbladx"
-    },
-    {
-      "id": "us7000sumw",
-      "lon": 148.5243,
-      "lat": -5.67,
-      "depth": 148.953,
-      "mag": 4.6,
-      "place": "123 km NE of Finschhafen, Papua New Guinea",
-      "time": 1781887042115,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sumw"
     }
   ]
 }
