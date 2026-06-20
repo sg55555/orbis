@@ -100,3 +100,38 @@ def aggregate(snaps, polys, cfg):
         b["lat"] = round(lat / w, 3) if w > 0 else 0.0
         b["lon"] = round(lon / w, 3) if w > 0 else 0.0
     return acc
+
+
+def _percentile(vals, pct):
+    if not vals:
+        return 0.0
+    s = sorted(vals)
+    k = (len(s) - 1) * pct / 100.0
+    f = math.floor(k)
+    c = math.ceil(k)
+    if f == c:
+        return s[int(k)]
+    return s[f] * (c - k) + s[c] * (k - f)
+
+
+def score_countries(agg, cfg, fips_ja):
+    w = cfg["weights"]
+    raws = {code: (w["conflict"] * b["conflict"] + w["protests"] * b["protests"]
+                   + w["news"] * b["news"] + w["quakes"] * b["quakes"])
+            for code, b in agg.items()}
+    base = _percentile([v for v in raws.values() if v > 0], cfg["normalize_pct"])
+    out = []
+    for code, b in agg.items():
+        raw = raws[code]
+        score = 0 if base <= 0 else max(0, min(100, round(100 * raw / base)))
+        level = min(5, 1 + score // 20) if score > 0 else 1
+        out.append({
+            "code": code, "name_ja": fips_ja.get(code, code),
+            "score": int(score), "level": int(level),
+            "lat": b["lat"], "lon": b["lon"],
+            "components": {k: round(w[k] * b[k], 1) for k in ("conflict", "protests", "news", "quakes")},
+            "counts": b["counts"], "top_events": b.get("top_events", [])})
+    out.sort(key=lambda c: (-c["score"], -sum(c["counts"].values())))
+    for i, c in enumerate(out):
+        c["rank"] = i + 1
+    return out

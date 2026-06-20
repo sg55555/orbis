@@ -41,3 +41,26 @@ def test_aggregate_news_quakes_resolved_by_polygon():
     assert agg["XA"]["counts"]["quakes"] == 1    # mag2.0 は閾値未満で除外
     assert agg["XA"]["news"] > 0 and agg["XA"]["quakes"] > 0
     assert any(ev["title"] == "見出し" for ev in agg["XA"]["top_events"])
+
+def test_score_normalizes_and_ranks():
+    agg = {
+        "IZ": {"conflict": 100.0, "protests": 0.0, "news": 0.0, "quakes": 0.0,
+               "counts": {"conflict": 50, "protests": 0, "news": 0, "quakes": 0},
+               "lat": 33.0, "lon": 44.0, "top_events": []},
+        "US": {"conflict": 10.0, "protests": 5.0, "news": 0.0, "quakes": 0.0,
+               "counts": {"conflict": 5, "protests": 3, "news": 0, "quakes": 0},
+               "lat": 38.0, "lon": -77.0, "top_events": []},
+    }
+    fips = {"IZ": "イラク", "US": "アメリカ合衆国"}
+    out = I.score_countries(agg, CFG, fips)
+    assert [c["code"] for c in out] == ["IZ", "US"]      # score 降順
+    assert out[0]["rank"] == 1 and out[0]["name_ja"] == "イラク"
+    assert 0 <= out[1]["score"] <= 100 and out[0]["score"] >= out[1]["score"]
+    assert 1 <= out[0]["level"] <= 5
+    assert set(out[0]["components"]) == {"conflict", "protests", "news", "quakes"}
+
+def test_score_all_zero_safe():
+    out = I.score_countries({"XX": {"conflict": 0.0, "protests": 0.0, "news": 0.0, "quakes": 0.0,
+                                    "counts": {"conflict": 0, "protests": 0, "news": 0, "quakes": 0},
+                                    "lat": 0, "lon": 0, "top_events": []}}, CFG, {})
+    assert out[0]["score"] == 0 and out[0]["level"] == 1
