@@ -278,6 +278,21 @@ def parse_narratives(text):
     return out
 
 
+def apply_narratives(cards, narr):
+    """active カードに outlook/rationale を in-place で充填する。is_advice 検出時は破棄。"""
+    for c in cards:
+        if c.get("status") != "active":
+            continue
+        key = f'{c["domain"]}:{c["place_key"]}'
+        n = narr.get(key)
+        if not n:
+            continue
+        o, r = n.get("outlook", ""), n.get("rationale", "")
+        if is_advice(o) or is_advice(r):
+            continue  # 助言は破棄（決定論カードのまま）
+        c["outlook_ja"] = o; c["rationale_ja"] = r; c["ai_generated"] = True
+
+
 _ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買[うい]|売[るり]|投資すべき|購入すべき|攻撃せよ|攻撃を推奨|おすすめ|お勧め|勧める|勧めます)")
 
 def is_advice(text):

@@ -170,3 +170,14 @@ def test_is_advice_detects_colloquial_forms():
     assert F.is_advice("緊張が高まる恐れがある") is False, "normal outlook"
     assert F.is_advice("情勢が悪化しうる") is False, "normal uncertainty expression"
     assert F.is_advice("警戒すべき状況が続く") is False, "should not block 警戒すべき"
+
+
+def test_apply_narratives_drops_advice():
+    cards = [{"domain": "conflict", "place_key": "UP", "status": "active",
+              "outlook_ja": "", "rationale_ja": "", "ai_generated": False}]
+    F.apply_narratives(cards, {"conflict:UP": {"outlook": "再拡大の恐れ", "rationale": "件数増加"}})
+    assert cards[0]["ai_generated"] is True and cards[0]["outlook_ja"] == "再拡大の恐れ"
+    cards2 = [{"domain": "market", "place_key": "GLOBAL", "status": "active",
+               "outlook_ja": "", "rationale_ja": "", "ai_generated": False}]
+    F.apply_narratives(cards2, {"market:GLOBAL": {"outlook": "今すぐ買うべきだ", "rationale": "上昇"}})
+    assert cards2[0]["ai_generated"] is False and cards2[0]["outlook_ja"] == ""  # 助言は破棄
