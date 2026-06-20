@@ -26,6 +26,8 @@ test('preset chips set the enabled set exclusively + custom state', async ({ pag
   await expect(page.locator('#panel-presets .preset-chip[data-preset="weather"]')).toHaveClass(/active/);
 
   // 個別トグルでズレたら custom（どの chip も active でない・カスタムラベル表示）
+  // weather プリセットが quakes を OFF にしたことを前提として明示
+  await expect(page.locator('#panel-rows .layer-row[data-id="quakes"] .layer-toggle')).not.toBeChecked();
   await page.locator('#panel-rows .layer-row[data-id="quakes"] .layer-toggle').check();
   await page.waitForTimeout(200);
   await expect(page.locator('#panel-presets .preset-chip.active')).toHaveCount(0);
