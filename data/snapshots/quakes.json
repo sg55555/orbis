@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T16:04:44Z",
-  "count": 208,
+  "updated": "2026-06-20T16:15:56Z",
+  "count": 210,
   "points": [
+    {
+      "id": "aka2026mdgaud",
+      "lon": -147.903,
+      "lat": 63.527,
+      "depth": 0.9,
+      "mag": 1.4,
+      "place": "54 km ENE of Cantwell, Alaska",
+      "time": 1781971738891,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdgaud"
+    },
+    {
+      "id": "ci41491248",
+      "lon": -117.393666666667,
+      "lat": 35.9575,
+      "depth": 2.49,
+      "mag": 0.65,
+      "place": "21 km N of Searles Valley, CA",
+      "time": 1781971694720,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491248"
+    },
     {
       "id": "nc75380136",
       "lon": -121.294830322266,
@@ -12,6 +32,16 @@
       "place": "23 km NNW of San Simeon, CA",
       "time": 1781971316800,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380136"
+    },
+    {
+      "id": "ci41491240",
+      "lon": -117.6075,
+      "lat": 35.7553333333333,
+      "depth": 9.68,
+      "mag": 0.51,
+      "place": "16 km NNE of Ridgecrest, CA",
+      "time": 1781971249390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491240"
     },
     {
       "id": "ci41491216",
@@ -102,6 +132,16 @@
       "place": "6 km NE of Anza, CA",
       "time": 1781964622320,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491168"
+    },
+    {
+      "id": "us7000suub",
+      "lon": 125.3179,
+      "lat": 5.4539,
+      "depth": 61.931,
+      "mag": 4.5,
+      "place": "13 km SSW of Balangonan, Philippines",
+      "time": 1781964321780,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suub"
     },
     {
       "id": "aka2026mdaubc",
@@ -2062,26 +2102,6 @@
       "place": "19 km W of Ivanof Bay, Alaska",
       "time": 1781886018085,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkkat"
-    },
-    {
-      "id": "aka2026mbkdur",
-      "lon": -149.251,
-      "lat": 61.989,
-      "depth": 1.7,
-      "mag": 1.5,
-      "place": "27 km N of Fishhook, Alaska",
-      "time": 1781885585268,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbkdur"
-    },
-    {
-      "id": "aka2026mbjxdc",
-      "lon": -176.59,
-      "lat": 51.839,
-      "depth": 8.8,
-      "mag": 2.2,
-      "place": "4 km SE of Adak, Alaska",
-      "time": 1781885124637,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjxdc"
     }
   ]
 }
