@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T10:31:05Z",
+  "updated": "2026-06-20T10:39:14Z",
   "count": 215,
   "points": [
     {
@@ -462,6 +462,16 @@
       "place": "140 km ESE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781927346278,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susb"
+    },
+    {
+      "id": "pr71520678",
+      "lon": -64.6538333333333,
+      "lat": 18.7988333333333,
+      "depth": 6.99,
+      "mag": 2.92,
+      "place": "53 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1781927184580,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520678"
     },
     {
       "id": "ci41490944",
@@ -2142,16 +2152,6 @@
       "place": "6 km NNW of The Geysers, CA",
       "time": 1781865570380,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379546"
-    },
-    {
-      "id": "av93062269",
-      "lon": -169.890333333333,
-      "lat": 52.8281666666667,
-      "depth": 6.38,
-      "mag": 0.17,
-      "place": "70 km W of Nikolski, Alaska",
-      "time": 1781865459260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062269"
     }
   ]
 }
