@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T03:45:49Z",
-  "count": 241,
+  "updated": "2026-06-20T04:01:12Z",
+  "count": 242,
   "points": [
+    {
+      "id": "nc75379971",
+      "lon": -122.877502441406,
+      "lat": 38.84033203125,
+      "depth": 2.27999997138977,
+      "mag": 1.07,
+      "place": "13 km NW of The Geysers, CA",
+      "time": 1781927402560,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379971"
+    },
     {
       "id": "ci41490944",
       "lon": -116.738,
