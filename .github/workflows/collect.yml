@@ -4,7 +4,10 @@ on:
     # 15分間隔だが毎時オフセット（:07,:22,:37,:52）にして、:00/:15/:30/:45 の
     # 混雑スロットを避ける。GitHub Actions schedule は高負荷時に間引かれ実測 1.9〜5.1h に
     # なるため、オフセットで間引きを緩和する（恒久対策は外部dispatch・docs/scheduling.md 参照）。
-    - cron: '7,22,37,52 * * * *'
+    # 30分毎(:07,:37)。Vercel Hobby のデプロイ日次上限(~100/日)に対し、各データ commit が Vercel
+    # デプロイを誘発するため cron 総数を抑制（collect 96→48・briefing/instability 各24→12・slow 8 ＝計 ~80/日）。
+    # クライアント補間があるので 30分スナップショットでも near-realtime 感は維持。恒久策はデータ配信の Vercel 分離。
+    - cron: '7,37 * * * *'
   workflow_dispatch: {}
 permissions:
   contents: write
