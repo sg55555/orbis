@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T17:05:38Z",
-  "count": 203,
+  "updated": "2026-06-20T17:15:52Z",
+  "count": 200,
   "points": [
+    {
+      "id": "aka2026mdhyvn",
+      "lon": -156.924,
+      "lat": 54.75,
+      "depth": 35,
+      "mag": 2.9,
+      "place": "191 km SE of Perryville, Alaska",
+      "time": 1781975197792,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdhyvn"
+    },
     {
       "id": "ci41491272",
       "lon": -117.6795,
@@ -1992,46 +2002,6 @@
       "place": "27 km NNE of Atka, Alaska",
       "time": 1781889365910,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255588"
-    },
-    {
-      "id": "aka2026mbmbgs",
-      "lon": -173.622,
-      "lat": 51.448,
-      "depth": 5.6,
-      "mag": 2.4,
-      "place": "92 km SSE of Atka, Alaska",
-      "time": 1781889008871,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbmbgs"
-    },
-    {
-      "id": "av93062294",
-      "lon": -154.989833333333,
-      "lat": 58.2596666666667,
-      "depth": 4.57,
-      "mag": -0.31,
-      "place": "83 km NNW of Karluk, Alaska",
-      "time": 1781888978800,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062294"
-    },
-    {
-      "id": "av94255578",
-      "lon": -154.973,
-      "lat": 58.2575,
-      "depth": 2.82,
-      "mag": -0.29,
-      "place": "82 km NNW of Karluk, Alaska",
-      "time": 1781888952250,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255578"
-    },
-    {
-      "id": "av94255563",
-      "lon": -151.987,
-      "lat": 61.4528333333333,
-      "depth": 2.36,
-      "mag": 0.45,
-      "place": "59 km NW of Beluga, Alaska",
-      "time": 1781888746520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255563"
     }
   ]
 }
