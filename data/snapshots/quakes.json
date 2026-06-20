@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T20:22:40Z",
-  "count": 208,
+  "updated": "2026-06-20T20:31:11Z",
+  "count": 211,
   "points": [
+    {
+      "id": "us7000suwa",
+      "lon": -98.0491,
+      "lat": 35.6959,
+      "depth": 6.134,
+      "mag": 2.6,
+      "place": "7 km WSW of Okarche, Oklahoma",
+      "time": 1781987015385,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suwa"
+    },
+    {
+      "id": "tx2026mbpxwg",
+      "lon": -103.997,
+      "lat": 31.614,
+      "depth": 4.8098,
+      "mag": 1.5,
+      "place": "38 km NNW of Toyah, Texas",
+      "time": 1781986882817,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbpxwg"
+    },
+    {
+      "id": "ci41491416",
+      "lon": -117.605166666667,
+      "lat": 35.7658333333333,
+      "depth": 5.26,
+      "mag": 0.64,
+      "place": "17 km NNE of Ridgecrest, CA",
+      "time": 1781986707750,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491416"
+    },
+    {
+      "id": "ci41491408",
+      "lon": -120.357833333333,
+      "lat": 34.6816666666667,
+      "depth": 0.21,
+      "mag": 1.29,
+      "place": "10 km SW of Los Alamos, CA",
+      "time": 1781986663030,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491408"
+    },
     {
       "id": "aka2026mdoiih",
       "lon": -153.147,
@@ -2072,16 +2112,6 @@
       "place": "82 km SE of Akutan, Alaska",
       "time": 1781901097838,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suq8"
-    },
-    {
-      "id": "nc75379761",
-      "lon": -122.781669616699,
-      "lat": 38.8079986572266,
-      "depth": 2.90000009536743,
-      "mag": 1.01,
-      "place": "4 km NNW of The Geysers, CA",
-      "time": 1781900777670,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379761"
     }
   ]
 }
