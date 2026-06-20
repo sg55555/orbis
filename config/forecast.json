@@ -1,0 +1,29 @@
+{
+  "weights": {"momentum": 1.4, "level": 1.0, "instab": 0.8},
+  "momentum_clamp": 3.0,
+  "normalize_pct": 95,
+  "level_thresholds": [20, 40, 60, 80],
+  "watch_score_min": 8,
+  "baseline": {"window_days": 7, "min_samples": 3},
+  "trend": {"up_delta": 8, "down_delta": 8},
+  "history_days": 7,
+  "top_n_narrative": 4,
+  "all_show": 12,
+  "domain_show": 8,
+  "quake": {"mag_min": 4.5, "base": 2.0, "cap": 8.0},
+  "tone_div": 6.0, "tone_clamp": 12.0,
+  "root_w": {"18": 1.0, "19": 1.3, "20": 1.8}, "protest_w": 0.6,
+  "instab_domains": ["conflict", "political", "military"],
+  "chokepoints": [
+    {"id": "hormuz", "name_ja": "ホルムズ海峡", "lat": 26.6, "lon": 56.3, "radius_km": 300},
+    {"id": "malacca", "name_ja": "マラッカ海峡", "lat": 2.5, "lon": 101.0, "radius_km": 400},
+    {"id": "suez", "name_ja": "スエズ運河", "lat": 30.5, "lon": 32.3, "radius_km": 250},
+    {"id": "babelmandeb", "name_ja": "バブ・エル・マンデブ海峡", "lat": 12.6, "lon": 43.4, "radius_km": 250},
+    {"id": "taiwan", "name_ja": "台湾海峡", "lat": 24.5, "lon": 119.5, "radius_km": 300},
+    {"id": "panama", "name_ja": "パナマ運河", "lat": 9.1, "lon": -79.7, "radius_km": 200}
+  ],
+  "keywords": {
+    "market": ["市場", "株価", "株式", "為替", "金利", "インフレ", "景気", "ドル", "原油", "金融", "債券", "中央銀行", "利上げ", "利下げ"],
+    "cyber": ["サイバー", "ハッキング", "ハッカー", "ランサム", "情報漏洩", "脆弱性", "不正アクセス", "DDoS", "マルウェア"]
+  }
+}
