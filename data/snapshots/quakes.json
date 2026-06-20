@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T22:40:57Z",
+  "updated": "2026-06-20T22:45:49Z",
   "count": 194,
   "points": [
+    {
+      "id": "tx2026mbukll",
+      "lon": -101.389,
+      "lat": 32.181,
+      "depth": 3.3554,
+      "mag": 1.5,
+      "place": "8 km NNW of Forsan, Texas",
+      "time": 1781995049101,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbukll"
+    },
     {
       "id": "nc75380316",
       "lon": -122.793830871582,
@@ -1932,16 +1942,6 @@
       "place": "46 km SSE of False Pass, Alaska",
       "time": 1781909114975,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbxfvr"
-    },
-    {
-      "id": "nc75379871",
-      "lon": -122.773002624512,
-      "lat": 38.7859992980957,
-      "depth": 3.69000005722046,
-      "mag": 1.09,
-      "place": "2 km NW of The Geysers, CA",
-      "time": 1781908946490,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379871"
     }
   ]
 }
