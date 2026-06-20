@@ -1,16 +1,16 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T05:31:01Z",
-  "count": 246,
+  "updated": "2026-06-20T05:45:50Z",
+  "count": 244,
   "points": [
     {
       "id": "ci41490984",
-      "lon": -116.735336303711,
-      "lat": 33.6988334655762,
-      "depth": 17.3199996948242,
-      "mag": 1.05558190955454,
-      "place": "5 km SSW of Idyllwild, CA",
-      "time": 1781933241430,
+      "lon": -116.736,
+      "lat": 33.6803333333333,
+      "depth": 15.15,
+      "mag": 0.39,
+      "place": "7 km SSW of Idyllwild, CA",
+      "time": 1781933241780,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490984"
     },
     {
@@ -2442,26 +2442,6 @@
       "place": "25 km SSW of Ocotillo Wells, CA",
       "time": 1781848280880,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490488"
-    },
-    {
-      "id": "ci41490480",
-      "lon": -116.505666666667,
-      "lat": 33.5035,
-      "depth": 14.46,
-      "mag": 0.32,
-      "place": "17 km ESE of Anza, CA",
-      "time": 1781847592340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490480"
-    },
-    {
-      "id": "hv74986157",
-      "lon": -155.365173339844,
-      "lat": 19.8206672668457,
-      "depth": 27.9400005340576,
-      "mag": 1.74,
-      "place": "22 km SW of Laupāhoehoe, Hawaii",
-      "time": 1781847259080,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986157"
     }
   ]
 }
