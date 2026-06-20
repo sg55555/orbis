@@ -1,16 +1,26 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T15:45:54Z",
-  "count": 210,
+  "updated": "2026-06-20T16:01:17Z",
+  "count": 208,
   "points": [
     {
+      "id": "ci41491216",
+      "lon": -117.7755,
+      "lat": 33.8608333333333,
+      "depth": 9.46,
+      "mag": 1.33,
+      "place": "5 km SE of Yorba Linda, CA",
+      "time": 1781970440250,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491216"
+    },
+    {
       "id": "ci41491208",
-      "lon": -116.280334472656,
-      "lat": 34.0048332214355,
-      "depth": 9.60999965667725,
-      "mag": 1.11559209746977,
-      "place": "15 km SSE of Joshua Tree, CA",
-      "time": 1781970136110,
+      "lon": -116.284666666667,
+      "lat": 33.9985,
+      "depth": 9.12,
+      "mag": 0.95,
+      "place": "15 km S of Joshua Tree, CA",
+      "time": 1781970136150,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491208"
     },
     {
@@ -2072,36 +2082,6 @@
       "place": "61 km WNW of Anchor Point, Alaska",
       "time": 1781885041046,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjvxo"
-    },
-    {
-      "id": "av94255443",
-      "lon": -169.9105,
-      "lat": 52.8106666666667,
-      "depth": 6.3,
-      "mag": 0.41,
-      "place": "72 km WSW of Nikolski, Alaska",
-      "time": 1781884719430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255443"
-    },
-    {
-      "id": "aka2026mbjpyr",
-      "lon": -177.474,
-      "lat": 51.391,
-      "depth": 15.9,
-      "mag": 2.2,
-      "place": "79 km SW of Adak, Alaska",
-      "time": 1781884628398,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjpyr"
-    },
-    {
-      "id": "ci41490608",
-      "lon": -116.381833333333,
-      "lat": 33.4623333333333,
-      "depth": 6.66,
-      "mag": 0.69,
-      "place": "23 km N of Borrego Springs, CA",
-      "time": 1781884251940,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490608"
     }
   ]
 }
