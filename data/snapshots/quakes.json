@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T02:45:51Z",
+  "updated": "2026-06-20T03:01:12Z",
   "count": 245,
   "points": [
+    {
+      "id": "aka2026mcfjlo",
+      "lon": -147.332,
+      "lat": 64.802,
+      "depth": 5,
+      "mag": 1,
+      "place": "5 km N of North Pole, Alaska",
+      "time": 1781923760638,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcfjlo"
+    },
     {
       "id": "nc75379951",
       "lon": -122.810997009277,
@@ -2442,16 +2452,6 @@
       "place": "38 km NW of Valdez, Alaska",
       "time": 1781838361545,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026majxip"
-    },
-    {
-      "id": "ci41490456",
-      "lon": -116.7645,
-      "lat": 33.6668333333333,
-      "depth": 9.11,
-      "mag": 0.22,
-      "place": "9 km SSW of Idyllwild, CA",
-      "time": 1781837646650,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490456"
     }
   ]
 }
