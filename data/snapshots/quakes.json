@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T12:01:14Z",
-  "count": 225,
+  "updated": "2026-06-20T12:15:51Z",
+  "count": 224,
   "points": [
     {
       "id": "nc75380086",
@@ -415,12 +415,12 @@
     },
     {
       "id": "tx2026maqmbj",
-      "lon": -104.462,
-      "lat": 31.619,
-      "depth": 4.0105,
-      "mag": 2,
-      "place": "62 km S of Whites City, New Mexico",
-      "time": 1781940784837,
+      "lon": -104.424,
+      "lat": 31.64,
+      "depth": 6.4587,
+      "mag": 1.9,
+      "place": "59 km S of Whites City, New Mexico",
+      "time": 1781940785166,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqmbj"
     },
     {
@@ -695,12 +695,12 @@
     },
     {
       "id": "tx2026maiiwx",
-      "lon": -101.92,
-      "lat": 32.254,
-      "depth": 4.0439,
-      "mag": 1.6,
+      "lon": -101.916,
+      "lat": 32.255,
+      "depth": 8.1787,
+      "mag": 1.7,
       "place": "18 km NW of Stanton, Texas",
-      "time": 1781926096172,
+      "time": 1781926096555,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maiiwx"
     },
     {
@@ -2242,16 +2242,6 @@
       "place": "6 km NNW of The Geysers, CA",
       "time": 1781871724330,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379581"
-    },
-    {
-      "id": "nc75379576",
-      "lon": -122.766670227051,
-      "lat": 38.7923316955566,
-      "depth": 1.57000005245209,
-      "mag": 1.07,
-      "place": "2 km NNW of The Geysers, CA",
-      "time": 1781870617240,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379576"
     }
   ]
 }
