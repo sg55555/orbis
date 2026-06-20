@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T00:01:19Z",
-  "count": 248,
+  "updated": "2026-06-20T00:15:48Z",
+  "count": 245,
   "points": [
+    {
+      "id": "aka2026mcaemz",
+      "lon": -147.506,
+      "lat": 61.071,
+      "depth": 8.9,
+      "mag": 1.4,
+      "place": "50 km WNW of Tatitlek, Alaska",
+      "time": 1781914422743,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcaemz"
+    },
     {
       "id": "nc75379891",
       "lon": -122.746170043945,
@@ -2442,46 +2452,6 @@
       "place": "1 km NE of Trapper Creek, Alaska",
       "time": 1781828203383,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maegns"
-    },
-    {
-      "id": "us7000sugs",
-      "lon": -82.7465,
-      "lat": 3.423,
-      "depth": 10,
-      "mag": 4.6,
-      "place": "south of Panama",
-      "time": 1781827627496,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sugs"
-    },
-    {
-      "id": "pr71520523",
-      "lon": -66.1316666666667,
-      "lat": 17.9705,
-      "depth": 15.78,
-      "mag": 1.43,
-      "place": "2 km SW of Guayama, Puerto Rico",
-      "time": 1781827445340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520523"
-    },
-    {
-      "id": "nc75379336",
-      "lon": -122.744331359863,
-      "lat": 38.7881660461426,
-      "depth": 1.72000002861023,
-      "mag": 0.8,
-      "place": "2 km NE of The Geysers, CA",
-      "time": 1781827360000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379336"
-    },
-    {
-      "id": "aka2026madsuh",
-      "lon": -164.764,
-      "lat": 53.595,
-      "depth": 29.9,
-      "mag": 1.7,
-      "place": "89 km SE of Akutan, Alaska",
-      "time": 1781827256385,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026madsuh"
     }
   ]
 }
