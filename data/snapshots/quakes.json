@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T13:01:14Z",
-  "count": 220,
+  "updated": "2026-06-20T13:15:52Z",
+  "count": 218,
   "points": [
+    {
+      "id": "nc75380096",
+      "lon": -122.760833740234,
+      "lat": 38.7908325195312,
+      "depth": 1.47000002861023,
+      "mag": 0.78,
+      "place": "2 km NNW of The Geysers, CA",
+      "time": 1781960824990,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380096"
+    },
+    {
+      "id": "ci41491120",
+      "lon": -117.218666666667,
+      "lat": 34.0036666666667,
+      "depth": 6.55,
+      "mag": 0.58,
+      "place": "6 km SE of Loma Linda, CA",
+      "time": 1781960289370,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491120"
+    },
     {
       "id": "aka2026mczifa",
       "lon": -159.744,
@@ -2162,46 +2182,6 @@
       "place": "54 km SW of Unalaska, Alaska",
       "time": 1781875163170,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94255233"
-    },
-    {
-      "id": "nc75379596",
-      "lon": -122.737831115723,
-      "lat": 38.8043327331543,
-      "depth": 2.02999997138977,
-      "mag": 1.1,
-      "place": "2 km SSW of Cobb, CA",
-      "time": 1781874805010,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379596"
-    },
-    {
-      "id": "ci41490544",
-      "lon": -118.362666666667,
-      "lat": 36.627,
-      "depth": 0.69,
-      "mag": 1.55,
-      "place": "24 km SW of Independence, CA",
-      "time": 1781874668430,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490544"
-    },
-    {
-      "id": "ci41490536",
-      "lon": -117.600833333333,
-      "lat": 35.7546666666667,
-      "depth": 9.3,
-      "mag": 0.54,
-      "place": "16 km NNE of Ridgecrest, CA",
-      "time": 1781874128980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490536"
-    },
-    {
-      "id": "tx2026lzfpwc",
-      "lon": -103.797,
-      "lat": 32.005,
-      "depth": 7.3303,
-      "mag": 2.3,
-      "place": "35 km SE of Malaga, New Mexico",
-      "time": 1781874067990,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzfpwc"
     }
   ]
 }

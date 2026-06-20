@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   immerseZoom, immerseSeam, immerseGlow, immerseMediaBg, immerseClasses,
   atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM, immerseNeb,
-  immerseMediaPolish,
+  immerseMediaPolish, immerseUi, immerseFont,
 } from '../js/lib/immerse.js';
 
 // 没入ダイヤルの既定値は実物比較で確定した本番値。URL パラメータで下げ方向に上書きできる。
@@ -64,14 +64,32 @@ test('immerseMediaPolish: 未指定は既定 a（大気グロー）。?mp=b|off 
   assert.equal(immerseMediaPolish('?mp=x'), 'a'); // 不正は既定
 });
 
-test('immerseClasses: 既定で seam-a・mbg-deep・mp-a。指定で上書き', () => {
-  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep', 'mp-a']);
-  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep', 'mp-a']);
-  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a', 'mp-a']);
-  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off', 'mp-a']);
-  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep', 'mp-a']); // glass=on はクラス無し
-  assert.deepEqual(immerseClasses('?mp=off'), ['seam-a', 'mbg-deep', 'mp-off']); // before
-  assert.deepEqual(immerseClasses('?mp=b'), ['seam-a', 'mbg-deep', 'mp-b']); // ネオン強め
+test('immerseUi: 未指定は既定 a（大気グラス・リッチ）。?ui=b|off で上書き（無効も既定 a）', () => {
+  assert.equal(immerseUi(''), 'a');
+  assert.equal(immerseUi('?ui=a'), 'a');
+  assert.equal(immerseUi('?ui=b'), 'b');
+  assert.equal(immerseUi('?ui=off'), 'off');
+  assert.equal(immerseUi('?ui=OFF'), 'off'); // 大小無視
+  assert.equal(immerseUi('?ui=x'), 'a'); // 不正は既定
+});
+
+test('immerseFont: 未指定は既定 on（display フォント）。?font=off で上書き（無効も既定 on）', () => {
+  assert.equal(immerseFont(''), 'on');
+  assert.equal(immerseFont('?font=on'), 'on');
+  assert.equal(immerseFont('?font=off'), 'off');
+  assert.equal(immerseFont('?font=OFF'), 'off'); // 大小無視
+  assert.equal(immerseFont('?font=x'), 'on'); // 不正は既定
+});
+
+test('immerseClasses: 既定で seam-a・mbg-deep・mp-a・ui-a・font-on。指定で上書き', () => {
+  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on']);
+  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep', 'mp-a', 'ui-a', 'font-on']);
+  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a', 'mp-a', 'ui-a', 'font-on']);
+  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off', 'mp-a', 'ui-a', 'font-on']);
+  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on']); // glass=on はクラス無し
+  assert.deepEqual(immerseClasses('?mp=off'), ['seam-a', 'mbg-deep', 'mp-off', 'ui-a', 'font-on']); // media before
+  assert.deepEqual(immerseClasses('?ui=off&font=off'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-off', 'font-off']); // 本編 before
+  assert.deepEqual(immerseClasses('?ui=b'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-b', 'font-on']); // 計器
 });
 
 test('atmosphereStops: glow level で atmosphere-blend のストップ（大きいほど強く・減衰を遅らせ広く）', () => {
