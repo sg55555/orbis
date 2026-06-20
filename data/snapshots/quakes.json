@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T19:01:21Z",
-  "count": 202,
+  "updated": "2026-06-20T19:15:52Z",
+  "count": 199,
   "points": [
+    {
+      "id": "aka2026mdmcvo",
+      "lon": -148.153,
+      "lat": 62.201,
+      "depth": 19.5,
+      "mag": 1.7,
+      "place": "47 km NNE of Chickaloon, Alaska",
+      "time": 1781982676283,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdmcvo"
+    },
+    {
+      "id": "ci41491376",
+      "lon": -117.1265,
+      "lat": 34.0338333333333,
+      "depth": 6.42,
+      "mag": 0.81,
+      "place": "4 km S of Mentone, CA",
+      "time": 1781982643930,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491376"
+    },
     {
       "id": "nn00920517",
       "lon": -116.489,
@@ -35,12 +55,12 @@
     },
     {
       "id": "us7000suvc",
-      "lon": -104.9398,
-      "lat": 37.0163,
-      "depth": 9.319,
+      "lon": -104.9535,
+      "lat": 37.0076,
+      "depth": 8.368,
       "mag": 2.4,
-      "place": "15 km SSW of Weston, Colorado",
-      "time": 1781979341649,
+      "place": "16 km SW of Weston, Colorado",
+      "time": 1781979341512,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suvc"
     },
     {
@@ -1972,56 +1992,6 @@
       "place": "26 km WNW of Beluga, Alaska",
       "time": 1781897217718,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqpwp"
-    },
-    {
-      "id": "aka2026mbqatd",
-      "lon": -151.38,
-      "lat": 59.428,
-      "depth": 57.2,
-      "mag": 1.5,
-      "place": "16 km ESE of Seldovia Village, Alaska",
-      "time": 1781896171700,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbqatd"
-    },
-    {
-      "id": "ci41490760",
-      "lon": -117.807166666667,
-      "lat": 35.3063333333333,
-      "depth": 7.9,
-      "mag": 1.05,
-      "place": "17 km WSW of Johannesburg, CA",
-      "time": 1781896161870,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490760"
-    },
-    {
-      "id": "ci41490744",
-      "lon": -117.5055,
-      "lat": 33.8628333333333,
-      "depth": 1.93,
-      "mag": 0.94,
-      "place": "2 km SE of Home Gardens, CA",
-      "time": 1781895875440,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490744"
-    },
-    {
-      "id": "us7000supf",
-      "lon": 153.2891,
-      "lat": -5.439,
-      "depth": 76.074,
-      "mag": 4.7,
-      "place": "165 km SE of Kokopo, Papua New Guinea",
-      "time": 1781895652549,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000supf"
-    },
-    {
-      "id": "us7000surk",
-      "lon": -161.3721,
-      "lat": 54.6946,
-      "depth": 26.322,
-      "mag": 2.5,
-      "place": "73 km SE of King Cove, Alaska",
-      "time": 1781895648726,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surk"
     }
   ]
 }
