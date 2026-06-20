@@ -607,6 +607,9 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
   margin-bottom: 6px; }
 .fc-score { color: #eaf1ff; font-weight: 600; }
 .fc-conf { font-size: .72rem; color: #8ea3c4; }
+.cf-high { color: #7adba0; font-weight: 600; }
+.cf-med { color: #ffce7a; font-weight: 600; }
+.cf-low { color: #9fb2d4; }
 .fc-hz { margin-left: auto; color: #b9c8e6; }
 .fc-out, .fc-rat { margin: 4px 0 0; font-size: .78rem; color: #c7d6f0; }
 .fc-rat { color: #9fb2d4; font-size: .74rem; }
