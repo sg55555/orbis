@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T23:31:05Z",
-  "count": 194,
+  "updated": "2026-06-20T23:45:47Z",
+  "count": 192,
   "points": [
+    {
+      "id": "aka2026mdvcgc",
+      "lon": -152.291,
+      "lat": 61.018,
+      "depth": 116.7,
+      "mag": 2.3,
+      "place": "62 km W of Tyonek, Alaska",
+      "time": 1781998816874,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdvcgc"
+    },
+    {
+      "id": "nc75380356",
+      "lon": -123.201835632324,
+      "lat": 39.8011665344238,
+      "depth": 7.3600001335144,
+      "mag": 1.42,
+      "place": "4 km ENE of Covelo, CA",
+      "time": 1781998659840,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380356"
+    },
     {
       "id": "nc75380346",
       "lon": -121.396499633789,
@@ -102,6 +122,16 @@
       "place": "6 km E of Fox, Alaska",
       "time": 1781992614034,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdrqlk"
+    },
+    {
+      "id": "us7000suwk",
+      "lon": -91.7642,
+      "lat": 13.7653,
+      "depth": 43.572,
+      "mag": 4.1,
+      "place": "60 km SSE of Champerico, Guatemala",
+      "time": 1781992059153,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suwk"
     },
     {
       "id": "aka2026mdqzou",
@@ -1892,56 +1922,6 @@
       "place": "2 km NNE of The Geysers, CA",
       "time": 1781913167640,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379891"
-    },
-    {
-      "id": "ci41490896",
-      "lon": -116.467166666667,
-      "lat": 33.469,
-      "depth": 11.68,
-      "mag": 1.73,
-      "place": "21 km ESE of Anza, CA",
-      "time": 1781912584360,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490896"
-    },
-    {
-      "id": "aka2026mbzclo",
-      "lon": -152.584,
-      "lat": 60.008,
-      "depth": 95,
-      "mag": 1.6,
-      "place": "48 km W of Happy Valley, Alaska",
-      "time": 1781912480964,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbzclo"
-    },
-    {
-      "id": "hv74986842",
-      "lon": -155.446670532227,
-      "lat": 19.4025001525879,
-      "depth": 6.46999979019165,
-      "mag": 1.82,
-      "place": "22 km N of Pāhala, Hawaii",
-      "time": 1781912444740,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986842"
-    },
-    {
-      "id": "tx2026maasjq",
-      "lon": -103.443,
-      "lat": 31.182,
-      "depth": 5.4261,
-      "mag": 2.2,
-      "place": "22 km SSE of Lindsay, Texas",
-      "time": 1781912260189,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maasjq"
-    },
-    {
-      "id": "hv74986837",
-      "lon": -155.444166666667,
-      "lat": 19.4128333333333,
-      "depth": 5.5,
-      "mag": 1.44,
-      "place": "22 km W of Volcano, Hawaii",
-      "time": 1781912235730,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986837"
     }
   ]
 }
