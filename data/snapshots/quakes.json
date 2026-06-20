@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T07:31:02Z",
+  "updated": "2026-06-20T07:45:47Z",
   "count": 224,
   "points": [
+    {
+      "id": "aka2026mcozpl",
+      "lon": -152,
+      "lat": 58.997,
+      "depth": 59.1,
+      "mag": 1.4,
+      "place": "40 km S of Nanwalek, Alaska",
+      "time": 1781941070804,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcozpl"
+    },
+    {
+      "id": "tx2026maqmbj",
+      "lon": -104.462,
+      "lat": 31.619,
+      "depth": 4.0105,
+      "mag": 2,
+      "place": "62 km S of Whites City, New Mexico",
+      "time": 1781940784837,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqmbj"
+    },
     {
       "id": "tx2026maqecs",
       "lon": -104.436,
@@ -2222,26 +2242,6 @@
       "place": "82 km SSE of Kokhanok, Alaska",
       "time": 1781855308202,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026matifx"
-    },
-    {
-      "id": "aka2026matfpi",
-      "lon": -179.911,
-      "lat": 50.935,
-      "depth": 20,
-      "mag": 2.9,
-      "place": "250 km WSW of Adak, Alaska",
-      "time": 1781855101986,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026matfpi"
-    },
-    {
-      "id": "uu80142861",
-      "lon": -111.9375,
-      "lat": 40.4143333333333,
-      "depth": 6.01,
-      "mag": 2.23,
-      "place": "7 km NNW of Saratoga Springs, Utah",
-      "time": 1781854833670,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uu80142861"
     }
   ]
 }
