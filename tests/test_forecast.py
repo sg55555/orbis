@@ -134,3 +134,23 @@ def test_build_cards_approx_military():
     c = cards[0]
     assert any("近似" in s["label"] for s in c["signals"]), \
         f"approx=True のカードの signals に '近似' ラベルが存在しない: {c['signals']}"
+
+
+def test_forecast_prompt_lists_only_active_with_signals():
+    cards = [{"domain":"conflict","place_key":"UP","place_ja":"ウクライナ","attention_score":80,
+              "status":"active","signals":[{"label":"紛争 3件","source":"GDELT","kind":"conflict"}]},
+             {"domain":"cyber","place_key":"GLOBAL","place_ja":"グローバル","attention_score":0,
+              "status":"watch","signals":[]}]
+    p = F.forecast_prompt(cards, CFG)
+    assert "conflict:UP" in p and "ウクライナ" in p
+    assert "cyber:GLOBAL" not in p  # watch は除外
+
+def test_parse_narratives_ok():
+    txt = '{"conflict:UP": {"outlook": "今後72hで再拡大の恐れ", "rationale": "紛争件数が増加"}}'
+    d = F.parse_narratives(txt)
+    assert d["conflict:UP"]["outlook"].startswith("今後")
+
+def test_is_advice_detects_recommendation():
+    assert F.is_advice("今すぐ株を買うべきだ") is True
+    assert F.is_advice("攻撃を推奨する") is True
+    assert F.is_advice("紛争件数が平常比で増加している") is False

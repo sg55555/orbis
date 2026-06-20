@@ -230,6 +230,62 @@ def build_cards(items, history, fips_ja, now_ms, cfg):
     return cards
 
 
+FORECAST_SYSTEM = (
+    "あなたは地政学/リスクアナリストです。各項目について、与えたデータ（信号）のみを根拠に、"
+    "今後24〜72hの『見通し(outlook)』と『なぜ注視か(rationale)』を日本語各1文で書きます。"
+    "データに無い固有名詞・数値を作らない（捏造禁止）。"
+    "投資・軍事・政治的行動などの助言は一切しない（推測の提示のみ）。"
+    "断定を避け『〜の恐れ』『〜が起こりうる』等の不確実表現を使う。出力は JSON のみ。")
+
+
+def forecast_prompt(cards, cfg):
+    n = cfg["top_n_narrative"]
+    per = {}
+    lines = []
+    for c in cards:
+        if c.get("status") != "active":
+            continue
+        dom = c["domain"]; per[dom] = per.get(dom, 0) + 1
+        if per[dom] > n:
+            continue
+        key = f'{dom}:{c["place_key"]}'
+        sig = "; ".join(s["label"] for s in c.get("signals", []))
+        lines.append(f'{key} | {c["place_ja"]} | score={c["attention_score"]} | 信号: {sig}')
+    body = "\n".join(lines)
+    return ('次の各項目について、与えた信号のみを根拠に '
+            '{"<キー>": {"outlook":"…", "rationale":"…"}} の JSON で返してください。'
+            '助言禁止・捏造禁止・不確実表現。\n\n' + body)
+
+
+def parse_narratives(text):
+    from collectors.lib.intel import _strip_fence
+    import json as _j
+    try:
+        d = _j.loads(_strip_fence(text))
+    except (ValueError, TypeError):
+        return {}
+    if not isinstance(d, dict):
+        return {}
+    out = {}
+    for k, v in d.items():
+        if not isinstance(k, str) or not isinstance(v, dict):
+            continue
+        o = str(v.get("outlook", "")).strip()[:200]
+        r = str(v.get("rationale", "")).strip()[:200]
+        if o or r:
+            out[k] = {"outlook": o, "rationale": r}
+    return out
+
+
+_ADVICE_RE = None
+def is_advice(text):
+    import re
+    global _ADVICE_RE
+    if _ADVICE_RE is None:
+        _ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買う|売る|投資すべき|攻撃せよ|攻撃を推奨|おすすめ)")
+    return bool(_ADVICE_RE.search(text or ""))
+
+
 def update_history(history, items, now_ms, cfg):
     """history を items で更新し、cfg["history_days"] の FIFO で整理。
 
