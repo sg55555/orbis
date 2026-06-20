@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T17:45:55Z",
-  "count": 205,
+  "updated": "2026-06-20T18:01:22Z",
+  "count": 201,
   "points": [
+    {
+      "id": "tx2026mbkzng",
+      "lon": -104.361,
+      "lat": 31.644,
+      "depth": 3.854,
+      "mag": 2.4,
+      "place": "58 km S of Whites City, New Mexico",
+      "time": 1781977928675,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbkzng"
+    },
+    {
+      "id": "nc75380176",
+      "lon": -123.829170227051,
+      "lat": 40.1293334960938,
+      "depth": 22.6599998474121,
+      "mag": 1.78,
+      "place": "1 km NNW of Redway, CA",
+      "time": 1781977878520,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380176"
+    },
     {
       "id": "aka2026mdizzw",
       "lon": -159.757,
@@ -15,12 +35,12 @@
     },
     {
       "id": "us7000suuz",
-      "lon": -104.9782,
-      "lat": 37.0228,
-      "depth": 4.028,
+      "lon": -105.0056,
+      "lat": 37.0263,
+      "depth": 6.644,
       "mag": 3.8,
-      "place": "15 km SSE of Stonewall Gap, Colorado",
-      "time": 1781976731560,
+      "place": "14 km SSE of Stonewall Gap, Colorado",
+      "time": 1781976731802,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuz"
     },
     {
@@ -1992,66 +2012,6 @@
       "place": "14 km SE of Clam Gulch, Alaska",
       "time": 1781892607106,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbobgi"
-    },
-    {
-      "id": "nc75379706",
-      "lon": -121.667663574219,
-      "lat": 40.8429985046387,
-      "depth": 5.01000022888184,
-      "mag": 2.23,
-      "place": "4 km S of Burney, CA",
-      "time": 1781892052260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379706"
-    },
-    {
-      "id": "aka2026mbnren",
-      "lon": -150.35,
-      "lat": 61.4,
-      "depth": 34.7,
-      "mag": 1.6,
-      "place": "18 km SSE of Susitna, Alaska",
-      "time": 1781891911060,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnren"
-    },
-    {
-      "id": "pr2026170001",
-      "lon": -64.4281,
-      "lat": 19.472,
-      "depth": 50,
-      "mag": 3.65,
-      "place": "132 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781891682340,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026170001"
-    },
-    {
-      "id": "nc75379696",
-      "lon": -121.675498962402,
-      "lat": 40.798999786377,
-      "depth": 4.80999994277954,
-      "mag": 2.03,
-      "place": "9 km S of Burney, CA",
-      "time": 1781891596680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379696"
-    },
-    {
-      "id": "us7000sunf",
-      "lon": -68.7216,
-      "lat": -22.3313,
-      "depth": 112.201,
-      "mag": 4.3,
-      "place": "25 km ENE of Calama, Chile",
-      "time": 1781891377615,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sunf"
-    },
-    {
-      "id": "aka2026mbnhth",
-      "lon": -151.358,
-      "lat": 60.341,
-      "depth": 65.5,
-      "mag": 1.6,
-      "place": "4 km SW of Cohoe, Alaska",
-      "time": 1781891256391,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbnhth"
     }
   ]
 }
