@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T05:01:12Z",
-  "count": 243,
+  "updated": "2026-06-20T05:15:49Z",
+  "count": 245,
   "points": [
+    {
+      "id": "hv74987007",
+      "lon": -155.599838256836,
+      "lat": 19.4281673431396,
+      "depth": 42.3800010681152,
+      "mag": 1.85,
+      "place": "27 km E of Honaunau-Napoopoo, Hawaii",
+      "time": 1781932202170,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987007"
+    },
+    {
+      "id": "nc75380001",
+      "lon": -122.797668457031,
+      "lat": 38.816333770752,
+      "depth": 2.24000000953674,
+      "mag": 1.3,
+      "place": "6 km NW of The Geysers, CA",
+      "time": 1781931693680,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380001"
+    },
+    {
+      "id": "aka2026mcjtbq",
+      "lon": -152.605,
+      "lat": 60.575,
+      "depth": 6.6,
+      "mag": 0.9,
+      "place": "70 km W of Salamatof, Alaska",
+      "time": 1781931623015,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcjtbq"
+    },
     {
       "id": "aka2026mcjpgr",
       "lon": -154.911,
@@ -2422,16 +2452,6 @@
       "place": "6 km SSE of Nelson Lagoon, Alaska",
       "time": 1781846193652,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026maogaq"
-    },
-    {
-      "id": "aka2026manxce",
-      "lon": -177.512,
-      "lat": 51.411,
-      "depth": 32.9,
-      "mag": 2,
-      "place": "79 km SW of Adak, Alaska",
-      "time": 1781845540723,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026manxce"
     }
   ]
 }
