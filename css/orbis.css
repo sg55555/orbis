@@ -464,3 +464,15 @@ body.mp-b .pane-head, body.mp-b .brief-head {
 .brief-sum { font-size: 12.5px; color: rgba(220, 230, 244, .85); line-height: 1.5; margin-top: 3px; }
 .brief-meta { font-size: 11px; color: rgba(190, 208, 228, .7); margin-top: 5px; }
 @media (max-width: 768px) { #ai-brief.brief-section { padding: 20px 12px 48px; } }
+
+/* レイヤープリセット chip（.feed-chip 準拠で見た目統一） */
+.preset-chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 6px 10px; align-items: center; }
+#panel.collapsed .preset-chips { display: none; }
+.preset-chip {
+  font-size: 11px; padding: 3px 9px; border-radius: 999px; cursor: pointer;
+  color: var(--text, #cfe); background: rgba(255, 255, 255, .04);
+  border: 1px solid rgba(255, 255, 255, .14); opacity: .75; transition: opacity .15s, border-color .15s, box-shadow .15s;
+}
+.preset-chip:hover { opacity: 1; }
+.preset-chip.active { opacity: 1; border-color: var(--cyan, #6cf); box-shadow: 0 0 8px -2px var(--cyan, #6cf); background: rgba(108, 204, 255, .12); }
+.preset-custom { font-size: 10px; opacity: .5; margin-left: 2px; }
