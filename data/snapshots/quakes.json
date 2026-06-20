@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T21:31:15Z",
-  "count": 204,
+  "updated": "2026-06-20T22:01:15Z",
+  "count": 205,
   "points": [
+    {
+      "id": "aka2026mdrqlk",
+      "lon": -147.473,
+      "lat": 64.954,
+      "depth": 4.5,
+      "mag": 1,
+      "place": "6 km E of Fox, Alaska",
+      "time": 1781992614034,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdrqlk"
+    },
+    {
+      "id": "aka2026mdqzou",
+      "lon": -153.297,
+      "lat": 59.677,
+      "depth": 124.6,
+      "mag": 1.6,
+      "place": "47 km ESE of Pedro Bay, Alaska",
+      "time": 1781991447774,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdqzou"
+    },
+    {
+      "id": "ci41491456",
+      "lon": -116.598,
+      "lat": 33.4791666666667,
+      "depth": 9.64,
+      "mag": 1.01,
+      "place": "11 km SE of Anza, CA",
+      "time": 1781991182220,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491456"
+    },
+    {
+      "id": "ci41491464",
+      "lon": -116.5975,
+      "lat": 33.472,
+      "depth": 10.07,
+      "mag": 1,
+      "place": "12 km SE of Anza, CA",
+      "time": 1781991182130,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491464"
+    },
     {
       "id": "aka2026mdqrgl",
       "lon": -147.696,
@@ -62,6 +102,16 @@
       "place": "17 km WSW of Johannesburg, CA",
       "time": 1781989827300,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491448"
+    },
+    {
+      "id": "us7000suwf",
+      "lon": -104.9619,
+      "lat": 37.0292,
+      "depth": 5,
+      "mag": 2.9,
+      "place": "15 km SSE of Stonewall Gap, Colorado",
+      "time": 1781989450771,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suwf"
     },
     {
       "id": "ci41491432",
@@ -2002,46 +2052,6 @@
       "place": "12 km WNW of Dutch Harbor, Alaska",
       "time": 1781906592610,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256098"
-    },
-    {
-      "id": "nc75379841",
-      "lon": -122.792167663574,
-      "lat": 38.8183326721191,
-      "depth": 3.23000001907349,
-      "mag": 0.76,
-      "place": "6 km NW of The Geysers, CA",
-      "time": 1781905334450,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379841"
-    },
-    {
-      "id": "nc75379836",
-      "lon": -123.249168395996,
-      "lat": 39.3904991149902,
-      "depth": 6.94999980926514,
-      "mag": 1.75,
-      "place": "9 km ESE of Willits, CA",
-      "time": 1781905239600,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379836"
-    },
-    {
-      "id": "nc75379831",
-      "lon": -122.793663024902,
-      "lat": 38.8143348693848,
-      "depth": 2.77999997138977,
-      "mag": 0.94,
-      "place": "5 km NW of The Geysers, CA",
-      "time": 1781904970460,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379831"
-    },
-    {
-      "id": "aka2026mbutzg",
-      "lon": -150.576,
-      "lat": 60.8,
-      "depth": 43.5,
-      "mag": 1.5,
-      "place": "15 km SSE of Point Possession, Alaska",
-      "time": 1781904698995,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbutzg"
     }
   ]
 }
