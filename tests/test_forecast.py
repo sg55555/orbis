@@ -84,3 +84,11 @@ def test_first_run_no_history_neutral_momentum():
     out = F.score_attention(agg, {}, {}, CFG)  # 履歴なし
     assert out[0]["momentum"] == 1.0  # 中立
     assert out[0]["score"] >= 0
+
+
+def test_confidence_by_signal_diversity():
+    assert F.confidence_of({"domain":"conflict","counts":{"conflict":3,"news":1,"protests":1}}, CFG) == "high"
+    assert F.confidence_of({"domain":"conflict","counts":{"conflict":3,"news":1}}, CFG) == "med"
+    assert F.confidence_of({"domain":"conflict","counts":{"conflict":3}}, CFG) == "low"
+    assert F.confidence_of({"domain":"market","counts":{"news":9}}, CFG) == "low"
+    assert F.confidence_of({"domain":"cyber","counts":{"news":9}}, CFG) == "low"

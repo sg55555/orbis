@@ -110,6 +110,13 @@ def aggregate_signals(snaps, polys, instab, cfg):
     return acc
 
 
+def confidence_of(item, cfg):
+    if item.get("domain") in ("market", "cyber"):
+        return "low"
+    n = sum(1 for v in (item.get("counts") or {}).values() if v)
+    return "high" if n >= 3 else "med" if n == 2 else "low"
+
+
 def _instab_score(instab, code):
     for c in (instab or {}).get("countries", []):
         if c.get("code") == code:
