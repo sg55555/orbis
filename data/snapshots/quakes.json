@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T13:45:49Z",
-  "count": 220,
+  "updated": "2026-06-20T14:01:13Z",
+  "count": 219,
   "points": [
     {
       "id": "aka2026mdaubc",
@@ -1994,14 +1994,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490608"
     },
     {
-      "id": "aka2026mbjdjk",
-      "lon": -171.443,
-      "lat": 53.126,
-      "depth": 233.5,
-      "mag": 2.6,
-      "place": "174 km W of Nikolski, Alaska",
-      "time": 1781883749594,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbjdjk"
+      "id": "us7000sun8",
+      "lon": -171.3556,
+      "lat": 53.0547,
+      "depth": 235.571,
+      "mag": 2.7,
+      "place": "167 km W of Nikolski, Alaska",
+      "time": 1781883749463,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sun8"
     },
     {
       "id": "aka2026mbjbtw",
@@ -2192,16 +2192,6 @@
       "place": "8 km NW of The Geysers, CA",
       "time": 1781878168600,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379621"
-    },
-    {
-      "id": "hv74986372",
-      "lon": -155.108001708984,
-      "lat": 19.2536659240723,
-      "depth": 38.6399993896484,
-      "mag": 1.84,
-      "place": "23 km S of Fern Forest, Hawaii",
-      "time": 1781876831540,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986372"
     }
   ]
 }
