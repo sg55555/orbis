@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-20T22:45:49Z",
+  "updated": "2026-06-20T23:01:14Z",
   "count": 194,
   "points": [
+    {
+      "id": "hv74987447",
+      "lon": -155.474670410156,
+      "lat": 19.1483325958252,
+      "depth": 29.2700004577637,
+      "mag": 1.75,
+      "place": "6 km S of Pāhala, Hawaii",
+      "time": 1781995664850,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987447"
+    },
+    {
+      "id": "tx2026mbuqjf",
+      "lon": -103.931,
+      "lat": 31.302,
+      "depth": 0,
+      "mag": 1.6,
+      "place": "13 km W of Toyah, Texas",
+      "time": 1781995400644,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mbuqjf"
+    },
     {
       "id": "tx2026mbukll",
       "lon": -101.389,
@@ -1922,26 +1942,6 @@
       "place": "58 km S of Whites City, New Mexico",
       "time": 1781910202757,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026lzzopu"
-    },
-    {
-      "id": "ci41490856",
-      "lon": -117.812333333333,
-      "lat": 35.297,
-      "depth": 9,
-      "mag": 1.32,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781909185680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490856"
-    },
-    {
-      "id": "aka2026mbxfvr",
-      "lon": -163.124,
-      "lat": 54.47,
-      "depth": 4.3,
-      "mag": 2.1,
-      "place": "46 km SSE of False Pass, Alaska",
-      "time": 1781909114975,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mbxfvr"
     }
   ]
 }
