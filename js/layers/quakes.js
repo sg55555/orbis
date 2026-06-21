@@ -1,41 +1,11 @@
 // 地震レイヤー。統一インターフェース { id, label, fetch, toDeckLayer, legend } を実装。
 // 純粋部 buildRingConfig を分離してテスト可能にする。deck は描画時にグローバル参照。
 import { magnitudeToRadius, magnitudeToColor } from '../lib/geo.js';
+import { quakePlaceJa } from '../lib/quake_place.js';
 
-// USGS の place（例 "3 km W of Cobb, CA"）を日本語で分かりやすく整形する純粋関数。
-const DIR_JA = {
-  N: '北', S: '南', E: '東', W: '西', NE: '北東', NW: '北西', SE: '南東', SW: '南西',
-  NNE: '北北東', ENE: '東北東', ESE: '東南東', SSE: '南南東', SSW: '南南西', WSW: '西南西', WNW: '西北西', NNW: '北北西',
-};
-const REGION_JA = {
-  CA: 'カリフォルニア州', AK: 'アラスカ州', NV: 'ネバダ州', HI: 'ハワイ州', OK: 'オクラホマ州', TX: 'テキサス州',
-  WA: 'ワシントン州', OR: 'オレゴン州', MT: 'モンタナ州', ID: 'アイダホ州', UT: 'ユタ州', WY: 'ワイオミング州',
-  Alaska: 'アラスカ州', Nevada: 'ネバダ州', Hawaii: 'ハワイ州', California: 'カリフォルニア州',
-  'New Mexico': 'ニューメキシコ州', Oklahoma: 'オクラホマ州', Texas: 'テキサス州', Washington: 'ワシントン州',
-  Oregon: 'オレゴン州', Montana: 'モンタナ州', Idaho: 'アイダホ州', Utah: 'ユタ州', Wyoming: 'ワイオミング州',
-  Japan: '日本', Indonesia: 'インドネシア', Chile: 'チリ', Mexico: 'メキシコ', Philippines: 'フィリピン',
-  'Papua New Guinea': 'パプアニューギニア', Greece: 'ギリシャ', Turkey: 'トルコ', Iran: 'イラン', Peru: 'ペルー',
-  Russia: 'ロシア', Tonga: 'トンガ', Fiji: 'フィジー', Vanuatu: 'バヌアツ',
-};
-export function quakePlaceJa(place) {
-  if (!place || typeof place !== 'string') return place || '';
-  const s = place.trim();
-  let head = s, suffix = '';
-  const m = s.match(/^(.*),\s*([^,]+)$/);
-  if (m) {
-    head = m[1].trim();
-    const region = m[2].trim();
-    suffix = `（${REGION_JA[region] || region}）`;
-  } else if (REGION_JA[s]) {
-    return REGION_JA[s];
-  }
-  const dm = head.match(/^(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$/i);
-  if (dm) {
-    const dir = DIR_JA[dm[2].toUpperCase()] || dm[2];
-    return `${dm[3]} の${dir} ${dm[1]}km${suffix}`;
-  }
-  return head + suffix;
-}
+// 純粋部（地名ガゼッティア＋整形）は lib/quake_place.js に分離。
+// 既存 import 経路（../js/layers/quakes.js）を壊さないため re-export。
+export { quakePlaceJa };
 
 export function buildRingConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
