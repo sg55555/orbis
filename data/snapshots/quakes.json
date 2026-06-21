@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T03:45:49Z",
-  "count": 223,
+  "updated": "2026-06-21T04:01:15Z",
+  "count": 221,
   "points": [
+    {
+      "id": "aka2026medoek",
+      "lon": -153.255,
+      "lat": 59.94,
+      "depth": 143.6,
+      "mag": 1.8,
+      "place": "50 km ENE of Pedro Bay, Alaska",
+      "time": 1782014220789,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026medoek"
+    },
     {
       "id": "ci41491584",
       "lon": -118.022,
@@ -67,10 +77,10 @@
       "id": "tx2026mcdjwg",
       "lon": -103.971,
       "lat": 31.601,
-      "depth": 4.3172,
+      "depth": 4.3135,
       "mag": 0.3,
       "place": "35 km NNW of Toyah, Texas",
-      "time": 1782011238286,
+      "time": 1782011238288,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcdjwg"
     },
     {
@@ -2202,36 +2212,6 @@
       "place": "18 km NW of Stanton, Texas",
       "time": 1781929055464,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026majzoj"
-    },
-    {
-      "id": "nc75379971",
-      "lon": -122.877502441406,
-      "lat": 38.84033203125,
-      "depth": 2.27999997138977,
-      "mag": 1.07,
-      "place": "13 km NW of The Geysers, CA",
-      "time": 1781927402560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379971"
-    },
-    {
-      "id": "us7000susb",
-      "lon": 160.6412,
-      "lat": 52.7287,
-      "depth": 35,
-      "mag": 5.8,
-      "place": "140 km ESE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781927346278,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susb"
-    },
-    {
-      "id": "pr71520678",
-      "lon": -64.6538333333333,
-      "lat": 18.7988333333333,
-      "depth": 6.99,
-      "mag": 2.92,
-      "place": "53 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1781927184580,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520678"
     }
   ]
 }
