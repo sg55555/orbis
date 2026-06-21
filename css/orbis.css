@@ -673,3 +673,55 @@ body.sec-on.reveal-ready .reveal.revealed { opacity: 1; transform: none; }
 @media (max-width: 768px) {
   body.sec-on #media { padding-left: 12px; padding-right: 12px; }
 }
+
+/* ===== 常設「凡例＋使い方」オーバーレイ（legend-） ===== */
+/* #legend は .side-panel を継承（左上）するので右下へ再配置（.feed-panel と同流儀）。 */
+#legend.legend-panel { left: auto; right: 12px; top: auto; bottom: 12px; width: 240px; max-height: 64vh; }
+/* 折りたたみ時は見出し（開閉トグル）だけ。展開時にタブと本文を出す。 */
+#legend .legend-tabs, #legend .legend-body { display: none; }
+#legend:not(.open) { width: auto; }
+#legend:not(.open) .panel-head h4 { margin-bottom: 0; }
+#legend.open .legend-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 6px 0 8px; }
+#legend.open .legend-body:not([hidden]) { display: block; }
+#legend .panel-head { cursor: pointer; }
+
+/* タブ（.preset-chip 言語に合わせたグラス＋ネオン縁） */
+#legend .legend-tab { font: inherit; font-size: 11px; line-height: 1; cursor: pointer;
+  padding: 4px 11px; border-radius: 999px; color: #cfe6ff;
+  border: 1px solid rgba(120,180,255,.25); background: rgba(20,40,70,.4);
+  opacity: .6; transition: opacity .15s, border-color .15s; }
+#legend .legend-tab:hover { opacity: 1; }
+#legend .legend-tab.active { opacity: 1; border-color: var(--cyan); background: rgba(108,204,255,.12);
+  box-shadow: 0 0 8px -2px var(--cyan); }
+
+/* カテゴリ／レイヤー／tier */
+#legend .legend-cat { margin: 2px 0 10px; }
+#legend .legend-layer { margin: 5px 0 9px; }
+#legend .legend-layer-head { display: flex; align-items: center; gap: 7px; }
+#legend .legend-layer-name { font-size: 11.5px; color: var(--text); }
+body.font-on #legend .legend-layer-name { font-family: var(--font-display); letter-spacing: .02em; }
+#legend .legend-tier { display: flex; align-items: center; gap: 7px; margin: 3px 0 3px 4px; }
+#legend .legend-tier-label { flex: 1; font-size: 11px; color: var(--muted); }
+#legend .legend-desc { margin: 3px 0 0 4px; font-size: 10px; line-height: 1.3; color: var(--muted); opacity: .85; }
+
+/* swatch 形（.layer-row 版を #legend 用に再宣言＝mid-file 共有 CSS を書き換えない） */
+#legend .swatch { width: 10px; height: 10px; flex: 0 0 auto; color: var(--cyan); }
+#legend .swatch-dot { border-radius: 50%; background: currentColor; box-shadow: 0 0 8px currentColor; }
+#legend .swatch-ring { border-radius: 50%; border: 2px solid currentColor; background: transparent; box-shadow: 0 0 8px currentColor; }
+#legend .swatch-triangle { width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent;
+  border-bottom: 11px solid currentColor; background: transparent; filter: drop-shadow(0 0 4px currentColor); }
+#legend .swatch-diamond { width: 9px; height: 9px; background: currentColor; transform: rotate(45deg); box-shadow: 0 0 8px currentColor; }
+#legend .swatch-line { width: 14px; height: 3px; border-radius: 2px;
+  background: linear-gradient(90deg, rgb(42,127,255), rgb(94,224,106), rgb(255,90,50)); box-shadow: 0 0 6px rgba(120,200,255,.6); }
+#legend .swatch-gradient { width: 16px; height: 8px; border-radius: 2px; box-shadow: 0 0 6px rgba(120,200,255,.5);
+  background: linear-gradient(90deg, rgb(42,150,255), rgb(30,220,210), rgb(110,230,120), rgb(255,230,90), rgb(255,70,55)); }
+/* chip＝line/gradient 層の tier 色を見せる塗りチップ */
+#legend .swatch-chip { width: 14px; height: 8px; border-radius: 2px; background: currentColor; box-shadow: 0 0 6px currentColor; }
+
+/* 使い方リスト */
+#legend .legend-help-list { list-style: none; margin: 2px 0; padding: 0; }
+#legend .legend-help-list li { display: flex; gap: 8px; align-items: flex-start; margin: 7px 0; font-size: 11px; line-height: 1.4; color: var(--text); }
+#legend .legend-help-icon { flex: 0 0 auto; }
+
+/* before 比較：?legend=off で隠す */
+body.legend-off #legend { display: none; }
