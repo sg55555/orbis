@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T10:01:15Z",
-  "count": 213,
+  "updated": "2026-06-21T10:15:50Z",
+  "count": 211,
   "points": [
     {
       "id": "tx2026mcqdya",
@@ -2112,26 +2112,6 @@
       "place": "22 km ESE of Anza, CA",
       "time": 1781950576620,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491056"
-    },
-    {
-      "id": "nc75380046",
-      "lon": -122.764335632324,
-      "lat": 38.7881660461426,
-      "depth": 2.26999998092651,
-      "mag": 1.09,
-      "place": "1 km NNW of The Geysers, CA",
-      "time": 1781949815720,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380046"
-    },
-    {
-      "id": "nc75380041",
-      "lon": -122.764663696289,
-      "lat": 38.7878341674805,
-      "depth": 2.15000009536743,
-      "mag": 0.77,
-      "place": "1 km NNW of The Geysers, CA",
-      "time": 1781949712560,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380041"
     }
   ]
 }
