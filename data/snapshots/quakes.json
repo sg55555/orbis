@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T03:31:08Z",
-  "count": 225,
+  "updated": "2026-06-21T03:45:49Z",
+  "count": 223,
   "points": [
+    {
+      "id": "ci41491584",
+      "lon": -118.022,
+      "lat": 36.1785,
+      "depth": 3.54,
+      "mag": 1.53,
+      "place": "12 km S of Olancha, CA",
+      "time": 1782013099370,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491584"
+    },
     {
       "id": "nc75380511",
       "lon": -122.810997009277,
@@ -2222,36 +2232,6 @@
       "place": "53 km NNE of Cruz Bay, U.S. Virgin Islands",
       "time": 1781927184580,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520678"
-    },
-    {
-      "id": "ci41490944",
-      "lon": -116.738,
-      "lat": 33.6578333333333,
-      "depth": 12.21,
-      "mag": 0.34,
-      "place": "9 km S of Idyllwild, CA",
-      "time": 1781926735720,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490944"
-    },
-    {
-      "id": "pr71520673",
-      "lon": -66.9573333333333,
-      "lat": 17.9583333333333,
-      "depth": 13.96,
-      "mag": 1.87,
-      "place": "5 km WSW of Guánica, Puerto Rico",
-      "time": 1781926639150,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520673"
-    },
-    {
-      "id": "us7000sus8",
-      "lon": 20.6106,
-      "lat": 39.6947,
-      "depth": 10,
-      "mag": 4.3,
-      "place": "10 km W of Rodotópi, Greece",
-      "time": 1781926631936,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus8"
     }
   ]
 }
