@@ -11,16 +11,19 @@ export function starCount(w, h, level = 'off', density = 0.00018) {
 
 // rng: () => [0,1) の関数（テストでは seeded を注入）。
 // tw/sp は明滅の位相と速度（描画時にのみ使用。基準 alpha は変えない）。
-export function generateStars(count, w, h, rng = Math.random) {
+// brightRatio>0 で一部を「明るい星」に（奥行き）。brightRatio=0 は既存挙動（rng 消費順・レンジ不変）。
+export function generateStars(count, w, h, rng = Math.random, brightRatio = 0) {
   const stars = [];
   for (let i = 0; i < count; i++) {
+    const bright = brightRatio > 0 && rng() < brightRatio; // 0 なら短絡＝rng 消費なし
     stars.push({
       x: rng() * w,
       y: rng() * h,
-      r: 0.4 + rng() * 1.1,
-      alpha: 0.25 + rng() * 0.6,
+      r: bright ? 1.3 + rng() * 0.9 : 0.4 + rng() * 1.1,
+      alpha: bright ? 0.75 + rng() * 0.25 : 0.25 + rng() * 0.6,
       tw: rng() * Math.PI * 2,   // 明滅の初期位相
       sp: 0.4 + rng() * 1.2,     // 明滅の速度
+      bright,
     });
   }
   return stars;
