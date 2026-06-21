@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T10:55:08Z",
-  "count": 209,
+  "updated": "2026-06-21T11:01:14Z",
+  "count": 210,
   "points": [
+    {
+      "id": "aka2026merpsg",
+      "lon": -153.214,
+      "lat": 60.033,
+      "depth": 142.7,
+      "mag": 2.1,
+      "place": "56 km ENE of Pedro Bay, Alaska",
+      "time": 1782039333156,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026merpsg"
+    },
+    {
+      "id": "hv74987742",
+      "lon": -155.395004272461,
+      "lat": 19.2726669311523,
+      "depth": 31.6900005340576,
+      "mag": 2.45,
+      "place": "11 km NE of Pāhala, Hawaii",
+      "time": 1782039126520,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987742"
+    },
     {
       "id": "nc75380636",
       "lon": -122.792663574219,
@@ -124,14 +144,14 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026memveh"
     },
     {
-      "id": "us7000suyg",
-      "lon": -64.4077,
-      "lat": 19.1163,
-      "depth": 36.345,
-      "mag": 3.4,
-      "place": "95 km NNE of Cruz Bay, U.S. Virgin Islands",
-      "time": 1782030549900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suyg"
+      "id": "pr2026172000",
+      "lon": -64.2561,
+      "lat": 19.192,
+      "depth": 24,
+      "mag": 3.92,
+      "place": "110 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1782030548540,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026172000"
     },
     {
       "id": "us7000suyf",
@@ -2082,16 +2102,6 @@
       "place": "15 km NE of Pāhala, Hawaii",
       "time": 1781953320490,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987142"
-    },
-    {
-      "id": "aka2026mcvpef",
-      "lon": -151.42,
-      "lat": 62.173,
-      "depth": 83,
-      "mag": 2.2,
-      "place": "20 km N of Skwentna, Alaska",
-      "time": 1781952942070,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcvpef"
     }
   ]
 }
