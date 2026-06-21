@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T07:31:07Z",
+  "updated": "2026-06-21T07:45:54Z",
   "count": 225,
   "points": [
+    {
+      "id": "nc75380606",
+      "lon": -124.794166564941,
+      "lat": 40.398998260498,
+      "depth": 7.53000020980835,
+      "mag": 2.38,
+      "place": "44 km W of Petrolia, CA",
+      "time": 1782027265380,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380606"
+    },
+    {
+      "id": "ci41491648",
+      "lon": -119.198666666667,
+      "lat": 34.4495,
+      "depth": 10.68,
+      "mag": 1.31,
+      "place": "4 km E of Ojai, CA",
+      "time": 1782027041540,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491648"
+    },
+    {
+      "id": "nc75380601",
+      "lon": -122.847503662109,
+      "lat": 38.8504981994629,
+      "depth": 1.35000002384186,
+      "mag": 0.93,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1782027001830,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380601"
+    },
     {
       "id": "ci41491640",
       "lon": -119.198,
@@ -2222,36 +2252,6 @@
       "place": "25 km W of Salamatof, Alaska",
       "time": 1781941718758,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcpize"
-    },
-    {
-      "id": "aka2026mcozpl",
-      "lon": -152,
-      "lat": 58.997,
-      "depth": 59.1,
-      "mag": 1.4,
-      "place": "40 km S of Nanwalek, Alaska",
-      "time": 1781941070804,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcozpl"
-    },
-    {
-      "id": "av93062354",
-      "lon": -152.744,
-      "lat": 61.1395,
-      "depth": 9.17,
-      "mag": 0.6,
-      "place": "87 km W of Tyonek, Alaska",
-      "time": 1781940968130,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av93062354"
-    },
-    {
-      "id": "tx2026maqmbj",
-      "lon": -104.424,
-      "lat": 31.64,
-      "depth": 6.4587,
-      "mag": 1.9,
-      "place": "59 km S of Whites City, New Mexico",
-      "time": 1781940785166,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqmbj"
     }
   ]
 }
