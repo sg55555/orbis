@@ -181,6 +181,7 @@ export function regionJa(region) {
 }
 
 // 方角の接頭辞（"western Xizang" 等）を「コア地名＋方角部」へ。コアが訳せた時のみ適用。
+// ※ head（市・島嶼名）の訳出用。親国は付けない（地域側で併記するため）。
 const ADJ_JA = { western: '西部', eastern: '東部', northern: '北部', southern: '南部', central: '中部' };
 function adjRegionJa(x) {
   const t = (x || '').trim();
@@ -192,7 +193,50 @@ function adjRegionJa(x) {
   return regionJa(t);
 }
 
+// 親国マップ（地域 JA 名 → 国 JA 名）。州/省/島など「国の下位地域」に国名を併記するためのもの。
+// 国そのもの・海域・海嶺は親を持たず地域名のみ表示する。
+// 米国州は「2文字略号を持ち、かつ JA が『州』で終わる」REGION_JA エントリから自動収集
+//（MX→メキシコ等の外国略号は『州』で終わらないため米国に誤判定されない）。
+const REGION_PARENT = {};
+for (const [k, v] of Object.entries(REGION_JA)) {
+  if (/^[A-Z]{2}$/.test(k) && v.endsWith('州')) REGION_PARENT[v] = 'アメリカ';
+}
+Object.assign(REGION_PARENT, {
+  // 米国の準州・特別区（略号なし or 『州』で終わらないため明示）
+  'プエルトリコ': 'アメリカ', 'グアム': 'アメリカ', '北マリアナ諸島': 'アメリカ', 'コロンビア特別区': 'アメリカ',
+  'アメリカ領ヴァージン諸島': 'アメリカ', 'ヴァージン諸島': 'アメリカ', 'アメリカ領サモア': 'アメリカ',
+  // 日本の主要島・諸島
+  '本州': '日本', '北海道': '日本', '九州': '日本', '四国': '日本', '伊豆諸島': '日本', '小笠原諸島': '日本', '琉球諸島': '日本',
+  // 中国の地方
+  'チベット': '中国', '青海省': '中国', '四川省': '中国', '雲南省': '中国', '新疆ウイグル自治区': '中国', '甘粛省': '中国', '内モンゴル自治区': '中国',
+  // インドネシア・フィリピンの主要島
+  'スマトラ': 'インドネシア', 'ジャワ': 'インドネシア', 'スラウェシ': 'インドネシア',
+  'ミンダナオ': 'フィリピン', 'ルソン': 'フィリピン',
+});
+
+// 地域 JA 名に親国を併記＝「地域（国）」。親が無い（国そのもの/海域等）or 既に国名を含む場合は地域名のみ。
+function withCountry(ja) {
+  const parent = REGION_PARENT[ja];
+  return (parent && !ja.includes(parent)) ? `${ja}（${parent}）` : ja;
+}
+
+// 地域文字列（英語）→「地域（国）」。方角接頭辞（"western Xizang"）はコアの親国を併記する。
+export function regionCountryJa(region) {
+  const t = (region || '').trim();
+  const am = t.match(/^(western|eastern|northern|southern|central)\s+(.+)$/i);
+  if (am) {
+    const core = regionJa(am[2]);
+    if (core !== am[2].trim()) {
+      const withDir = `${core}${ADJ_JA[am[1].toLowerCase()]}`;
+      const parent = REGION_PARENT[core];
+      return (parent && !withDir.includes(parent)) ? `${withDir}（${parent}）` : withDir;
+    }
+  }
+  return withCountry(regionJa(t));
+}
+
 // USGS の place を日本語で分かりやすく整形する純粋関数。
+// 「地域（国）」を先頭に置き（狭い表示幅で省略されても国・地域が必ず見える）、続けて市・方角・距離。
 // 都市・ランドマークの固有名詞は英語のまま（スコープ＝地域・国名の日本語化）。
 export function quakePlaceJa(place) {
   if (!place || typeof place !== 'string') return place || '';
@@ -202,30 +246,30 @@ export function quakePlaceJa(place) {
   const m = s.match(/^(.*),\s*([^,]+)$/);
   if (m) {
     const head = m[1].trim();
-    const suffix = `（${regionJa(m[2])}）`;
+    const region = regionCountryJa(m[2]);
     const dm = head.match(/^(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$/i);
     if (dm) {
       const dir = DIR_JA[dm[2].toUpperCase()] || dm[2];
-      return `${dm[3]} の${dir} ${dm[1]}km${suffix}`;
+      return `${region} ${dm[3]} の${dir} ${dm[1]}km`;
     }
-    // 非 km の head（島嶼名・方角接頭辞付き地域名など）は地域として訳す。都市名は未知→英語のまま。
-    return adjRegionJa(head) + suffix;
+    // 非 km の head（島嶼名・方角接頭辞付き地域名など）。都市名は未知→英語のまま。
+    return `${region} ${adjRegionJa(head)}`;
   }
 
   // カンマ無し形式（USGS の海域・島嶼・沿岸表現）
   let mm;
-  if ((mm = s.match(/^off (?:the )?(?:[a-z]+ )?coast of (.+)$/i))) return `${regionJa(mm[1])} 沖`;
-  if ((mm = s.match(/^near (?:the )?coast of (.+)$/i))) return `${regionJa(mm[1])} 沿岸`;
+  if ((mm = s.match(/^off (?:the )?(?:[a-z]+ )?coast of (.+)$/i))) return `${regionCountryJa(mm[1])} 沖`;
+  if ((mm = s.match(/^near (?:the )?coast of (.+)$/i))) return `${regionCountryJa(mm[1])} 沿岸`;
   if ((mm = s.match(/^(\d+)\s*km\s+([NSEW]{1,3})\s+of\s+(.+)$/i))) {
     const dir = DIR_JA[mm[2].toUpperCase()] || mm[2];
-    return `${regionJa(mm[3])} の${dir} ${mm[1]}km`;
+    return `${regionCountryJa(mm[3])} の${dir} ${mm[1]}km`;
   }
   if ((mm = s.match(/^(north|south|east|west|northeast|northwest|southeast|southwest) of (?:the )?(.+)$/i))) {
     const dir = DIR_WORD_JA[mm[1].toLowerCase()] || mm[1];
-    return `${regionJa(mm[2])} の${dir}`;
+    return `${regionCountryJa(mm[2])} の${dir}`;
   }
-  if ((mm = s.match(/^(.+) region$/i))) return `${regionJa(mm[1])} 付近`;
+  if ((mm = s.match(/^(.+) region$/i))) return `${regionCountryJa(mm[1])} 付近`;
 
-  // 単独の地域名・不明（方角接頭辞も考慮。既知なら日本語・未知なら英語フォールバック）
-  return adjRegionJa(s);
+  // 単独の地域名・不明（方角接頭辞も考慮。既知なら地域（国）・未知なら英語フォールバック）
+  return regionCountryJa(s);
 }

@@ -226,10 +226,11 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
   backdrop-filter: blur(var(--glass-blur)); -webkit-backdrop-filter: blur(var(--glass-blur)); }
 .orbis-popup .maplibregl-popup-tip { border-top-color: var(--cyan); border-bottom-color: var(--cyan); }
 .orbis-popup .maplibregl-popup-close-button { color: var(--muted); font-size: 16px; padding: 0 5px; }
-.sel-popup .sel-top { display: flex; align-items: center; gap: 7px; }
-.sel-popup .sel-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
-.sel-popup .sel-title { font-size: 12px; font-weight: 600; max-width: 220px;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sel-popup .sel-top { display: flex; align-items: flex-start; gap: 7px; }
+.sel-popup .sel-dot { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; margin-top: 4px; }
+/* タイトルは全文表示（折り返し可）。地域（国）＋市・方角・距離が長くても省略しない。 */
+.sel-popup .sel-title { font-size: 12px; font-weight: 600; max-width: 260px;
+  white-space: normal; overflow-wrap: anywhere; line-height: 1.4; }
 .sel-popup .sel-meta { font-size: 11px; color: var(--text); opacity: .9; margin-top: 3px; }
 .sel-popup .sel-hint { font-size: 10px; color: var(--cyan); opacity: .85; margin-top: 4px; }
 .sel-popup .sel-note { font-size: 9px; color: var(--muted); opacity: .9; }

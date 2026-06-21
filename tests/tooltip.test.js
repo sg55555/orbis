@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { tooltipFor } from '../js/layers/registry.js';
 
 test('quakes tooltip: ラベル付き（日本語震源）', () => {
-  assert.equal(tooltipFor('quakes', { mag: 3.6, place: 'Alaska' }), '地震 規模M3.6｜震源 アラスカ州');
+  assert.equal(tooltipFor('quakes', { mag: 3.6, place: 'Alaska' }), '地震 規模M3.6｜震源 アラスカ州（アメリカ）');
 });
 test('flights tooltip: 便名/高度/速度ラベル（空中）', () => {
   assert.equal(tooltipFor('flights', { callsign: 'RTY484 ', alt: 1821.18, velocity: 56.83, on_ground: false }),
