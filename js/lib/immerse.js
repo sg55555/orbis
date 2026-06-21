@@ -89,8 +89,16 @@ export function immerseLegend(search) {
   return m ? m[1].toLowerCase() : 'on';
 }
 
+// ?space=1|2|3|off（大小無視）。大画面 globe 周辺リッチ化（星密度/微粒子/周辺光）の強さ段。
+// 既定 2（採用段・暫定）。off は before（space-off で周辺光なし・星密度 600・dust なし）。
+export function immerseSpace(search) {
+  const m = /[?&]space=(1|2|3|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : '2';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
-// mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)。
+// mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)、
+// space(大画面 globe 周辺演出)も常に付与(既定2)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
@@ -102,6 +110,7 @@ export function immerseClasses(search) {
   out.push('font-' + immerseFont(search));
   out.push('sec-' + immerseSec(search));
   out.push('legend-' + immerseLegend(search));
+  out.push('space-' + immerseSpace(search));
   return out;
 }
 
