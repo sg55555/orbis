@@ -437,7 +437,7 @@ function boot() {
     // AI ワールド・ブリーフィング（毎時 Sonnet 合成・メディアの下）。
     const briefRoot = document.getElementById('ai-brief');
     try {
-      const brief = await fetch(snapshotUrl('briefing')).then((r) => r.json()).catch(() => null);
+      const brief = await fetch(snapshotUrl('briefing')).then((r) => r.ok ? r.json() : null).catch(() => null);
       if (brief && (brief.lead || (brief.cards && brief.cards.length)) && briefRoot) {
         renderBriefing(briefRoot, brief, {
           onSelect: (c) => {
@@ -458,7 +458,7 @@ function boot() {
     // 国家不安定性インデックス（毎時・メディア/briefing の下）。
     const insRoot = document.getElementById('instability');
     try {
-      const ins = await fetch(snapshotUrl('instability')).then((r) => r.json()).catch(() => null);
+      const ins = await fetch(snapshotUrl('instability')).then((r) => r.ok ? r.json() : null).catch(() => null);
       if (ins && ins.countries && ins.countries.length && insRoot) {
         renderInstability(insRoot, ins, {
           onSelect: (c) => {
