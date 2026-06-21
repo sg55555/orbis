@@ -90,15 +90,16 @@ export function immerseLegend(search) {
 }
 
 // ?space=1|2|3|off（大小無視）。大画面 globe 周辺リッチ化（星密度/微粒子/周辺光）の強さ段。
-// 既定 2（採用段・暫定）。off は before（space-off で周辺光なし・星密度 600・dust なし）。
+// 既定 off＝採用しない（2026-06-21 太田さん実機確定：周辺光が panel グラス越しに四角く滲む＝
+// 星雲面廃止と同じ問題。星密度/微粒子も四角い範囲内にしか効かず独立価値なし）。1|2|3 は比較用に残置。
 export function immerseSpace(search) {
   const m = /[?&]space=(1|2|3|off)/i.exec(readSearch(search));
-  return m ? m[1].toLowerCase() : '2';
+  return m ? m[1].toLowerCase() : 'off';
 }
 
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
 // mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)、
-// space(大画面 globe 周辺演出)も常に付与(既定2)。
+// space(大画面 globe 周辺演出)も常に付与(既定off＝不採用・1|2|3は比較用)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
