@@ -6,3 +6,6 @@ node_modules/
 test-results/
 playwright-report/
 .vercel/
+# データは public な orbis-data repo へ分離(cron が CI で data/snapshots に checkout して push)。
+# main はコードのみ追跡し data/snapshots は追跡しない(Vercel デプロイ枠を食わないため)。
+data/snapshots/
