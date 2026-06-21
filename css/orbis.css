@@ -790,3 +790,27 @@ body.legend-off #legend { display: none; }
   body[data-sheet="legend"] #legend.side-panel { transform: translateY(0); }
   body[data-sheet="legend"] #sheet-scrim { opacity: 1; pointer-events: auto; }
 }
+
+/* ===== 大画面 globe 周辺リッチ化（space-・?space=1|2|3|off） =====
+   星密度/bright/dust は js/lib/starfield.js が immerseSpace で level 連動。
+   ここは周辺光のみ＝#starfield 背景に neb-a(青)/neb-b(紫) の極淡い radial を重ねる。
+   配置は四隅グラス（左上#panel/右上#feed/右下#legend）の背後を避け左右中段・下部に。
+   ＝星雲面廃止の主因（panel グラス越しに四角く滲む）の再発防止。space-off は基底 vignette のまま（before）。 */
+body.space-1 #starfield {
+  background:
+    radial-gradient(44% 54% at 5% 56%, var(--neb-a) 0%, transparent 64%),
+    radial-gradient(42% 50% at 96% 64%, var(--neb-b) 0%, transparent 64%),
+    radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%);
+}
+body.space-2 #starfield {
+  background:
+    radial-gradient(50% 60% at 5% 54%, var(--neb-a) 0%, transparent 60%),
+    radial-gradient(48% 56% at 96% 62%, var(--neb-b) 0%, transparent 60%),
+    radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%);
+}
+body.space-3 #starfield {
+  background:
+    radial-gradient(58% 68% at 5% 52%, var(--neb-a) 0%, transparent 56%),
+    radial-gradient(56% 64% at 96% 60%, var(--neb-b) 0%, transparent 56%),
+    radial-gradient(ellipse at 50% 42%, #0a1220 0%, var(--neb-base) 82%);
+}
