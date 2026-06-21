@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test('space: 既定で body.space-2・#starfield canvas が存在', async ({ page }) => {
+test('space: 既定で body.space-off（採用せず）・#starfield canvas が存在', async ({ page }) => {
   await page.goto('/');
   await expect(page.locator('#starfield')).toHaveCount(1);
-  await expect(page.locator('body')).toHaveClass(/space-2/);
+  await expect(page.locator('body')).toHaveClass(/space-off/);
 });
 
 test('space: ?space=off で body.space-off（周辺光なし・before）', async ({ page }) => {
