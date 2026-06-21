@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T02:15:46Z",
-  "count": 216,
+  "updated": "2026-06-21T02:31:02Z",
+  "count": 218,
   "points": [
+    {
+      "id": "ci41491552",
+      "lon": -117.478,
+      "lat": 35.6065,
+      "depth": 9.23,
+      "mag": 1.72,
+      "place": "18 km E of Ridgecrest, CA",
+      "time": 1782008838890,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491552"
+    },
+    {
+      "id": "aka2026meapiz",
+      "lon": -146.729,
+      "lat": 61.381,
+      "depth": 29.1,
+      "mag": 3.7,
+      "place": "34 km NW of Valdez, Alaska",
+      "time": 1782008730457,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026meapiz"
+    },
+    {
+      "id": "nc75380451",
+      "lon": -122.731498718262,
+      "lat": 38.7713317871094,
+      "depth": 0.759999990463257,
+      "mag": 1.77,
+      "place": "2 km ESE of The Geysers, CA",
+      "time": 1782008447940,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380451"
+    },
     {
       "id": "aka2026meafnj",
       "lon": -149.087,
@@ -1104,6 +1134,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdesji"
     },
     {
+      "id": "av94257713",
+      "lon": -152.868833333333,
+      "lat": 60.6136666666667,
+      "depth": 10.09,
+      "mag": -0.27,
+      "place": "84 km W of Salamatof, Alaska",
+      "time": 1781967998200,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257713"
+    },
+    {
       "id": "aka2026mddwnv",
       "lon": -150.174,
       "lat": 61.203,
@@ -2142,26 +2182,6 @@
       "place": "8 km WNW of Cobb, CA",
       "time": 1781923379090,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379951"
-    },
-    {
-      "id": "tx2026magjzv",
-      "lon": -104.437,
-      "lat": 31.656,
-      "depth": 5.946,
-      "mag": 2.3,
-      "place": "57 km S of Whites City, New Mexico",
-      "time": 1781922548557,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026magjzv"
-    },
-    {
-      "id": "nc75379931",
-      "lon": -122.839668273926,
-      "lat": 38.8523330688477,
-      "depth": 0.829999983310699,
-      "mag": 1.48,
-      "place": "11 km WNW of Cobb, CA",
-      "time": 1781922135260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379931"
     }
   ]
 }
