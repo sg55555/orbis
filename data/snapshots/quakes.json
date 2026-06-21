@@ -1,6 +1,6 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T09:45:51Z",
+  "updated": "2026-06-21T10:01:15Z",
   "count": 213,
   "points": [
     {
@@ -42,6 +42,16 @@
       "place": "22 km NNW of Toyah, Texas",
       "time": 1782033126591,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcpmeq"
+    },
+    {
+      "id": "us7000suys",
+      "lon": -87.5573,
+      "lat": 19.6422,
+      "depth": 11.161,
+      "mag": 4.1,
+      "place": "51 km E of Felipe Carrillo Puerto, Mexico",
+      "time": 1782032408540,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suys"
     },
     {
       "id": "aka2026menpun",
@@ -2122,16 +2132,6 @@
       "place": "1 km NNW of The Geysers, CA",
       "time": 1781949712560,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380041"
-    },
-    {
-      "id": "ci41491048",
-      "lon": -116.867,
-      "lat": 33.305,
-      "depth": 6.38,
-      "mag": 0.69,
-      "place": "6 km S of Palomar Observatory, CA",
-      "time": 1781949220000,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491048"
     }
   ]
 }
