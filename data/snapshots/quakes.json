@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T10:31:06Z",
+  "updated": "2026-06-21T10:45:48Z",
   "count": 209,
   "points": [
+    {
+      "id": "nc75380636",
+      "lon": -122.792663574219,
+      "lat": 38.8380012512207,
+      "depth": 2.20000004768372,
+      "mag": 0.73,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1782037929080,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380636"
+    },
+    {
+      "id": "ci41491680",
+      "lon": -117.804833333333,
+      "lat": 35.2966666666667,
+      "depth": 8.64,
+      "mag": 1.37,
+      "place": "18 km WSW of Johannesburg, CA",
+      "time": 1782037781950,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491680"
+    },
     {
       "id": "aka2026meqkss",
       "lon": -150.771,
@@ -232,6 +252,16 @@
       "place": "9 km SSW of Idyllwild, CA",
       "time": 1782025155710,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491608"
+    },
+    {
+      "id": "pr71520783",
+      "lon": -65.3216666666667,
+      "lat": 18.6628333333333,
+      "depth": 74.69,
+      "mag": 3.18,
+      "place": "39 km N of Culebra, Puerto Rico",
+      "time": 1782024957780,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520783"
     },
     {
       "id": "aka2026mejlyg",
@@ -2062,36 +2092,6 @@
       "place": "20 km N of Skwentna, Alaska",
       "time": 1781952942070,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcvpef"
-    },
-    {
-      "id": "tx2026mawtvm",
-      "lon": -104.454,
-      "lat": 31.641,
-      "depth": 7.9845,
-      "mag": 1.1,
-      "place": "59 km S of Whites City, New Mexico",
-      "time": 1781952220744,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mawtvm"
-    },
-    {
-      "id": "nc75380056",
-      "lon": -121.939666748047,
-      "lat": 36.435001373291,
-      "depth": 6.05000019073486,
-      "mag": 2.13,
-      "place": "13 km S of Carmel By The Sea, CA",
-      "time": 1781952193170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380056"
-    },
-    {
-      "id": "nn00920508",
-      "lon": -116.4863,
-      "lat": 38.469,
-      "depth": 3.3919,
-      "mag": 1.75,
-      "place": "78 km NE of Tonopah, Nevada",
-      "time": 1781951763868,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920508"
     }
   ]
 }
