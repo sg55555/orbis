@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T12:45:51Z",
+  "updated": "2026-06-21T13:01:18Z",
   "count": 203,
   "points": [
+    {
+      "id": "aka2026mevmut",
+      "lon": -146.709,
+      "lat": 61.33,
+      "depth": 22.6,
+      "mag": 2,
+      "place": "29 km NW of Valdez, Alaska",
+      "time": 1782046337683,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mevmut"
+    },
     {
       "id": "nc75380656",
       "lon": -121.522499084473,
@@ -22,6 +32,16 @@
       "place": "29 km NNW of Susitna, Alaska",
       "time": 1782044281995,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026meujcf"
+    },
+    {
+      "id": "pr71520828",
+      "lon": -66.784,
+      "lat": 18.032,
+      "depth": 17.74,
+      "mag": 1.97,
+      "place": "1 km NNE of Guayanilla, Puerto Rico",
+      "time": 1782043660190,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520828"
     },
     {
       "id": "aka2026metxya",
@@ -2012,26 +2032,6 @@
       "place": "2 km NNW of The Geysers, CA",
       "time": 1781960824990,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380096"
-    },
-    {
-      "id": "ci41491120",
-      "lon": -117.218666666667,
-      "lat": 34.0036666666667,
-      "depth": 6.55,
-      "mag": 0.58,
-      "place": "6 km SE of Loma Linda, CA",
-      "time": 1781960289370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491120"
-    },
-    {
-      "id": "aka2026mczifa",
-      "lon": -159.744,
-      "lat": 55.873,
-      "depth": 8.4,
-      "mag": 1.3,
-      "place": "16 km WSW of Ivanof Bay, Alaska",
-      "time": 1781959657885,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mczifa"
     }
   ]
 }
