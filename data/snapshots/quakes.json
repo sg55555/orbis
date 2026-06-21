@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T03:01:16Z",
-  "count": 221,
+  "updated": "2026-06-21T03:15:49Z",
+  "count": 222,
   "points": [
+    {
+      "id": "tx2026mcdjwg",
+      "lon": -103.971,
+      "lat": 31.601,
+      "depth": 4.3172,
+      "mag": 0.3,
+      "place": "35 km NNW of Toyah, Texas",
+      "time": 1782011238286,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcdjwg"
+    },
+    {
+      "id": "nn00920526",
+      "lon": -117.623,
+      "lat": 39.9476,
+      "depth": 13.836,
+      "mag": 1.58,
+      "place": "69 km NW of Austin, Nevada",
+      "time": 1782011028259,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920526"
+    },
+    {
+      "id": "nc75380491",
+      "lon": -122.730163574219,
+      "lat": 38.771167755127,
+      "depth": 1.00999999046326,
+      "mag": 1.14,
+      "place": "2 km ESE of The Geysers, CA",
+      "time": 1782010812340,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380491"
+    },
     {
       "id": "ci41491560",
       "lon": -117.474833333333,
@@ -2192,26 +2222,6 @@
       "place": "5 km WNW of The Geysers, CA",
       "time": 1781925738410,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379961"
-    },
-    {
-      "id": "ci41490928",
-      "lon": -116.826333333333,
-      "lat": 33.999,
-      "depth": 10.45,
-      "mag": 1.05,
-      "place": "9 km NNE of Banning, CA",
-      "time": 1781924604900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490928"
-    },
-    {
-      "id": "ci41490936",
-      "lon": -116.8325,
-      "lat": 33.9965,
-      "depth": 10.24,
-      "mag": 1.05,
-      "place": "9 km NNE of Banning, CA",
-      "time": 1781924604860,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490936"
     }
   ]
 }
