@@ -1,6 +1,8 @@
 // 星空。生成（純粋）と描画（canvas）を分離。星は一度だけ生成し再乱数しない。
 // リッチ化: 微細な明滅（twinkle）と稀な流れ星を rAF で描く。reduced-motion では静止描画。
 
+import { immerseSpace } from './immerse.js';
+
 // 星数の上限は level で段階引き上げ（4K で効く・FHD/HD は cap 未満で不変）。
 // off=現状の600。density は従来値を維持（面積比例の係数）。
 const STAR_CAP = { off: 600, 1: 760, 2: 900, 3: 1100 };
@@ -61,16 +63,41 @@ export function generateStars(count, w, h, rng = Math.random, brightRatio = 0) {
   return stars;
 }
 
-// canvas に星を静止描画（reduced-motion・非対応時のフォールバック）。
+// canvas に星を静止描画（reduced-motion・非対応時のフォールバック）。bright はグロー付き。
 export function drawStars(canvas, stars) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   for (const s of stars) {
-    ctx.globalAlpha = s.alpha;
-    ctx.fillStyle = '#cfe0f5';
+    drawStar(ctx, s, s.alpha);
+  }
+  ctx.globalAlpha = 1;
+}
+
+// 1つの星を描く。bright は外周に淡いグロー（二重 arc・shadowBlur を使わず安価）。
+function drawStar(ctx, s, alpha) {
+  if (s.bright) {
+    ctx.globalAlpha = Math.max(0, alpha * 0.35);
+    ctx.fillStyle = '#bcd8ff';
     ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.arc(s.x, s.y, s.r * 2.6, 0, Math.PI * 2);
+    ctx.fill();
+  }
+  ctx.globalAlpha = Math.max(0, alpha);
+  ctx.fillStyle = s.bright ? '#eaf3ff' : '#cfe0f5';
+  ctx.beginPath();
+  ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+  ctx.fill();
+}
+
+// ダストを描く（極淡）。
+function drawDust(ctx, dust) {
+  if (!ctx) return;
+  ctx.fillStyle = '#9fb6d8';
+  for (const d of dust) {
+    ctx.globalAlpha = d.alpha;
+    ctx.beginPath();
+    ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
     ctx.fill();
   }
   ctx.globalAlpha = 1;
@@ -90,24 +117,32 @@ function spawnShoot(w, h) {
   };
 }
 
-// canvas を要素サイズに合わせ、星を生成してアニメーション描画する。
-// opts.reduced=true で静止描画にフォールバック。canvas ごとに一度だけ呼ぶこと。
+// canvas を要素サイズに合わせ、星＋ダストを生成してアニメーション描画する。
+// level は immerseSpace を自己読み（main.js 非編集）。opts.level でテスト時に上書き可能。
+// opts.reduced=true で静止描画。canvas ごとに一度だけ呼ぶこと。
 export function mountStarfield(canvas, opts = {}) {
-  const { density = 0.00018, reduced = false } = opts;
+  const {
+    density = 0.00018,
+    reduced = false,
+    level = immerseSpace(typeof location !== 'undefined' ? location.search : ''),
+  } = opts;
   const ctx = canvas.getContext('2d');
+  const brightRatio = level === 'off' ? 0 : 0.08;
   let stars = [];
+  let dust = [];
   const resize = () => {
     const w = canvas.clientWidth || window.innerWidth;
     const h = canvas.clientHeight || window.innerHeight;
     canvas.width = w; canvas.height = h;
-    const count = Math.min(600, Math.round(w * h * density));
-    stars = generateStars(count, w, h); // 一度生成（リサイズ時のみ再生成）
+    stars = generateStars(starCount(w, h, level, density), w, h, Math.random, brightRatio);
+    dust = generateDust(dustCount(level), w, h);
   };
   resize();
   window.addEventListener('resize', resize, { passive: true });
 
   if (reduced || !ctx) {
-    drawStars(canvas, stars); // 静止描画
+    drawStars(canvas, stars); // 星（bright 含む）静止
+    drawDust(ctx, dust);      // ダスト静止（ctx 無しは drawDust 内で no-op）
     return stars;
   }
 
@@ -120,15 +155,15 @@ export function mountStarfield(canvas, opts = {}) {
     const t = now / 1000;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 星の明滅
-    ctx.fillStyle = '#cfe0f5';
+    // ダスト（背面・極淡・ドリフト）
+    stepDust(dust, dt, canvas.width, canvas.height);
+    drawDust(ctx, dust);
+
+    // 星の明滅（bright はグロー）
     for (const s of stars) {
       let a = s.alpha * (0.55 + 0.45 * Math.sin(t * s.sp + s.tw));
       if (a < 0) a = 0;
-      ctx.globalAlpha = a;
-      ctx.beginPath();
-      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fill();
+      drawStar(ctx, s, a);
     }
 
     // 流れ星（同時に最大2本・低頻度）
