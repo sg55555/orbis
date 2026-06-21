@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T13:31:08Z",
-  "count": 202,
+  "updated": "2026-06-21T13:45:50Z",
+  "count": 203,
   "points": [
+    {
+      "id": "nc75380686",
+      "lon": -122.785331726074,
+      "lat": 38.8366661071777,
+      "depth": 1.86000001430511,
+      "mag": 0.23,
+      "place": "6 km WNW of Cobb, CA",
+      "time": 1782049054820,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380686"
+    },
+    {
+      "id": "nc75380681",
+      "lon": -122.823333740234,
+      "lat": 38.8426666259766,
+      "depth": 1.64999997615814,
+      "mag": 0.72,
+      "place": "9 km WNW of Cobb, CA",
+      "time": 1782048841170,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380681"
+    },
     {
       "id": "ci41491712",
       "lon": -116.929833333333,
@@ -2012,16 +2032,6 @@
       "place": "268 km WSW of Adak, Alaska",
       "time": 1781963378448,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suvi"
-    },
-    {
-      "id": "aka2026mdaubc",
-      "lon": -151.42,
-      "lat": 61.005,
-      "depth": 73,
-      "mag": 1.5,
-      "place": "16 km WSW of Tyonek, Alaska",
-      "time": 1781962277404,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdaubc"
     }
   ]
 }
