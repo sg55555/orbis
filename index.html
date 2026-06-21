@@ -35,10 +35,15 @@
         <div id="feed-chips" class="feed-chips"></div>
         <div id="feed-rows"></div>
       </div>
+      <aside id="legend" class="side-panel legend-panel" aria-label="凡例と使い方">
+        <div class="panel-head"><h4>凡例 / Legend</h4>
+          <button class="collapse-btn legend-collapse" type="button" aria-label="凡例の開閉" aria-expanded="false">▸</button></div>
+      </aside>
       <div id="sheet-scrim"></div>
       <nav id="mobile-tabs" role="tablist" aria-label="モバイルナビゲーション">
         <button class="mobile-tab" data-sheet="layers" aria-controls="panel" aria-expanded="false">≡ レイヤー</button>
         <button class="mobile-tab" data-sheet="feed" aria-controls="feed" aria-expanded="false">≡ フィード</button>
+        <button class="mobile-tab" data-sheet="legend" aria-controls="legend" aria-expanded="false">≡ 凡例</button>
       </nav>
       <button id="media-hint" type="button" aria-label="下部のメディアへ移動">▼ メディア</button>
       <div id="loading" data-variant="12">
@@ -129,5 +134,6 @@
   <script type="module" src="js/ui/mobile-nav.js"></script>
   <script type="module" src="js/ui/immerse-bar.js"></script>
   <script type="module" src="js/ui/scroll-reveal.js"></script>
+  <script type="module" src="js/ui/legend.js"></script>
 </body>
 </html>
