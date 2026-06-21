@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T00:31:03Z",
-  "count": 202,
+  "updated": "2026-06-21T00:45:51Z",
+  "count": 203,
   "points": [
+    {
+      "id": "nc75380401",
+      "lon": -122.725166320801,
+      "lat": 38.7671661376953,
+      "depth": 0.959999978542328,
+      "mag": 1.02,
+      "place": "3 km ESE of The Geysers, CA",
+      "time": 1782002482430,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380401"
+    },
+    {
+      "id": "nc75380381",
+      "lon": -122.740333557129,
+      "lat": 38.5970001220703,
+      "depth": 4.01000022888184,
+      "mag": 1.03,
+      "place": "9 km NE of Windsor, CA",
+      "time": 1782002293570,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380381"
+    },
+    {
+      "id": "nc75380386",
+      "lon": -122.725997924805,
+      "lat": 38.7686653137207,
+      "depth": 1.12000000476837,
+      "mag": 3.12,
+      "place": "3 km ESE of The Geysers, CA",
+      "time": 1782002227770,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380386"
+    },
     {
       "id": "nn00920521",
       "lon": -117.808,
@@ -2002,26 +2032,6 @@
       "place": "10 km WSW of Petrolia, CA",
       "time": 1781916786750,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379921"
-    },
-    {
-      "id": "ci41490904",
-      "lon": -116.557,
-      "lat": 33.4796666666667,
-      "depth": 10.56,
-      "mag": 0.82,
-      "place": "14 km SE of Anza, CA",
-      "time": 1781915985640,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490904"
-    },
-    {
-      "id": "hv74986912",
-      "lon": -155.373001098633,
-      "lat": 19.0400009155273,
-      "depth": 31.2399997711182,
-      "mag": 1.71,
-      "place": "21 km SSE of Pāhala, Hawaii",
-      "time": 1781915880670,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986912"
     }
   ]
 }
