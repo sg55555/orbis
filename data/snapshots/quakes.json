@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T00:01:26Z",
-  "count": 196,
+  "updated": "2026-06-21T00:15:52Z",
+  "count": 200,
   "points": [
+    {
+      "id": "ci41491520",
+      "lon": -116.086166381836,
+      "lat": 33.2331657409668,
+      "depth": 6.23000001907349,
+      "mag": 1.22831070920164,
+      "place": "11 km NNE of Ocotillo Wells, CA",
+      "time": 1782000793530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491520"
+    },
+    {
+      "id": "nc75380376",
+      "lon": -122.842330932617,
+      "lat": 38.8203315734863,
+      "depth": 1.96000003814697,
+      "mag": 0.75,
+      "place": "9 km WNW of The Geysers, CA",
+      "time": 1782000441360,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380376"
+    },
+    {
+      "id": "aka2026mdvvbr",
+      "lon": -154.821,
+      "lat": 58.053,
+      "depth": 5,
+      "mag": 0.9,
+      "place": "58 km NNW of Karluk, Alaska",
+      "time": 1782000130409,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdvvbr"
+    },
+    {
+      "id": "nc75380371",
+      "lon": -120.891334533691,
+      "lat": 36.0511665344238,
+      "depth": 9,
+      "mag": 2.28,
+      "place": "4 km NNE of San Ardo, CA",
+      "time": 1782000010350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380371"
+    },
     {
       "id": "nc75380366",
       "lon": -122.797332763672,
@@ -32,6 +72,16 @@
       "place": "62 km W of Tyonek, Alaska",
       "time": 1781998816874,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdvcgc"
+    },
+    {
+      "id": "us7000suwz",
+      "lon": -115.1706,
+      "lat": 44.3217,
+      "depth": 10.834,
+      "mag": 2.5,
+      "place": "21 km WNW of Stanley, Idaho",
+      "time": 1781998777675,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suwz"
     },
     {
       "id": "nc75380356",
@@ -1952,16 +2002,6 @@
       "place": "0 km NW of Stanton, Texas",
       "time": 1781914544266,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mabyxi"
-    },
-    {
-      "id": "aka2026mcaemz",
-      "lon": -147.506,
-      "lat": 61.071,
-      "depth": 8.9,
-      "mag": 1.4,
-      "place": "50 km WNW of Tatitlek, Alaska",
-      "time": 1781914422743,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcaemz"
     }
   ]
 }
