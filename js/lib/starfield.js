@@ -1,6 +1,14 @@
 // 星空。生成（純粋）と描画（canvas）を分離。星は一度だけ生成し再乱数しない。
 // リッチ化: 微細な明滅（twinkle）と稀な流れ星を rAF で描く。reduced-motion では静止描画。
 
+// 星数の上限は level で段階引き上げ（4K で効く・FHD/HD は cap 未満で不変）。
+// off=現状の600。density は従来値を維持（面積比例の係数）。
+const STAR_CAP = { off: 600, 1: 760, 2: 900, 3: 1100 };
+export function starCount(w, h, level = 'off', density = 0.00018) {
+  const cap = STAR_CAP[level] || STAR_CAP.off;
+  return Math.min(cap, Math.round(w * h * density));
+}
+
 // rng: () => [0,1) の関数（テストでは seeded を注入）。
 // tw/sp は明滅の位相と速度（描画時にのみ使用。基準 alpha は変えない）。
 export function generateStars(count, w, h, rng = Math.random) {
