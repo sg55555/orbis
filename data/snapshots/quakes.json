@@ -1,8 +1,58 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T03:15:49Z",
-  "count": 222,
+  "updated": "2026-06-21T03:31:08Z",
+  "count": 225,
   "points": [
+    {
+      "id": "nc75380511",
+      "lon": -122.810997009277,
+      "lat": 38.8326683044434,
+      "depth": 2,
+      "mag": 0.89,
+      "place": "8 km W of Cobb, CA",
+      "time": 1782012368730,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380511"
+    },
+    {
+      "id": "ci41491576",
+      "lon": -115.593833333333,
+      "lat": 32.836,
+      "depth": 13.59,
+      "mag": 1.21,
+      "place": "3 km WSW of Imperial, CA",
+      "time": 1782012343240,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491576"
+    },
+    {
+      "id": "nc75380506",
+      "lon": -122.848335266113,
+      "lat": 38.8499984741211,
+      "depth": 1.50999999046326,
+      "mag": 0.73,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1782012133350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380506"
+    },
+    {
+      "id": "nc75380501",
+      "lon": -122.848167419434,
+      "lat": 38.8491668701172,
+      "depth": 1.50999999046326,
+      "mag": 1.39,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1782012038260,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380501"
+    },
+    {
+      "id": "ci41491568",
+      "lon": -116.414666666667,
+      "lat": 33.0653333333333,
+      "depth": 5.37,
+      "mag": 0.6,
+      "place": "18 km E of Julian, CA",
+      "time": 1782011722900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491568"
+    },
     {
       "id": "tx2026mcdjwg",
       "lon": -103.971,
@@ -2202,26 +2252,6 @@
       "place": "10 km W of Rodotópi, Greece",
       "time": 1781926631936,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus8"
-    },
-    {
-      "id": "tx2026maiiwx",
-      "lon": -101.916,
-      "lat": 32.255,
-      "depth": 8.1787,
-      "mag": 1.7,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781926096555,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maiiwx"
-    },
-    {
-      "id": "nc75379961",
-      "lon": -122.807334899902,
-      "lat": 38.7973327636719,
-      "depth": 3.41000008583069,
-      "mag": 1.05,
-      "place": "5 km WNW of The Geysers, CA",
-      "time": 1781925738410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379961"
     }
   ]
 }
