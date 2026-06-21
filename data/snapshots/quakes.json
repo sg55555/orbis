@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T01:01:12Z",
-  "count": 207,
+  "updated": "2026-06-21T01:15:48Z",
+  "count": 211,
   "points": [
+    {
+      "id": "aka2026mdxxtk",
+      "lon": -151.828,
+      "lat": 60.285,
+      "depth": 72.2,
+      "mag": 2.4,
+      "place": "24 km WNW of Clam Gulch, Alaska",
+      "time": 1782003914891,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdxxtk"
+    },
+    {
+      "id": "aka2026mdxtmx",
+      "lon": -147.63,
+      "lat": 61.604,
+      "depth": 17,
+      "mag": 1.6,
+      "place": "22 km S of Glacier View, Alaska",
+      "time": 1782003620646,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdxtmx"
+    },
     {
       "id": "nc75380421",
       "lon": -122.80916595459,
@@ -1444,6 +1464,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380036"
     },
     {
+      "id": "av94257013",
+      "lon": -178.793,
+      "lat": 51.782,
+      "depth": 15.1,
+      "mag": 0.27,
+      "place": "149 km W of Adak, Alaska",
+      "time": 1781946148440,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257013"
+    },
+    {
       "id": "hv74987117",
       "lon": -155.102828979492,
       "lat": 19.3579998016357,
@@ -1962,6 +1992,16 @@
       "place": "5 km N of North Pole, Alaska",
       "time": 1781923760638,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcfjlo"
+    },
+    {
+      "id": "us7000sus6",
+      "lon": 160.7349,
+      "lat": 52.1491,
+      "depth": 10,
+      "mag": 4.3,
+      "place": "175 km SE of Petropavlovsk-Kamchatsky, Russia",
+      "time": 1781923574818,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus6"
     },
     {
       "id": "nc75379951",
