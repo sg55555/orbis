@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T01:31:03Z",
-  "count": 213,
+  "updated": "2026-06-21T01:45:47Z",
+  "count": 216,
   "points": [
+    {
+      "id": "aka2026mdzblv",
+      "lon": -153.549,
+      "lat": 58.832,
+      "depth": 12.9,
+      "mag": 1.3,
+      "place": "93 km NNW of Aleneva, Alaska",
+      "time": 1782005969418,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdzblv"
+    },
+    {
+      "id": "ci41491536",
+      "lon": -116.3795,
+      "lat": 34.0198333333333,
+      "depth": 1.88,
+      "mag": 1.37,
+      "place": "12 km SSE of Yucca Valley, CA",
+      "time": 1782005803460,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491536"
+    },
+    {
+      "id": "aka2026mdyyve",
+      "lon": -153.514,
+      "lat": 58.818,
+      "depth": 11.6,
+      "mag": 2.4,
+      "place": "91 km NNW of Aleneva, Alaska",
+      "time": 1782005786441,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdyyve"
+    },
     {
       "id": "uw714028381",
       "lon": -122.42749786377,
@@ -102,6 +132,16 @@
       "place": "3 km ESE of The Geysers, CA",
       "time": 1782002227770,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380386"
+    },
+    {
+      "id": "av94258698",
+      "lon": -178.746,
+      "lat": 51.8256666666667,
+      "depth": 14.95,
+      "mag": 0.59,
+      "place": "145 km W of Adak, Alaska",
+      "time": 1782001718070,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94258698"
     },
     {
       "id": "pr71520778",
@@ -802,6 +842,16 @@
       "place": "17 km WNW of Ivanof Bay, Alaska",
       "time": 1781977090195,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdizzw"
+    },
+    {
+      "id": "av94258003",
+      "lon": -178.800666666667,
+      "lat": 51.7801666666667,
+      "depth": 15.9,
+      "mag": 0.47,
+      "place": "149 km W of Adak, Alaska",
+      "time": 1781976786450,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94258003"
     },
     {
       "id": "us7000suuz",
@@ -2112,26 +2162,6 @@
       "place": "west of Macquarie Island",
       "time": 1781919992273,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sury"
-    },
-    {
-      "id": "us7000surx",
-      "lon": 102.9796,
-      "lat": -4.913,
-      "depth": 55.123,
-      "mag": 5,
-      "place": "102 km SSW of Pagar Alam, Indonesia",
-      "time": 1781919607238,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surx"
-    },
-    {
-      "id": "us7000surw",
-      "lon": -70.9171,
-      "lat": -32.9534,
-      "depth": 80.379,
-      "mag": 4.2,
-      "place": "13 km SSE of Llaillay, Chile",
-      "time": 1781919128132,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surw"
     }
   ]
 }
