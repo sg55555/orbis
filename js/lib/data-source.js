@@ -13,7 +13,7 @@ function _loc(loc) {
 }
 
 // ホスト/override だけで「raw を使いたい環境か」を判定（フラグ非依存・純粋）。
-// 将来 REMOTE_ENABLED を true にした時の判定ロジックはここに保持し、テストもここを対象にする。
+// REMOTE_ENABLED と分離しておくことで、判定ロジックをフラグに依らず単体テストできる。
 export function hostPrefersRemote(loc) {
   const l = _loc(loc);
   const search = l.search || '';
@@ -23,7 +23,7 @@ export function hostPrefersRemote(loc) {
 }
 
 export function isRemoteData(loc) {
-  // raw 無効化中(REMOTE_ENABLED=false)は環境に関わらず常に相対(Vercel 配信)。
+  // REMOTE_ENABLED が true の時だけ raw(orbis-data) を使う。false なら全環境で相対(Vercel 配信)。
   return REMOTE_ENABLED && hostPrefersRemote(loc);
 }
 
