@@ -21,6 +21,12 @@
     <div id="map-wrap">
       <canvas id="starfield"></canvas>
       <div id="map"></div>
+      <div id="search">
+        <input id="search-input" type="text" placeholder="国を検索" autocomplete="off"
+          role="combobox" aria-expanded="false" aria-controls="search-results"
+          aria-autocomplete="list" aria-label="国を検索して移動">
+        <ul id="search-results" class="search-results" role="listbox" aria-label="国の候補" hidden></ul>
+      </div>
       <div id="freshness">—</div>
       <div id="panel" class="side-panel">
         <div class="panel-head"><h4>レイヤー / Layers</h4>

@@ -12,6 +12,7 @@ import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
 import { parsePermalink } from './lib/permalink.js';
 import { initShare } from './ui/share.js';
+import { initSearch } from './ui/search.js';
 import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
 import { renderInstability } from './ui/instability.js';
@@ -393,6 +394,9 @@ function boot() {
     zoom: map.getZoom(),
     layers: [...ENABLED],
   }));
+
+  // 国検索：UI を初期化（onSelect は次タスクで配線）。
+  initSearch(null);
 
   map.on('load', async () => {
     bootCtl.requestHandoff();
