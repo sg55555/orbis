@@ -25,11 +25,11 @@ export function applyAtmosphere(map, look, blendStops = [0, 0.85, 6, 0.45, 9, 0]
 
 // zoom は初期ズーム（没入ダイヤル gz で globe の見かけの大きさを変える）。
 // blendStops は大気の atmosphere-blend ストップ（没入ダイヤル glow）。
-export function initMap(container, getTooltip, onClick, look = getLook(), zoom = 2.7, blendStops) {
+export function initMap(container, getTooltip, onClick, look = getLook(), zoom = 2.7, blendStops, center = [0, 20]) {
   const map = new maplibregl.Map({
     container,
     style: buildBaseStyle(look),
-    center: [0, 20],
+    center,
     zoom,
     minZoom: 0,
     renderWorldCopies: false,

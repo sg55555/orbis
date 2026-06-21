@@ -10,6 +10,8 @@ import { renderPanel, renderPresets, wireCollapse } from './ui/panel.js';
 import { presetById, DEFAULT_PRESET } from './lib/presets.js';
 import { buildFeed, buildFeedBalanced, feedChipIds, loadFeedHidden, toggleHidden, readFeedFilter, writeFeedFilter } from './lib/feed.js';
 import { renderFeed, renderChips, wireCollapse as wireFeedCollapse } from './ui/feed.js';
+import { parsePermalink } from './lib/permalink.js';
+import { initShare } from './ui/share.js';
 import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
 import { renderInstability } from './ui/instability.js';
@@ -43,7 +45,12 @@ const DENS = parseDens(typeof location !== 'undefined' ? location.search : '');
 const POLL_MS = 60000;
 const POLL_LAYERS = pollLayerIds(); // スナップショットを持つ層（registry から自動導出）
 const ALL_IDS = allLayerIds();      // 全トグル対象レイヤー（registry から自動導出）
-let ENABLED = loadEnabled(ALL_IDS, readStored(), [], presetById(DEFAULT_PRESET).layers);
+// 共有パーマリンク（?ll/z/layers）。layers があれば保存より優先（共有された視点を再現）。
+// 一過性＝localStorage は上書きしない（受け手の保存設定を壊さない・以後のトグルは従来どおり保存）。
+const PERMALINK = parsePermalink(typeof location !== 'undefined' ? location.search : '');
+let ENABLED = PERMALINK.layers
+  ? new Set(ALL_IDS.filter((id) => PERMALINK.layers.includes(id)))
+  : loadEnabled(ALL_IDS, readStored(), [], presetById(DEFAULT_PRESET).layers);
 
 const snapshots = {}; // id -> snapshot（trade は静的、その他はポーリング更新）
 let panel;
@@ -348,8 +355,9 @@ function boot() {
       }
     },
     look,
-    immerseZoom(),
+    PERMALINK.zoom != null ? PERMALINK.zoom : immerseZoom(),
     atmosphereStops(glow),
+    PERMALINK.center || undefined,
   );
   mountStarfield(document.getElementById('starfield'), { reduced: REDUCED });
   window.__orbis = { map, overlay, counts: {} };
@@ -378,6 +386,13 @@ function boot() {
   wireFeedCollapse(document.getElementById('feed'), document.getElementById('feed-toggle'));
 
   map.on('zoom', () => { markBaseDirty(); drawAll(overlay); });
+
+  // 共有パーマリンク：現在のビュー（中心/ズーム）＋ON レイヤーを URL 化してコピー。
+  initShare(() => ({
+    center: [map.getCenter().lng, map.getCenter().lat],
+    zoom: map.getZoom(),
+    layers: [...ENABLED],
+  }));
 
   map.on('load', async () => {
     bootCtl.requestHandoff();
