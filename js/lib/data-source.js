@@ -1,11 +1,10 @@
 // data/snapshots の配信元を解決する純ヘルパ。本番=raw GitHub / ローカル=相対。
-// ⚠ raw GitHub 直配信はリポジトリが Public のときのみ機能する。orbis は現在 PRIVATE のため
-//   raw は匿名で 404 になる → REMOTE_ENABLED=false で無効化し相対(=Vercel 配信)にフォールバック。
-//   将来 Public 化 or 公開データ repo 導入時に REMOTE_ENABLED=true（必要なら RAW_BASE 更新）で有効化。
+// ⚠ raw GitHub 直配信はリポジトリが Public のときのみ機能する。
+//   data を orbis-data(public) へ分離したため raw を有効化。
 // data/static・config は対象外（常に相対）。
-export const RAW_BASE = 'https://raw.githubusercontent.com/sg55555/orbis/main/data/snapshots';
-// private repo のため raw 無効化中。本番も相対(Vercel 配信)を使う。
-export const REMOTE_ENABLED = false;
+export const RAW_BASE = 'https://raw.githubusercontent.com/sg55555/orbis-data/main';
+// orbis-data(public) へ分離・有効化。
+export const REMOTE_ENABLED = true;
 const LOCAL_BASE = 'data/snapshots';
 const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]', '']);
 
@@ -14,7 +13,7 @@ function _loc(loc) {
 }
 
 // ホスト/override だけで「raw を使いたい環境か」を判定（フラグ非依存・純粋）。
-// 将来 REMOTE_ENABLED を true にした時の判定ロジックはここに保持し、テストもここを対象にする。
+// REMOTE_ENABLED と分離しておくことで、判定ロジックをフラグに依らず単体テストできる。
 export function hostPrefersRemote(loc) {
   const l = _loc(loc);
   const search = l.search || '';
@@ -24,7 +23,7 @@ export function hostPrefersRemote(loc) {
 }
 
 export function isRemoteData(loc) {
-  // raw 無効化中(REMOTE_ENABLED=false)は環境に関わらず常に相対(Vercel 配信)。
+  // REMOTE_ENABLED が true の時だけ raw(orbis-data) を使う。false なら全環境で相対(Vercel 配信)。
   return REMOTE_ENABLED && hostPrefersRemote(loc);
 }
 

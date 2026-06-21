@@ -882,3 +882,25 @@ body.search-off #search { display: none; }
 @media (hover: hover) { .search-opt:hover { background: rgba(80, 160, 240, 0.20); } }
 @media (max-width: 760px) { #search { width: min(70vw, 360px); } }
 @media (prefers-reduced-motion: reduce) { #search-input { transition: none; } }
+
+/* ===== フィード可読性（?feed=on|off 既定on / immerse.js feed-*） =====
+   右イベントフィードのタイトルが幅260pxで1行省略(ellipsis)され、ニュース/地震の内容が
+   読めない（実測100行中49%省略・ニュースは約3/4見切れ）問題を解消。タイトルを最大2行で
+   折返し（短い地震/group 行は1行のまま＝密度キープ）、2行化に伴いドット/時刻/件数を上端
+   揃えに補正。ui-a の左アクセントバー/glow ドット等のリッチ化はそのまま継承。
+   off=before（白幅 nowrap+ellipsis のまま）。 */
+body.feed-on .feed-row { align-items: flex-start; }
+body.feed-on .feed-title {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+  line-height: 1.34;
+  overflow-wrap: anywhere;   /* 日本語＋長い英語URL/語の混在でも確実に折返す */
+}
+/* 1行目テキストの中心にドット/時刻/件数を合わせる（align-items:flex-start の上端揃え補正） */
+body.feed-on .feed-dot { margin-top: 4px; }
+body.feed-on .feed-time { margin-top: 2px; }
+body.feed-on .feed-count { margin-top: 1px; }
