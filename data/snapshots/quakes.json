@@ -1,8 +1,58 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T05:01:13Z",
-  "count": 212,
+  "updated": "2026-06-21T05:35:17Z",
+  "count": 213,
   "points": [
+    {
+      "id": "aka2026megqfc",
+      "lon": -148.238,
+      "lat": 62.942,
+      "depth": 5,
+      "mag": 1.7,
+      "place": "61 km SE of Cantwell, Alaska",
+      "time": 1782019582306,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026megqfc"
+    },
+    {
+      "id": "tx2026mchxkr",
+      "lon": -104.296,
+      "lat": 31.635,
+      "depth": 2.6717,
+      "mag": 0.2,
+      "place": "59 km NW of Toyah, Texas",
+      "time": 1782019445987,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mchxkr"
+    },
+    {
+      "id": "aka2026megknb",
+      "lon": -151.18,
+      "lat": 61.489,
+      "depth": 15.5,
+      "mag": 1.5,
+      "place": "36 km W of Susitna, Alaska",
+      "time": 1782019190801,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026megknb"
+    },
+    {
+      "id": "nc75380556",
+      "lon": -122.804664611816,
+      "lat": 38.824333190918,
+      "depth": 1.30999994277954,
+      "mag": 0.87,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1782018754080,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380556"
+    },
+    {
+      "id": "nc75380551",
+      "lon": -122.847999572754,
+      "lat": 38.8488349914551,
+      "depth": 1.37000000476837,
+      "mag": 0.44,
+      "place": "11 km WNW of Cobb, CA",
+      "time": 1782018037020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380551"
+    },
     {
       "id": "nc75380541",
       "lon": -122.727668762207,
@@ -2082,46 +2132,6 @@
       "place": "3 km SSW of Anderson Springs, CA",
       "time": 1781934519700,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380016"
-    },
-    {
-      "id": "ci41490984",
-      "lon": -116.736,
-      "lat": 33.6803333333333,
-      "depth": 15.15,
-      "mag": 0.39,
-      "place": "7 km SSW of Idyllwild, CA",
-      "time": 1781933241780,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490984"
-    },
-    {
-      "id": "ci41490976",
-      "lon": -118.023333333333,
-      "lat": 36.1783333333333,
-      "depth": 2.74,
-      "mag": 2.09,
-      "place": "12 km S of Olancha, CA",
-      "time": 1781932897330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490976"
-    },
-    {
-      "id": "hv74987007",
-      "lon": -155.599838256836,
-      "lat": 19.4281673431396,
-      "depth": 42.3800010681152,
-      "mag": 1.85,
-      "place": "27 km E of Honaunau-Napoopoo, Hawaii",
-      "time": 1781932202170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987007"
-    },
-    {
-      "id": "nc75380001",
-      "lon": -122.797668457031,
-      "lat": 38.816333770752,
-      "depth": 2.24000000953674,
-      "mag": 1.3,
-      "place": "6 km NW of The Geysers, CA",
-      "time": 1781931693680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380001"
     }
   ]
 }
