@@ -9,6 +9,7 @@ test('fipsToJa: 既知コードは「日本語名（CODE）」に展開', () => 
   assert.equal(fipsToJa('UK'), 'イギリス（UK）');
   assert.equal(fipsToJa('UP'), 'ウクライナ（UP）');
   assert.equal(fipsToJa('US'), 'アメリカ（US）');
+  assert.equal(fipsToJa('FS'), '仏領南方・南極地域（FS）'); // country_bounds にあり FIPS_JA 未収載だった
 });
 
 test('fipsToJa: 小文字/前後空白も正規化', () => {
