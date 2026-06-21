@@ -13,6 +13,11 @@ export function shouldShowMediaHint(mediaExists, mediaInView) {
   return mediaExists && !mediaInView;
 }
 
+// シート名 → 対応パネル要素 id（DOM 非依存・純粋）。
+export function sheetPanelId(sheet) {
+  return { layers: 'panel', feed: 'feed', legend: 'legend' }[sheet] || null;
+}
+
 // DOM 結線。クラス/属性操作だけで開閉する（アプリ状態に非依存）。
 export function initMobileNav(doc = document) {
   const body = doc.body;
@@ -25,14 +30,14 @@ export function initMobileNav(doc = document) {
 
   const current = () => {
     const v = body.getAttribute('data-sheet');
-    return (v === 'layers' || v === 'feed') ? v : null;
+    return (v === 'layers' || v === 'feed' || v === 'legend') ? v : null;
   };
 
   function setSheet(next) {
     body.setAttribute('data-sheet', next || 'none');
     tabBtns.forEach((b) => b.setAttribute('aria-expanded', String(b.dataset.sheet === next)));
     if (next) {
-      const panelEl = doc.getElementById(next === 'layers' ? 'panel' : 'feed');
+      const panelEl = doc.getElementById(sheetPanelId(next));
       const focusable = panelEl && (panelEl.querySelector('input, button, [tabindex]') || panelEl);
       if (focusable && focusable.focus) focusable.focus({ preventScroll: true });
     }

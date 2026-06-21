@@ -308,14 +308,14 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
   #panel-toggle, #feed-toggle { display: none; }
 
   /* LAYERS/FEED をボトムシート化：既定は画面外へ退避 */
-  #panel.side-panel, #feed.side-panel {
+  #panel.side-panel, #feed.side-panel, #legend.side-panel {
     left: 0; right: 0; top: auto; bottom: calc(60px + env(safe-area-inset-bottom)); width: auto; max-width: none;
     max-height: min(72dvh, 560px); border-radius: 16px 16px 0 0;
     padding-top: 18px; padding-bottom: calc(10px + env(safe-area-inset-bottom));
     transform: translateY(110%); transition: transform .28s ease; z-index: 8;
   }
   /* ドラッグハンドル */
-  #panel.side-panel::after, #feed.side-panel::after {
+  #panel.side-panel::after, #feed.side-panel::after, #legend.side-panel::after {
     content: ''; position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
     width: 40px; height: 4px; border-radius: 2px; background: var(--glass-rim);
   }
@@ -360,7 +360,7 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
     -webkit-backdrop-filter: blur(var(--glass-blur)); backdrop-filter: blur(var(--glass-blur));
   }
   #media-hint.hidden { display: none; }
-  body[data-sheet="layers"] #media-hint, body[data-sheet="feed"] #media-hint { display: none; }
+  body[data-sheet="layers"] #media-hint, body[data-sheet="feed"] #media-hint, body[data-sheet="legend"] #media-hint { display: none; }
 
   /* 鮮度ピル小型化 */
   #freshness { font-size: 10px; padding: 4px 7px; }
@@ -725,3 +725,16 @@ body.font-on #legend .legend-layer-name { font-family: var(--font-display); lett
 
 /* before 比較：?legend=off で隠す */
 body.legend-off #legend { display: none; }
+
+/* 凡例：モバイルはボトムシート化（panel/feed と同機構） */
+@media (max-width: 768px) {
+  /* デスクトップ右下指定を解除し、シート機構に委ねる */
+  #legend.legend-panel { right: 0; bottom: calc(60px + env(safe-area-inset-bottom)); width: auto; max-height: min(72dvh, 560px); }
+  /* モバイルでは常に展開状態で見せる（折りたたみトグルは不要） */
+  #legend .legend-tabs { display: flex; }
+  #legend .legend-body:not([hidden]) { display: block; }
+  #legend .legend-collapse { display: none; }
+  /* せり上げ＆ディマー */
+  body[data-sheet="legend"] #legend.side-panel { transform: translateY(0); }
+  body[data-sheet="legend"] #sheet-scrim { opacity: 1; pointer-events: auto; }
+}

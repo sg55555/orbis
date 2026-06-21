@@ -24,3 +24,14 @@ test('?legend=off で凡例を隠す', async ({ page }) => {
   await page.goto('/?legend=off');
   await expect(page.locator('#legend')).toBeHidden();
 });
+
+test.describe('モバイル', () => {
+  test.use({ viewport: { width: 390, height: 844 } });
+  test('凡例タブでシートを開く', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('#mobile-tabs .mobile-tab[data-sheet="legend"]').click();
+    await expect(page.locator('body')).toHaveAttribute('data-sheet', 'legend');
+    await expect(page.locator('#legend')).toBeVisible();
+    await expect(page.locator('#legend .legend-help-list, #legend .legend-body[data-body="legend"]')).toBeTruthy();
+  });
+});
