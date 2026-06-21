@@ -89,6 +89,14 @@ export function immerseLegend(search) {
   return m ? m[1].toLowerCase() : 'on';
 }
 
+// ?feed=on|off（大小無視）。右イベントフィードの可読性レイヤー。on=タイトルを最大2行で
+// 折返し（長いニュース/地震行のみ2行・短い group 行は1行維持＝密度キープ）＋2行化に伴い
+// ドット/時刻/件数を上端揃え（既定）。off=現状(before・幅260pxで1行省略 ellipsis のまま)。
+export function immerseFeed(search) {
+  const m = /[?&]feed=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // ?space=1|2|3|off（大小無視）。大画面 globe 周辺リッチ化（星密度/微粒子/周辺光）の強さ段。
 // 既定 off＝採用しない（2026-06-21 太田さん実機確定：周辺光が panel グラス越しに四角く滲む＝
 // 星雲面廃止と同じ問題。星密度/微粒子も四角い範囲内にしか効かず独立価値なし）。1|2|3 は比較用に残置。
@@ -111,6 +119,7 @@ export function immerseClasses(search) {
   out.push('font-' + immerseFont(search));
   out.push('sec-' + immerseSec(search));
   out.push('legend-' + immerseLegend(search));
+  out.push('feed-' + immerseFeed(search));
   out.push('space-' + immerseSpace(search));
   return out;
 }
