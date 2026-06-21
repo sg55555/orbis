@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T12:15:54Z",
-  "count": 206,
+  "updated": "2026-06-21T12:31:08Z",
+  "count": 204,
   "points": [
+    {
+      "id": "nc75380656",
+      "lon": -121.522499084473,
+      "lat": 37.1264991760254,
+      "depth": 6.8600001335144,
+      "mag": 1.25,
+      "place": "9 km ENE of San Martin, CA",
+      "time": 1782044595500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380656"
+    },
+    {
+      "id": "aka2026meujcf",
+      "lon": -150.801,
+      "lat": 61.77,
+      "depth": 52.5,
+      "mag": 1.8,
+      "place": "29 km NNW of Susitna, Alaska",
+      "time": 1782044281995,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026meujcf"
+    },
     {
       "id": "aka2026metxya",
       "lon": -148.987,
@@ -2022,46 +2042,6 @@
       "place": "7 km SE of Loma Linda, CA",
       "time": 1781958839530,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491112"
-    },
-    {
-      "id": "aka2026mcyqto",
-      "lon": -164.484,
-      "lat": 53.082,
-      "depth": 19.9,
-      "mag": 2.5,
-      "place": "144 km SE of Akutan, Alaska",
-      "time": 1781958451271,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcyqto"
-    },
-    {
-      "id": "aka2026mcypgy",
-      "lon": -178.755,
-      "lat": 51.109,
-      "depth": 22.4,
-      "mag": 2.3,
-      "place": "170 km WSW of Adak, Alaska",
-      "time": 1781958339606,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcypgy"
-    },
-    {
-      "id": "nc75380091",
-      "lon": -121.176170349121,
-      "lat": 36.5646667480469,
-      "depth": 2.24000000953674,
-      "mag": 1.16,
-      "place": "5 km NW of Pinnacles, CA",
-      "time": 1781957836200,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380091"
-    },
-    {
-      "id": "ci41491104",
-      "lon": -116.803,
-      "lat": 33.9988333333333,
-      "depth": 13.02,
-      "mag": 0.56,
-      "place": "9 km N of Cabazon, CA",
-      "time": 1781957728980,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491104"
     }
   ]
 }
