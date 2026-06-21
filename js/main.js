@@ -395,8 +395,16 @@ function boot() {
     layers: [...ENABLED],
   }));
 
-  // 国検索：UI を初期化（onSelect は次タスクで配線）。
-  initSearch(null);
+  // 国検索：候補選択で国の中心へ flyTo＋既存の着地リティクル（CYAN）を再利用。
+  initSearch((country) => {
+    selectedFlight = null;
+    selectedShip = null;
+    selected = { lon: country.lng, lat: country.lat, title: country.ja, layerId: 'search', at: performance.now() };
+    if (window.__orbis) window.__orbis.selected = selected;
+    map.flyTo({ center: [country.lng, country.lat], zoom: 4, duration: 1500, essential: true });
+    if (selPopup) selPopup.setLngLat([country.lng, country.lat]).setHTML(`<div class="sel-title">${country.ja}</div>`).addTo(map);
+    drawAll(overlay);
+  });
 
   map.on('load', async () => {
     bootCtl.requestHandoff();
