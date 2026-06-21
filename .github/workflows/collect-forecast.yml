@@ -2,7 +2,7 @@
 name: collect-forecast
 on:
   schedule:
-    - cron: '42 * * * *'    # 毎時:42（既存ANTHROPIC_API_KEY流用）
+    - cron: '42 */2 * * *'    # 2時間毎:42（Vercel Hobbyデプロイ上限対策で毎時→2h・briefing/instabilityと同cadence・別オフセット）
   workflow_dispatch: {}
 permissions:
   contents: write
