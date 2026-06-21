@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T09:15:49Z",
-  "count": 210,
+  "updated": "2026-06-21T09:31:08Z",
+  "count": 214,
   "points": [
+    {
+      "id": "ci41491672",
+      "lon": -117.456833333333,
+      "lat": 34.1258333333333,
+      "depth": 9.09,
+      "mag": 0.88,
+      "place": "3 km N of Fontana, CA",
+      "time": 1782033849370,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491672"
+    },
+    {
+      "id": "ci41491664",
+      "lon": -116.663166666667,
+      "lat": 33.452,
+      "depth": 4.2,
+      "mag": 0.24,
+      "place": "11 km S of Anza, CA",
+      "time": 1782033816020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491664"
+    },
+    {
+      "id": "tx2026mcpmeq",
+      "lon": -103.874,
+      "lat": 31.508,
+      "depth": 5.0711,
+      "mag": 1.6,
+      "place": "22 km NNW of Toyah, Texas",
+      "time": 1782033126591,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcpmeq"
+    },
     {
       "id": "aka2026menpun",
       "lon": -148.172,
@@ -12,6 +42,16 @@
       "place": "62 km SE of Cantwell, Alaska",
       "time": 1782032150620,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026menpun"
+    },
+    {
+      "id": "us7000suyj",
+      "lon": -70.6857,
+      "lat": -17.055,
+      "depth": 120.557,
+      "mag": 4.7,
+      "place": "16 km E of Torata, Peru",
+      "time": 1782031813934,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suyj"
     },
     {
       "id": "aka2026memveh",
