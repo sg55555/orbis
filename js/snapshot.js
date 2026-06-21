@@ -1,14 +1,25 @@
 // data/snapshots/*.json と manifest.json を取得・ポーリングする薄いI/O層。
-const BASE = 'data/snapshots';
+// 本番は raw GitHub（Fastly エッジキャッシュ）、ローカルは相対＋即時鮮度。配信元判定は data-source.js。
+import { snapshotBaseUrl, isRemoteData } from './lib/data-source.js';
+
+async function _fetchJson(name) {
+  const base = snapshotBaseUrl();
+  if (isRemoteData()) {
+    // 本番: raw GitHub。?t= を付けず Fastly のエッジキャッシュ(≈300s)に載せる。
+    return fetch(`${base}/${name}.json`);
+  }
+  // ローカル: 即時鮮度（テストデータ反映）。
+  return fetch(`${base}/${name}.json?t=${Date.now()}`, { cache: 'no-store' });
+}
 
 export async function fetchSnapshot(layerId) {
-  const res = await fetch(`${BASE}/${layerId}.json?t=${Date.now()}`, { cache: 'no-store' });
+  const res = await _fetchJson(layerId);
   if (!res.ok) throw new Error(`snapshot ${layerId} ${res.status}`);
   return res.json();
 }
 
 export async function fetchManifest() {
-  const res = await fetch(`${BASE}/manifest.json?t=${Date.now()}`, { cache: 'no-store' });
+  const res = await _fetchJson('manifest');
   if (!res.ok) return { layers: {} };
   return res.json();
 }

@@ -15,6 +15,7 @@ import { renderBriefing } from './ui/briefing.js';
 import { renderInstability } from './ui/instability.js';
 import { renderForecasts } from './ui/forecast.js';
 import { initBoot } from './ui/boot.js';
+import { snapshotUrl } from './lib/data-source.js';
 import { initLiveCaptions } from './ui/live-captions.js';
 import { diffNewIds, normalizedTimestamps } from './lib/motion.js';
 import { selectionPopupHtml, buildReticleConfigs, flightPopupHtml, shipPopupHtml, newsPopupHtml, buildProjectionConfigs, gdeltEventPopupHtml, gdeltCountryPopupHtml } from './lib/selection.js';
@@ -436,7 +437,7 @@ function boot() {
     // AI ワールド・ブリーフィング（毎時 Sonnet 合成・メディアの下）。
     const briefRoot = document.getElementById('ai-brief');
     try {
-      const brief = await fetch('data/snapshots/briefing.json').then((r) => r.json()).catch(() => null);
+      const brief = await fetch(snapshotUrl('briefing')).then((r) => r.ok ? r.json() : null).catch(() => null);
       if (brief && (brief.lead || (brief.cards && brief.cards.length)) && briefRoot) {
         renderBriefing(briefRoot, brief, {
           onSelect: (c) => {
@@ -457,7 +458,7 @@ function boot() {
     // 国家不安定性インデックス（毎時・メディア/briefing の下）。
     const insRoot = document.getElementById('instability');
     try {
-      const ins = await fetch('data/snapshots/instability.json').then((r) => r.json()).catch(() => null);
+      const ins = await fetch(snapshotUrl('instability')).then((r) => r.ok ? r.json() : null).catch(() => null);
       if (ins && ins.countries && ins.countries.length && insRoot) {
         renderInstability(insRoot, ins, {
           onSelect: (c) => {
@@ -478,7 +479,7 @@ function boot() {
     // AI FORECASTS（ドメイン別リスク見通し・毎時・instability の下）。
     const fcRoot = document.getElementById('forecasts');
     try {
-      const fc = await fetch('data/snapshots/forecast.json').then((r) => r.ok ? r.json() : null).catch(() => null);
+      const fc = await fetch(snapshotUrl('forecast')).then((r) => r.ok ? r.json() : null).catch(() => null);
       if (fc && fc.cards && fc.cards.length && fcRoot) {
         renderForecasts(fcRoot, fc, {
           onSelect: (card) => {
