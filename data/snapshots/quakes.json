@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T02:45:46Z",
-  "count": 219,
+  "updated": "2026-06-21T03:01:16Z",
+  "count": 221,
   "points": [
+    {
+      "id": "ci41491560",
+      "lon": -117.474833333333,
+      "lat": 34.1486666666667,
+      "depth": 6.99,
+      "mag": 0.87,
+      "place": "6 km NNW of Fontana, CA",
+      "time": 1782009954230,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491560"
+    },
+    {
+      "id": "nc75380486",
+      "lon": -122.77766418457,
+      "lat": 38.753833770752,
+      "depth": 3.32999992370605,
+      "mag": 0.63,
+      "place": "3 km SW of The Geysers, CA",
+      "time": 1782009841390,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380486"
+    },
+    {
+      "id": "nc75380481",
+      "lon": -122.825668334961,
+      "lat": 38.8400001525879,
+      "depth": 1.52999997138977,
+      "mag": 0.7,
+      "place": "9 km WNW of Cobb, CA",
+      "time": 1782009821660,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380481"
+    },
     {
       "id": "nc75380471",
       "lon": -122.842002868652,
@@ -12,6 +42,16 @@
       "place": "9 km NW of The Geysers, CA",
       "time": 1782009440740,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380471"
+    },
+    {
+      "id": "us7000suxs",
+      "lon": 99.7076,
+      "lat": -1.2742,
+      "depth": 52.911,
+      "mag": 4.7,
+      "place": "80 km WSW of Padang, Indonesia",
+      "time": 1782009208744,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suxs"
     },
     {
       "id": "ci41491552",
@@ -2172,26 +2212,6 @@
       "place": "9 km NNE of Banning, CA",
       "time": 1781924604860,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490936"
-    },
-    {
-      "id": "aka2026mcfjlo",
-      "lon": -147.332,
-      "lat": 64.802,
-      "depth": 5,
-      "mag": 1,
-      "place": "5 km N of North Pole, Alaska",
-      "time": 1781923760638,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcfjlo"
-    },
-    {
-      "id": "us7000sus6",
-      "lon": 160.7349,
-      "lat": 52.1491,
-      "depth": 10,
-      "mag": 4.3,
-      "place": "175 km SE of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781923574818,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus6"
     }
   ]
 }
