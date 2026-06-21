@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T09:31:08Z",
-  "count": 214,
+  "updated": "2026-06-21T09:45:51Z",
+  "count": 213,
   "points": [
+    {
+      "id": "tx2026mcqdya",
+      "lon": -103.427,
+      "lat": 31.304,
+      "depth": 7.2882,
+      "mag": 1.7,
+      "place": "12 km SE of Lindsay, Texas",
+      "time": 1782034364453,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcqdya"
+    },
     {
       "id": "ci41491672",
       "lon": -117.456833333333,
@@ -2122,26 +2132,6 @@
       "place": "6 km S of Palomar Observatory, CA",
       "time": 1781949220000,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491048"
-    },
-    {
-      "id": "us7000sutj",
-      "lon": 24.0997,
-      "lat": 34.7437,
-      "depth": 10,
-      "mag": 5.2,
-      "place": "10 km S of Kastrí, Greece",
-      "time": 1781948244290,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sutj"
-    },
-    {
-      "id": "us7000suti",
-      "lon": 24.2303,
-      "lat": 34.6941,
-      "depth": 10,
-      "mag": 4.9,
-      "place": "20 km SE of Kastrí, Greece",
-      "time": 1781947868478,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suti"
     }
   ]
 }
