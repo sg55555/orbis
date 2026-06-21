@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T02:31:02Z",
-  "count": 218,
+  "updated": "2026-06-21T02:45:46Z",
+  "count": 219,
   "points": [
+    {
+      "id": "nc75380471",
+      "lon": -122.842002868652,
+      "lat": 38.8223342895508,
+      "depth": 2.09999990463257,
+      "mag": 0.75,
+      "place": "9 km NW of The Geysers, CA",
+      "time": 1782009440740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380471"
+    },
     {
       "id": "ci41491552",
       "lon": -117.478,
@@ -32,6 +42,16 @@
       "place": "2 km ESE of The Geysers, CA",
       "time": 1782008447940,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380451"
+    },
+    {
+      "id": "us7000suxn",
+      "lon": 81.2209,
+      "lat": 33.6468,
+      "depth": 10,
+      "mag": 4.3,
+      "place": "western Xizang",
+      "time": 1782008365206,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suxn"
     },
     {
       "id": "aka2026meafnj",
@@ -2172,16 +2192,6 @@
       "place": "175 km SE of Petropavlovsk-Kamchatsky, Russia",
       "time": 1781923574818,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus6"
-    },
-    {
-      "id": "nc75379951",
-      "lon": -122.810997009277,
-      "lat": 38.8393325805664,
-      "depth": 2.0699999332428,
-      "mag": 0.72,
-      "place": "8 km WNW of Cobb, CA",
-      "time": 1781923379090,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379951"
     }
   ]
 }
