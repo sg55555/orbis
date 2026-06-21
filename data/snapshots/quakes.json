@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T04:01:15Z",
-  "count": 221,
+  "updated": "2026-06-21T04:15:55Z",
+  "count": 223,
   "points": [
+    {
+      "id": "nc75380536",
+      "lon": -121.519165039062,
+      "lat": 36.7968330383301,
+      "depth": 6.53000020980835,
+      "mag": 1.16,
+      "place": "6 km SSE of San Juan Bautista, CA",
+      "time": 1782014572290,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380536"
+    },
     {
       "id": "aka2026medoek",
       "lon": -153.255,
@@ -154,6 +164,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suxs"
     },
     {
+      "id": "aka2026meauou",
+      "lon": -140.642,
+      "lat": 60.084,
+      "depth": 1.4,
+      "mag": 1.8,
+      "place": "78 km NW of Yakutat, Alaska",
+      "time": 1782009082931,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026meauou"
+    },
+    {
       "id": "ci41491552",
       "lon": -117.478,
       "lat": 35.6065,
@@ -165,12 +185,12 @@
     },
     {
       "id": "aka2026meapiz",
-      "lon": -146.729,
-      "lat": 61.381,
-      "depth": 29.1,
-      "mag": 3.7,
-      "place": "34 km NW of Valdez, Alaska",
-      "time": 1782008730457,
+      "lon": -146.722,
+      "lat": 61.389,
+      "depth": 23.4,
+      "mag": 3.5,
+      "place": "35 km NW of Valdez, Alaska",
+      "time": 1782008730316,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026meapiz"
     },
     {
