@@ -9,6 +9,38 @@ export function starCount(w, h, level = 'off', density = 0.00018) {
   return Math.min(cap, Math.round(w * h * density));
 }
 
+// 微粒子ダスト（globe 周辺を漂う極小の塵）。level で個数を連動。
+const DUST_COUNT = { off: 0, 1: 18, 2: 32, 3: 48 };
+export function dustCount(level = 'off') {
+  return Object.prototype.hasOwnProperty.call(DUST_COUNT, level) ? DUST_COUNT[level] : 0;
+}
+
+export function generateDust(count, w, h, rng = Math.random) {
+  const dust = [];
+  for (let i = 0; i < count; i++) {
+    dust.push({
+      x: rng() * w,
+      y: rng() * h,
+      r: 0.3 + rng() * 0.5,
+      vx: (rng() - 0.5) * 0.018, // ±0.009 px/ms 程度の極低速
+      vy: (rng() - 0.5) * 0.018,
+      alpha: 0.05 + rng() * 0.13,
+    });
+  }
+  return dust;
+}
+
+// dt(ms) ぶんドリフトさせ、画面外に出たら反対側へラップ（in-place・テスト可能）。
+export function stepDust(dust, dt, w, h) {
+  for (const d of dust) {
+    d.x += d.vx * dt;
+    d.y += d.vy * dt;
+    d.x = ((d.x % w) + w) % w; // 負も正も [0,w) にラップ
+    d.y = ((d.y % h) + h) % h;
+  }
+  return dust;
+}
+
 // rng: () => [0,1) の関数（テストでは seeded を注入）。
 // tw/sp は明滅の位相と速度（描画時にのみ使用。基準 alpha は変えない）。
 // brightRatio>0 で一部を「明るい星」に（奥行き）。brightRatio=0 は既存挙動（rng 消費順・レンジ不変）。

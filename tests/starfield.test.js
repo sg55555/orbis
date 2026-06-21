@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { generateStars, starCount } from '../js/lib/starfield.js';
+import { generateStars, starCount, generateDust, stepDust, dustCount } from '../js/lib/starfield.js';
 
 // 決定的 RNG（線形合同法）でテストを再現可能に
 function seeded(seed) {
@@ -70,5 +70,32 @@ test('generateStars: brightRatio>0 で一部が bright（大きく明るい）',
   for (const s of bright) {
     assert.ok(s.r >= 1.3 && s.r <= 2.2);       // bright は大きい
     assert.ok(s.alpha >= 0.75 && s.alpha <= 1.0); // bright は明るい
+  }
+});
+
+test('dustCount: level 連動（off=0 / 1=18 / 2=32 / 3=48）', () => {
+  assert.equal(dustCount('off'), 0);
+  assert.equal(dustCount('1'), 18);
+  assert.equal(dustCount('2'), 32);
+  assert.equal(dustCount('3'), 48);
+  assert.equal(dustCount('zzz'), 0);
+});
+
+test('generateDust: 指定個数・画面内・極淡 alpha・極小 r', () => {
+  const dust = generateDust(40, 800, 600, seeded(11));
+  assert.equal(dust.length, 40);
+  for (const d of dust) {
+    assert.ok(d.x >= 0 && d.x <= 800 && d.y >= 0 && d.y <= 600);
+    assert.ok(d.r >= 0.3 && d.r <= 0.8);
+    assert.ok(d.alpha >= 0.05 && d.alpha <= 0.18);
+  }
+});
+
+test('stepDust: ドリフト後も画面内にラップされる', () => {
+  const dust = generateDust(30, 100, 100, seeded(12));
+  stepDust(dust, 10000, 100, 100); // 大きな dt でも
+  for (const d of dust) {
+    assert.ok(d.x >= 0 && d.x <= 100, 'x ラップ');
+    assert.ok(d.y >= 0 && d.y <= 100, 'y ラップ');
   }
 });
