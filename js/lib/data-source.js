@@ -13,13 +13,19 @@ function _loc(loc) {
   return loc || (typeof location !== 'undefined' ? location : { hostname: '', search: '' });
 }
 
-export function isRemoteData(loc) {
-  if (!REMOTE_ENABLED) return false; // raw 無効化中は常に相対(Vercel 配信)
+// ホスト/override だけで「raw を使いたい環境か」を判定（フラグ非依存・純粋）。
+// 将来 REMOTE_ENABLED を true にした時の判定ロジックはここに保持し、テストもここを対象にする。
+export function hostPrefersRemote(loc) {
   const l = _loc(loc);
   const search = l.search || '';
   if (/[?&]data=local(\b|$)/.test(search)) return false;
   if (/[?&]data=github(\b|$)/.test(search)) return true;
   return !LOCAL_HOSTS.has(l.hostname || '');
+}
+
+export function isRemoteData(loc) {
+  // raw 無効化中(REMOTE_ENABLED=false)は環境に関わらず常に相対(Vercel 配信)。
+  return REMOTE_ENABLED && hostPrefersRemote(loc);
 }
 
 export function snapshotBaseUrl(loc) {
