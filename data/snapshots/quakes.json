@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T04:15:55Z",
-  "count": 223,
+  "updated": "2026-06-21T04:31:02Z",
+  "count": 220,
   "points": [
+    {
+      "id": "nc75380541",
+      "lon": -122.727668762207,
+      "lat": 38.7683334350586,
+      "depth": 1.73000001907349,
+      "mag": 0.45,
+      "place": "3 km ESE of The Geysers, CA",
+      "time": 1782015356760,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380541"
+    },
     {
       "id": "nc75380536",
       "lon": -121.519165039062,
@@ -2174,6 +2184,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susf"
     },
     {
+      "id": "av94256653",
+      "lon": -169.863166666667,
+      "lat": 52.8876666666667,
+      "depth": 7.98,
+      "mag": 0.72,
+      "place": "67 km W of Nikolski, Alaska",
+      "time": 1781930152740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256653"
+    },
+    {
       "id": "us7000suse",
       "lon": 94.8277,
       "lat": 24.6251,
@@ -2182,56 +2202,6 @@
       "place": "77 km E of Wāngjing, India",
       "time": 1781929990051,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suse"
-    },
-    {
-      "id": "ci41490952",
-      "lon": -116.744166666667,
-      "lat": 33.3141666666667,
-      "depth": 17.36,
-      "mag": 0.99,
-      "place": "8 km NNE of Lake Henshaw, CA",
-      "time": 1781929652900,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490952"
-    },
-    {
-      "id": "pr71520683",
-      "lon": -68.5605,
-      "lat": 18.1091666666667,
-      "depth": 70.35,
-      "mag": 3.43,
-      "place": "30 km S of Boca de Yuma, Dominican Republic",
-      "time": 1781929622720,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520683"
-    },
-    {
-      "id": "nc75379981",
-      "lon": -122.790336608887,
-      "lat": 38.78466796875,
-      "depth": 0.699999988079071,
-      "mag": 0.97,
-      "place": "3 km WNW of The Geysers, CA",
-      "time": 1781929528940,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379981"
-    },
-    {
-      "id": "tx2026makahe",
-      "lon": -103.734,
-      "lat": 31.714,
-      "depth": 0,
-      "mag": 1.2,
-      "place": "12 km W of Mentone, Texas",
-      "time": 1781929107273,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026makahe"
-    },
-    {
-      "id": "tx2026majzoj",
-      "lon": -101.916,
-      "lat": 32.255,
-      "depth": 7.9346,
-      "mag": 2.1,
-      "place": "18 km NW of Stanton, Texas",
-      "time": 1781929055464,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026majzoj"
     }
   ]
 }
