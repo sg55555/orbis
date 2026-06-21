@@ -108,6 +108,31 @@ def test_update_history_appends_and_trims():
     assert out["conflict:UP"][-1] == {"t": 10_000_000_000, "raw": 9.0, "score": 55}
 
 
+def test_update_history_drops_stale_entries():
+    """FIFO trim: history_days より古いエントリは cut-off で落とされること。"""
+    now_ms = 10_000_000_000
+    history_days = CFG["history_days"]
+    cutoff = now_ms - history_days * 86400_000
+
+    stale_t = cutoff - 1  # カットオフより 1ms 前 → 落とされるべき
+    recent_t = cutoff + 1  # カットオフより 1ms 後 → 残るべき
+
+    old = {"conflict:UP": [
+        {"t": stale_t,  "raw": 3.0, "score": 20},  # stale — 落とされる
+        {"t": recent_t, "raw": 7.0, "score": 45},  # recent — 残る
+    ]}
+    items = [{"key": "conflict:UP", "raw": 9.0, "score": 55}]
+    out = F.update_history(old, items, now_ms=now_ms, cfg=CFG)
+
+    result = out["conflict:UP"]
+    # 新エントリを含めて: stale が除外されるので計 2 件（recent + new）
+    assert len(result) == 2, f"stale エントリが除外され 2 件のはず。得られた件数: {len(result)}"
+    # stale エントリのタイムスタンプが存在しないこと
+    assert all(e["t"] != stale_t for e in result), f"stale エントリ (t={stale_t}) が残っている"
+    # 最後のエントリが今回追加されたもの
+    assert result[-1] == {"t": now_ms, "raw": 9.0, "score": 55}
+
+
 def test_build_cards_shape_and_watch():
     items = [{"key":"conflict:UP","domain":"conflict","place_key":"UP","scope":"country",
               "raw":30.0,"score":80,"level":5,"momentum":2.0,"lat":49,"lon":32,
@@ -170,6 +195,9 @@ def test_is_advice_detects_colloquial_forms():
     assert F.is_advice("緊張が高まる恐れがある") is False, "normal outlook"
     assert F.is_advice("情勢が悪化しうる") is False, "normal uncertainty expression"
     assert F.is_advice("警戒すべき状況が続く") is False, "should not block 警戒すべき"
+    # Fix 1 regression: 日常語の誤検出
+    assert F.is_advice("買い物客の混雑が懸念される") is False, "買い物 should not trigger advice filter"
+    assert F.is_advice("売り上げが減少する恐れ") is False, "売り上げ should not trigger advice filter"
 
 
 def test_apply_narratives_drops_advice():

@@ -2,7 +2,7 @@
 name: collect-forecast
 on:
   schedule:
-    - cron: '37 * * * *'    # 毎時:37（既存ANTHROPIC_API_KEY流用）
+    - cron: '42 * * * *'    # 毎時:42（既存ANTHROPIC_API_KEY流用）
   workflow_dispatch: {}
 permissions:
   contents: write

@@ -97,7 +97,7 @@ def aggregate_signals(snaps, polys, instab, cfg):
                 b["raw"] += c; b["counts"]["quakes"] = b["counts"].get("quakes", 0) + 1
     # market / cyber：news キーワード（GLOBAL）
     for dom in ("market", "cyber"):
-        kws = cfg["keywords"][dom]
+        kws = cfg["keywords"].get(dom, [])
         b = _bucket(acc, f"{dom}:GLOBAL", dom, "global", "GLOBAL")
         for it in (snaps.get("news") or {}).get("items", []) or []:
             text = f"{it.get('title_ja','')} {it.get('summary_ja','')}"
@@ -293,7 +293,7 @@ def apply_narratives(cards, narr):
         c["outlook_ja"] = o; c["rationale_ja"] = r; c["ai_generated"] = True
 
 
-_ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買[うい]|売[るり]|投資すべき|購入すべき|攻撃せよ|攻撃を推奨|おすすめ|お勧め|勧める|勧めます)")
+_ADVICE_RE = re.compile(r"(べきだ|べきです|推奨|買[うい]だ|売[るり]だ|投資すべき|購入すべき|攻撃せよ|攻撃を推奨|おすすめ|お勧め|勧める|勧めます)")
 
 def is_advice(text):
     """テキストが投資・軍事などの具体的な行動助言を含むかチェック。
