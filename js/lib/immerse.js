@@ -89,6 +89,13 @@ export function immerseLegend(search) {
   return m ? m[1].toLowerCase() : 'on';
 }
 
+// ?search=on|off（大小無視）。globe 上部中央の国検索ボックスの表示。既定 on。
+// off は before 比較用（body.search-off で #search を隠す）。
+export function immerseSearch(search) {
+  const m = /[?&]search=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // ?space=1|2|3|off（大小無視）。大画面 globe 周辺リッチ化（星密度/微粒子/周辺光）の強さ段。
 // 既定 off＝採用しない（2026-06-21 太田さん実機確定：周辺光が panel グラス越しに四角く滲む＝
 // 星雲面廃止と同じ問題。星密度/微粒子も四角い範囲内にしか効かず独立価値なし）。1|2|3 は比較用に残置。
@@ -111,6 +118,7 @@ export function immerseClasses(search) {
   out.push('font-' + immerseFont(search));
   out.push('sec-' + immerseSec(search));
   out.push('legend-' + immerseLegend(search));
+  out.push('search-' + immerseSearch(search));
   out.push('space-' + immerseSpace(search));
   return out;
 }
