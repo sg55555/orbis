@@ -1,16 +1,26 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T00:15:52Z",
-  "count": 200,
+  "updated": "2026-06-21T00:31:03Z",
+  "count": 202,
   "points": [
     {
+      "id": "nn00920521",
+      "lon": -117.808,
+      "lat": 38.173,
+      "depth": 1.0625,
+      "mag": 1.53,
+      "place": "35 km SE of Mina, Nevada",
+      "time": 1782001154895,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920521"
+    },
+    {
       "id": "ci41491520",
-      "lon": -116.086166381836,
-      "lat": 33.2331657409668,
-      "depth": 6.23000001907349,
-      "mag": 1.22831070920164,
+      "lon": -116.081833333333,
+      "lat": 33.2315,
+      "depth": 9.65,
+      "mag": 1.02,
       "place": "11 km NNE of Ocotillo Wells, CA",
-      "time": 1782000793530,
+      "time": 1782000793360,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491520"
     },
     {
@@ -1814,6 +1824,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520673"
     },
     {
+      "id": "us7000sus8",
+      "lon": 20.6106,
+      "lat": 39.6947,
+      "depth": 10,
+      "mag": 4.3,
+      "place": "10 km W of Rodotópi, Greece",
+      "time": 1781926631936,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sus8"
+    },
+    {
       "id": "tx2026maiiwx",
       "lon": -101.916,
       "lat": 32.255,
@@ -1944,6 +1964,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surx"
     },
     {
+      "id": "us7000surw",
+      "lon": -70.9171,
+      "lat": -32.9534,
+      "depth": 80.379,
+      "mag": 4.2,
+      "place": "13 km SSE of Llaillay, Chile",
+      "time": 1781919128132,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surw"
+    },
+    {
       "id": "us7000suru",
       "lon": -66.2168,
       "lat": -22.4725,
@@ -1992,16 +2022,6 @@
       "place": "21 km SSE of Pāhala, Hawaii",
       "time": 1781915880670,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986912"
-    },
-    {
-      "id": "tx2026mabyxi",
-      "lon": -101.792,
-      "lat": 32.133,
-      "depth": 8.5449,
-      "mag": 0.8,
-      "place": "0 km NW of Stanton, Texas",
-      "time": 1781914544266,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mabyxi"
     }
   ]
 }
