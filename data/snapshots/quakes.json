@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T07:15:51Z",
-  "count": 223,
+  "updated": "2026-06-21T07:31:07Z",
+  "count": 225,
   "points": [
+    {
+      "id": "ci41491640",
+      "lon": -119.198,
+      "lat": 34.4501666666667,
+      "depth": 10.04,
+      "mag": 1.18,
+      "place": "4 km E of Ojai, CA",
+      "time": 1782026326020,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491640"
+    },
+    {
+      "id": "ci41491632",
+      "lon": -119.209166666667,
+      "lat": 34.4708333333333,
+      "depth": 7.64,
+      "mag": 1.15,
+      "place": "4 km NE of Ojai, CA",
+      "time": 1782026299790,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491632"
+    },
     {
       "id": "ci41491624",
       "lon": -116.474,
@@ -82,6 +102,16 @@
       "place": "11 km WNW of Cobb, CA",
       "time": 1782024068600,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380581"
+    },
+    {
+      "id": "us7000suy7",
+      "lon": -115.7925,
+      "lat": 24.2032,
+      "depth": 10,
+      "mag": 4.6,
+      "place": "Off the coast of Baja California Sur, Mexico",
+      "time": 1782023518676,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suy7"
     },
     {
       "id": "us7000suy8",
@@ -2222,16 +2252,6 @@
       "place": "59 km S of Whites City, New Mexico",
       "time": 1781940785166,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqmbj"
-    },
-    {
-      "id": "tx2026maqecs",
-      "lon": -104.428,
-      "lat": 31.647,
-      "depth": 6.3049,
-      "mag": 1.6,
-      "place": "58 km S of Whites City, New Mexico",
-      "time": 1781940234758,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026maqecs"
     }
   ]
 }
