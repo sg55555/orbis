@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T07:45:54Z",
+  "updated": "2026-06-21T08:01:16Z",
   "count": 225,
   "points": [
+    {
+      "id": "ci41491656",
+      "lon": -116.649,
+      "lat": 33.4348333333333,
+      "depth": 6.04,
+      "mag": 1.37,
+      "place": "14 km S of Anza, CA",
+      "time": 1782027839420,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491656"
+    },
     {
       "id": "nc75380606",
       "lon": -124.794166564941,
@@ -2242,16 +2252,6 @@
       "place": "18 km N of Pāhala, Hawaii",
       "time": 1781942555410,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987087"
-    },
-    {
-      "id": "aka2026mcpize",
-      "lon": -151.78,
-      "lat": 60.631,
-      "depth": 86.4,
-      "mag": 1.4,
-      "place": "25 km W of Salamatof, Alaska",
-      "time": 1781941718758,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcpize"
     }
   ]
 }
