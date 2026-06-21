@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fetchSnapshot } from '../js/snapshot.js';
+import { RAW_BASE } from '../js/lib/data-source.js';
 
 function withEnv(hostname, run) {
   const origLoc = globalThis.location;
@@ -17,13 +18,11 @@ function withEnv(hostname, run) {
   });
 }
 
-// REMOTE_ENABLED=false（private repo のため raw 無効）の間は、本番ホストでも相対(Vercel 配信)。
-// ?t= キャッシュバスター＋no-store の即時鮮度 I/O を担保する。
-test('raw 無効化中: 本番ホストでも相対 URL・?t= 付き・no-store', async () => {
+test('remote(本番): orbis-data raw URL・?t= 無し・no-store 無し', async () => {
   await withEnv('orbis-beta.vercel.app', async (calls) => {
     await fetchSnapshot('quakes');
-    assert.match(calls[0].url, /^data\/snapshots\/quakes\.json\?t=\d+$/);
-    assert.equal(calls[0].init.cache, 'no-store');
+    assert.equal(calls[0].url, RAW_BASE + '/quakes.json');
+    assert.ok(!calls[0].init || calls[0].init.cache !== 'no-store');
   });
 });
 
