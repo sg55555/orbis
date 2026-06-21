@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T12:31:08Z",
-  "count": 204,
+  "updated": "2026-06-21T12:45:51Z",
+  "count": 203,
   "points": [
     {
       "id": "nc75380656",
@@ -2032,16 +2032,6 @@
       "place": "16 km WSW of Ivanof Bay, Alaska",
       "time": 1781959657885,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mczifa"
-    },
-    {
-      "id": "ci41491112",
-      "lon": -117.216166666667,
-      "lat": 34.0003333333333,
-      "depth": 6.51,
-      "mag": 0.9,
-      "place": "7 km SE of Loma Linda, CA",
-      "time": 1781958839530,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491112"
     }
   ]
 }
