@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T09:01:15Z",
-  "count": 216,
+  "updated": "2026-06-21T09:15:49Z",
+  "count": 210,
   "points": [
     {
       "id": "aka2026menpun",
@@ -2102,66 +2102,6 @@
       "place": "20 km SE of Kastrí, Greece",
       "time": 1781947868478,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suti"
-    },
-    {
-      "id": "aka2026mcsfev",
-      "lon": -159.735,
-      "lat": 55.908,
-      "depth": 11.7,
-      "mag": 1.4,
-      "place": "15 km W of Ivanof Bay, Alaska",
-      "time": 1781946852790,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcsfev"
-    },
-    {
-      "id": "aka2026mcscqz",
-      "lon": -153.569,
-      "lat": 57.012,
-      "depth": 19.2,
-      "mag": 2.1,
-      "place": "26 km SW of Old Harbor, Alaska",
-      "time": 1781946680385,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcscqz"
-    },
-    {
-      "id": "av94257018",
-      "lon": -176.123,
-      "lat": 52.0771666666667,
-      "depth": -1.77,
-      "mag": -0.08,
-      "place": "41 km ENE of Adak, Alaska",
-      "time": 1781946458100,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257018"
-    },
-    {
-      "id": "nc75380036",
-      "lon": -122.763496398926,
-      "lat": 38.7941665649414,
-      "depth": 1.5,
-      "mag": 0.81,
-      "place": "2 km NNW of The Geysers, CA",
-      "time": 1781946304260,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380036"
-    },
-    {
-      "id": "av94257013",
-      "lon": -178.793,
-      "lat": 51.782,
-      "depth": 15.1,
-      "mag": 0.27,
-      "place": "149 km W of Adak, Alaska",
-      "time": 1781946148440,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257013"
-    },
-    {
-      "id": "hv74987117",
-      "lon": -155.102828979492,
-      "lat": 19.3579998016357,
-      "depth": 31.2199993133545,
-      "mag": 1.7,
-      "place": "12 km SSE of Fern Forest, Hawaii",
-      "time": 1781946129120,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987117"
     }
   ]
 }
