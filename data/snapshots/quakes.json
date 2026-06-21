@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T01:45:47Z",
-  "count": 216,
+  "updated": "2026-06-21T02:01:14Z",
+  "count": 215,
   "points": [
+    {
+      "id": "ci41491544",
+      "lon": -117.219,
+      "lat": 34.0061666666667,
+      "depth": 5.27,
+      "mag": 0.83,
+      "place": "6 km SE of Loma Linda, CA",
+      "time": 1782006827690,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491544"
+    },
+    {
+      "id": "uw714028431",
+      "lon": -121.124168395996,
+      "lat": 46.7378349304199,
+      "depth": -1.07000005245209,
+      "mag": 1.76998829841614,
+      "place": "16 km WSW of Nile, Washington",
+      "time": 1782006307480,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714028431"
+    },
     {
       "id": "aka2026mdzblv",
       "lon": -153.549,
@@ -2132,36 +2152,6 @@
       "place": "17 km NNW of Indian Springs, Nevada",
       "time": 1781921236609,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nn00920494"
-    },
-    {
-      "id": "ci41490920",
-      "lon": -117.390166666667,
-      "lat": 35.9556666666667,
-      "depth": 2.43,
-      "mag": 1.16,
-      "place": "21 km N of Searles Valley, CA",
-      "time": 1781920463510,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490920"
-    },
-    {
-      "id": "aka2026mcdmvh",
-      "lon": -136.242,
-      "lat": 57.295,
-      "depth": 6.7,
-      "mag": 1.6,
-      "place": "61 km WNW of Sitka, Alaska",
-      "time": 1781920396173,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcdmvh"
-    },
-    {
-      "id": "us7000sury",
-      "lon": 147.9179,
-      "lat": -57.129,
-      "depth": 10,
-      "mag": 5.7,
-      "place": "west of Macquarie Island",
-      "time": 1781919992273,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sury"
     }
   ]
 }
