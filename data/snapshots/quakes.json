@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T01:15:48Z",
-  "count": 211,
+  "updated": "2026-06-21T01:31:03Z",
+  "count": 213,
   "points": [
+    {
+      "id": "uw714028381",
+      "lon": -122.42749786377,
+      "lat": 47.2463340759277,
+      "depth": 25.4300003051758,
+      "mag": 1.8431601524353,
+      "place": "1 km ESE of Tacoma, Washington",
+      "time": 1782005211600,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/uw714028381"
+    },
+    {
+      "id": "hv74987542",
+      "lon": -155.379501342773,
+      "lat": 19.2019996643066,
+      "depth": 30.5100002288818,
+      "mag": 1.9,
+      "place": "10 km E of Pāhala, Hawaii",
+      "time": 1782004789100,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987542"
+    },
     {
       "id": "aka2026mdxxtk",
       "lon": -151.828,
@@ -854,6 +874,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suuw"
     },
     {
+      "id": "av94257898",
+      "lon": -178.850833333333,
+      "lat": 51.7723333333333,
+      "depth": 14.48,
+      "mag": 0.35,
+      "place": "153 km W of Adak, Alaska",
+      "time": 1781974323060,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257898"
+    },
+    {
       "id": "ci41491272",
       "lon": -117.6795,
       "lat": 35.9446666666667,
@@ -872,6 +902,16 @@
       "place": "4 km WSW of Colma, CA",
       "time": 1781973436200,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380146"
+    },
+    {
+      "id": "av94257863",
+      "lon": -178.816333333333,
+      "lat": 51.8035,
+      "depth": 19.33,
+      "mag": 0.87,
+      "place": "150 km W of Adak, Alaska",
+      "time": 1781973079500,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94257863"
     },
     {
       "id": "ci41491264",
@@ -2092,26 +2132,6 @@
       "place": "13 km SSE of Llaillay, Chile",
       "time": 1781919128132,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000surw"
-    },
-    {
-      "id": "us7000suru",
-      "lon": -66.2168,
-      "lat": -22.4725,
-      "depth": 245.282,
-      "mag": 4.5,
-      "place": "60 km WNW of Abra Pampa, Argentina",
-      "time": 1781918541881,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suru"
-    },
-    {
-      "id": "hv74986917",
-      "lon": -155.479827880859,
-      "lat": 19.22483253479,
-      "depth": 31.9200000762939,
-      "mag": 1.75,
-      "place": "2 km N of Pāhala, Hawaii",
-      "time": 1781918525460,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986917"
     }
   ]
 }
