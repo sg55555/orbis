@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T00:45:51Z",
-  "count": 203,
+  "updated": "2026-06-21T01:01:12Z",
+  "count": 207,
   "points": [
+    {
+      "id": "nc75380421",
+      "lon": -122.80916595459,
+      "lat": 38.8208351135254,
+      "depth": 3.34999990463257,
+      "mag": 1.02,
+      "place": "7 km NW of The Geysers, CA",
+      "time": 1782003234740,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380421"
+    },
+    {
+      "id": "aka2026mdxndl",
+      "lon": -148.704,
+      "lat": 68.837,
+      "depth": 59.9,
+      "mag": 1.4,
+      "place": "146 km ENE of Anaktuvuk Pass, Alaska",
+      "time": 1782003179835,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdxndl"
+    },
     {
       "id": "nc75380401",
       "lon": -122.725166320801,
@@ -24,6 +44,16 @@
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380381"
     },
     {
+      "id": "aka2026mdxabb",
+      "lon": -151.859,
+      "lat": 60.279,
+      "depth": 75.6,
+      "mag": 1.4,
+      "place": "26 km WNW of Clam Gulch, Alaska",
+      "time": 1782002274086,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdxabb"
+    },
+    {
       "id": "nc75380386",
       "lon": -122.725997924805,
       "lat": 38.7686653137207,
@@ -32,6 +62,16 @@
       "place": "3 km ESE of The Geysers, CA",
       "time": 1782002227770,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380386"
+    },
+    {
+      "id": "pr71520778",
+      "lon": -66.7451666666667,
+      "lat": 18.1298333333333,
+      "depth": 23.35,
+      "mag": 1.99,
+      "place": "4 km SW of Adjuntas, Puerto Rico",
+      "time": 1782001509620,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr71520778"
     },
     {
       "id": "nn00920521",
@@ -242,6 +282,16 @@
       "place": "6 km E of Fox, Alaska",
       "time": 1781992614034,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdrqlk"
+    },
+    {
+      "id": "aka2026mdrjrs",
+      "lon": -153.04,
+      "lat": 59.374,
+      "depth": 86.5,
+      "mag": 1.4,
+      "place": "63 km W of Nanwalek, Alaska",
+      "time": 1781992146682,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdrjrs"
     },
     {
       "id": "us7000suwk",
@@ -2022,16 +2072,6 @@
       "place": "2 km N of Pāhala, Hawaii",
       "time": 1781918525460,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74986917"
-    },
-    {
-      "id": "nc75379921",
-      "lon": -124.400833129883,
-      "lat": 40.2921676635742,
-      "depth": 23.8400001525879,
-      "mag": 1.72,
-      "place": "10 km WSW of Petrolia, CA",
-      "time": 1781916786750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75379921"
     }
   ]
 }
