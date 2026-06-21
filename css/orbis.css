@@ -843,3 +843,16 @@ body.space-3 #starfield {
   #share-toast { left: 50%; right: auto; bottom: auto; top: 54px; transform: translateX(-50%) translateY(8px); }
   #share-toast.show { transform: translateX(-50%) translateY(0); }
 }
+
+/* ===== AI FORECASTS 見出しの sec-on 統一見出し化 =====
+   #forecasts の見出しは他スレ(AI機能)所有の markup `<h2 class="fc-title">` で .sec-head/.sec-h を使わないため
+   sec-on の統一見出し（Saira＋オーロラ下線）に乗らない。markup 非編集のまま CSS で sec-h 言語に寄せる
+   （幅・章頭区切りは既に #app>section の自動適合で揃っている）。値は統一見出しルール(629-642)と一致。 */
+body.sec-on #forecasts .fc-title {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin: 0 0 14px; padding-bottom: 10px;
+  border-bottom: 1px solid rgba(57, 208, 255, .18); box-shadow: 0 1px 0 rgba(57, 208, 255, .08);
+  font-size: 22px; line-height: 1.2; color: #e7f3ff; text-shadow: 0 0 16px rgba(57, 208, 255, .28); font-weight: 700;
+}
+body.font-on #forecasts .fc-title { font-family: var(--font-display); letter-spacing: .04em; }
+body.sec-on #forecasts .fc-sub { color: rgba(160, 185, 220, .82); font-size: 11.5px; letter-spacing: .04em; font-weight: 400; }
