@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T04:31:02Z",
-  "count": 220,
+  "updated": "2026-06-21T04:45:50Z",
+  "count": 216,
   "points": [
     {
       "id": "nc75380541",
@@ -2162,46 +2162,6 @@
       "place": "24 km SW of Independence, CA",
       "time": 1781930929680,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490960"
-    },
-    {
-      "id": "us7000susg",
-      "lon": -25.4839,
-      "lat": -57.9998,
-      "depth": 59.553,
-      "mag": 5.1,
-      "place": "South Sandwich Islands region",
-      "time": 1781930648971,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susg"
-    },
-    {
-      "id": "us7000susf",
-      "lon": 161.1938,
-      "lat": 52.9609,
-      "depth": 10,
-      "mag": 4.5,
-      "place": "172 km E of Petropavlovsk-Kamchatsky, Russia",
-      "time": 1781930325380,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000susf"
-    },
-    {
-      "id": "av94256653",
-      "lon": -169.863166666667,
-      "lat": 52.8876666666667,
-      "depth": 7.98,
-      "mag": 0.72,
-      "place": "67 km W of Nikolski, Alaska",
-      "time": 1781930152740,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/av94256653"
-    },
-    {
-      "id": "us7000suse",
-      "lon": 94.8277,
-      "lat": 24.6251,
-      "depth": 106.834,
-      "mag": 4.4,
-      "place": "77 km E of Wāngjing, India",
-      "time": 1781929990051,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suse"
     }
   ]
 }
