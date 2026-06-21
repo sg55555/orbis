@@ -82,6 +82,13 @@ export function immerseSec(search) {
   return m ? m[1].toLowerCase() : 'on';
 }
 
+// ?legend=on|off（大小無視）。globe 隅の常設「凡例＋使い方」オーバーレイの表示。既定 on。
+// off は before 比較用（body.legend-off で #legend を隠す）。
+export function immerseLegend(search) {
+  const m = /[?&]legend=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
 // mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)。
 export function immerseClasses(search) {
@@ -94,6 +101,7 @@ export function immerseClasses(search) {
   out.push('ui-' + immerseUi(search));
   out.push('font-' + immerseFont(search));
   out.push('sec-' + immerseSec(search));
+  out.push('legend-' + immerseLegend(search));
   return out;
 }
 
