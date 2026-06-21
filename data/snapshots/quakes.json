@@ -1,8 +1,18 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T13:15:53Z",
-  "count": 203,
+  "updated": "2026-06-21T13:31:08Z",
+  "count": 202,
   "points": [
+    {
+      "id": "ci41491712",
+      "lon": -116.929833333333,
+      "lat": 33.7863333333333,
+      "depth": 13.33,
+      "mag": 0.93,
+      "place": "3 km E of San Jacinto, CA",
+      "time": 1782047621320,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491712"
+    },
     {
       "id": "aka2026mevyhz",
       "lon": -155.314,
@@ -2012,26 +2022,6 @@
       "place": "16 km WSW of Tyonek, Alaska",
       "time": 1781962277404,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mdaubc"
-    },
-    {
-      "id": "ci41491136",
-      "lon": -117.222333333333,
-      "lat": 34.0043333333333,
-      "depth": 6.66,
-      "mag": 0.98,
-      "place": "6 km SE of Loma Linda, CA",
-      "time": 1781961739370,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491136"
-    },
-    {
-      "id": "ci41491128",
-      "lon": -117.258333333333,
-      "lat": 33.6203333333333,
-      "depth": 15.24,
-      "mag": 0.99,
-      "place": "3 km NE of Wildomar, CA",
-      "time": 1781961556610,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491128"
     }
   ]
 }
