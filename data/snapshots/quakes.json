@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T08:01:16Z",
-  "count": 225,
+  "updated": "2026-06-21T08:15:48Z",
+  "count": 221,
   "points": [
     {
       "id": "ci41491656",
@@ -2212,46 +2212,6 @@
       "place": "27 km WSW of Ivanof Bay, Alaska",
       "time": 1781943361821,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcqgsg"
-    },
-    {
-      "id": "ci41491008",
-      "lon": -115.163166666667,
-      "lat": 32.4676666666667,
-      "depth": 26.85,
-      "mag": 1.62,
-      "place": "13 km NNE of Delta, B.C., MX",
-      "time": 1781943042380,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491008"
-    },
-    {
-      "id": "aka2026mcqbki",
-      "lon": -159.78,
-      "lat": 55.948,
-      "depth": 12.4,
-      "mag": 1.8,
-      "place": "19 km WNW of Ivanof Bay, Alaska",
-      "time": 1781942995222,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcqbki"
-    },
-    {
-      "id": "ci41491000",
-      "lon": -117.8135,
-      "lat": 35.3053333333333,
-      "depth": 8.83,
-      "mag": 0.92,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781942744170,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491000"
-    },
-    {
-      "id": "hv74987087",
-      "lon": -155.444000244141,
-      "lat": 19.3683338165283,
-      "depth": 8.80000019073486,
-      "mag": 2.11,
-      "place": "18 km N of Pāhala, Hawaii",
-      "time": 1781942555410,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987087"
     }
   ]
 }
