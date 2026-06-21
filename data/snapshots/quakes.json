@@ -1,8 +1,28 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T11:31:09Z",
-  "count": 204,
+  "updated": "2026-06-21T11:45:53Z",
+  "count": 206,
   "points": [
+    {
+      "id": "tx2026mcujqb",
+      "lon": -103.643,
+      "lat": 30.887,
+      "depth": 0,
+      "mag": 1.3,
+      "place": "14 km SE of Balmorhea, Texas",
+      "time": 1782042005268,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mcujqb"
+    },
+    {
+      "id": "hv74987747",
+      "lon": -155.543838500977,
+      "lat": 19.1735000610352,
+      "depth": -1.10000002384186,
+      "mag": 1.87,
+      "place": "7 km WSW of Pāhala, Hawaii",
+      "time": 1782041318530,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987747"
+    },
     {
       "id": "ci41491688",
       "lon": -119.204166666667,
@@ -12,6 +32,16 @@
       "place": "4 km ENE of Ojai, CA",
       "time": 1782040306450,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491688"
+    },
+    {
+      "id": "pr2026172002",
+      "lon": -64.2733,
+      "lat": 19.118,
+      "depth": 11,
+      "mag": 3.8,
+      "place": "102 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1782040245380,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/pr2026172002"
     },
     {
       "id": "aka2026merpsg",
@@ -2032,16 +2062,6 @@
       "place": "2 km N of Berkeley, CA",
       "time": 1781955971290,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380076"
-    },
-    {
-      "id": "aka2026mcwudj",
-      "lon": -152.478,
-      "lat": 60.111,
-      "depth": 98.8,
-      "mag": 1.8,
-      "place": "45 km WNW of Happy Valley, Alaska",
-      "time": 1781955086232,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcwudj"
     }
   ]
 }
