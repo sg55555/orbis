@@ -1,7 +1,7 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T04:45:50Z",
-  "count": 216,
+  "updated": "2026-06-21T05:01:13Z",
+  "count": 212,
   "points": [
     {
       "id": "nc75380541",
@@ -2122,46 +2122,6 @@
       "place": "6 km NW of The Geysers, CA",
       "time": 1781931693680,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380001"
-    },
-    {
-      "id": "aka2026mcjtbq",
-      "lon": -152.605,
-      "lat": 60.575,
-      "depth": 6.6,
-      "mag": 0.9,
-      "place": "70 km W of Salamatof, Alaska",
-      "time": 1781931623015,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcjtbq"
-    },
-    {
-      "id": "aka2026mcjpgr",
-      "lon": -154.911,
-      "lat": 57.716,
-      "depth": 72,
-      "mag": 1.1,
-      "place": "31 km WNW of Karluk, Alaska",
-      "time": 1781931359966,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcjpgr"
-    },
-    {
-      "id": "ci41490968",
-      "lon": -117.810166666667,
-      "lat": 35.2956666666667,
-      "depth": 7.89,
-      "mag": 1.26,
-      "place": "18 km WSW of Johannesburg, CA",
-      "time": 1781931244750,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490968"
-    },
-    {
-      "id": "ci41490960",
-      "lon": -118.389166666667,
-      "lat": 36.6451666666667,
-      "depth": 3.07,
-      "mag": 1.73,
-      "place": "24 km SW of Independence, CA",
-      "time": 1781930929680,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490960"
     }
   ]
 }
