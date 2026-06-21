@@ -32,6 +32,6 @@ test.describe('モバイル', () => {
     await page.locator('#mobile-tabs .mobile-tab[data-sheet="legend"]').click();
     await expect(page.locator('body')).toHaveAttribute('data-sheet', 'legend');
     await expect(page.locator('#legend')).toBeVisible();
-    await expect(page.locator('#legend .legend-help-list, #legend .legend-body[data-body="legend"]')).toBeTruthy();
+    await expect(page.locator('#legend .legend-body[data-body="legend"] .legend-layer').first()).toBeVisible();
   });
 });

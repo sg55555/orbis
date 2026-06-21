@@ -367,7 +367,7 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #panel.side-panel, #feed.side-panel, #sheet-scrim { transition: none; }
+  #panel.side-panel, #feed.side-panel, #legend.side-panel, #sheet-scrim { transition: none; }
 }
 
 /* ===== デスクトップ没入感 比較プロトタイプ（?seam=a|b|c / ?mbg=black|deep） ===== */
