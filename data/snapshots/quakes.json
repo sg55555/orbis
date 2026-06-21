@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T08:31:08Z",
-  "count": 219,
+  "updated": "2026-06-21T08:45:55Z",
+  "count": 218,
   "points": [
+    {
+      "id": "aka2026memveh",
+      "lon": -148.278,
+      "lat": 62.971,
+      "depth": 5,
+      "mag": 2.3,
+      "place": "57 km SE of Cantwell, Alaska",
+      "time": 1782030731208,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026memveh"
+    },
+    {
+      "id": "us7000suyg",
+      "lon": -64.4077,
+      "lat": 19.1163,
+      "depth": 36.345,
+      "mag": 3.4,
+      "place": "95 km NNE of Cruz Bay, U.S. Virgin Islands",
+      "time": 1782030549900,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suyg"
+    },
+    {
+      "id": "us7000suyf",
+      "lon": 81.3468,
+      "lat": 33.4911,
+      "depth": 10,
+      "mag": 4.2,
+      "place": "western Xizang",
+      "time": 1782028240804,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suyf"
+    },
     {
       "id": "ci41491656",
       "lon": -116.649,
@@ -2152,46 +2182,6 @@
       "place": "31 km WSW of Nanwalek, Alaska",
       "time": 1781945643523,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcrnqu"
-    },
-    {
-      "id": "aka2026mcrbgx",
-      "lon": 176.369,
-      "lat": 52.218,
-      "depth": 19.3,
-      "mag": 3.5,
-      "place": "227 km ESE of Attu Station, Alaska",
-      "time": 1781944782520,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcrbgx"
-    },
-    {
-      "id": "us7000sut5",
-      "lon": -140.037,
-      "lat": 61.4407,
-      "depth": 5,
-      "mag": 2.5,
-      "place": "148 km SSE of Alcan Border, Alaska",
-      "time": 1781944469142,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000sut5"
-    },
-    {
-      "id": "us7000suta",
-      "lon": -88.9506,
-      "lat": 13.992,
-      "depth": 181.712,
-      "mag": 4.3,
-      "place": "4 km SSW of Chalatenango, El Salvador",
-      "time": 1781944428352,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/us7000suta"
-    },
-    {
-      "id": "ci41491032",
-      "lon": -117.194166666667,
-      "lat": 34.0115,
-      "depth": 3.46,
-      "mag": 1.57,
-      "place": "5 km SSW of Redlands, CA",
-      "time": 1781944421210,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491032"
     }
   ]
 }
