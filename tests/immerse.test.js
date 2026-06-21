@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {
   immerseZoom, immerseSeam, immerseGlow, immerseMediaBg, immerseClasses,
   atmosphereStops, isCompareMode, immerseGlass, DEFAULT_ZOOM, immerseNeb,
-  immerseMediaPolish, immerseUi, immerseFont, immerseSec, immerseLegend, immerseSpace,
+  immerseMediaPolish, immerseUi, immerseFont, immerseSec, immerseLegend, immerseFeed, immerseSpace,
 } from '../js/lib/immerse.js';
 
 // 没入ダイヤルの既定値は実物比較で確定した本番値。URL パラメータで下げ方向に上書きできる。
@@ -90,15 +90,15 @@ test('immerseSec: 未指定は既定 on（セクション構造）。?sec=off �
 });
 
 test('immerseClasses: 既定で seam-a・mbg-deep・mp-a・ui-a・font-on・sec-on・legend-on。指定で上書き', () => {
-  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']);
-  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']);
-  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']);
-  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']);
-  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']); // glass=on はクラス無し
-  assert.deepEqual(immerseClasses('?mp=off'), ['seam-a', 'mbg-deep', 'mp-off', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'space-off']); // media before
-  assert.deepEqual(immerseClasses('?ui=off&font=off'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-off', 'font-off', 'sec-on', 'legend-on', 'space-off']); // 本編 before
-  assert.deepEqual(immerseClasses('?ui=b'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-b', 'font-on', 'sec-on', 'legend-on', 'space-off']); // 計器
-  assert.deepEqual(immerseClasses('?sec=off'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-off', 'legend-on', 'space-off']); // セクション before
+  assert.deepEqual(immerseClasses(''), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']);
+  assert.deepEqual(immerseClasses('?seam=b'), ['seam-b', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']);
+  assert.deepEqual(immerseClasses('?mbg=black'), ['seam-a', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']);
+  assert.deepEqual(immerseClasses('?seam=c&mbg=black&glass=off'), ['seam-c', 'glass-off', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']);
+  assert.deepEqual(immerseClasses('?glass=on'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']); // glass=on はクラス無し
+  assert.deepEqual(immerseClasses('?mp=off'), ['seam-a', 'mbg-deep', 'mp-off', 'ui-a', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']); // media before
+  assert.deepEqual(immerseClasses('?ui=off&font=off'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-off', 'font-off', 'sec-on', 'legend-on', 'feed-on', 'space-off']); // 本編 before
+  assert.deepEqual(immerseClasses('?ui=b'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-b', 'font-on', 'sec-on', 'legend-on', 'feed-on', 'space-off']); // 計器
+  assert.deepEqual(immerseClasses('?sec=off'), ['seam-a', 'mbg-deep', 'mp-a', 'ui-a', 'font-on', 'sec-off', 'legend-on', 'feed-on', 'space-off']); // セクション before
 });
 
 test('atmosphereStops: glow level で atmosphere-blend のストップ（大きいほど強く・減衰を遅らせ広く）', () => {
@@ -136,6 +136,19 @@ test('immerseLegend: 未指定は既定 on。?legend=off で上書き（無効�
 test('immerseClasses: legend- を常時付与（既定 legend-on、?legend=off で legend-off）', () => {
   assert.ok(immerseClasses('').includes('legend-on'));
   assert.ok(immerseClasses('?legend=off').includes('legend-off'));
+});
+
+test('immerseFeed: 未指定は既定 on（タイトル最大2行）。?feed=off で上書き（無効も既定 on・大小無視）', () => {
+  assert.equal(immerseFeed(''), 'on');
+  assert.equal(immerseFeed('?feed=on'), 'on');
+  assert.equal(immerseFeed('?feed=off'), 'off');
+  assert.equal(immerseFeed('?feed=OFF'), 'off'); // 大小無視
+  assert.equal(immerseFeed('?feed=x'), 'on');    // 不正は既定
+});
+
+test('immerseClasses: feed- を常時付与（既定 feed-on、?feed=off で feed-off）', () => {
+  assert.ok(immerseClasses('').includes('feed-on'));
+  assert.ok(immerseClasses('?feed=off').includes('feed-off'));
 });
 
 test('immerseSpace: 既定 off（不採用）。?space=1|2|3 で上書き（無効も既定off・大小無視）', () => {
