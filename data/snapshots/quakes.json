@@ -1,8 +1,38 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T05:15:24Z",
-  "count": 212,
+  "updated": "2026-06-21T05:35:17Z",
+  "count": 213,
   "points": [
+    {
+      "id": "aka2026megqfc",
+      "lon": -148.238,
+      "lat": 62.942,
+      "depth": 5,
+      "mag": 1.7,
+      "place": "61 km SE of Cantwell, Alaska",
+      "time": 1782019582306,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026megqfc"
+    },
+    {
+      "id": "tx2026mchxkr",
+      "lon": -104.296,
+      "lat": 31.635,
+      "depth": 2.6717,
+      "mag": 0.2,
+      "place": "59 km NW of Toyah, Texas",
+      "time": 1782019445987,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/tx2026mchxkr"
+    },
+    {
+      "id": "aka2026megknb",
+      "lon": -151.18,
+      "lat": 61.489,
+      "depth": 15.5,
+      "mag": 1.5,
+      "place": "36 km W of Susitna, Alaska",
+      "time": 1782019190801,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026megknb"
+    },
     {
       "id": "nc75380556",
       "lon": -122.804664611816,
@@ -2102,26 +2132,6 @@
       "place": "3 km SSW of Anderson Springs, CA",
       "time": 1781934519700,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380016"
-    },
-    {
-      "id": "ci41490984",
-      "lon": -116.736,
-      "lat": 33.6803333333333,
-      "depth": 15.15,
-      "mag": 0.39,
-      "place": "7 km SSW of Idyllwild, CA",
-      "time": 1781933241780,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490984"
-    },
-    {
-      "id": "ci41490976",
-      "lon": -118.023333333333,
-      "lat": 36.1783333333333,
-      "depth": 2.74,
-      "mag": 2.09,
-      "place": "12 km S of Olancha, CA",
-      "time": 1781932897330,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41490976"
     }
   ]
 }
