@@ -1,8 +1,48 @@
 {
   "layer": "quakes",
-  "updated": "2026-06-21T11:45:53Z",
+  "updated": "2026-06-21T12:10:21Z",
   "count": 206,
   "points": [
+    {
+      "id": "aka2026metxya",
+      "lon": -148.987,
+      "lat": 63.528,
+      "depth": 0,
+      "mag": 2.6,
+      "place": "15 km N of Cantwell, Alaska",
+      "time": 1782043506421,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026metxya"
+    },
+    {
+      "id": "ci41491704",
+      "lon": -117.803333333333,
+      "lat": 36.0195,
+      "depth": 1.58,
+      "mag": 0.64,
+      "place": "13 km NE of Little Lake, CA",
+      "time": 1782043413350,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491704"
+    },
+    {
+      "id": "ci41491696",
+      "lon": -116.913,
+      "lat": 33.8955,
+      "depth": 9.71,
+      "mag": 0.85,
+      "place": "5 km SW of Banning, CA",
+      "time": 1782042449870,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491696"
+    },
+    {
+      "id": "hv74987757",
+      "lon": -155.425003051758,
+      "lat": 19.3463325500488,
+      "depth": 6.69999980926514,
+      "mag": 2.03,
+      "place": "16 km NNE of Pāhala, Hawaii",
+      "time": 1782042285250,
+      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/hv74987757"
+    },
     {
       "id": "tx2026mcujqb",
       "lon": -103.643,
@@ -2022,46 +2062,6 @@
       "place": "9 km N of Cabazon, CA",
       "time": 1781957728980,
       "url": "https://earthquake.usgs.gov/earthquakes/eventpage/ci41491104"
-    },
-    {
-      "id": "nc75380086",
-      "lon": -122.782836914062,
-      "lat": 38.839168548584,
-      "depth": 0.959999978542328,
-      "mag": 0.7,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781956317530,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380086"
-    },
-    {
-      "id": "aka2026mcxlmb",
-      "lon": -152.262,
-      "lat": 61.045,
-      "depth": 117.6,
-      "mag": 1.8,
-      "place": "60 km W of Tyonek, Alaska",
-      "time": 1781956285826,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/aka2026mcxlmb"
-    },
-    {
-      "id": "nc75380081",
-      "lon": -122.789169311523,
-      "lat": 38.8351669311523,
-      "depth": 1.92999994754791,
-      "mag": 0.74,
-      "place": "6 km WNW of Cobb, CA",
-      "time": 1781955974630,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380081"
-    },
-    {
-      "id": "nc75380076",
-      "lon": -122.270668029785,
-      "lat": 37.8894996643066,
-      "depth": 3.47000002861023,
-      "mag": 1.11,
-      "place": "2 km N of Berkeley, CA",
-      "time": 1781955971290,
-      "url": "https://earthquake.usgs.gov/earthquakes/eventpage/nc75380076"
     }
   ]
 }
