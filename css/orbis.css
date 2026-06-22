@@ -904,3 +904,16 @@ body.feed-on .feed-title {
 body.feed-on .feed-dot { margin-top: 4px; }
 body.feed-on .feed-time { margin-top: 2px; }
 body.feed-on .feed-count { margin-top: 1px; }
+
+/* ===== モバイル操作UIシェル（mui-・?mui=a|b|off 既定a） =====
+   下端タブバー＋ボトムシート＋ディマーを「一体の観測コンソール」に（宇宙的トーンで上品）。
+   設計言語＝線/光・グラス・面装飾なし・抑制的発光。globe主役を邪魔しない。
+   既存 @media(max-width:768px) のレイアウト機構は不変＝視覚の上乗せのみ。
+   off=before（base のまま・タブは ≡）／a=上品(採用候補)／b=もう一段攻め(比較用)。 */
+@media (max-width: 768px) {
+  /* アイコン出し分け：既定は隠し a/b で表示。off は擬似要素で ≡（before） */
+  .mobile-tab .tab-svg { display: none; width: 16px; height: 16px; flex: 0 0 auto; }
+  body.mui-a .mobile-tab .tab-svg,
+  body.mui-b .mobile-tab .tab-svg { display: inline-flex; color: var(--cyan); opacity: .6; }
+  body.mui-off .mobile-tab::before { content: '≡'; margin-right: 6px; opacity: .8; }
+}
