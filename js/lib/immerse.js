@@ -112,6 +112,13 @@ export function immerseSpace(search) {
   return m ? m[1].toLowerCase() : 'off';
 }
 
+// ?mui=a|b|off（大小無視）。モバイル(≤768px)の操作UIシェル（下端タブバー＋ボトムシート＋ディマー）の
+// リッチ化。a=上品(採用候補・既定)／b=もう一段攻め(比較用)／off=before(base のまま・タブは ≡)。
+export function immerseMobileUi(search) {
+  const m = /[?&]mui=(a|b|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'a';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
 // mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)、
 // space(大画面 globe 周辺演出)も常に付与(既定off＝不採用・1|2|3は比較用)。
@@ -129,6 +136,7 @@ export function immerseClasses(search) {
   out.push('search-' + immerseSearch(search));
   out.push('feed-' + immerseFeed(search));
   out.push('space-' + immerseSpace(search));
+  out.push('mui-' + immerseMobileUi(search));
   return out;
 }
 
