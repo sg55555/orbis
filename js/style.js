@@ -49,6 +49,16 @@ export function buildBaseStyle(look = getLook()) {
         layout: { 'text-field': jaLabel, 'text-font': ['Noto Sans Regular'],
           'text-size': ['interpolate', ['linear'], ['zoom'], 1, 11, 4, 15], 'text-max-width': 8 },
         paint: { 'text-color': '#dbeafe', 'text-halo-color': '#05080f', 'text-halo-width': 1.5 } },
+      // 行政1次区画（県/州/省 = class 'state'/'province'）のラベル。タイルには既に
+      // admin1 の place 点が入っているが従来は層が無く描かれなかった（日本で市は出るのに
+      // 県が出ない違和感の原因）。country>state>city の中間調・name:ja で日本語化。
+      // 低zoomでの氾濫を避け minzoom 3.5＋text-opacity で淡くフェードイン。
+      { id: 'place-state', type: 'symbol', source: 'openmaptiles', 'source-layer': 'place',
+        minzoom: 3.5, filter: ['in', ['get', 'class'], ['literal', ['state', 'province']]],
+        layout: { 'text-field': jaLabel, 'text-font': ['Noto Sans Regular'],
+          'text-size': ['interpolate', ['linear'], ['zoom'], 3.5, 10, 6, 13], 'text-max-width': 7 },
+        paint: { 'text-color': '#a7c6ef', 'text-halo-color': '#05080f', 'text-halo-width': 1.3,
+          'text-opacity': ['interpolate', ['linear'], ['zoom'], 3.5, 0, 4.5, 0.85] } },
       { id: 'place-city', type: 'symbol', source: 'openmaptiles', 'source-layer': 'place',
         minzoom: 3, filter: ['in', ['get', 'class'], ['literal', ['city', 'town']]],
         layout: { 'text-field': jaLabel, 'text-font': ['Noto Sans Regular'], 'text-size': 11,
