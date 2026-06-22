@@ -267,6 +267,12 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
   /* 背景は薄め（映像を見せる）＋文字に黒アウトラインで可読性を確保 */
   text-shadow: 0 0 3px rgba(0,0,0,.95), 1px 1px 2px rgba(0,0,0,.9), -1px 1px 2px rgba(0,0,0,.9),
     1px -1px 2px rgba(0,0,0,.9), -1px -1px 2px rgba(0,0,0,.9); text-align: center; }
+/* interim（原文 ASR 即時）行：無アニメ・左寄せ・最低1行の高さを確保。
+   final で同一行が日本語へ置換され .lc-row--interim が外れる（120ms opacity settle）。 */
+.lc-row--interim { text-align: left; min-height: 1.45em; opacity: .92;
+  font-weight: 500; background: rgba(0, 0, 0, .34); }
+/* reduced-motion 環境では final 置換の opacity フェードを無効化（JS 側でも transition:none を付与） */
+@media (prefers-reduced-motion: reduce) { .lc-row { transition: none !important; } }
 .lc-status { font-size: 12px; color: rgba(190, 208, 228, .85);
   text-shadow: 0 1px 3px rgba(0, 0, 0, .9); min-height: 14px; }
 /* 1画面モードのカメラ名ピル行（表示カメラ切替） */
