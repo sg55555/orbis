@@ -8,7 +8,7 @@ async function ready(page) {
 
 test('mui-a: タブに線画SVGアイコンが出る・body に mui-a', async ({ page }) => {
   test.setTimeout(60000); // WebGL globe 起動が WSL2 で重い
-  await page.goto('/');
+  await page.goto('/?mui=a'); // 既定は b（採用）なので a を明示
   await ready(page);
   await expect(page.locator('body')).toHaveClass(/mui-a/);
   for (const s of ['layers', 'feed', 'legend']) {
@@ -80,4 +80,21 @@ test('mui-b: 非アクティブタブ枠が mui-a と異なる（ファースト
   await ready(page);
   const bBorder = await page.locator('.mobile-tab[aria-expanded="false"]').first().evaluate((el) => getComputedStyle(el).borderTopColor);
   expect(aBorder).not.toBe(bBorder);
+});
+
+// 採用値 = b を既定としてロック（パラメータ無しの本番URLで mui-b が付く）。
+test('既定（パラメータ無し）は mui-b（採用値）', async ({ page }) => {
+  test.setTimeout(60000);
+  await page.goto('/');
+  await ready(page);
+  await expect(page.locator('body')).toHaveClass(/mui-b/);
+});
+
+// レイアウト被り修正をロック：閉じたシートが #media に被らないよう #map-wrap をモバイルでクリップ。
+test('モバイルで #map-wrap が overflow:hidden（閉じたシートの media 被りを防ぐ）', async ({ page }) => {
+  test.setTimeout(60000);
+  await page.goto('/');
+  await ready(page);
+  const ov = await page.locator('#map-wrap').evaluate((el) => getComputedStyle(el).overflow);
+  expect(ov).toBe('hidden');
 });

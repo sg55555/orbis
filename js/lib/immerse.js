@@ -113,10 +113,10 @@ export function immerseSpace(search) {
 }
 
 // ?mui=a|b|off（大小無視）。モバイル(≤768px)の操作UIシェル（下端タブバー＋ボトムシート＋ディマー）の
-// リッチ化。a=上品(採用候補・既定)／b=もう一段攻め(比較用)／off=before(base のまま・タブは ≡)。
+// リッチ化。b=採用(既定・2026-06-24 太田さん実機確定)／a=一段控えめ(比較用)／off=before(base のまま・タブは ≡)。
 export function immerseMobileUi(search) {
   const m = /[?&]mui=(a|b|off)/i.exec(readSearch(search));
-  return m ? m[1].toLowerCase() : 'a';
+  return m ? m[1].toLowerCase() : 'b';
 }
 
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、

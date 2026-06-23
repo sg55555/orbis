@@ -308,6 +308,12 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
   /* デスクトップ用の折りたたみボタンはモバイルでは使わない（シート自前の閉手段を使う） */
   #panel-toggle, #feed-toggle { display: none; }
 
+  /* 閉じたボトムシート（#panel/#feed/#legend は translateY(110%) で退避）は、#map-wrap が
+     100vh ＝直下が即 #media のため、退避先が media の上に重なり z-index:8 で残存して見えてしまう。
+     globe コンテナをクリップして退避シートを globe 内に収める＝media へスクロールすると被りが消える。
+     開いたシート(translateY 0・bottom:60px)は map-wrap 内に収まるのでクリップ無影響。 */
+  #map-wrap { overflow: hidden; }
+
   /* LAYERS/FEED をボトムシート化：既定は画面外へ退避 */
   #panel.side-panel, #feed.side-panel, #legend.side-panel {
     left: 0; right: 0; top: auto; bottom: calc(60px + env(safe-area-inset-bottom)); width: auto; max-width: none;
