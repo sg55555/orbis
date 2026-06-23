@@ -17,6 +17,8 @@ import { renderMedia } from './ui/media.js';
 import { renderBriefing } from './ui/briefing.js';
 import { renderInstability } from './ui/instability.js';
 import { renderForecasts } from './ui/forecast.js';
+import { selectAlerts, renderAlerts } from './ui/alerts.js';
+import { buildSourceRows, renderSources, SOURCE_MAP } from './ui/sources.js';
 import { initBoot } from './ui/boot.js';
 import { snapshotUrl } from './lib/data-source.js';
 import { initLiveCaptions } from './ui/live-captions.js';
@@ -524,9 +526,46 @@ function boot() {
       if (fcRoot) fcRoot.style.display = 'none';
     }
 
+    // 異常スパイク・アラート帯（globe 直下の全幅バンド）。instability/forecast の急変を集約。
+    const alertsRoot = document.getElementById('alerts');
+    if (alertsRoot) {
+      const alertItems = selectAlerts(window.__orbis.instability, window.__orbis.forecasts);
+      renderAlerts(alertsRoot, alertItems, {
+        onSelect: (a) => {
+          map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
+          selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
+          if (window.__orbis) window.__orbis.selected = selected;
+          drawAll(overlay);
+        },
+      });
+    }
+
+    // データソース & 鮮度パネル（ページ最下部）。registry レイヤー＋AIセクションを一覧化。
+    // 注意: ポーリング層(quakes 等)の初期データは startPolling 後に届くため、初回描画に加え
+    // poll コールバックでも再描画して鮮度/件数を最新化する。
+    const sourcesRoot = document.getElementById('sources');
+    const refreshSources = () => {
+      if (!sourcesRoot) return;
+      const aiEntries = [
+        { id: 'briefing', label: 'ワールド・ブリーフィング' },
+        { id: 'instability', label: '国家不安定性インデックス' },
+        { id: 'forecast', label: 'AI FORECASTS' },
+      ];
+      const srcSnapshots = { ...snapshots,
+        briefing: window.__orbis.brief, instability: window.__orbis.instability, forecast: window.__orbis.forecasts };
+      const srcCounts = { ...(window.__orbis.counts || {}),
+        briefing: window.__orbis.brief?.cards?.length || 0,
+        instability: window.__orbis.instability?.countries?.length || 0,
+        forecast: window.__orbis.forecasts?.cards?.length || 0 };
+      const rows = buildSourceRows([...layers, ...aiEntries], srcSnapshots, srcCounts, SOURCE_MAP, Date.now());
+      renderSources(sourcesRoot, rows);
+    };
+    refreshSources();
+
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {
       Object.assign(snapshots, polled);
       rebuild(overlay);
+      refreshSources();
     });
   });
 }

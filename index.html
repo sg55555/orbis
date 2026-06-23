@@ -72,6 +72,13 @@
         </div>
       </div>
     </div>
+      <section id="alerts" class="alerts-section" aria-label="急変アラート" style="display:none">
+        <div class="alerts-head sec-head">
+          <h3 class="alerts-h sec-h">⚠ 急変アラート</h3>
+          <span class="alerts-note sec-note">平常比で突出した国・ドメイン（クリックで移動 📍）</span>
+        </div>
+        <div class="alert-list"></div>
+      </section>
       <section id="media" class="media-section">
         <div class="media-head sec-head">
           <h3 class="media-h sec-h">📡 ライブメディア</h3>
@@ -136,6 +143,17 @@
         <div class="fc-tabs"></div>
         <div class="fc-list"></div>
         <details class="fc-log"><summary>過去の注視推移</summary><div class="fc-log-body"></div></details>
+      </section>
+      <section id="sources" class="sources-section" aria-label="データソースと鮮度">
+        <div class="sources-head sec-head">
+          <h3 class="sources-h sec-h">🛰 データソース & 鮮度</h3>
+          <span class="sources-note sec-note">各レイヤーの最終更新・件数・出典</span>
+        </div>
+        <div class="src-row src-head-row" aria-hidden="true">
+          <span class="src-name">データ</span><span class="src-rel">最終更新</span>
+          <span class="src-count">件数</span><span class="src-src">出典</span>
+        </div>
+        <div class="src-list"></div>
       </section>
   </div>
   <script type="module" src="js/main.js"></script>

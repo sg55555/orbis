@@ -267,6 +267,12 @@ body.ui-a .layer-cat-head, body.ui-b .layer-cat-head {
   /* 背景は薄め（映像を見せる）＋文字に黒アウトラインで可読性を確保 */
   text-shadow: 0 0 3px rgba(0,0,0,.95), 1px 1px 2px rgba(0,0,0,.9), -1px 1px 2px rgba(0,0,0,.9),
     1px -1px 2px rgba(0,0,0,.9), -1px -1px 2px rgba(0,0,0,.9); text-align: center; }
+/* interim（原文 ASR 即時）行：無アニメ・左寄せ・最低1行の高さを確保。
+   final で同一行が日本語へ置換され .lc-row--interim が外れる（120ms opacity settle）。 */
+.lc-row--interim { text-align: left; min-height: 1.45em; opacity: .92;
+  font-weight: 500; background: rgba(0, 0, 0, .34); }
+/* reduced-motion 環境では final 置換の opacity フェードを無効化（JS 側でも transition:none を付与） */
+@media (prefers-reduced-motion: reduce) { .lc-row { transition: none !important; } }
 .lc-status { font-size: 12px; color: rgba(190, 208, 228, .85);
   text-shadow: 0 1px 3px rgba(0, 0, 0, .9); min-height: 14px; }
 /* 1画面モードのカメラ名ピル行（表示カメラ切替） */
@@ -993,4 +999,59 @@ body.feed-on .feed-count { margin-top: 1px; }
 @media (max-width: 768px) and (prefers-reduced-motion: reduce) {
   /* 演出は静的（脈動なし）。アイコンの色/発光トランジションのみ無効化 */
   .mobile-tab .tab-svg { transition: none; }
+}
+
+/* ===== 急変アラート帯 (#alerts) — globe 直下の全幅バンド ===== */
+/* #app > section の共通規約(全幅＋端パディング＋オーロラ区切り＋reveal)に乗る。中身のみ定義。 */
+.alerts-section { padding-top: 18px; padding-bottom: 18px; }
+.alert-list {
+  display: flex; gap: 10px; overflow-x: auto; padding: 2px 2px 6px;
+  scrollbar-width: thin; -webkit-overflow-scrolling: touch;
+}
+.alert-btn { all: unset; cursor: pointer; flex: 0 0 auto; border-radius: 12px; }
+.alert-btn:disabled { cursor: default; opacity: .8; }
+.alert-chip {
+  display: inline-flex; align-items: center; gap: 8px; white-space: nowrap;
+  padding: 8px 14px; border-radius: 12px; font-size: .82rem; color: #e7f1ff;
+  background: rgba(14, 22, 42, .72); border: 1px solid var(--chip, rgba(57, 208, 255, .28));
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .03) inset;
+  transition: border-color .15s, box-shadow .15s, transform .15s;
+}
+.alert-btn:not(:disabled):hover .alert-chip {
+  border-color: var(--chip, var(--cyan)); transform: translateY(-1px);
+  box-shadow: 0 0 14px -3px var(--chip, var(--cyan));
+}
+.alert-chip .alert-ic { font-size: .92em; filter: drop-shadow(0 0 4px var(--chip, var(--cyan))); }
+.alert-chip .alert-label { font-weight: 600; }
+.alert-chip .alert-detail { font-style: normal; font-size: .76rem; color: #a9c2e6; }
+/* kind 別アクセント色（不安定性＝アンバー寄り赤 / 予測＝シアン） */
+.alert-instability { --chip: rgba(245, 150, 60, .55); }
+.alert-instability .alert-detail { color: #f3c08a; }
+.alert-forecast { --chip: rgba(57, 208, 255, .5); }
+@media (prefers-reduced-motion: reduce) {
+  .alert-btn:not(:disabled):hover .alert-chip { transform: none; }
+}
+
+/* ===== データソース & 鮮度 (#sources) — ページ最下部フッター ===== */
+.sources-section { padding-top: 18px; padding-bottom: 40px; }
+.src-list { display: flex; flex-direction: column; }
+.src-row {
+  display: grid; grid-template-columns: minmax(0, 1.4fr) auto minmax(56px, .5fr) minmax(0, 1.6fr);
+  gap: 12px; align-items: center; padding: 7px 8px; font-size: .82rem;
+  border-bottom: 1px solid rgba(57, 208, 255, .08);
+}
+.src-head-row {
+  color: #7f97bd; font-size: .72rem; letter-spacing: .04em; text-transform: none;
+  border-bottom: 1px solid rgba(57, 208, 255, .2); padding-bottom: 6px;
+}
+.src-row .src-name { color: #d6e6fb; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.src-row .src-rel { color: #8ea6c8; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.src-row .src-count { color: #b7cdec; text-align: right; font-variant-numeric: tabular-nums; }
+.src-row .src-src { color: #8ea6c8; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.src-row .src-link { color: #7fd8ff; text-decoration: none; }
+.src-row .src-link:hover { text-decoration: underline; }
+.src-row.src-stale .src-rel { color: #f3a85a; }   /* 古いと相対時刻をアンバー化 */
+@media (max-width: 560px) {
+  .src-row { grid-template-columns: minmax(0, 1.5fr) auto minmax(0, 1.4fr); }
+  .src-row .src-count { display: none; }   /* 狭幅では件数を省く */
 }
