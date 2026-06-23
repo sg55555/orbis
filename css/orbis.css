@@ -909,11 +909,82 @@ body.feed-on .feed-count { margin-top: 1px; }
    下端タブバー＋ボトムシート＋ディマーを「一体の観測コンソール」に（宇宙的トーンで上品）。
    設計言語＝線/光・グラス・面装飾なし・抑制的発光。globe主役を邪魔しない。
    既存 @media(max-width:768px) のレイアウト機構は不変＝視覚の上乗せのみ。
-   off=before（base のまま・タブは ≡）／a=上品(採用候補)／b=もう一段攻め(比較用)。 */
+   off=before（base のまま・タブは ≡）／a=上品(採用候補)／b=もう一段攻め(比較用)。
+   全演出は線/glow/縁のみ＝半透明グラス(タブバー/シート)の背後に面(radial)を置かない
+   （star/space 面廃止 06ee971・f3f8d97 と同根の四角い滲みを回避）。 */
 @media (max-width: 768px) {
-  /* アイコン出し分け：既定は隠し a/b で表示。off は擬似要素で ≡（before） */
-  .mobile-tab .tab-svg { display: none; width: 16px; height: 16px; flex: 0 0 auto; }
-  body.mui-a .mobile-tab .tab-svg,
-  body.mui-b .mobile-tab .tab-svg { display: inline-flex; color: var(--cyan); opacity: .6; }
+  /* --- アイコン出し分け：既定は隠し a/b で表示。off は擬似要素で ≡（before） --- */
+  .mobile-tab .tab-svg { display: none; width: 16px; height: 16px; flex: 0 0 auto;
+    transition: color .15s, opacity .15s, filter .15s; }
+  body.mui-a .mobile-tab .tab-svg { display: inline-flex; color: var(--cyan); opacity: .55; }
+  body.mui-b .mobile-tab .tab-svg { display: inline-flex; color: var(--cyan); opacity: .7; }
   body.mui-off .mobile-tab::before { content: '≡'; margin-right: 6px; opacity: .8; }
+
+  /* --- A. 下端タブバー：globe と操作系を分ける上端オーロラ細線（面でなく1pxの線） --- */
+  body.mui-a #mobile-tabs::before,
+  body.mui-b #mobile-tabs::before {
+    content: ''; position: absolute; left: 10px; right: 10px; top: 0; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgba(57, 208, 255, .5), rgba(138, 92, 246, .4), transparent);
+    box-shadow: 0 0 14px rgba(57, 208, 255, .22);  /* 章区切りオーロラ線(L649)と同 glow に統一 */
+  }
+  /* タブ：active のアイコン stroke 発光＋cyan 単色の中央発光下線（active 強調・2色オーロラ線トークンとは別の active 専用表現） */
+  body.mui-a .mobile-tab, body.mui-b .mobile-tab { position: relative; }
+  body.mui-a .mobile-tab[aria-expanded="true"] .tab-svg,
+  body.mui-b .mobile-tab[aria-expanded="true"] .tab-svg {
+    opacity: 1; filter: drop-shadow(0 0 5px rgba(57, 208, 255, .65));
+  }
+  body.mui-a .mobile-tab[aria-expanded="true"]::after,
+  body.mui-b .mobile-tab[aria-expanded="true"]::after {
+    content: ''; position: absolute; left: 22%; right: 22%; bottom: 6px; height: 1px; pointer-events: none;
+    background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+    box-shadow: 0 0 8px rgba(57, 208, 255, .5);
+  }
+  /* active 枠 glow を下線/アイコンと連動（base .3→a .34 で抑制的にまとめる。b は .5 に上書き＝下記） */
+  body.mui-a .mobile-tab[aria-expanded="true"] { box-shadow: 0 0 12px rgba(57, 208, 255, .34); }
+  /* font-on 連動：タブ文字も display フォント（操作系を観測コンソール言語に揃える） */
+  body.font-on.mui-a .mobile-tab, body.font-on.mui-b .mobile-tab {
+    font-family: var(--font-display); letter-spacing: .04em;
+  }
+
+  /* --- B. ボトムシート：ハンドルを大気ハロ発光に・見出しにオーロラ下線・行のタッチ最適化 --- */
+  body.mui-a #panel.side-panel::after, body.mui-a #feed.side-panel::after, body.mui-a #legend.side-panel::after,
+  body.mui-b #panel.side-panel::after, body.mui-b #feed.side-panel::after, body.mui-b #legend.side-panel::after {
+    background: linear-gradient(90deg, rgba(57, 208, 255, .25), var(--cyan), rgba(57, 208, 255, .25));
+    box-shadow: 0 0 9px rgba(57, 208, 255, .45);
+  }
+  /* 見出し（LAYERS/FEED/凡例）に sec-h 言語のオーロラ下線（全幅）。
+     下線は h4 でなく .panel-head コンテナに付与＝(1)テキスト幅でなく見出し行の全幅で引ける
+     (2)?ui=b の .panel-head 下線(L592)と同一ターゲット＝上書き一本化で二重下線を回避。
+     Saira は font-on .side-panel h4(L536-538)が既に付与。 */
+  body.mui-a .side-panel .panel-head, body.mui-b .side-panel .panel-head {
+    padding-bottom: 6px; border-bottom: 1px solid rgba(57, 208, 255, .18); box-shadow: 0 1px 0 rgba(57, 208, 255, .08);
+  }
+  /* レイヤー行：タップ標的を 40px に（iOS/Material のタッチ下限寄り・行内容は据置で当たり領域のみ拡張＝密度維持） */
+  body.mui-a .layer-row, body.mui-b .layer-row { min-height: 40px; }
+
+  /* --- C. ディマー幕：暗度＋blur を上品に強化（単色暗幕のみ＝vignette 等の面は置かない） --- */
+  body.mui-a #sheet-scrim {
+    background: rgba(3, 6, 12, .58);
+    -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+  }
+
+  /* --- mui-b：もう一段攻めた発光・密度（比較用・a より一段強い glow） --- */
+  /* 非アクティブタブ枠を一段明るく＝シート展開前のファーストビューでも a と判別できる常時可視差 */
+  body.mui-b .mobile-tab:not([aria-expanded="true"]) { border-color: rgba(90, 200, 255, .34); }
+  body.mui-b #mobile-tabs::before { box-shadow: 0 0 16px rgba(57, 208, 255, .34); }
+  body.mui-b .mobile-tab[aria-expanded="true"] { box-shadow: 0 0 16px rgba(57, 208, 255, .5); }
+  body.mui-b .mobile-tab[aria-expanded="true"] .tab-svg { filter: drop-shadow(0 0 7px rgba(57, 208, 255, .85)); }
+  body.mui-b .mobile-tab[aria-expanded="true"]::after { left: 14%; right: 14%; box-shadow: 0 0 12px rgba(57, 208, 255, .7); }
+  body.mui-b #panel.side-panel::after, body.mui-b #feed.side-panel::after, body.mui-b #legend.side-panel::after {
+    box-shadow: 0 0 14px rgba(57, 208, 255, .65);
+  }
+  body.mui-b #sheet-scrim {
+    background: rgba(2, 5, 11, .64);
+    -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px);
+  }
+}
+
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+  /* 演出は静的（脈動なし）。アイコンの色/発光トランジションのみ無効化 */
+  .mobile-tab .tab-svg { transition: none; }
 }
