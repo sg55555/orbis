@@ -55,3 +55,18 @@ def ja_wikipedia_title(entity):
     sl = (entity or {}).get("sitelinks") or {}
     t = (sl.get("jawiki") or {}).get("title")
     return t.strip() if isinstance(t, str) and t.strip() else None
+
+
+def build_profile_prompt(name_ja, level, facts, wiki_summary):
+    """取得事実のみを根拠に日本語プロフィールを JSON 生成させるプロンプト。"""
+    facts_lines = "\n".join(f"- {k}: {v}" for k, v in (facts or {}).items() if v is not None)
+    return (
+        f"地域「{name_ja}」（種別: {level}）の日本語プロフィールを作成してください。\n"
+        f"以下の Wikipedia 要約と事実(Wikidata)のみを根拠とし、ここに無い情報は書かないでください。\n\n"
+        f"# Wikipedia 要約\n{wiki_summary or '(なし)'}\n\n"
+        f"# 事実(Wikidata)\n{facts_lines or '(なし)'}\n\n"
+        f"# 出力形式（JSON のみ・前後に文章を付けない）\n"
+        f'{{"sections":[{{"title":"概要","body":"…"}}]}}\n'
+        f"title は次から該当するものだけ・順序維持: {', '.join(SECTIONS)}。\n"
+        f"各 body は 1〜3 文の簡潔な日本語。根拠が無いセクションは省略し、断定は避ける。"
+    )

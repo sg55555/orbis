@@ -53,3 +53,17 @@ def test_ja_wikipedia_title():
     assert ja_wikipedia_title({"sitelinks": {"jawiki": {"title": "東京都"}}}) == "東京都"
     assert ja_wikipedia_title({"sitelinks": {"enwiki": {"title": "Tokyo"}}}) is None
     assert ja_wikipedia_title({}) is None
+
+
+from scripts.lib.profile_prep import build_profile_prompt
+
+def test_build_profile_prompt_grounds_and_lists_sections():
+    p = build_profile_prompt("東京都", "admin1",
+                             {"population": 13960000, "area_km2": 2194, "lat": None, "lon": None, "elevation_m": None},
+                             "東京都は日本の首都圏…")
+    assert "東京都" in p and "admin1" in p
+    assert "東京都は日本の首都圏" in p          # 要約を grounding に含む
+    assert "population: 13960000" in p          # None でない事実のみ列挙
+    assert "- lat:" not in p                      # None の事実(lat)は列挙しない（"population"内の"lat"は誤検出回避）
+    assert "観光名所" in p and "概要" in p        # セクション候補を提示
+    assert "根拠" in p or "事実に無い" in p       # 幻覚抑制の指示
