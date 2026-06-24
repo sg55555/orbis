@@ -23,3 +23,25 @@ def test_resolve_qid_variants():
     assert resolve_qid({"wikidataid": ""}) is None
     assert resolve_qid({"wikidataid": "-99"}) is None
     assert resolve_qid({}) is None
+
+
+from scripts.lib.profile_prep import wikidata_facts
+
+def _amt(pid, amount):
+    return {pid: [{"mainsnak": {"datavalue": {"value": {"amount": amount}}}}]}
+
+def test_wikidata_facts_extracts():
+    claims = {}
+    claims.update(_amt("P1082", "+13960000"))
+    claims.update(_amt("P2046", "+2194"))
+    claims.update(_amt("P2044", "+40"))
+    claims["P625"] = [{"mainsnak": {"datavalue": {"value": {"latitude": 35.68, "longitude": 139.75}}}}]
+    f = wikidata_facts({"claims": claims})
+    assert f["population"] == 13960000
+    assert f["area_km2"] == 2194.0
+    assert f["lat"] == 35.68 and f["lon"] == 139.75
+    assert f["elevation_m"] == 40.0
+
+def test_wikidata_facts_missing_all_none():
+    f = wikidata_facts({})
+    assert f == {"population": None, "area_km2": None, "lat": None, "lon": None, "elevation_m": None}

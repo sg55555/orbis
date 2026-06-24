@@ -14,3 +14,37 @@ def resolve_qid(props):
             if v.startswith("Q") and v[1:].isdigit():
                 return v
     return None
+
+
+def _claim_amount(claims, pid):
+    for c in claims.get(pid) or []:
+        try:
+            v = c["mainsnak"]["datavalue"]["value"]
+            amt = v["amount"] if isinstance(v, dict) and "amount" in v else v
+            return float(amt)
+        except (KeyError, TypeError, ValueError):
+            continue
+    return None
+
+
+def _claim_coord(claims):
+    for c in claims.get("P625") or []:
+        try:
+            v = c["mainsnak"]["datavalue"]["value"]
+            return float(v["latitude"]), float(v["longitude"])
+        except (KeyError, TypeError, ValueError):
+            continue
+    return None, None
+
+
+def wikidata_facts(entity):
+    """Wikidata entity → 事実 dict。P1082 人口/P2046 面積/P625 座標/P2044 標高。"""
+    claims = (entity or {}).get("claims") or {}
+    pop = _claim_amount(claims, "P1082")
+    lat, lon = _claim_coord(claims)
+    return {
+        "population": int(pop) if pop is not None else None,
+        "area_km2": _claim_amount(claims, "P2046"),
+        "lat": lat, "lon": lon,
+        "elevation_m": _claim_amount(claims, "P2044"),
+    }
