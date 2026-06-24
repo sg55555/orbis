@@ -47,6 +47,7 @@ export function initCountryClick({ map, getSnapshots, deps }) {
 
   async function openCountry(fips, anchorLngLat) {
     const myToken = ++token;
+    if (deps.rootEl && deps.rootEl.removeAttribute) deps.rootEl.removeAttribute('hidden'); // Critical-2: hidden 属性を外してパネルを表示
     if (deps.bodyEl) deps.bodyEl.classList.add('drill-open');
     if (map && map.resize) map.resize();
     if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'loading');
@@ -79,6 +80,7 @@ export function initCountryClick({ map, getSnapshots, deps }) {
 
   function closeCountry() {
     token += 1;                                     // 進行中 open を無効化
+    if (deps.rootEl && deps.rootEl.setAttribute) deps.rootEl.setAttribute('hidden', ''); // Critical-2: hidden 属性を戻してパネルを隠す
     if (deps.bodyEl) deps.bodyEl.classList.remove('drill-open');
     if (map && map.resize) map.resize();
   }

@@ -36,3 +36,70 @@ test('main.js: loadCountryBounds→setBoundsPolys 配線（patch #5）', () => {
   assert.match(src, /loadCountryBounds/);
   assert.match(src, /cc\.setBoundsPolys\(/);
 });
+
+// Critical-1: deps 全結線の静的検証（短縮プロパティ or 明示コロンのどちらも許容）
+function hasDep(src, name) {
+  // "name:" または "name," または "name\n" で deps オブジェクト内に出現
+  return new RegExp(`${name}\\s*[,:\\s]`).test(src);
+}
+
+test('main.js: deps に fetchFn を渡す（fetch↔fetchFn 名不一致を解消）', () => {
+  assert.match(src, /fetchFn\s*:/);  // fetchFn は必ず明示コロン（値が fetch と別）
+});
+
+test('main.js: deps に loadCountryGeo を渡す', () => {
+  assert.ok(hasDep(src, 'loadCountryGeo'), 'loadCountryGeo が deps に渡されていない');
+});
+
+test('main.js: deps に buildDrilldown を渡す', () => {
+  assert.ok(hasDep(src, 'buildDrilldown'), 'buildDrilldown が deps に渡されていない');
+});
+
+test('main.js: deps に renderDrilldown を渡す', () => {
+  assert.ok(hasDep(src, 'renderDrilldown'), 'renderDrilldown が deps に渡されていない');
+});
+
+test('main.js: deps に setDrilldownState を渡す', () => {
+  assert.ok(hasDep(src, 'setDrilldownState'), 'setDrilldownState が deps に渡されていない');
+});
+
+test('main.js: deps に countryBbox を渡す', () => {
+  assert.ok(hasDep(src, 'countryBbox'), 'countryBbox が deps に渡されていない');
+});
+
+test('main.js: deps に zoomForBbox を渡す', () => {
+  assert.ok(hasDep(src, 'zoomForBbox'), 'zoomForBbox が deps に渡されていない');
+});
+
+test('main.js: deps に rootEl を渡す（#drilldown）', () => {
+  assert.match(src, /rootEl\s*:/);
+  assert.match(src, /getElementById\(['"]drilldown['"]\)/);
+});
+
+test('main.js: deps に bodyEl を渡す（document.body）', () => {
+  assert.match(src, /bodyEl\s*:/);
+  assert.match(src, /document\.body/);
+});
+
+test('main.js: deps に onOceanMiss を渡す（share-toast 利用）', () => {
+  assert.match(src, /onOceanMiss\s*:/);
+});
+
+test('main.js: deps に bboxIndex を渡す', () => {
+  assert.match(src, /bboxIndex/);
+});
+
+test('main.js: deps に manifest を渡す', () => {
+  assert.match(src, /manifest/);
+});
+
+// Critical-2: hidden 解除の静的検証
+test('country_click.js: openCountry が hidden 属性を外す', () => {
+  const ccSrc = readFileSync(join(__dirname, '..', 'js', 'ui', 'country_click.js'), 'utf8');
+  assert.match(ccSrc, /removeAttribute\(['"]hidden['"]\)/);
+});
+
+test('country_click.js: closeCountry が hidden 属性を戻す', () => {
+  const ccSrc = readFileSync(join(__dirname, '..', 'js', 'ui', 'country_click.js'), 'utf8');
+  assert.match(ccSrc, /setAttribute\(['"]hidden['"]/);
+});
