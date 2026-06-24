@@ -95,3 +95,46 @@ test('handleMapClick: 海洋クリックは onOceanMiss を呼びパネルを開
   assert.equal(missed, 1);
   assert.equal(opened, 0);
 });
+
+test('openCountry: drill-open 付与→resize→loadCountryGeo→buildDrilldown→renderDrilldown→flyTo', async () => {
+  const map = fakeMap();
+  const order = [];
+  const bodyEl = { classList: { add: (c) => order.push(`body+${c}`), remove: () => {} } };
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({ quakes: { features: [] } }),
+    deps: baseDeps({
+      bodyEl,
+      loadCountryGeo: async (fips, opts) => { order.push(`load:${fips}`); assert.equal(opts.manifest.JA.admin1Bytes, 1); return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }; },
+      buildDrilldown: (arg) => { order.push('build'); assert.equal(arg.fips, 'JA'); assert.deepEqual(arg.snapshots, { quakes: { features: [] } }); return { header: { name_ja: '日本' }, regions: [], events: [], degraded: false }; },
+      renderDrilldown: (rootEl, model) => { order.push('render'); assert.equal(model.header.name_ja, '日本'); },
+      setDrilldownState: (rootEl, state) => order.push(`state:${state}`),
+      countryBbox: () => [120, 20, 150, 46],
+      zoomForBbox: (bbox) => { assert.deepEqual(bbox, [120, 20, 150, 46]); return 4.2; },
+    }),
+  });
+  api.setBoundsPolys(POLYS);
+  await api.openCountry('JA', [135, 36]);
+  assert.deepEqual(order, ['body+drill-open', 'state:loading', 'load:JA', 'build', 'render', 'state:ready']);
+  // flyTo は bbox 中心へ・zoom は zoomForBbox の返り値
+  assert.deepEqual(map.flewTo.center, [(120 + 150) / 2, (20 + 46) / 2]);
+  assert.equal(map.flewTo.zoom, 4.2);
+  assert.equal(map.flewTo.essential, true);
+  assert.ok(map.resized >= 1, 'map.resize が呼ばれた');
+});
+
+test('openCountry: degraded geo は state を error にする', async () => {
+  const map = fakeMap();
+  let lastState = null;
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({}),
+    deps: baseDeps({
+      loadCountryGeo: async () => ({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: true }),
+      setDrilldownState: (rootEl, state) => { lastState = state; },
+    }),
+  });
+  api.setBoundsPolys(POLYS);
+  await api.openCountry('JA', [135, 36]);
+  assert.equal(lastState, 'error');
+});
