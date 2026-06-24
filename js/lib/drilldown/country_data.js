@@ -59,7 +59,8 @@ export function loadCountryGeo(fips, { signal, timeoutMs = 8000, manifest, fetch
   const p = (async () => {
     try {
       const result = await _fetchGeo(fips, f, signal, timeoutMs);
-      _cache.set(fips, result);
+      // degraded:true（一時的ネット障害等）はキャッシュしない → 次回呼び出しで再試行できる。
+      if (!result.degraded) _cache.set(fips, result);
       return result;
     } finally {
       _inflight.delete(fips);
