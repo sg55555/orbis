@@ -18,11 +18,18 @@ WINDOW_HOURS = 24
 #   ・他地域の記事が GDELT の誤ジオコーディングで無関係な都市(例: 東京)に置かれる
 # 複数ソースで報じられた event だけ残す（実測: 日本の偽紛争はすべて単一ソースだった）。
 MIN_SOURCES = 2
+# 紛争(root 18/19/20)のみ AvgTone(r[34]) の上限。CAMEO の QuadClass/GoldsteinScale は
+# EventCode から決まる決定値で誤コードを見抜けない（root 19 は常に QuadClass4/Goldstein≤-7）。
+# 一方 AvgTone は記事群の感情で、実暴力は強い負値・司法/政治/エンタメの誤コードは中立寄り。
+# 例「旧統一教会の解散命令確定」は多ソースで NumSources は通過するが中立トーンで除外できる。
+# 抗議(root 14)は中立報道もあり過剰除外を避けるため tone 条件は課さない。
+MAX_CONFLICT_TONE = -3.5
 
 
 def parse_rows(rows):
     """GDELT export TSV 行（list[str]）→ 抗議/紛争イベント dict 配列（純粋）。
-    NumSources < MIN_SOURCES（単一ソース）は偽陽性が多いため除外する。"""
+    NumSources < MIN_SOURCES（単一ソース）は偽陽性が多いため除外。
+    紛争は AvgTone > MAX_CONFLICT_TONE（中立/正トーン＝非暴力ニュースの誤コード）も除外。"""
     out = []
     for r in rows:
         if len(r) < 61:
@@ -47,6 +54,12 @@ def parse_rows(rows):
             sources = 0
         if sources < MIN_SOURCES:
             continue  # 単一ソースの偽陽性（エンタメ誤分類・誤ジオコーディング）を除外
+        try:
+            tone = float(r[34]) if r[34] else 0.0
+        except ValueError:
+            tone = 0.0
+        if root in CONFLICT_CODES and tone > MAX_CONFLICT_TONE:
+            continue  # 中立/正トーンの紛争コード＝非暴力ニュース（司法/政治/エンタメ）の誤コードを除外
         out.append({
             "id": r[0], "root": root, "lon": lonf, "lat": latf,
             "place": r[53], "mentions": mentions, "sources": sources, "tone": r[34],

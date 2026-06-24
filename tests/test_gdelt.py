@@ -3,9 +3,9 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from collectors.gdelt_events import parse_rows, split_events, merge_rolling
 from datetime import datetime
 
-def make_row(eid, root, lat, lon, mentions="3", url="http://x", sources="3"):
+def make_row(eid, root, lat, lon, mentions="3", url="http://x", sources="3", tone="-5.0"):
     r = [""] * 61
-    r[0] = eid; r[28] = root; r[31] = mentions; r[32] = sources; r[34] = "-2.5"
+    r[0] = eid; r[28] = root; r[31] = mentions; r[32] = sources; r[34] = tone
     r[53] = "Tokyo, Japan"; r[56] = lat; r[57] = lon; r[59] = "20260614120000"; r[60] = url
     return r
 
@@ -37,6 +37,19 @@ def test_parse_rows_filters_single_source():
     assert ids == ["many", "multi"]
     e = next(e for e in parse_rows(rows) if e["id"] == "multi")
     assert e["sources"] == 2  # sources を出力に保持
+
+
+def test_parse_rows_filters_mild_tone_conflict():
+    # 紛争(root 18/19/20)は中立/正トーン(>-3.5)を除外（司法/政治/エンタメの誤コード対策）。
+    # 抗議(root 14)は中立トーンでも残す（過剰除外回避）。
+    rows = [
+        make_row("violent", "19", "1", "1", tone="-7.0"),   # 紛争・強い負→残る
+        make_row("mild", "19", "1", "1", tone="-1.0"),      # 紛争・中立→除外(例:解散命令)
+        make_row("positive", "18", "1", "1", tone="2.0"),   # 紛争・正→除外
+        make_row("protest", "14", "1", "1", tone="-1.0"),   # 抗議・中立→残る(tone条件なし)
+    ]
+    ids = sorted(e["id"] for e in parse_rows(rows))
+    assert ids == ["protest", "violent"]
 
 
 def test_split_events_by_category():
