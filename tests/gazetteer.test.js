@@ -4,7 +4,7 @@ import { COUNTRIES, searchCountries } from '../js/lib/gazetteer.js';
 import { FIPS_JA } from '../js/lib/places.js';
 
 test('COUNTRIES: 全 FIPS_JA コードを網羅・座標は範囲内・ja 非空', () => {
-  assert.equal(COUNTRIES.length, 239);
+  assert.equal(COUNTRIES.length, 246); // 239 + Phase2 50m 再生成で追加の7領土/小国（CQ/FM/NN/RN/SX/TB/UC）
   const codes = new Set(COUNTRIES.map((c) => c.code));
   for (const k of Object.keys(FIPS_JA)) assert.ok(codes.has(k), `欠落: ${k}`);
   for (const c of COUNTRIES) {
