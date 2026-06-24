@@ -1496,11 +1496,12 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
   }
   /* ドラッグハンドル */
   #drilldown.drill-panel::before {
-    content: ''; position: absolute; top: 7px; left: 50%;
+    content: ''; position: absolute; inset: auto;
+    top: 7px; left: 50%;
     transform: translateX(-50%); width: 40px; height: 4px;
     border-radius: 2px; background: var(--line);
     /* オーロラオーバーレイの ::before を上書き — モバイルでは縁光を無効化 */
     background-image: none; -webkit-mask: none; mask: none; padding: 0;
-    opacity: 1; inset: auto;
+    opacity: 1;
   }
 }
