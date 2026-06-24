@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { addCode, removeCode, hasCode } from '../js/lib/drilldown/watchlist.js';
+import { addCode, removeCode, hasCode, orderByInstability } from '../js/lib/drilldown/watchlist.js';
 
 test('addCode: 末尾追加・順序保持・新配列を返し元を破壊しない', () => {
   const base = ['UP', 'RS'];
@@ -49,4 +49,36 @@ test('hasCode: 含むなら true / 含まないなら false', () => {
   assert.equal(hasCode(['UP', 'RS'], 'RS'), true);
   assert.equal(hasCode(['UP', 'RS'], 'JA'), false);
   assert.equal(hasCode(null, 'UP'), false);
+});
+
+test('orderByInstability: instability score の降順に並べ替える', () => {
+  const list = ['JA', 'UP', 'RS'];
+  const countries = [
+    { code: 'UP', score: 90 },
+    { code: 'RS', score: 70 },
+    { code: 'JA', score: 5 },
+  ];
+  assert.deepEqual(orderByInstability(list, countries), ['UP', 'RS', 'JA']);
+});
+
+test('orderByInstability: instability に無い国（圏外）は score 0 扱いで末尾', () => {
+  const list = ['JA', 'UP', 'XX'];
+  const countries = [{ code: 'UP', score: 90 }, { code: 'JA', score: 50 }];
+  // UP(90) > JA(50) > XX(0)
+  assert.deepEqual(orderByInstability(list, countries), ['UP', 'JA', 'XX']);
+});
+
+test('orderByInstability: 同 score は元の list 順を保つ（安定）', () => {
+  const list = ['A', 'B', 'C'];
+  const countries = [{ code: 'A', score: 10 }, { code: 'B', score: 10 }, { code: 'C', score: 10 }];
+  assert.deepEqual(orderByInstability(list, countries), ['A', 'B', 'C']);
+});
+
+test('orderByInstability: countries 欠落でも落ちない（list をそのまま返す）', () => {
+  assert.deepEqual(orderByInstability(['A', 'B'], null), ['A', 'B']);
+  assert.deepEqual(orderByInstability(['A', 'B'], []), ['A', 'B']);
+});
+
+test('orderByInstability: list が非配列なら空配列', () => {
+  assert.deepEqual(orderByInstability(null, [{ code: 'A', score: 1 }]), []);
 });
