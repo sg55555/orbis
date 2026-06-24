@@ -14,6 +14,147 @@
   /* 下部セクション（body.sec-on）の左右パディング。media と report-row で共有＝両者の端を一致させ、
      どちらも全幅(4Kでも画面いっぱい)に。画面幅に応じて余白を可変（小さい画面は詰め、大画面は少し空ける）。 */
   --edge-pad: clamp(16px, 1.6vw, 44px);
+
+  /* ── 背景層（bg-*）：深宇宙→面パネルへ向かう暗→明の階段 ── */
+  --bg-0: #05080f;                    /* 層0 最暗ベース（=--bg。深宇宙の底） */
+  --bg-1: #0a1220;                    /* 層1 星空/vignette 中心（starfield radial 起点） */
+  --bg-1-loading: #0a1426;            /* 層1 ローディング radial 中心（やや青寄り別値） */
+  --bg-deep: #06101f;                 /* 層0+ media 下部の深宇宙紺（mbg-deep） */
+  --bg-pure: #000;                    /* 純黒（media-player/cam-cell の映像地） */
+  --bg-panel: var(--panel);           /* 層2 パネル面（=--panel） */
+  --bg-panel-2: rgba(14,22,42,0.72);  /* 層2 別系パネル紺（forecasts panel-section） */
+  --bg-control: rgba(10,18,32,0.6);   /* 層2 タブ/ボタン/凡例タブ面（≈glass-bg 濃いめ） */
+  --bg-chip: rgba(20,40,70,0.4);      /* 層2 チップ面（feed-chip/凡例タブ） */
+  --bg-card: rgba(20,32,60,0.6);      /* カード面（fc-card 深紺） */
+  --bg-card-soft: rgba(10,16,28,0.52);/* カード紺ガラス（brief-lead .5/brief-card .55 を代表値で集約） */
+  --bg-hover: rgba(120,150,200,0.10); /* 行/カード hover の青灰ハイライト（ins/fc 共通） */
+  --bg-select: rgba(80,160,240,0.20); /* 検索行 active/hover の青選択ハイライト */
+  --bg-section: rgba(8,12,22,0.55);   /* 不安定性セクション紺ガラス */
+  /* グラス強度バリアント（look トグル body.glass-*） */
+  --bg-glass-soft: rgba(10,18,32,0.76);
+  --bg-glass-off: rgba(8,14,26,0.93);
+  /* 検索系の紺ガラス入力/結果リスト */
+  --bg-search-input: rgba(10,18,32,0.62);
+  --bg-search-list: rgba(10,18,32,0.80);
+  /* 暗幕スクリム（ボトムシート ディマー。標準/mui-a/mui-b で段階） */
+  --bg-scrim: rgba(3,6,12,0.5);
+  --bg-scrim-a: rgba(3,6,12,0.58);
+  --bg-scrim-b: rgba(2,5,11,0.64);
+  --bg-tabbar: rgba(5,8,15,0.66);     /* モバイルタブバー下端グラデ暗 */
+  --bg-expand: rgba(5,8,15,0.6);      /* 展開ボタン暗ガラス */
+  --bg-cam-empty: rgba(10,18,32,0.4); /* 空カメラセル紺ガラス */
+  --bg-label-grad: rgba(0,0,0,0.7);   /* カメララベル下グラデ黒 */
+  --bg-chip-white: rgba(255,255,255,0.04);  /* preset-chip 微白ガラス地 */
+  --bg-chip-active: rgba(108,204,255,0.12); /* active chip の cyan 淡背景 */
+
+  /* ── アクセント・オーロラ（accent-*/aurora-*） ─────────── */
+  --accent-cyan: #39d0ff;             /* 主アクセント（=--cyan） */
+  --accent-cyan-fallback: #6cf;       /* var(--cyan,#6cf) フォールバック用 */
+  --accent-purple: #8a5cf6;           /* 紫アクセント（オーロラ a2/進捗グラデ終端） */
+  /* オーロラ細線・地平線シーム（線で見せる溶け込み） */
+  --aurora-cyan-line: rgba(57,208,255,0.55);  /* seam-b cyan 地平線 */
+  --aurora-purple-line: rgba(138,92,246,0.45);/* seam-b purple 地平線 */
+  --aurora-line-cyan: rgba(57,208,255,0.5);   /* 区切り/オーロラ細線の cyan 端（地平線/mobile-tabs） */
+  --aurora-line-purple: rgba(138,92,246,0.4); /* 同・紫端 */
+  --aurora-cyan-fade: rgba(57,208,255,0.05);  /* seam-a 溶け込みフェード（極淡） */
+  --aurora-cyan-haze: rgba(57,208,255,0.06);  /* mbg-deep 星雲名残 radial */
+  --aurora-cyan-tint: rgba(57,208,255,0.08);  /* シアン地（極薄・tab hover/sec-head 影） */
+  --aurora-cyan-wash: rgba(57,208,255,0.10);  /* シアン地（薄・feed hover/glow 弱） */
+  --aurora-seam-navy: rgba(24,42,71,0.22);    /* seam-a 深紺シーム移行 */
+  --aurora-seam-navy-2: rgba(10,18,32,0.45);  /* seam-b 紺シーム締め */
+
+  /* ── テキスト階層（明→暗。混在実値をクラスタ化して4段+特殊） ── */
+  --text-bright: #eaf4ff;     /* 最明：ワードマーク強調（eaf4ff/eaf6ff を代表） */
+  --text-heading: #e7f3ff;    /* 見出し主（e7f3ff/e8f0ff/e8f2ff/e7f1ff/e7f1ff クラスタ） */
+  /* --text: 本文主 #cfe0f5（=既存・冒頭で定義済み） */
+  --text-2: #c7d6f0;          /* 本文やや明（ins-narr/fc-out, dbeafe/d6e6fb 近傍も含む代表） */
+  --text-chip: #cfe6ff;       /* チップ/凡例タブ文字（明） */
+  --text-muted: #8ea3c4;      /* ミュート主（ins-rank/fc-sub 等・多用） */
+  /* --muted: 減衰主 #5b7fb0（=既存・冒頭で定義済み・見出し補足/feed-time） */
+  --text-muted-2: #9fb2d4;    /* ミュート副（ins-counts/cf-low, a9c2e6/b7cdec 近傍代表） */
+  --text-muted-3: #7f97bd;    /* 三次ミュート（ソース見出し行/相対時刻 8ea6c8 近傍） */
+  --text-faint: #21344c;      /* 最暗：テレメトリ点線ドット */
+  --text-on-media: #fff;      /* 映像上の純白字幕 */
+  --text-soft: rgba(190,208,228,0.78);  /* 淡青グレー補助（lc-status .85 / brief .7 を集約） */
+  --text-soft-2: rgba(160,185,220,0.82);/* セクション注記ミュート（sec-note 等） */
+  --text-placeholder: rgba(180,210,240,0.55); /* 検索プレースホルダ */
+
+  /* ── カテゴリ色（cat-*）：層/状態の意味色 ───────────────── */
+  --cat-conflict: #ff7a7a;    /* 紛争/上昇トレンド赤（ins-up/fc-up） */
+  --cat-down: #7adba0;        /* 下降/良好トレンド緑（ins-down/fc-down/cf-high） */
+  --cat-success: #5effa6;     /* 成功グリーン（telemetry ok） */
+  --cat-count: #ff9bb0;       /* 件数ピンク（feed-count） */
+  --cat-link: #7fd8ff;        /* リンク cyan（src-link） */
+  --cat-lvl-fallback: #678;   /* レベル色フォールバック青灰（ins/fc fill） */
+  --cat-cat-fallback: #7aa;   /* カテゴリ色フォールバック（brief-card border） */
+  /* 鮮度切れ stale アンバー（状態色）。文字/縁/発光で濃淡 */
+  --cat-stale: #ffce7a;       /* stale 文字/中信頼（freshness/cf-med） */
+  --cat-stale-2: #f3a85a;     /* stale 相対時刻（src-stale 濃いめ） */
+  --cat-stale-3: #f3c08a;     /* 不安定性アンバー文字（alert-detail 淡） */
+  --cat-amber-border: rgba(255,176,40,0.45); /* stale 縁 */
+  --cat-amber-glow: rgba(255,176,40,0.22);   /* stale 発光 */
+  --cat-amber-chip: rgba(245,150,60,0.55);   /* 不安定性アラートチップ --chip */
+  /* 海流 line 層ランプ（冷→中→暖） */
+  --cat-ocean-cold: rgb(42,127,255);
+  --cat-ocean-mid: rgb(94,224,106);
+  --cat-ocean-warm: rgb(255,90,50);
+  /* 水温/SST gradient 層ランプ（5stop 冷→高温） */
+  --cat-temp-1: rgb(42,150,255);
+  --cat-temp-2: rgb(30,220,210);
+  --cat-temp-3: rgb(110,230,120);
+  --cat-temp-4: rgb(255,230,90);
+  --cat-temp-5: rgb(255,70,55);
+
+  /* ── グラス・縁（glass-*/rim-*）：面の縁取り・内側ハイライト ── */
+  /* --glass-rim: 標準ガラス縁 rgba(90,200,255,0.22)（=既存・冒頭で定義済み） */
+  --rim-cyan-strong: rgba(90,200,255,0.34);/* やや濃い cyan 縁（mp-a player） */
+  --rim-cyan-08: rgba(57,208,255,0.08);   /* cyan 極淡セパレータ影（panel-head 下） */
+  --rim-cyan-12: rgba(57,208,255,0.12);   /* cyan 縁/地（薄・layer hover inset） */
+  --rim-cyan-14: rgba(57,208,255,0.14);   /* cyan パネル縁（薄・forecasts） */
+  --rim-cyan-16: rgba(57,208,255,0.16);   /* ネオン区切り線（mp-a pane-head 下） */
+  --rim-cyan-18: rgba(57,208,255,0.18);   /* cyan 見出し下線/縁（forecasts fc-title/panel-head） */
+  --rim-cyan-20: rgba(57,208,255,0.20);   /* cyan ヘッダ行/カード縁 */
+  --rim-cyan-22: rgba(57,208,255,0.22);   /* cyan 弱（h4 text-shadow / cam-cell mp-a 縁） */
+  --rim-cyan-35: rgba(57,208,255,0.35);   /* ネオン区切り線（mp-b pane-head 下） */
+  --rim-cyan-46: rgba(57,208,255,0.46);   /* ネオン cyan 縁（mp-b cam-cell） */
+  --rim-cyan-68: rgba(57,208,255,0.68);   /* ネオン強 cyan 縁（mp-b player） */
+  --rim-navy: rgba(28,44,72,0.5);         /* フィード区切り線 紺（.4/.5 を代表値で集約） */
+  --rim-blue-soft: rgba(120,180,255,0.25);/* チップ縁 淡青（feed-chip/凡例タブ .25） */
+  --rim-blue-grey: rgba(120,150,200,0.18);/* 青灰縁（ins-section） */
+  --rim-watch: rgba(100,120,160,0.20);    /* ウォッチカード縁 青灰 */
+  --rim-chip-all: rgba(160,210,255,0.7);  /* 全カテゴリ chip active 縁 */
+  --rim-cyan-mui: rgba(90,200,255,0.34);  /* mui-b 非active タブ枠 */
+  --rim-search: rgba(120,200,255,0.30);   /* 検索ボックス枠 淡青（入力 .30/結果 .22 代表） */
+  --rim-search-focus: rgba(120,220,255,0.7);/* 検索フォーカス枠 */
+  --rim-white-05: rgba(255,255,255,0.05); /* 上端白ハイライト inset（.05/.06/.07 クラスタの代表） */
+  --rim-white-14: rgba(255,255,255,0.14); /* 微白縁（preset-chip） */
+  --rim-bar: rgba(255,255,255,0.08);      /* バー地（白薄・ins-bar/fc-bar） */
+
+  /* ── グロー・発光（glow-*）：外側光・text-shadow・ドロップ影 ── */
+  /* cyan 発光：抑制(<.3) / 標準(.3-.5) / 強(>.5) の段で代表化 */
+  --glow-cyan-weak: rgba(57,208,255,0.10);  /* inset/弱グロー（side-panel glow） */
+  --glow-cyan-soft: rgba(57,208,255,0.22);  /* オーロラ線 glow */
+  --glow-cyan-text: rgba(57,208,255,0.28);  /* 見出し cyan text-shadow（標準） */
+  --glow-cyan: rgba(57,208,255,0.34);       /* active 枠 glow（抑制・ネオン標準） */
+  --glow-cyan-mid: rgba(57,208,255,0.40);   /* layer hover/tab active inset */
+  --glow-cyan-strong: rgba(57,208,255,0.5); /* 強グロー（active枠/見出し影/区切り） */
+  --glow-cyan-stronger: rgba(57,208,255,0.6);/* 強 text-shadow（mp-b brief-h） */
+  --glow-cyan-active: rgba(57,208,255,0.65);/* active 強発光（tab svg drop-shadow） */
+  --glow-cyan-max: rgba(57,208,255,0.85);   /* 最強アイコン発光（mui-b active） */
+  --glow-cyan-aurora: rgba(70,175,255,0.32);/* オーロラ cyan 外側グロー（mp-a, .28-.34 代表） */
+  --glow-purple-aurora: rgba(170,115,255,0.22);/* オーロラ purple 外側グロー（mp-a） */
+  --glow-purple-soft: rgba(138,92,246,0.32);/* 紫 text-shadow/glow（boot-word/arc, 代表） */
+  --glow-green: rgba(94,255,166,0.45);      /* 成功グリーン発光（telemetry ok） */
+  --glow-blue: rgba(120,200,255,0.55);      /* swatch 発光 青（line .6/gradient .5 代表） */
+  --glow-blue-purple: rgba(120,200,255,0.5);/* swatch グラデ発光（.5） */
+  --glow-search-focus: rgba(120,220,255,0.4);/* 検索フォーカスリング */
+  --glow-search-deep: rgba(0,40,80,0.5);    /* 検索フォーカス 深青影 */
+  /* ドロップ影/黒アウトライン（黒 alpha 群） */
+  --glow-shadow: rgba(0,0,0,0.42);          /* 標準ドロップ影（.35-.5 クラスタ代表） */
+  --glow-shadow-strong: rgba(0,0,0,0.5);    /* 強ドロップ影 */
+  --glow-outline: rgba(0,0,0,0.9);          /* 字幕黒アウトライン（.9/.95 代表） */
+  --glow-subtitle-bg: rgba(0,0,0,0.42);     /* 字幕行背景黒（lc-row .42 / interim .34 近傍） */
+
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--text);
