@@ -29,4 +29,5 @@ test('県 profile 無し→国に着地（フォールバック）', () => {
   const r = resolvePlace(139.7, 35.69, ctx({ manifest: { country: { JA: {} }, admin1: {}, city: {} } }));
   assert.equal(r.target.level, 'country');
   assert.equal(r.target.id, 'JA');
+  assert.equal(r.admin1Hit && r.admin1Hit.code, 'JP-13');
 });

@@ -24,7 +24,7 @@ export function resolvePlace(lon, lat, ctx) {
   }
   // city（近接・qid・manifest 在り）
   const city = nearest ? nearest(lon, lat, cities) : null;
-  if (city && city.qid && man.city[city.qid]) {
+  if (city && city.qid && typeof city.lon === 'number' && typeof city.lat === 'number' && man.city[city.qid]) {
     const near = _dist2(lon, lat, city.lon, city.lat) <= cityRadiusDeg * cityRadiusDeg;
     if (near) {
       const c = { level: 'city', id: city.qid, name_ja: city.name_ja || city.qid };
