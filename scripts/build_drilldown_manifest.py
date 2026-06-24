@@ -89,6 +89,14 @@ def main():
     bbox_index = load_bbox_index()
     centroids = load_centroids()
 
+    # Critical-3: admin1_bbox.json は build_admin1.py が {country:{fips:[w,s,e,n]}, extra:{}} の正準形で出力する。
+    # country bboxes は bbox_index["country"] から取得（後方互換のため旧形式にも対応する）。
+    country_map = bbox_index.get("country", {})  # 正準形
+    if not country_map:
+        # 旧形式（{fips: {countryBbox:[w,s,e,n], admin1:{...}}}）への後方互換
+        country_map = {fips: v.get("countryBbox") for fips, v in bbox_index.items()
+                       if isinstance(v, dict) and "countryBbox" in v}
+
     manifest = {}
     extra = {}
 
@@ -97,13 +105,13 @@ def main():
         cities_path = os.path.join(CITIES_DIR, f"{fips}.json")
         admin1_bytes = file_size(admin1_path)
         cities_bytes = file_size(cities_path)
-        country_bbox = bbox_index.get(fips, {}).get("countryBbox", None)
+        country_bbox = country_map.get(fips)  # [w,s,e,n] or None
         manifest[fips] = {
             "admin1Bytes": admin1_bytes,
             "citiesBytes": cities_bytes,
             "countryBbox": country_bbox,
         }
-        # EXTRA：admin1 が空（ポリゴン無し小国）かつ centroid に lon/lat がある国。
+        # EXTRA：admin1 が空（ポリゴン無し小国）かつ centroid に lon/lat がある国。margin 既定 5.0（country_index.js と統一）。
         if fips in centroids:
             c = centroids[fips]
             if "lon" in c and "lat" in c:

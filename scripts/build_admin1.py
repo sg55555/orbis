@@ -73,7 +73,9 @@ def main():
 
     groups = split_by_country(ne.get("features", []), lambda f: resolve_fips(f.get("properties") or {}, name_index))
     os.makedirs(OUT_DIR, exist_ok=True)
-    bbox_index = {}
+    # Critical-3: 正準形 {country: {fips: [w,s,e,n]}, extra: {fips: {lon,lat,margin}}}
+    # country_index.js countryBbox が bboxIndex.country[fips] を読む形に統一する。
+    country_bboxes = {}  # {fips: [w,s,e,n]}
 
     for fips, feats in groups.items():
         out_feats, a1_bboxes = [], {}
@@ -100,8 +102,7 @@ def main():
         with gzip.open(path, "wt", encoding="utf-8") as fh:
             json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
         if all_x:
-            bbox_index[fips] = {"countryBbox": [min(all_x), min(all_y), max(all_x), max(all_y)],
-                                "admin1": a1_bboxes}
+            country_bboxes[fips] = [min(all_x), min(all_y), max(all_x), max(all_y)]
 
     # EXTRA68（admin1 無し国）は空 FC を出力（404 回避）。
     for fips in fips_ja:
@@ -123,9 +124,12 @@ def main():
     assert not missing, f'FIPS_JA にあるが admin1 未生成: {missing}'
     assert not surplus, f'NE データにあるが FIPS_JA に無し（FIPS_JA に追加せよ）: {surplus}'
 
-    json.dump(bbox_index, open(BBOX_OUT, "w", encoding="utf-8"),
+    # Critical-3: 正準形で出力。extra は build_drilldown_manifest.py が追記するので空 dict を基底に置く。
+    # admin1_bbox.json の最終形は build_drilldown_manifest.py（後段）が extra を上書きマージする。
+    bbox_out = {"country": country_bboxes, "extra": {}}
+    json.dump(bbox_out, open(BBOX_OUT, "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
-    print(f"wrote {len(groups)} country admin1 files + {len(fips_ja)-len(groups)} empty / bbox_index {len(bbox_index)}")
+    print(f"wrote {len(groups)} country admin1 files + {len(fips_ja)-len(groups)} empty / bbox_index country={len(country_bboxes)}")
 
 
 if __name__ == "__main__":
