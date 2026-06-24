@@ -35,3 +35,16 @@ test('fetch 失敗は null', async () => {
   const p = await loadProfile('country', 'JA', { manifest: MAN, fetchFn });
   assert.equal(p, null);
 });
+
+test('in-flight: 同一keyの並行呼び出しは fetch を1回だけ共有', async () => {
+  __resetProfileCache();
+  let called = 0;
+  const fetchFn = async () => { called++; await new Promise((r) => setTimeout(r, 5)); return { ok: true, json: async () => PROF }; };
+  const [a, b] = await Promise.all([
+    loadProfile('country', 'JA', { manifest: MAN, fetchFn }),
+    loadProfile('country', 'JA', { manifest: MAN, fetchFn }),
+  ]);
+  assert.equal(called, 1);
+  assert.equal(a.name_ja, '日本');
+  assert.equal(b.name_ja, '日本');
+});

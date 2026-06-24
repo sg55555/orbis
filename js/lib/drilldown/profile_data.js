@@ -40,7 +40,7 @@ export function loadProfile(level, id, { manifest, fetchFn, timeoutMs = 8000 } =
       const res = await f(URL_OF[level](id), ctl ? { signal: ctl.signal } : {});
       if (!res || !res.ok) return null;
       const prof = level === 'country' ? await res.json() : await _gunzipJson(res);
-      _cache.set(key, prof);
+      if (prof != null) _cache.set(key, prof);
       return prof;
     } catch { return null; }
     finally { if (timer) clearTimeout(timer); _inflight.delete(key); }
