@@ -138,3 +138,38 @@ test('openCountry: degraded geo は state を error にする', async () => {
   await api.openCountry('JA', [135, 36]);
   assert.equal(lastState, 'error');
 });
+
+test('openCountry: fetch 中に別国 open が来たら先行 open の render を破棄', async () => {
+  const map = fakeMap();
+  const rendered = [];
+  let resolveFirst;
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({}),
+    deps: baseDeps({
+      loadCountryGeo: async (fips) => {
+        if (fips === 'JA') return new Promise((res) => { resolveFirst = () => res({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }); });
+        return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false };
+      },
+      buildDrilldown: ({ fips }) => ({ header: { fips }, regions: [], events: [], degraded: false }),
+      renderDrilldown: (rootEl, model) => rendered.push(model.header.fips),
+    }),
+  });
+  api.setBoundsPolys(POLYS);
+  const p1 = api.openCountry('JA', [135, 36]);   // 先行（保留中）
+  const p2 = api.openCountry('US', [-95, 37]);   // 後勝ち（即解決）
+  await p2;
+  resolveFirst();                                 // 先行が後から解決
+  await p1;
+  assert.deepEqual(rendered, ['US'], '後勝ちの US のみ render・先行 JA は token 不一致で破棄');
+});
+
+test('closeCountry: drill-open を解除し resize する', () => {
+  const map = fakeMap();
+  let removed = null;
+  const bodyEl = { classList: { add: () => {}, remove: (c) => { removed = c; } } };
+  const api = initCountryClick({ map, getSnapshots: () => ({}), deps: baseDeps({ bodyEl }) });
+  api.closeCountry();
+  assert.equal(removed, 'drill-open');
+  assert.ok(map.resized >= 1);
+});
