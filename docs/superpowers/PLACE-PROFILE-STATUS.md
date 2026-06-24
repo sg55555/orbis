@@ -1,41 +1,48 @@
 # 地域プロフィール・ドリルダウン（Phase2.5）— 再開ステータス
 
 > worktree `worktree-place-profile`（`.claude/worktrees/place-profile`）の再開ポインタ。
-> **2.5a パイプライン＝ダミーモードで実装・検証完了。次＝2.5b UI（未着手）。**
+> **2.5a パイプライン＝ダミー完了。2.5b UI＝実装完了・全テスト緑・最終レビュー済。**
+> **次＝太田さん実機サニティ（GPU/globe 依存の map-click→flyTo）→ OK なら main 統合。**
 > 太田さん実機FB起点（Phase2 ドリルダウンの中身をイベント集計→地域プロフィールへ）。
 
 ## 設計・計画（コミット済）
-- spec：`docs/superpowers/specs/2026-06-25-orbis-place-profile-drilldown-design.md`
-- 計画：`docs/superpowers/plans/2026-06-25-orbis-place-profile-phase2.5a.md`（ダミーモード対応版）
+- 親 spec：`docs/superpowers/specs/2026-06-24-orbis-place-profile-drilldown-design.md`（2.5 全体）
+- 2.5b UI 設計：`docs/superpowers/specs/2026-06-25-orbis-place-profile-2.5b-ui-design.md`（案C 中央フロート確定）
+- 2.5a 計画：`docs/superpowers/plans/2026-06-25-orbis-place-profile-phase2.5a.md`
+- 2.5b 計画：`docs/superpowers/plans/2026-06-25-orbis-place-profile-phase2.5b.md`（TDD 11タスク）
+- 承認モック＆実機検証スクショ：`docs/superpowers/mockups/place-profile-2.5b/`（mockup-c.html／approved-c-*.png／live-realcode-*.png）
 
-## 確定スコープ（spec）
-- データ源＝**ハイブリッド**（Wikipedia(ja)/Wikidata で事実取得→Claude Sonnet 4.6 で日本語整形・grounding で幻覚抑制）
-- 粒度＝全レベル（国246＋県/州4575＋都市6775 ≒ 11,600）・**build 時生成→静的 JSON 配信**（ランタイム LLM 無し）
-- 構成＝全レベルがプロフィール中心・イベントは下部に折りたたみで小さく
-- UI＝**ページ風フロートパネル**（Phase2 #drilldown 基盤を流用）
-- schema＝`{id, level, name_ja, facts{population,area_km2,lat,lon,elevation_m}, sections[{title,body}], source{qid,wikipedia_url}, degraded}`
-- セクション順＝概要/気候/特産・名物/主要産業/交通・地理/観光名所
+## ✅ 2.5a 実装済（pytest 149 緑・ダミー生成）
+- `scripts/lib/profile_prep.py`（純関数）＋`scripts/build_profiles.py`（`PROFILE_DUMMY=1`）＋`scripts/build_cities.py`（qid 付与）。
+- ダミー生成済：`data/static/profiles/{country/JA.json, admin1/*.gz×47, city/*.gz×69}`＋`profiles_manifest.json`（全 degraded=false・実名／本文ダミー）。NE キャッシュ `scripts/.cache/ne/`（gitignore）。
 
-## ✅ 2.5a 実装済（tip 533a6a8・subagent-driven・pytest 149 緑）
-- `scripts/lib/profile_prep.py`（純関数：resolve_qid / wikidata_facts / ja_wikipedia_title / build_profile_prompt / parse_profile_response / assemble_profile / is_degraded / generate_profile）
-- `scripts/build_profiles.py`（Wikidata/Wikipedia 取得＋Claude 整形＋cache＋manifest・**`PROFILE_DUMMY=1` でダミー生成**・`PROFILE_LLM_MODEL` 既定 claude-sonnet-4-6・`PROFILE_FIPS` で対象国）
-- `scripts/build_cities.py`（都市に `qid` 付与）→ `data/static/cities/*.json` 再生成済（qid 入り）
-- `tests/test_profile_prep.py`（14 件）
-- **ダミー生成済**：`PROFILE_DUMMY=1 PROFILE_FIPS=JA` で `data/static/profiles/{country/JA.json, admin1/*.gz×47, city/*.gz×69}` ＋ `data/static/profiles_manifest.json`（全 degraded=false・地名は実名/本文はダミー・484K）。NE キャッシュは `scripts/.cache/ne/`（コピー済・gitignore）。
+## ✅ 2.5b 実装済（tip 3e4d409・node 602/0・Python 149・subagent-driven TDD）
+案C 中央フロート＋全部入りヒーロー。Phase2 #drilldown／country_click を流用し再スタイル。
+- 純関数：`js/lib/drilldown/region_shape.js`（rings→形状SVG・最大環/Y反転/間引き）／`profile_view.js`（schema＋付帯→HTML・escapeHtml・formatFacts・events空はフッタ非表示）／`resolve_place.js`（最具体かつ manifest 在り＝city→admin1→country・admin1Hit返却）。
+- データ層：`js/lib/drilldown/profile_data.js`（country素JSON／admin1・city は gz DecompressionStream・manifest gating・null非キャッシュ・inflight共有）。
+- 描画：`js/ui/drilldown.js renderProfile`（.dd-body へ profileHtml・パンくず data-level/id→onNavigate・close/watch は onclick 置換＝再描画安全）。renderDrilldown/renderWatchlist 保持。
+- 統合：`js/ui/country_click.js`（**openCountry 廃止**・`openPlace`＝FIPS→loadCountryGeo→loadPolygonsFn→resolvePlace→**reveal は target 確定後**→loadProfile→model→renderProfile→flyTo[country bbox/admin1 bbox/city center]・各 await 後にレースガード・no-profile 国は reveal せず onOceanMiss トースト）＋`navigate`（chain 流用・パンくず切詰）。events=buildDrilldown を `{emoji,where,title}` に map。
+- `js/main.js`：`profiles_manifest.json` 取得＋profile deps（getter）＋#drill-scrim クリック/Esc→closeCountry。
+- `css/orbis.css`：#drilldown を中央フロート（min(920px,95vw)・92vh・近不透明・オーロラ縁・**backdrop-filter 無し**）＋#drill-scrim＋.pf-* 移植＋モバイル全幅ボトムシート（drag-handle）。旧右ドック grid 撤去。
+- `index.html`：#drill-scrim 追加。`sw.js`：CACHE `orbis-v49`。
+
+### 検証済 / 未検証
+- ✅ 全テスト緑（node 602／Python 149）。実コード＋実orbis.css ハーネスで中央フロート／実JP-13 形状（viewBox 0 0 100 40.2）／6セクション／イベント折りたたみ／モバイルシート＋drag-handle を視覚確認（live-realcode-*.png）。
+- ✅ 最終 opus レビュー：ブロッカー（no-profile 国クリックで空パネル）を捕捉・修正済（3e4d409）。
+- ⏳ **未検証＝太田さん実機サニティ**：本物の globe を起動し国/県/都市クリック→openPlace→flyTo の寄り具合（WebGL/GPU 依存・headless 不可）。日本以外は profile 無し→トーストが出る（ダミーは JA のみ生成）。
 
 ## ⚠️ ユーザー決定（2026-06-25）
-- **実 LLM 生成（約11,600件・数千円）は将来タスクへ延期**。今はダミーで「デザイン・体裁が分かる」ところまで。
-- 将来やるなら：`ANTHROPIC_API_KEY` を設定し `PROFILE_DUMMY` 無しで `build_profiles.py` を全 FIPS 実行（2.5c）。`PROFILE_LLM_MODEL` で Haiku 退避可。
+- 実 LLM 生成（約11,600件・数千円）は将来タスク（2.5c）へ延期。今はダミーで体裁確認まで。
+- 締め方＝**worktree 保持・実機サニティ後に統合**（即 merge/push しない）。
 
-## 次＝2.5b UI（未着手・これで初めて体裁が見える）
-ダミープロフィールをページ風パネルで描画する。想定：
-- `js/lib/drilldown/profile_view.js`（純関数：profile schema → HTML・escapeHtml・degraded 対応）＝hero ヘッダ（地域名＋種別＋人口/面積）＋セクション縦スクロール＋出典リンク
-- `js/ui/drilldown.js`/`country_click.js` 配線：国/県/都市クリック→ profiles_manifest 確認→ fetch（admin1/city は .gz を DecompressionStream gunzip）→ profile_view 描画
-- パンくず（国›県›市）＋イベントは下部折りたたみ（Phase2 集計流用）＋ flyTo（bboxCenter）＋ウォッチリスト維持／モバイル bottom-sheet
-- 太田さんは **UI 案のブラウザ実物比較を好む** → レイアウト設計から（brainstorming）入るのが良い
-- 2.5a+2.5b をまとめて main 統合→デプロイ→実機でダミー体裁確認。OK なら 2.5c（実生成）を将来。
+## 統合手順（実機サニティ OK 後）
+1. **git fetch**（main は別スレッド並行更新中）。`git fetch origin && git log --oneline origin/main -5`。
+2. **SW 再調整**：worktree は `orbis-v49`。main 最新版を確認し `sw.js` を main最新版+1 へ（`tests/drilldown_sw.test.js` も合わせる）。
+3. main ツリーで merge。**衝突注意**＝`css/orbis.css`（secfit/HUD 中盤 vs #drilldown 末尾・領域分離気味）・`index.html`（scrim vs secfit 見出し markup）。設計言語トークンを最新 main の secfit（`.sec-h`/rim 系）へ寄せる微修正。
+4. `node --test tests/*.test.js` ＋ `pytest -q` 緑を再確認 → push（Vercel）→ 本番 curl で profiles_manifest/profile gz 反映確認。
+5. **記憶昇格**（統合後のみ）：MEMORY.md／Obsidian Projects/orbis-feature-roadmap.md を 2.5b 完了で更新。→ 次 2.5c（実 LLM 生成・要 ANTHROPIC_API_KEY・コスト承認）。
 
 ## 再開手順
-1. worktree 再入：`EnterWorktree path=.claude/worktrees/place-profile`（または `git checkout worktree-place-profile`）＝**新規 worktree を作らない**（tip 533a6a8）。
-2. このファイル＋ spec＋計画を読む。`data/static/profiles/` のダミーを起点に 2.5b UI を brainstorm→実装。
-3. 統合は main で merge → push（Vercel）。**注意：main は別スレッド並行更新中**（fetch して最新から）。
+1. worktree 再入：`EnterWorktree path=.claude/worktrees/place-profile`。
+2. このファイル＋2.5b 計画/設計を読む。実機サニティ or 2.5c。
+3. 累積 Minor（任意・最終レビューで acceptable 判定）＝`.superpowers/sdd/progress.md` 末尾に記録（region_shape 1行複数文・stale 文言など）。
