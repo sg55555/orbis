@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { degradedNoticeHtml, eventLineHtml } from '../js/lib/drilldown/drilldown_view.js';
+import { degradedNoticeHtml, eventLineHtml, regionRowHtml } from '../js/lib/drilldown/drilldown_view.js';
 
 test('degradedNoticeHtml: 4種すべてが固有の説明文を返す', () => {
   const extra = degradedNoticeHtml('extra');
@@ -70,4 +70,58 @@ test('eventLineHtml: XSS エスケープ（regionName/cityName/title）', () => 
 test('eventLineHtml: ev 欠落でも落ちない', () => {
   assert.equal(typeof eventLineHtml(null), 'string');
   assert.equal(typeof eventLineHtml({}), 'string');
+});
+
+test('regionRowHtml: 県名・件数・内訳絵文字を含む', () => {
+  const html = regionRowHtml({
+    a1code: 'US-CA', name_ja: 'カリフォルニア州', count: 7,
+    byLayer: { conflict: 1, protests: 4, news: 2, quakes: 0 },
+    topEvents: [{ title: '抗議', cityName: 'ロサンゼルス' }],
+    lon: -119, lat: 37,
+  });
+  assert.match(html, /カリフォルニア州/);
+  assert.match(html, /7/);            // 件数
+  assert.match(html, /⚔1/);           // conflict 内訳
+  assert.match(html, /📢4/);          // protests 内訳
+  assert.match(html, /📰2/);          // news 内訳
+  assert.match(html, /🌐0/);          // quakes 内訳（0 も明示）
+  assert.match(html, /ロサンゼルス/);  // 代表イベント
+});
+
+test('regionRowHtml: その他/不明バケット（a1code=null）も県名で描画', () => {
+  const html = regionRowHtml({
+    a1code: null, name_ja: 'その他/不明', count: 3,
+    byLayer: { news: 3 }, topEvents: [], lon: 0, lat: 0,
+  });
+  assert.match(html, /その他\/不明/);
+  assert.match(html, /3/);
+  assert.match(html, /📰3/);
+  // byLayer に無いレイヤーは 0 表示
+  assert.match(html, /⚔0/);
+});
+
+test('regionRowHtml: 代表イベント無しでも落ちない', () => {
+  const html = regionRowHtml({
+    a1code: 'X', name_ja: '某州', count: 0, byLayer: {}, topEvents: [], lon: 1, lat: 1,
+  });
+  assert.equal(typeof html, 'string');
+  assert.match(html, /某州/);
+  assert.match(html, /⚔0/);
+});
+
+test('regionRowHtml: XSS エスケープ（name_ja・代表イベント title）', () => {
+  const html = regionRowHtml({
+    a1code: 'X', name_ja: '<script>a</script>', count: 1,
+    byLayer: { news: 1 }, topEvents: [{ title: '"><img src=x>', cityName: '<b>c</b>' }],
+    lon: 0, lat: 0,
+  });
+  assert.doesNotMatch(html, /<script>a<\/script>/);
+  assert.doesNotMatch(html, /<img src=x>/);
+  assert.doesNotMatch(html, /<b>c<\/b>/);
+  assert.match(html, /&lt;script&gt;/);
+});
+
+test('regionRowHtml: region 欠落でも落ちない', () => {
+  assert.equal(typeof regionRowHtml(null), 'string');
+  assert.equal(typeof regionRowHtml({}), 'string');
 });
