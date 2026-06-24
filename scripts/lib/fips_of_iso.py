@@ -53,5 +53,6 @@ FIPS_OF_ISO = {
     "TO": "TN", "TR": "TU", "TT": "TD", "TV": "TV", "TW": "TW", "TZ": "TZ",
     "UA": "UP", "UG": "UG", "US": "US", "UY": "UY", "UZ": "UZ", "VA": "VT",
     "VC": "VC", "VE": "VE", "VG": "VI", "VI": "VQ", "VN": "VM", "VU": "NH",
-    "WF": "WF", "WS": "WS", "YE": "YM", "ZA": "SF", "ZM": "ZA", "ZW": "ZI",
+    "WF": "WF", "WS": "WS", "XK": "KV",  # Kosovo（name 突合頼みを解消・Minor）
+    "YE": "YM", "ZA": "SF", "ZM": "ZA", "ZW": "ZI",
 }
