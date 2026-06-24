@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { degradedNoticeHtml, eventLineHtml, regionRowHtml } from '../js/lib/drilldown/drilldown_view.js';
+import { degradedNoticeHtml, eventLineHtml, regionRowHtml, drilldownHeaderHtml } from '../js/lib/drilldown/drilldown_view.js';
 
 test('degradedNoticeHtml: 4種すべてが固有の説明文を返す', () => {
   const extra = degradedNoticeHtml('extra');
@@ -124,4 +124,58 @@ test('regionRowHtml: XSS エスケープ（name_ja・代表イベント title）
 test('regionRowHtml: region 欠落でも落ちない', () => {
   assert.equal(typeof regionRowHtml(null), 'string');
   assert.equal(typeof regionRowHtml({}), 'string');
+});
+
+test('drilldownHeaderHtml: instability rowHtml 流用で国名/スコア/内訳を含む', () => {
+  const html = drilldownHeaderHtml({
+    rank: 3, name_ja: 'ウクライナ', code: 'UP', score: 87,
+    counts: { conflict: 10, protests: 1, news: 5, quakes: 0 },
+    trend: { dod: { delta: 4, dir: 'up' }, normal: { deltaPct: 12, dir: 'up' }, isNew: false },
+    narrative_ja: '紛争が継続',
+  });
+  assert.match(html, /ウクライナ/);
+  assert.match(html, /87/);
+  assert.match(html, /⚔10/);          // rowHtml 由来の内訳
+  assert.match(html, /紛争が継続/);     // narrative
+});
+
+test('drilldownHeaderHtml: forecast 注視度がある時は注視度を付記', () => {
+  const html = drilldownHeaderHtml({
+    name_ja: 'ウクライナ', code: 'UP', score: 50,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 },
+    trend: { isNew: true },
+    forecast: { watch: '高', label: '24h 内に情勢悪化の可能性' },
+  });
+  assert.match(html, /注視度/);
+  assert.match(html, /高/);
+  assert.match(html, /24h 内に情勢悪化の可能性/);
+});
+
+test('drilldownHeaderHtml: forecast 無しは注視度セクションを省く', () => {
+  const html = drilldownHeaderHtml({
+    name_ja: '某国', code: 'XX', score: 0,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+  });
+  assert.doesNotMatch(html, /注視度/);
+});
+
+test('drilldownHeaderHtml: instability に無い国（score/counts 欠落）でも落ちない', () => {
+  const html = drilldownHeaderHtml({ name_ja: 'ナウル', code: 'NR' });
+  assert.equal(typeof html, 'string');
+  assert.match(html, /ナウル/);
+});
+
+test('drilldownHeaderHtml: forecast の XSS エスケープ', () => {
+  const html = drilldownHeaderHtml({
+    name_ja: '某国', code: 'XX', score: 1,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+    forecast: { watch: '<b>高</b>', label: '"><img src=x>' },
+  });
+  assert.doesNotMatch(html, /<b>高<\/b>/);
+  assert.doesNotMatch(html, /<img src=x>/);
+});
+
+test('drilldownHeaderHtml: header 欠落でも落ちない', () => {
+  assert.equal(typeof drilldownHeaderHtml(null), 'string');
+  assert.equal(typeof drilldownHeaderHtml({}), 'string');
 });
