@@ -1,31 +1,52 @@
-"""ORBIS の PWA アイコンを生成（濃紺地に光るオーブ）。"""
+#!/usr/bin/env python3
+"""ORBIS の PWA/favicon アイコンを icon-master.svg / favicon.svg から生成。
+
+PIL では SVG の glow/gradient を再現できないため、playwright 同梱の Chromium で
+ラスタライズする（発光する軌道環globe をそのまま忠実に書き出す）。
+リポルートから実行: python3 scripts/make_icons.py
+
+scripts/ は .vercelignore 済みで本番には ship されない。
+"""
+import asyncio
+import base64
 import os
-from PIL import Image, ImageDraw
 
-OUT = os.path.join(os.path.dirname(__file__), "..", "icons")
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# (source svg, 出力先, px) — source が無いジョブはスキップ（favicon.svg は別タスクで作成）。
+JOBS = [
+    ("icon-master.svg", "icons/icon-512.png", 512),
+    ("icon-master.svg", "icons/icon-192.png", 192),
+    ("icon-master.svg", "icons/apple-touch-icon.png", 180),
+    ("favicon.svg", "favicon-32.png", 32),
+]
 
 
-def make(size):
-    img = Image.new("RGB", (size, size), "#05080f")
-    d = ImageDraw.Draw(img)
-    cx = cy = size // 2
-    r = int(size * 0.34)
-    # グロー
-    for i in range(6, 0, -1):
-        rr = r + i * size // 60
-        alpha = 18 - i * 2
-        d.ellipse([cx - rr, cy - rr, cx + rr, cy + rr], outline=(57, 208, 255))
-    # オーブ本体
-    d.ellipse([cx - r, cy - r, cx + r, cy + r], fill="#0a1c38", outline=(57, 208, 255), width=max(2, size // 80))
-    # 経線
-    d.ellipse([cx - r // 2, cy - r, cx + r // 2, cy + r], outline=(57, 208, 255), width=max(1, size // 160))
-    img.save(os.path.join(OUT, f"icon-{size}.png"))
+async def main():
+    from playwright.async_api import async_playwright
+
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        for src, out, size in JOBS:
+            src_path = os.path.join(ROOT, src)
+            if not os.path.exists(src_path):
+                print("skip (no source):", src, "->", out)
+                continue
+            with open(src_path) as f:
+                b64 = base64.b64encode(f.read().encode()).decode()
+            page = await browser.new_page(
+                viewport={"width": size, "height": size}, device_scale_factor=1
+            )
+            await page.set_content(
+                f'<body style="margin:0">'
+                f'<img src="data:image/svg+xml;base64,{b64}" '
+                f'width="{size}" height="{size}"></body>'
+            )
+            await page.locator("img").screenshot(path=os.path.join(ROOT, out))
+            await page.close()
+            print("wrote", out, f"({size}x{size})")
+        await browser.close()
 
 
 if __name__ == "__main__":
-    os.makedirs(os.path.abspath(OUT), exist_ok=True)
-    for s in (192, 512):
-        make(s)
-    # apple-touch-icon
-    Image.open(os.path.join(OUT, "icon-192.png")).save(os.path.join(OUT, "apple-touch-icon.png"))
-    print("icons written")
+    asyncio.run(main())
