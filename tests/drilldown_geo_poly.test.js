@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pointInRings } from '../js/lib/drilldown/geo_poly.js';
+import { pointInRings, loadPolygons } from '../js/lib/drilldown/geo_poly.js';
 
 // 共有フィクスチャ: 単純な正方形 (0,0)-(10,10)。GeoJSON 規約どおり始点=終点で閉じる。
 const SQUARE = [
@@ -55,4 +55,85 @@ test('pointInRings: 上辺の境界(y=yi=yj)は even-odd の半開き挙動で f
 
 test('pointInRings: 空 rings は false', () => {
   assert.equal(pointInRings(5, 5, []), false);
+});
+
+// --- C1.2 loadPolygons ---
+
+const GEOJSON = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: { code: 'US', name: 'United States', name_ja: 'アメリカ合衆国' },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]],
+      },
+    },
+    {
+      type: 'Feature',
+      properties: { code: 'JP', name: 'Japan' },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: [
+          [[[0, 0], [4, 0], [4, 4], [0, 4], [0, 0]]],
+          [[[6, 0], [10, 0], [10, 4], [6, 4], [6, 0]]],
+        ],
+      },
+    },
+  ],
+};
+
+test('loadPolygons: Polygon を {code,name,name_ja,bbox,rings} に正規化', () => {
+  const polys = loadPolygons(GEOJSON);
+  const us = polys.find((p) => p.code === 'US');
+  assert.equal(us.name, 'United States');
+  assert.equal(us.name_ja, 'アメリカ合衆国');
+  assert.deepEqual(us.bbox, [0, 0, 10, 10]);
+  assert.equal(us.rings.length, 1);
+  assert.deepEqual(us.rings[0][0], [0, 0]);
+});
+
+test('loadPolygons: MultiPolygon は全リングを一つの rings に flatten', () => {
+  const polys = loadPolygons(GEOJSON);
+  const jp = polys.find((p) => p.code === 'JP');
+  assert.equal(jp.rings.length, 2);
+  // bbox は全 ring の全点から
+  assert.deepEqual(jp.bbox, [0, 0, 10, 4]);
+});
+
+test('loadPolygons: name_ja 欠落時は null', () => {
+  const polys = loadPolygons(GEOJSON);
+  const jp = polys.find((p) => p.code === 'JP');
+  assert.equal(jp.name_ja, null);
+});
+
+test('loadPolygons: codeKey で別キーから code を引ける', () => {
+  const gj = {
+    type: 'FeatureCollection',
+    features: [{
+      type: 'Feature',
+      properties: { a1code: 'CA', name: 'California' },
+      geometry: { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]] },
+    }],
+  };
+  const polys = loadPolygons(gj, { codeKey: 'a1code' });
+  assert.equal(polys.length, 1);
+  assert.equal(polys[0].code, 'CA');
+});
+
+test('loadPolygons: code 無し / rings 無しの feature はスキップ', () => {
+  const gj = {
+    type: 'FeatureCollection',
+    features: [
+      { type: 'Feature', properties: { name: 'no code' }, geometry: { type: 'Polygon', coordinates: [[[0, 0], [1, 0], [1, 1], [0, 0]]] } },
+      { type: 'Feature', properties: { code: 'XX' }, geometry: { type: 'Point', coordinates: [0, 0] } },
+    ],
+  };
+  assert.deepEqual(loadPolygons(gj), []);
+});
+
+test('loadPolygons: features 無し / null は空配列', () => {
+  assert.deepEqual(loadPolygons({}), []);
+  assert.deepEqual(loadPolygons({ features: null }), []);
 });

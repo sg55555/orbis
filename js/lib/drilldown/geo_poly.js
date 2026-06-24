@@ -21,3 +21,52 @@ export function pointInRings(x, y, rings) {
   }
   return inside;
 }
+
+// GeoJSON FeatureCollection を点内判定用に正規化する。
+// collectors/lib/geo_country.py:4-27 の load_polygons 相当（name_ja/codeKey を追加）。
+// 戻り値: [{code, name, name_ja, bbox:[w,s,e,n], rings}]
+export function loadPolygons(geojson, { codeKey = 'code' } = {}) {
+  const polys = [];
+  const features = (geojson && geojson.features) || [];
+  for (const f of features) {
+    const props = (f && f.properties) || {};
+    const code = props[codeKey];
+    if (!code) continue;
+    const geom = (f && f.geometry) || {};
+    const gtype = geom.type;
+    const coords = geom.coordinates || [];
+    const rings = [];
+    if (gtype === 'Polygon') {
+      for (const ring of coords) {
+        rings.push(ring.map((pt) => [pt[0], pt[1]]));
+      }
+    } else if (gtype === 'MultiPolygon') {
+      for (const poly of coords) {
+        for (const ring of poly) {
+          rings.push(ring.map((pt) => [pt[0], pt[1]]));
+        }
+      }
+    }
+    if (rings.length === 0) continue;
+    let w = Infinity;
+    let s = Infinity;
+    let e = -Infinity;
+    let n = -Infinity;
+    for (const ring of rings) {
+      for (const pt of ring) {
+        if (pt[0] < w) w = pt[0];
+        if (pt[0] > e) e = pt[0];
+        if (pt[1] < s) s = pt[1];
+        if (pt[1] > n) n = pt[1];
+      }
+    }
+    polys.push({
+      code,
+      name: props.name == null ? null : props.name,
+      name_ja: props.name_ja == null ? null : props.name_ja,
+      bbox: [w, s, e, n],
+      rings,
+    });
+  }
+  return polys;
+}
