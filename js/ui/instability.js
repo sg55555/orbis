@@ -42,10 +42,15 @@ function esc(s) {
 }
 function _trendBadges(tr) {
   if (!tr || tr.isNew) return '<span class="ins-new">新規</span>';
-  const parts = [];
-  if (tr.dod) parts.push(`<span class="ins-tr ins-${esc(tr.dod.dir)}">${trendArrow(tr.dod.dir)}昨日比${tr.dod.delta > 0 ? '+' : ''}${tr.dod.delta}</span>`);
-  if (tr.normal) parts.push(`<span class="ins-tr ins-${esc(tr.normal.dir)}">${trendArrow(tr.normal.dir)}平常比${fmtSignedPct(tr.normal.deltaPct)}</span>`);
-  return parts.join(' ');
+  // 昨日比(dod)・平常比(normal) を常に同順の2スロットで出力。欠落側は空プレースホルダ＝
+  // デザイン監修の固定2カラム整列（body.secfit-on .ins-trend）で縦ラインが片方欠落行でも崩れないため。
+  const dod = tr.dod
+    ? `<span class="ins-tr ins-dod ins-${esc(tr.dod.dir)}">${trendArrow(tr.dod.dir)}昨日比${tr.dod.delta > 0 ? '+' : ''}${tr.dod.delta}</span>`
+    : '<span class="ins-tr ins-dod ins-none" aria-hidden="true"></span>';
+  const normal = tr.normal
+    ? `<span class="ins-tr ins-normal ins-${esc(tr.normal.dir)}">${trendArrow(tr.normal.dir)}平常比${fmtSignedPct(tr.normal.deltaPct)}</span>`
+    : '<span class="ins-tr ins-normal ins-none" aria-hidden="true"></span>';
+  return dod + normal;
 }
 export function rowHtml(country) {
   const c = country || {};

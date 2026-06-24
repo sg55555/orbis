@@ -76,15 +76,15 @@
     </div>
       <section id="alerts" class="alerts-section" aria-label="急変アラート" style="display:none">
         <div class="alerts-head sec-head">
-          <h3 class="alerts-h sec-h">⚠ 急変アラート</h3>
-          <span class="alerts-note sec-note">平常比で突出した国・ドメイン（クリックで移動 📍）</span>
+          <h3 class="alerts-h sec-h"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span class="sec-emoji">⚠</span><span class="sec-en">ALERTS</span><span class="sec-jp-h">急変アラート</span></h3>
+          <span class="alerts-note sec-note"><span class="sec-jp-n">急変アラート · </span>平常比で突出した国・ドメイン（クリックで移動 📍）</span>
         </div>
         <div class="alert-list"></div>
       </section>
-      <section id="media" class="media-section">
+      <section id="media" class="media-section" aria-label="ライブメディア">
         <div class="media-head sec-head">
-          <h3 class="media-h sec-h">📡 ライブメディア</h3>
-          <span class="media-note sec-note">世界のニュース＆街角ライブカメラ</span>
+          <h3 class="media-h sec-h"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2"/><path d="M16.24 7.76a6 6 0 0 1 0 8.49m-8.48-.01a6 6 0 0 1 0-8.49m11.31-2.82a10 10 0 0 1 0 14.14m-14.14 0a10 10 0 0 1 0-14.14"/></svg><span class="sec-emoji">📡</span><span class="sec-en">LIVE MEDIA</span><span class="sec-jp-h">ライブメディア</span></h3>
+          <span class="media-note sec-note"><span class="sec-jp-n">ライブメディア · </span>世界のニュース＆街角ライブカメラ</span>
         </div>
         <div id="media-bar" class="media-bar">
           <label class="cc-toggle"><input type="checkbox" id="media-cc-toggle" checked> 字幕</label>
@@ -93,7 +93,7 @@
         </div>
         <div id="media-news" class="media-pane">
           <div class="pane-head">
-            <h3 class="pane-title">📺 ニュース</h3>
+            <h3 class="pane-title"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg><span class="sec-emoji">📺</span><span class="sec-en">NEWS</span><span class="pane-jp">ニュース</span></h3>
             <div class="news-tabs" id="news-tabs"></div>
           </div>
           <div class="media-player">
@@ -103,7 +103,7 @@
         </div>
         <div id="media-cams" class="media-pane">
           <div class="pane-head">
-            <h3 class="pane-title">📷 ライブカメラ</h3>
+            <h3 class="pane-title"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg><span class="sec-emoji">📷</span><span class="sec-en">LIVE CAMERAS</span><span class="pane-jp">ライブカメラ</span></h3>
             <div class="cams-controls">
               <div class="area-tabs" id="area-tabs"></div>
               <div class="mode-btns" id="mode-btns">
@@ -119,43 +119,45 @@
         </div>
       </section>
       <div class="report-row">
-      <section id="ai-brief" class="brief-section">
+      <section id="ai-brief" class="brief-section" aria-label="ワールド・ブリーフィング">
         <div class="brief-head">
-          <h3 class="brief-h">🧭 ワールド・ブリーフィング</h3>
-          <span class="brief-note">AI 合成・出典付き／毎時更新</span>
+          <h3 class="brief-h"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88"/></svg><span class="sec-emoji">🧭</span><span class="sec-en">WORLD BRIEFING</span><span class="sec-jp-h">ワールド・ブリーフィング</span></h3>
+          <span class="brief-note"><span class="sec-jp-n">ワールド・ブリーフィング · </span>AI 合成・出典付き／毎時更新</span>
         </div>
         <p class="brief-lead">—</p>
         <div class="brief-cards"></div>
       </section>
-      <section id="instability" class="ins-section">
+      <section id="instability" class="ins-section" aria-label="国家不安定性インデックス">
         <div class="ins-head">
-          <h3 class="ins-h">⚠ 国家不安定性インデックス</h3>
-          <span class="ins-note">AI合成・出典付き／毎時更新（決定論スコア＋トレンド）</span>
+          <h3 class="ins-h"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span class="sec-emoji">⚠</span><span class="sec-en">INSTABILITY INDEX</span><span class="sec-jp-h">国家不安定性インデックス</span></h3>
+          <span class="ins-note"><span class="sec-jp-n">国家不安定性インデックス · </span>AI合成・出典付き／毎時更新（決定論スコア＋トレンド）</span>
         </div>
         <div class="ins-movers">
-          <h4 class="ins-sub">📈 急上昇</h4>
+          <h4 class="ins-sub"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg><span class="sec-emoji">📈</span>急上昇</h4>
           <div class="ins-mover-list"></div>
         </div>
-        <h4 class="ins-sub">🏴 不安定ランキング</h4>
+        <h4 class="ins-sub"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg><span class="sec-emoji">🏴</span>不安定ランキング</h4>
         <div class="ins-rank-list"></div>
       </section>
       </div>
       <section id="forecasts" class="panel-section" aria-label="AI予測">
-        <h2 class="fc-title">🔮 AI FORECASTS <span class="fc-sub">ドメイン別リスク見通し（AI生成・推測）</span></h2>
+        <h2 class="fc-title"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7a5 5 0 1 0 5 5"/><line x1="12" y1="12" x2="20.5" y2="3.5"/><circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/></svg><span class="sec-emoji">🔮</span>AI FORECASTS <span class="fc-sub"><span class="sec-jp-n">AI予測 · </span>ドメイン別リスク見通し（AI生成・推測）</span></h2>
         <div class="fc-tabs"></div>
         <div class="fc-list"></div>
         <details class="fc-log"><summary>過去の注視推移</summary><div class="fc-log-body"></div></details>
       </section>
       <section id="sources" class="sources-section" aria-label="データソースと鮮度">
-        <div class="sources-head sec-head">
-          <h3 class="sources-h sec-h">🛰 データソース & 鮮度</h3>
-          <span class="sources-note sec-note">各レイヤーの最終更新・件数・出典</span>
+        <div class="src-panel">
+          <div class="sources-head sec-head">
+            <h3 class="sources-h sec-h"><svg class="sec-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><ellipse cx="12" cy="5" rx="8.5" ry="3"/><path d="M3.5 5v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3"/><path d="M3.5 11v6c0 1.66 3.8 3 8.5 3s8.5-1.34 8.5-3v-12"/></svg><span class="sec-emoji">🛰</span><span class="sec-en">DATA SOURCES</span><span class="sec-jp-h">データソース & 鮮度</span></h3>
+            <span class="sources-note sec-note"><span class="sec-jp-n">データソース & 鮮度 · </span>各レイヤーの最終更新・件数・出典</span>
+          </div>
+          <div class="src-row src-head-row" aria-hidden="true">
+            <span class="src-name">データ</span><span class="src-rel">最終更新</span>
+            <span class="src-count">件数</span><span class="src-src">出典</span>
+          </div>
+          <div class="src-list"></div>
         </div>
-        <div class="src-row src-head-row" aria-hidden="true">
-          <span class="src-name">データ</span><span class="src-rel">最終更新</span>
-          <span class="src-count">件数</span><span class="src-src">出典</span>
-        </div>
-        <div class="src-list"></div>
       </section>
   </div>
   <script type="module" src="js/main.js"></script>

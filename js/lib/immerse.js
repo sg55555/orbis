@@ -119,9 +119,20 @@ export function immerseMobileUi(search) {
   return m ? m[1].toLowerCase() : 'b';
 }
 
+// ?secfit=on|off（大小無視）。後付けセクション（#forecasts / #sources）を規範デザイン言語
+// （sec-on の「線/光・大気ハロ・グラス＋ネオン縁」）に馴染ませるレイヤー。on=馴染ませ適用（既定）：
+// #forecasts カードを左アクセント＋glow dot＋ネオン縁、箱トーンを #instability と統一／#sources を
+// instability 型グラス箱＋各行に鮮度色（cyan / stale=アンバー）の左アクセント＋glow dot。
+// off=現状(before・base CSS のまま)。?sec= とは独立（regex は secfit= 専用ゆえ誤マッチしない）。
+export function immerseSectionFit(search) {
+  const m = /[?&]secfit=(on|off)/i.exec(readSearch(search));
+  return m ? m[1].toLowerCase() : 'on';
+}
+
 // body に付与する CSS クラス配列（純粋）。seam は常に付与(既定a)、mbg は deep のみ、glass は !=on のみ、
 // mp(メディア仕上げ)/ui(本編リッチ化)は常に付与(既定a)、font(display フォント)/sec(セクション構造)も常に付与(既定on)、
-// space(大画面 globe 周辺演出)も常に付与(既定off＝不採用・1|2|3は比較用)。
+// space(大画面 globe 周辺演出)も常に付与(既定off＝不採用・1|2|3は比較用)、
+// secfit(後付けセクション馴染ませ)も常に付与(既定on)。
 export function immerseClasses(search) {
   const out = [];
   out.push('seam-' + immerseSeam(search));
@@ -137,6 +148,7 @@ export function immerseClasses(search) {
   out.push('feed-' + immerseFeed(search));
   out.push('space-' + immerseSpace(search));
   out.push('mui-' + immerseMobileUi(search));
+  out.push('secfit-' + immerseSectionFit(search));
   return out;
 }
 
