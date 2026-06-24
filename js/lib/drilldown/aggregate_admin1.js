@@ -78,7 +78,8 @@ export function aggregateByAdmin1(eventsWithA1, a1NameMap = {}) {
     const lon = sx / group.length;
     const lat = sy / group.length;
     // topEvents: 入力順の先頭3を代表として保持（aggregate.js の代表点選定を簡素化流用）。
-    const topEvents = group.slice(0, 3);
+    // regionName=name_ja を付与して後続クラスタ(C5/C7)が null 参照しないようにする。
+    const topEvents = group.slice(0, 3).map((e) => ({ ...e, regionName: name_ja }));
     rows.push({ a1code, name_ja, count: group.length, byLayer, topEvents, lon, lat });
   }
   // count 降順・同数は name_ja 昇順で安定ソート。その他バケットも name_ja で同列に扱う。

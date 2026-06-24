@@ -366,3 +366,41 @@ test('buildDrilldown patch#2: forecastCards 空/未設定は forecast=null', () 
   });
   assert.equal(model2.header.forecast, null);
 });
+
+// Important: aggregateByAdmin1 の各 region.topEvents に regionName を付与
+test('aggregateByAdmin1: 各 region.topEvents[i] に regionName=その region の name_ja が付与される', () => {
+  const evs = [
+    { layerId: 'news', lon: 139.7, lat: 35.6, title: 'A', raw: { id: '1' }, a1code: 'JP-13' },
+    { layerId: 'conflict', lon: 139.8, lat: 35.7, title: 'B', raw: { id: '2' }, a1code: 'JP-13' },
+    { layerId: 'protests', lon: 139.9, lat: 35.5, title: 'C', raw: { id: '3' }, a1code: 'JP-13' },
+    { layerId: 'quakes', lon: 135.5, lat: 34.7, title: 'D', raw: { id: '4' }, a1code: 'JP-27' },
+  ];
+  const rows = aggregateByAdmin1(evs, a1NameMap);
+  // JP-13 グループ（東京都）の topEvents は全て regionName='東京都'
+  const tokyo = rows.find((r) => r.a1code === 'JP-13');
+  assert.ok(tokyo, 'JP-13 グループが存在しない');
+  assert.ok(tokyo.topEvents.length > 0, 'topEvents が空');
+  for (const ev of tokyo.topEvents) {
+    assert.equal(ev.regionName, '東京都', `topEvents[i].regionName が '東京都' でない: ${JSON.stringify(ev)}`);
+  }
+  // JP-27 グループ（大阪府）の topEvents は全て regionName='大阪府'
+  const osaka = rows.find((r) => r.a1code === 'JP-27');
+  assert.ok(osaka, 'JP-27 グループが存在しない');
+  assert.ok(osaka.topEvents.length > 0, 'topEvents が空');
+  for (const ev of osaka.topEvents) {
+    assert.equal(ev.regionName, '大阪府', `topEvents[i].regionName が '大阪府' でない: ${JSON.stringify(ev)}`);
+  }
+});
+
+test('aggregateByAdmin1: a1code=null バケットの topEvents に regionName=その他/不明 が付与される', () => {
+  const evs = [
+    { layerId: 'news', lon: 145, lat: 40, title: 'X', raw: { id: '9' }, a1code: null },
+    { layerId: 'quakes', lon: 146, lat: 41, title: 'Y', raw: { id: '10' }, a1code: null },
+  ];
+  const rows = aggregateByAdmin1(evs, a1NameMap);
+  const other = rows.find((r) => r.a1code === null);
+  assert.ok(other, 'その他バケットが存在しない');
+  for (const ev of other.topEvents) {
+    assert.equal(ev.regionName, 'その他/不明', `topEvents[i].regionName が 'その他/不明' でない: ${JSON.stringify(ev)}`);
+  }
+});
