@@ -186,3 +186,22 @@ test('closeCountry: drill-open を解除し resize する', () => {
   assert.equal(removed, 'drill-open');
   assert.ok(map.resized >= 1);
 });
+
+test('openPlace: resolve→loadProfile→renderProfile を通り navigate も再実行', async () => {
+  const rendered = [];
+  const cc = initCountryClick({
+    map: fakeMap(), getSnapshots: () => ({}),
+    deps: baseDeps({
+      loadCountryGeo: async () => ({ admin1: { type: 'FeatureCollection', features: [{ properties: { a1code: 'JP-13', name_ja: '東京都' } }] }, cities: [], degraded: false }),
+      resolvePlace: () => ({ chain: [{ level: 'country', id: 'JA', name_ja: '日本' }, { level: 'admin1', id: 'JP-13', name_ja: '東京都' }], target: { level: 'admin1', id: 'JP-13', name_ja: '東京都' } }),
+      loadProfile: async () => ({ id: 'JP-13', level: 'admin1', name_ja: '東京都', facts: {}, sections: [], source: {}, degraded: false }),
+      renderProfile: (root, model) => rendered.push(model.target.id),
+      profilesManifest: { country: { JA: {} }, admin1: { 'JP-13': {} }, city: {} },
+    }),
+  });
+  cc.setBoundsPolys(POLYS);
+  await cc.openPlace(1, 1);
+  assert.deepEqual(rendered, ['JP-13']);
+  await cc.navigate('country', 'JA');     // パンくずで上る
+  assert.equal(rendered.length, 2);
+});
