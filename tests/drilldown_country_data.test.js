@@ -35,3 +35,45 @@ test('countryBbox: どちらにも無いが fipsCenter があれば ±2度', () 
 test('countryBbox: 索引も centroid も無ければ世界全体 bbox', () => {
   assert.deepEqual(countryBbox('ZZ', {}), [-180, -85, 180, 85]);
 });
+
+import { loadCountryBounds, __resetCountryIndexCache } from '../js/lib/drilldown/country_index.js';
+
+const BOUNDS_FC = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      properties: { code: 'JA', name: 'Japan' },
+      geometry: { type: 'Polygon', coordinates: [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]]] },
+    },
+  ],
+};
+
+function fakeFetch(payload) {
+  let calls = 0;
+  const fn = async () => {
+    calls += 1;
+    return { ok: true, json: async () => payload };
+  };
+  fn.callCount = () => calls;
+  return fn;
+}
+
+test('loadCountryBounds: fetch→loadPolygons し code/rings を持つ polys を返す', async () => {
+  __resetCountryIndexCache();
+  const ff = fakeFetch(BOUNDS_FC);
+  const polys = await loadCountryBounds(ff);
+  assert.equal(polys.length, 1);
+  assert.equal(polys[0].code, 'JA');
+  assert.ok(Array.isArray(polys[0].rings));
+  assert.ok(Array.isArray(polys[0].bbox) && polys[0].bbox.length === 4);
+});
+
+test('loadCountryBounds: 2回目は再 fetch せずキャッシュを返す', async () => {
+  __resetCountryIndexCache();
+  const ff = fakeFetch(BOUNDS_FC);
+  const a = await loadCountryBounds(ff);
+  const b = await loadCountryBounds(ff);
+  assert.equal(a, b, '同一参照（キャッシュ）');
+  assert.equal(ff.callCount(), 1, 'fetch は一度だけ');
+});
