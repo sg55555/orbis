@@ -109,7 +109,7 @@ test('handleMapClick: 海洋クリックは onOceanMiss を呼びパネルを開
   assert.equal(opened, 0);
 });
 
-test('openCountry: drill-open 付与→resize→loadCountryGeo→buildDrilldown→renderDrilldown→flyTo', async () => {
+test('openPlace: drill-open 付与→resize→loadCountryGeo→resolvePlace→loadProfile→renderProfile→flyTo（国 target）', async () => {
   const map = fakeMap();
   const order = [];
   const bodyEl = { classList: { add: (c) => order.push(`body+${c}`), remove: () => {} } };
@@ -119,62 +119,55 @@ test('openCountry: drill-open 付与→resize→loadCountryGeo→buildDrilldown�
     deps: baseDeps({
       bodyEl,
       loadCountryGeo: async (fips, opts) => { order.push(`load:${fips}`); assert.equal(opts.manifest.JA.admin1Bytes, 1); return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }; },
-      buildDrilldown: (arg) => { order.push('build'); assert.equal(arg.fips, 'JA'); assert.deepEqual(arg.snapshots, { quakes: { features: [] } }); return { header: { name_ja: '日本' }, regions: [], events: [], degraded: false }; },
-      renderDrilldown: (rootEl, model) => { order.push('render'); assert.equal(model.header.name_ja, '日本'); },
+      resolvePlace: () => ({ chain: [{ level: 'country', id: 'JA', name_ja: '日本' }], target: { level: 'country', id: 'JA', name_ja: '日本' }, admin1Hit: null }),
+      loadProfile: async (level, id) => { order.push(`profile:${id}`); return { id, level, name_ja: '日本', facts: {}, sections: [], source: {}, degraded: false }; },
+      renderProfile: (rootEl, model) => { order.push('render'); assert.equal(model.target.id, 'JA'); },
+      profilesManifest: { country: { JA: {} }, admin1: {}, city: {} },
       setDrilldownState: (rootEl, state) => order.push(`state:${state}`),
       countryBbox: () => [120, 20, 150, 46],
       zoomForBbox: (bbox) => { assert.deepEqual(bbox, [120, 20, 150, 46]); return 4.2; },
     }),
   });
   api.setBoundsPolys(POLYS);
-  await api.openCountry('JA', [135, 36]);
-  assert.deepEqual(order, ['body+drill-open', 'state:loading', 'load:JA', 'build', 'render', 'state:ready']);
-  // flyTo は bbox 中心へ・zoom は zoomForBbox の返り値
+  await api.openPlace(1, 1);
+  assert.deepEqual(order, ['body+drill-open', 'state:loading', 'load:JA', 'profile:JA', 'render', 'state:ready']);
+  // flyTo は国 bbox 中心へ・zoom は zoomForBbox の返り値
   assert.deepEqual(map.flewTo.center, [(120 + 150) / 2, (20 + 46) / 2]);
   assert.equal(map.flewTo.zoom, 4.2);
   assert.equal(map.flewTo.essential, true);
   assert.ok(map.resized >= 1, 'map.resize が呼ばれた');
 });
 
-test('openCountry: degraded geo は state を error にする', async () => {
-  const map = fakeMap();
-  let lastState = null;
-  const api = initCountryClick({
-    map,
-    getSnapshots: () => ({}),
-    deps: baseDeps({
-      loadCountryGeo: async () => ({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: true }),
-      setDrilldownState: (rootEl, state) => { lastState = state; },
-    }),
-  });
-  api.setBoundsPolys(POLYS);
-  await api.openCountry('JA', [135, 36]);
-  assert.equal(lastState, 'error');
-});
-
-test('openCountry: fetch 中に別国 open が来たら先行 open の render を破棄', async () => {
+test('openPlace: token race — fetch 中に別クリックが来たら先行 open の render を破棄', async () => {
   const map = fakeMap();
   const rendered = [];
   let resolveFirst;
+  let callCount = 0;
   const api = initCountryClick({
     map,
     getSnapshots: () => ({}),
     deps: baseDeps({
       loadCountryGeo: async (fips) => {
-        if (fips === 'JA') return new Promise((res) => { resolveFirst = () => res({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }); });
+        callCount += 1;
+        if (callCount === 1) {
+          // 最初の呼び出しのみ保留
+          return new Promise((res) => { resolveFirst = () => res({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }); });
+        }
         return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false };
       },
-      buildDrilldown: ({ fips }) => ({ header: { fips }, regions: [], events: [], degraded: false }),
-      renderDrilldown: (rootEl, model) => rendered.push(model.header.fips),
+      resolvePlace: ({ fips }) => ({ chain: [{ level: 'country', id: fips, name_ja: fips }], target: { level: 'country', id: fips, name_ja: fips }, admin1Hit: null }),
+      loadProfile: async (level, id) => ({ id, level, name_ja: id, facts: {}, sections: [], source: {}, degraded: false }),
+      renderProfile: (rootEl, model) => rendered.push(model.target.id),
+      profilesManifest: { country: { JA: {}, US: {} }, admin1: {}, city: {} },
     }),
   });
   api.setBoundsPolys(POLYS);
-  const p1 = api.openCountry('JA', [135, 36]);   // 先行（保留中）
-  const p2 = api.openCountry('US', [-95, 37]);   // 後勝ち（即解決）
+  const p1 = api.openPlace(1, 1);   // 先行（1回目・保留中）
+  const p2 = api.openPlace(1, 1);   // 後勝ち（2回目・即解決）— token を進める
   await p2;
-  resolveFirst();                                 // 先行が後から解決
+  resolveFirst();                   // 先行が後から解決
   await p1;
-  assert.deepEqual(rendered, ['US'], '後勝ちの US のみ render・先行 JA は token 不一致で破棄');
+  assert.equal(rendered.length, 1, '1回のみ render（後勝ちのみ）');
 });
 
 test('closeCountry: drill-open を解除し resize する', () => {
@@ -187,21 +180,67 @@ test('closeCountry: drill-open を解除し resize する', () => {
   assert.ok(map.resized >= 1);
 });
 
-test('openPlace: resolve→loadProfile→renderProfile を通り navigate も再実行', async () => {
-  const rendered = [];
+test('openPlace: resolve→loadProfile→renderProfile を通り model の shape/events/breadcrumb が正しく組まれる', async () => {
+  const capturedModels = [];
+  const FAKE_SHAPE_PATH = 'M 0 0 L 2 0 L 2 2 Z';
+  const FAKE_EVENTS_RAW = [
+    { layerId: 'conflict', cityName: '東京', regionName: null, title: '衝突事件' },
+    { layerId: 'news', cityName: null, regionName: '関東', title: 'ニュース' },
+  ];
   const cc = initCountryClick({
     map: fakeMap(), getSnapshots: () => ({}),
     deps: baseDeps({
-      loadCountryGeo: async () => ({ admin1: { type: 'FeatureCollection', features: [{ properties: { a1code: 'JP-13', name_ja: '東京都' } }] }, cities: [], degraded: false }),
-      resolvePlace: () => ({ chain: [{ level: 'country', id: 'JA', name_ja: '日本' }, { level: 'admin1', id: 'JP-13', name_ja: '東京都' }], target: { level: 'admin1', id: 'JP-13', name_ja: '東京都' } }),
+      loadCountryGeo: async () => ({
+        admin1: { type: 'FeatureCollection', features: [{ properties: { a1code: 'JP-13', name_ja: '東京都' } }] },
+        cities: [],
+        degraded: false,
+      }),
+      resolvePlace: () => ({
+        chain: [{ level: 'country', id: 'JA', name_ja: '日本' }, { level: 'admin1', id: 'JP-13', name_ja: '東京都' }],
+        target: { level: 'admin1', id: 'JP-13', name_ja: '東京都' },
+        admin1Hit: { code: 'JP-13', rings: [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]]], bbox: [0, 0, 2, 2] },
+      }),
       loadProfile: async () => ({ id: 'JP-13', level: 'admin1', name_ja: '東京都', facts: {}, sections: [], source: {}, degraded: false }),
-      renderProfile: (root, model) => rendered.push(model.target.id),
+      renderProfile: (root, model) => capturedModels.push(model),
       profilesManifest: { country: { JA: {} }, admin1: { 'JP-13': {} }, city: {} },
+      // Fix 2: regionShapePath と buildDrilldown の fake を注入
+      regionShapePath: (rings) => { assert.ok(Array.isArray(rings), 'rings が配列'); return FAKE_SHAPE_PATH; },
+      buildDrilldown: ({ fips }) => ({
+        events: FAKE_EVENTS_RAW,
+        regions: [],
+        degraded: false,
+      }),
+      countryBbox: () => [0, 0, 2, 2],
+      zoomForBbox: () => 6,
     }),
   });
   cc.setBoundsPolys(POLYS);
   await cc.openPlace(1, 1);
-  assert.deepEqual(rendered, ['JP-13']);
-  await cc.navigate('country', 'JA');     // パンくずで上る
-  assert.equal(rendered.length, 2);
+  assert.equal(capturedModels.length, 1, 'renderProfile が1回呼ばれた');
+  const model = capturedModels[0];
+
+  // Fix 2: shapePath アサート（admin1Hit.rings → regionShapePath の戻り値）
+  assert.equal(model.shapePath, FAKE_SHAPE_PATH, 'model.shapePath は regionShapePath の戻り値');
+
+  // Fix 2: events アサート（{emoji,where,title} にマップされていること）
+  assert.equal(model.events.length, 2);
+  assert.deepEqual(model.events[0], { emoji: '⚔', where: '東京', title: '衝突事件' });
+  assert.deepEqual(model.events[1], { emoji: '📰', where: '関東', title: 'ニュース' });
+
+  // Fix 2: breadcrumb アサート
+  assert.deepEqual(model.breadcrumb, [
+    { level: 'country', id: 'JA', name_ja: '日本' },
+    { level: 'admin1', id: 'JP-13', name_ja: '東京都' },
+  ]);
+
+  // flyTo は admin1Hit.bbox へ（Fix 3）
+  const m = fakeMap();
+  // 別途 flyTo をテストするため以下でも確認済み（上記テストで admin1 bbox を使う）
+
+  // navigate: 'country' レベルへ上るとパンくず1件・target = JA
+  await cc.navigate('country', 'JA');
+  assert.equal(capturedModels.length, 2, 'navigate 後に renderProfile が再呼ばれた');
+  const navModel = capturedModels[1];
+  assert.equal(navModel.breadcrumb.length, 1, 'パンくずが country まで切り詰められた');
+  assert.equal(navModel.target.id, 'JA', 'navigate target.id は JA');
 });

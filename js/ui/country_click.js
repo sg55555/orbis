@@ -8,7 +8,6 @@
 //   initCountryClick は map.on を登録しない（呼び出し側の責務）。
 // patch #8: openPlace(lon,lat)/navigate(level,id) を追加。handleMapClick → openPlace に変更。
 //   deps 追加: resolvePlace, loadProfile, regionShapePath, renderProfile, pip, nearest, profilesManifest。
-//   openCountry は後方互換のため維持（watchlist 等から直接呼ばれる用途）。
 import { locateFeature } from '../lib/drilldown/geo_poly.js';
 import { bboxCenter } from '../lib/zoom_for_bbox.js';
 
@@ -25,7 +24,7 @@ const LAYER_EMOJI = {
 };
 
 export function initCountryClick({ map, getSnapshots, deps }) {
-  let boundsPolys = null;          // loadCountryBounds 済 polys（openCountry 前に注入される）
+  let boundsPolys = null;          // loadCountryBounds 済 polys（setBoundsPolys で注入される）
   let deckPick = null;             // {lng, lat, at}
   let token = 0;                   // selection レース破棄トークン
 
@@ -171,11 +170,32 @@ export function initCountryClick({ map, getSnapshots, deps }) {
 
     if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'ready');
 
-    // flyTo: target の bbox/center
-    const bbox = deps.countryBbox(fips, deps.bboxIndex);
-    const center = bboxCenter(bbox);
+    // flyTo: target の階層に応じた bbox/center へ
+    let flyCenter, flyZoom;
+    if (res.target.level === 'country') {
+      // 国レベル → 国 bbox
+      const bbox = deps.countryBbox(fips, deps.bboxIndex);
+      flyCenter = bboxCenter(bbox);
+      flyZoom = deps.zoomForBbox(bbox);
+    } else if (res.target.level === 'admin1' && res.admin1Hit && res.admin1Hit.bbox) {
+      // admin1 → admin1 bbox（あれば）、なければ国 bbox にフォールバック
+      const bbox = res.admin1Hit.bbox;
+      flyCenter = bboxCenter(bbox);
+      flyZoom = deps.zoomForBbox(bbox);
+    } else if (res.target.level === 'city') {
+      // 都市 → 都市点（lon/lat）を使う。固定 zoom 8
+      const cityLon = (res.cityHit && res.cityHit.lon != null) ? res.cityHit.lon : lon;
+      const cityLat = (res.cityHit && res.cityHit.lat != null) ? res.cityHit.lat : lat;
+      flyCenter = [cityLon, cityLat];
+      flyZoom = 8;
+    } else {
+      // フォールバック: 国 bbox
+      const bbox = deps.countryBbox(fips, deps.bboxIndex);
+      flyCenter = bboxCenter(bbox);
+      flyZoom = deps.zoomForBbox(bbox);
+    }
     if (map && map.flyTo) {
-      map.flyTo({ center, zoom: deps.zoomForBbox(bbox), duration: 1500, essential: true });
+      map.flyTo({ center: flyCenter, zoom: flyZoom, duration: 1500, essential: true });
     }
   }
 
@@ -227,39 +247,6 @@ export function initCountryClick({ map, getSnapshots, deps }) {
     if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'ready');
   }
 
-  async function openCountry(fips, anchorLngLat) {
-    const myToken = ++token;
-    if (deps.rootEl && deps.rootEl.removeAttribute) deps.rootEl.removeAttribute('hidden'); // Critical-2: hidden 属性を外してパネルを表示
-    if (deps.bodyEl) deps.bodyEl.classList.add('drill-open');
-    if (map && map.resize) map.resize();
-    if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'loading');
-    const geo = await deps.loadCountryGeo(fips, { manifest: deps.manifest, fetchFn: deps.fetchFn });
-    if (myToken !== token) return;                  // レース破棄（別国クリックが後勝ち）
-    const model = deps.buildDrilldown({
-      fips,
-      snapshots: getSnapshots(),
-      countryPolys: boundsPolys || [],
-      admin1Polys: deps.loadPolygonsFn ? deps.loadPolygonsFn(geo.admin1) : (geo.admin1Polys || []),
-      cities: geo.cities,
-      instabilityCountry: deps.getInstabilityCountry ? deps.getInstabilityCountry(fips) : null,
-      forecastCards: deps.getForecastCards ? deps.getForecastCards(fips) : [],
-    });
-    if (myToken !== token) return;
-    if (deps.renderDrilldown) {
-      deps.renderDrilldown(deps.rootEl, model, {
-        onSelect: (ev) => { if (deps.onSelectEvent) deps.onSelectEvent(ev); },
-        onClose: () => closeCountry(),
-        onWatchToggle: (code) => { if (deps.onWatchToggle) deps.onWatchToggle(code); },
-      });
-    }
-    if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, geo.degraded ? 'error' : 'ready');
-    const bbox = deps.countryBbox(fips, deps.bboxIndex);
-    const center = bboxCenter(bbox); // 日付変更線跨ぎ(e<w)も正規化（naive (w+e)/2 は誤中心）
-    if (map && map.flyTo) {
-      map.flyTo({ center, zoom: deps.zoomForBbox(bbox), duration: 1500, essential: true });
-    }
-  }
-
   function closeCountry() {
     token += 1;                                     // 進行中 open を無効化
     if (deps.rootEl && deps.rootEl.setAttribute) deps.rootEl.setAttribute('hidden', ''); // Critical-2: hidden 属性を戻してパネルを隠す
@@ -272,7 +259,7 @@ export function initCountryClick({ map, getSnapshots, deps }) {
   // map.on('click') は main.js(C7) が cc = initCountryClick(...); map.on('click', cc.handleMapClick) で登録する。
   // ここで登録すると main.js 側と二重になる（patch #7 解消）。
 
-  return { resolveFipsAt, handleMapClick, openCountry, openPlace, navigate, closeCountry, noteDeckPick, setBoundsPolys };
+  return { resolveFipsAt, handleMapClick, openPlace, navigate, closeCountry, noteDeckPick, setBoundsPolys };
 }
 
 function nowMs() {
