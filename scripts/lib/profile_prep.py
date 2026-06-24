@@ -105,3 +105,21 @@ def assemble_profile(pid, level, name_ja, facts, sections, source, degraded):
         "facts": facts, "sections": sections,
         "source": source, "degraded": bool(degraded),
     }
+
+
+def generate_profile(level, pid, name_ja, qid, *, fetch_wikidata, fetch_wikipedia, ask_llm):
+    """1 地域のプロフィール生成。I/O は注入（テスト可能）。
+    qid 無し or ja Wikipedia 無し or セクション皆無 → degraded（事実のみ）。"""
+    if not qid:
+        return assemble_profile(pid, level, name_ja, wikidata_facts({}), [],
+                                {"qid": None, "wikipedia_url": None}, True)
+    entity = fetch_wikidata(qid) or {}
+    facts = wikidata_facts(entity)
+    title = ja_wikipedia_title(entity)
+    summary = fetch_wikipedia(title) if title else None
+    sections = []
+    if summary:
+        sections = parse_profile_response(ask_llm(build_profile_prompt(name_ja, level, facts, summary)))
+    wiki_url = f"https://ja.wikipedia.org/wiki/{title}" if title else None
+    return assemble_profile(pid, level, name_ja, facts, sections,
+                            {"qid": qid, "wikipedia_url": wiki_url}, is_degraded(qid, sections))

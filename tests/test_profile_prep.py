@@ -95,3 +95,34 @@ def test_assemble_profile_schema():
     assert p["id"] == "JA" and p["level"] == "country" and p["name_ja"] == "日本"
     assert p["facts"] == {"population": 1} and p["sections"] == []
     assert p["source"] == {"qid": "Q17", "wikipedia_url": None} and p["degraded"] is True
+
+
+from scripts.lib.profile_prep import generate_profile
+
+def test_generate_profile_happy():
+    entity = {"claims": {"P1082": [{"mainsnak": {"datavalue": {"value": {"amount": "+100"}}}}]},
+              "sitelinks": {"jawiki": {"title": "東京都"}}}
+    prof = generate_profile(
+        "admin1", "JP-13", "東京都", "Q1490",
+        fetch_wikidata=lambda q: entity,
+        fetch_wikipedia=lambda t: "東京都は…",
+        ask_llm=lambda p: '{"sections":[{"title":"概要","body":"日本の首都圏"}]}',
+    )
+    assert prof["degraded"] is False
+    assert prof["facts"]["population"] == 100
+    assert prof["sections"][0]["title"] == "概要"
+    assert prof["source"] == {"qid": "Q1490", "wikipedia_url": "https://ja.wikipedia.org/wiki/東京都"}
+
+def test_generate_profile_no_qid_degraded():
+    prof = generate_profile("city", "Qx", "謎の町", None,
+                            fetch_wikidata=lambda q: None, fetch_wikipedia=lambda t: None,
+                            ask_llm=lambda p: "")
+    assert prof["degraded"] is True and prof["sections"] == []
+
+def test_generate_profile_no_jawiki_skips_llm():
+    called = {"n": 0}
+    def ask(p): called["n"] += 1; return ""
+    prof = generate_profile("city", "Q9", "X", "Q9",
+                            fetch_wikidata=lambda q: {"claims": {}, "sitelinks": {}},
+                            fetch_wikipedia=lambda t: None, ask_llm=ask)
+    assert called["n"] == 0 and prof["degraded"] is True   # ja Wikipedia 無→LLM 呼ばず degraded
