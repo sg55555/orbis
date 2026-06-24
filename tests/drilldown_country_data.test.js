@@ -104,3 +104,68 @@ test('loadCountryGeo: manifest に存在しない FIPS も fetch せず degraded
   assert.equal(r.degraded, true);
   assert.equal(fetched, false);
 });
+
+const MANIFEST_JA = { JA: { admin1Bytes: 10, citiesBytes: 10, countryBbox: [122, 24, 154, 46] } };
+const ADMIN1_JA = { type: 'FeatureCollection', features: [{ type: 'Feature', properties: { a1code: 'JA-13', name_ja: '東京都' }, geometry: { type: 'Polygon', coordinates: [[[139, 35], [140, 35], [140, 36], [139, 36], [139, 35]]] } }] };
+const CITIES_JA = [{ name: 'Tokyo', name_ja: '東京', lon: 139.69, lat: 35.69, pop: 37000000 }];
+
+function urlRouter(map) {
+  let count = 0;
+  const fn = async (url) => {
+    count += 1;
+    for (const [needle, payload] of map) {
+      if (url.includes(needle)) {
+        if (payload === 'fail') return { ok: false, status: 404, json: async () => ({}) };
+        return { ok: true, status: 200, json: async () => payload };
+      }
+    }
+    return { ok: false, status: 404, json: async () => ({}) };
+  };
+  fn.callCount = () => count;
+  return fn;
+}
+
+test('loadCountryGeo: 成功 fetch で admin1/cities を返し degraded=false', async () => {
+  __resetCountryDataCache();
+  const fetchFn = urlRouter([['admin1/JA', ADMIN1_JA], ['cities/JA', CITIES_JA]]);
+  const r = await loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn });
+  assert.equal(r.degraded, false);
+  assert.equal(r.admin1.features.length, 1);
+  assert.deepEqual(r.cities, CITIES_JA);
+});
+
+test('loadCountryGeo: admin1 が 404 なら degraded:true 空配列', async () => {
+  __resetCountryDataCache();
+  const fetchFn = urlRouter([['admin1/JA', 'fail'], ['cities/JA', CITIES_JA]]);
+  const r = await loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn });
+  assert.equal(r.degraded, true);
+  assert.deepEqual(r.admin1, { type: 'FeatureCollection', features: [] });
+  assert.deepEqual(r.cities, []);
+});
+
+test('loadCountryGeo: timeout(abort) で degraded:true', async () => {
+  __resetCountryDataCache();
+  // fetch が AbortSignal で reject する fake（timeoutMs=0 で即 abort）。
+  const fetchFn = (url, opts) => new Promise((_resolve, reject) => {
+    const s = opts && opts.signal;
+    if (s) s.addEventListener('abort', () => reject(Object.assign(new Error('aborted'), { name: 'AbortError' })), { once: true });
+  });
+  const r = await loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn, timeoutMs: 0 });
+  assert.equal(r.degraded, true);
+  assert.deepEqual(r.cities, []);
+});
+
+test('loadCountryGeo: in-flight 共有（連打で fetch 一度）＋成功キャッシュ', async () => {
+  __resetCountryDataCache();
+  const fetchFn = urlRouter([['admin1/JA', ADMIN1_JA], ['cities/JA', CITIES_JA]]);
+  const [a, b] = await Promise.all([
+    loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn }),
+    loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn }),
+  ]);
+  assert.deepEqual(a, b);
+  assert.equal(fetchFn.callCount(), 2, 'admin1+cities の2回のみ（in-flight 共有で重複なし）');
+  // キャッシュ済 → 追加 fetch なし
+  const c = await loadCountryGeo('JA', { manifest: MANIFEST_JA, fetchFn });
+  assert.deepEqual(c, a);
+  assert.equal(fetchFn.callCount(), 2, 'キャッシュヒットで追加 fetch なし');
+});

@@ -21,9 +21,9 @@ function _hasAdmin1(manifest, fips) {
 // DecompressionStream が利用可能な場合はそれを使い、なければ res.json() に fallback
 // （テスト fake が展開済テキストを返す場合は res.json() で直接 parse できる）。
 async function _gunzipJson(res) {
-  // fake fetchFn は res.json() が使える形を返すことがある。DecompressionStream が無い Node 環境もある。
-  // "Content-Type: application/json" か _gz フラグで分岐。
-  if (res._isJson || typeof DecompressionStream === 'undefined') {
+  // fake fetchFn は res.json() が使える形を返すことがある（body が無い）。
+  // DecompressionStream が無い環境 or body が無い場合は res.json() に fallback。
+  if (typeof DecompressionStream === 'undefined' || !res.body) {
     return res.json();
   }
   // ブラウザ / Node 18+: ReadableStream + DecompressionStream で gunzip。
