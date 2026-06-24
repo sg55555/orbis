@@ -55,7 +55,9 @@ def place_to_record(feat, wiki, geo):
         pop = int(pop)
     except (TypeError, ValueError):
         pop = 0
-    return {"name": name, "name_ja": name_ja, "lon": lon, "lat": lat, "pop": pop}
+    qid = props.get("WIKIDATAID") or props.get("wikidataid") or ""
+    return {"name": name, "name_ja": name_ja, "lon": lon, "lat": lat, "pop": pop,
+            "qid": qid.strip() if isinstance(qid, str) else ""}
 
 
 def main():
