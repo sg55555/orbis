@@ -13,3 +13,13 @@ def test_place_to_record_includes_qid():
 def test_place_to_record_qid_blank_when_missing():
     feat = {"properties": {"NAME": "X"}, "geometry": {"coordinates": [0, 0]}}
     assert place_to_record(feat, {}, {})["qid"] == ""
+
+
+from scripts.lib.profile_prep import resolve_qid
+
+def test_resolve_qid_variants():
+    assert resolve_qid({"wikidataid": "Q1490"}) == "Q1490"
+    assert resolve_qid({"WIKIDATAID": " Q64 "}) == "Q64"
+    assert resolve_qid({"wikidataid": ""}) is None
+    assert resolve_qid({"wikidataid": "-99"}) is None
+    assert resolve_qid({}) is None
