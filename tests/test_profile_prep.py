@@ -81,3 +81,17 @@ def test_parse_profile_response_valid_and_filtered():
 def test_parse_profile_response_bad_json():
     assert parse_profile_response("not json") == []
     assert parse_profile_response(None) == []
+
+
+from scripts.lib.profile_prep import assemble_profile, is_degraded
+
+def test_is_degraded():
+    assert is_degraded(None, [{"title": "概要", "body": "x"}]) is True   # QID 無し
+    assert is_degraded("Q1", []) is True                                  # セクション皆無
+    assert is_degraded("Q1", [{"title": "概要", "body": "x"}]) is False
+
+def test_assemble_profile_schema():
+    p = assemble_profile("JA", "country", "日本", {"population": 1}, [], {"qid": "Q17", "wikipedia_url": None}, True)
+    assert p["id"] == "JA" and p["level"] == "country" and p["name_ja"] == "日本"
+    assert p["facts"] == {"population": 1} and p["sections"] == []
+    assert p["source"] == {"qid": "Q17", "wikipedia_url": None} and p["degraded"] is True

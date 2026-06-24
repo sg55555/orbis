@@ -91,3 +91,17 @@ def parse_profile_response(text):
             out.append({"title": t, "body": b.strip()})
             seen.add(t)
     return out
+
+
+def is_degraded(qid, sections):
+    """QID 無し or セクション皆無 = degraded（事実のみ表示にフォールバック）。"""
+    return (not qid) or (len(sections) == 0)
+
+
+def assemble_profile(pid, level, name_ja, facts, sections, source, degraded):
+    """出力スキーマに整形。"""
+    return {
+        "id": pid, "level": level, "name_ja": name_ja,
+        "facts": facts, "sections": sections,
+        "source": source, "degraded": bool(degraded),
+    }
