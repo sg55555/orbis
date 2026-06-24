@@ -42,7 +42,9 @@ test('profileHtml: shapePath=null（都市）は形状を出さない', () => {
 });
 
 test('profileHtml: degraded はバナー＋facts＋出典・セクション無し', () => {
-  const deg = { ...BASE, profile: { ...BASE.profile, sections: [], degraded: true } };
+  // sections は BASE のまま（非空）にして degraded: true だけ変える
+  // → degraded フラグ単独でセクションが抑制されることを確認
+  const deg = { ...BASE, profile: { ...BASE.profile, degraded: true } };
   const h = profileHtml(deg);
   assert.match(h, /pf-degraded/);
   assert.match(h, /人口|13,960,000|13\.96/);              // facts は出す

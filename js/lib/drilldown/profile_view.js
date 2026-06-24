@@ -43,13 +43,13 @@ export function formatFacts(facts) {
     if (v >= 1e6) {
       result.push({
         label: '人口',
-        value: escapeHtml((v / 1e6).toFixed(2).replace(/\.?0+$/, '') + ''),
+        value: (v / 1e6).toFixed(2).replace(/\.?0+$/, '') + '',
         unit:  'M',
       });
     } else {
       result.push({
         label: '人口',
-        value: escapeHtml(v.toLocaleString()),
+        value: v.toLocaleString(),
         unit:  '人',
       });
     }
@@ -59,7 +59,7 @@ export function formatFacts(facts) {
   if (facts.area_km2 != null) {
     result.push({
       label: '面積',
-      value: escapeHtml(facts.area_km2.toLocaleString()),
+      value: facts.area_km2.toLocaleString(),
       unit:  'km²',
     });
   }
@@ -68,8 +68,8 @@ export function formatFacts(facts) {
   if (facts.lat != null && facts.lon != null) {
     result.push({
       label: '位置',
-      value: escapeHtml(facts.lat + '°N'),
-      unit:  escapeHtml(facts.lon + '°E'),
+      value: facts.lat + '°N',
+      unit:  facts.lon + '°E',
     });
   }
 
@@ -77,7 +77,7 @@ export function formatFacts(facts) {
   if (facts.elevation_m != null) {
     result.push({
       label: '標高',
-      value: escapeHtml(String(facts.elevation_m)),
+      value: String(facts.elevation_m),
       unit:  'm',
     });
   }
@@ -137,7 +137,7 @@ function factsHud(items) {
   const cells = items.map(({ label, value, unit }) =>
     '<div class="pf-fact">'
     + '<dt>' + escapeHtml(label) + '</dt>'
-    + '<dd>' + value + '<small>' + escapeHtml(unit) + '</small></dd>'
+    + '<dd>' + escapeHtml(value) + '<small>' + escapeHtml(unit) + '</small></dd>'
     + '</div>'
   ).join('');
   return '<dl class="pf-facts">' + cells + '</dl>';
@@ -204,7 +204,7 @@ export function profileHtml(model) {
   if (!degraded && sections && sections.length > 0) {
     const secItems = sections.map(({ title, body }) =>
       '<section class="pf-sec">'
-      + '<h2 class="pf-sec-h">' + secIcon(escapeHtml(title)) + escapeHtml(title) + '</h2>'
+      + '<h2 class="pf-sec-h">' + secIcon(title) + escapeHtml(title) + '</h2>'
       + '<p>' + escapeHtml(body) + '</p>'
       + '</section>'
     ).join('');
