@@ -77,3 +77,30 @@ test('loadCountryBounds: 2回目は再 fetch せずキャッシュを返す', as
   assert.equal(a, b, '同一参照（キャッシュ）');
   assert.equal(ff.callCount(), 1, 'fetch は一度だけ');
 });
+
+import { loadCountryGeo, __resetCountryDataCache } from '../js/lib/drilldown/country_data.js';
+
+const MANIFEST = {
+  JA: { admin1Bytes: 12345, citiesBytes: 2222, countryBbox: [122, 24, 154, 46] },
+  extra: { IS: { lon: 34.95, lat: 31.45, margin: 1.5 } },
+};
+
+test('loadCountryGeo: manifest に admin1 が無い(extra)なら fetch せず degraded 空', async () => {
+  __resetCountryDataCache();
+  let fetched = false;
+  const fetchFn = async () => { fetched = true; return { ok: true, json: async () => ({}) }; };
+  const r = await loadCountryGeo('IS', { manifest: MANIFEST, fetchFn });
+  assert.equal(r.degraded, true);
+  assert.deepEqual(r.admin1, { type: 'FeatureCollection', features: [] });
+  assert.deepEqual(r.cities, []);
+  assert.equal(fetched, false, 'fetch を呼ばない');
+});
+
+test('loadCountryGeo: manifest に存在しない FIPS も fetch せず degraded 空', async () => {
+  __resetCountryDataCache();
+  let fetched = false;
+  const fetchFn = async () => { fetched = true; return { ok: true, json: async () => ({}) }; };
+  const r = await loadCountryGeo('ZZ', { manifest: MANIFEST, fetchFn });
+  assert.equal(r.degraded, true);
+  assert.equal(fetched, false);
+});
