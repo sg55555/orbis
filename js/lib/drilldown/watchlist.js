@@ -1,5 +1,7 @@
 // ウォッチリストの純操作（FIPS 配列）＋localStorage 薄ラッパ（state.js 同型）。
 // permalink/share には載せない（共有 URL に混入させない）。
+import { FIPS_JA } from '../places.js';
+
 const MAX = 30;
 
 // code を末尾追加した新配列。重複は無視・上限 30 超過時は先頭を落とす（FIFO）。
@@ -57,9 +59,12 @@ export function joinWatchCountries(codes, instabilityCountries, fipsCenterFn) {
   return sorted.map((code) => {
     const ins = insMap.get(code);
     const ctr = fipsCenterFn ? fipsCenterFn(code) : null;
+    // Minor（spec §7）: 圏外国（instability に name_ja が無い）は FIPS_JA から日本語名を引く。
+    // instability.name_ja → FIPS_JA[code] → 生 FIPS コード（最終フォールバック）の優先順。
+    const name_ja = (ins && ins.name_ja) || FIPS_JA[code] || code;
     const obj = {
       code,
-      name_ja: (ins && ins.name_ja) || code,  // instability が name_ja を持てばそちら、なければ code
+      name_ja,
       score: ins ? (ins.score || 0) : 0,
       lon: ctr ? ctr[0] : 0,
       lat: ctr ? ctr[1] : 0,

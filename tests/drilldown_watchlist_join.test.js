@@ -96,3 +96,22 @@ test('joinWatchCountries: insCountries が null/空でも落ちない（全 scor
 test('joinWatchCountries: list が null なら []', () => {
   assert.deepEqual(joinWatchCountries(null, insCountries, center), []);
 });
+
+// Minor（spec §7）: 圏外国の name_ja は FIPS_JA から日本語名が来ること（生コードでない）
+test('joinWatchCountries（Minor）: 圏外国の name_ja は FIPS_JA の日本語名（生 FIPS コードでない）', () => {
+  // JA は instabilityCountries に無い（圏外）→ FIPS_JA['JA'] = '日本' で返るはず
+  const result = joinWatchCountries(['JA'], [], center);
+  const ja = result.find((r) => r.code === 'JA');
+  assert.ok(ja, 'JA が含まれる');
+  assert.equal(ja.name_ja, '日本', `FIPS_JA フォールバックで '日本' になるべき。実際: ${ja.name_ja}`);
+});
+
+test('joinWatchCountries（Minor）: FIPS_JA に無い完全不明 code は FIPS コードで表示（最終フォールバック）', () => {
+  // 'ZZ' は FIPS_JA に無い完全不明コード
+  const result = joinWatchCountries(['ZZ'], [], center);
+  const zz = result.find((r) => r.code === 'ZZ');
+  assert.ok(zz, 'ZZ が含まれる');
+  assert.equal(typeof zz.name_ja, 'string', 'name_ja は string');
+  // 最終フォールバック: 生コード 'ZZ' のまま
+  assert.equal(zz.name_ja, 'ZZ', `完全不明 FIPS は 'ZZ' で表示されるべき。実際: ${zz.name_ja}`);
+});
