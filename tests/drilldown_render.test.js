@@ -229,7 +229,7 @@ test('renderWatchlist: 空配列でリストをクリア', () => {
 
 // M-1 回帰テスト: 同一 rootEl に renderDrilldown を2回呼んでも
 // onClose/onWatchToggle はちょうど1回しか発火しないこと。
-// （実使用では openCountry が同じ #drilldown を再利用するため再現する）
+// （実使用では openPlace が同じ #drilldown を再利用するため再現する）
 test('renderDrilldown: 同一 rootEl に2回呼んでも onClose はちょうど1回発火（二重発火なし）', () => {
   withDoc(() => {
     const root = makeRoot();

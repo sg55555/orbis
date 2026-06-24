@@ -72,11 +72,8 @@ export function initCountryClick({ map, getSnapshots, deps }) {
       return;
     }
 
+    // token はレース判定のために await より前に必ずインクリメントする
     const myToken = ++token;
-    if (deps.rootEl && deps.rootEl.removeAttribute) deps.rootEl.removeAttribute('hidden');
-    if (deps.bodyEl) deps.bodyEl.classList.add('drill-open');
-    if (map && map.resize) map.resize();
-    if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'loading');
 
     const geo = await deps.loadCountryGeo(fips, { manifest: deps.manifest, fetchFn: deps.fetchFn });
     if (myToken !== token) return;                  // レース破棄
@@ -96,11 +93,17 @@ export function initCountryClick({ map, getSnapshots, deps }) {
         })
       : { chain: [], target: null, admin1Hit: null };
 
-    if (!res.target) {
-      // degraded / profile 欠落 → 最低限の表示
-      if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'error');
+    // target が無い（profile 欠落・海洋誤解決）→ パネルを開かずトーストだけ出して返る
+    if (!res || !res.target) {
+      if (deps.onOceanMiss) deps.onOceanMiss();
       return;
     }
+
+    // target が確定してから初めてパネルを開く
+    if (deps.rootEl && deps.rootEl.removeAttribute) deps.rootEl.removeAttribute('hidden');
+    if (deps.bodyEl) deps.bodyEl.classList.add('drill-open');
+    if (map && map.resize) map.resize();
+    if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, 'loading');
 
     if (myToken !== token) return;
 
@@ -183,11 +186,10 @@ export function initCountryClick({ map, getSnapshots, deps }) {
       flyCenter = bboxCenter(bbox);
       flyZoom = deps.zoomForBbox(bbox);
     } else if (res.target.level === 'city') {
-      // 都市 → 都市点（lon/lat）を使う。固定 zoom 8
-      const cityLon = (res.cityHit && res.cityHit.lon != null) ? res.cityHit.lon : lon;
-      const cityLat = (res.cityHit && res.cityHit.lat != null) ? res.cityHit.lat : lat;
-      flyCenter = [cityLon, cityLat];
-      flyZoom = 8;
+      // 都市 → クリック点（lon/lat）を使用。resolvePlace は cityHit を返さず、
+      // クリック点は cityRadius 以内に都市があることが保証されているため十分精確。
+      flyCenter = [lon, lat];
+      flyZoom = 7;
     } else {
       // フォールバック: 国 bbox
       const bbox = deps.countryBbox(fips, deps.bboxIndex);

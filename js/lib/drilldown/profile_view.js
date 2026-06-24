@@ -217,7 +217,7 @@ export function profileHtml(model) {
     const evItems = events.map(({ emoji, where, title }) =>
       '<div class="pf-ev">'
       + '<span class="pf-ev-emoji">' + escapeHtml(emoji) + '</span>'
-      + '<span><span class="pf-ev-where">' + escapeHtml(where) + ' — </span>' + escapeHtml(title) + '</span>'
+      + '<span>' + (where ? '<span class="pf-ev-where">' + escapeHtml(where) + ' — </span>' : '') + escapeHtml(title) + '</span>'
       + '</div>'
     ).join('');
     eventsHtml = '<details class="pf-events">'

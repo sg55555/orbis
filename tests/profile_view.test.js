@@ -62,3 +62,9 @@ test('profileHtml: events 空はフッタ非表示', () => {
   const h = profileHtml({ ...BASE, events: [] });
   assert.doesNotMatch(h, /pf-events/);
 });
+
+test('profileHtml: event の where が空文字のとき " — " セパレータが出ない', () => {
+  const h = profileHtml({ ...BASE, events: [{ emoji: '📰', where: '', title: '無地名イベント' }] });
+  assert.match(h, /無地名イベント/);
+  assert.doesNotMatch(h, / — /, 'where が空のとき em-dash セパレータは出力されない');
+});
