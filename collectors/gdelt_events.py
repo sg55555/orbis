@@ -13,10 +13,16 @@ PROTEST_CODES = {"14"}
 CONFLICT_CODES = {"18", "19", "20"}
 MAX_PER_LAYER = 2000
 WINDOW_HOURS = 24
+# NumSources(r[32]) の下限。単一ソース(=1)の event は信頼性が低く、偽陽性が多い:
+#   ・エンタメ/アニメの "fight" 等が CAMEO root 19(FIGHT) に誤分類される
+#   ・他地域の記事が GDELT の誤ジオコーディングで無関係な都市(例: 東京)に置かれる
+# 複数ソースで報じられた event だけ残す（実測: 日本の偽紛争はすべて単一ソースだった）。
+MIN_SOURCES = 2
 
 
 def parse_rows(rows):
-    """GDELT export TSV 行（list[str]）→ 抗議/紛争イベント dict 配列（純粋）。"""
+    """GDELT export TSV 行（list[str]）→ 抗議/紛争イベント dict 配列（純粋）。
+    NumSources < MIN_SOURCES（単一ソース）は偽陽性が多いため除外する。"""
     out = []
     for r in rows:
         if len(r) < 61:
@@ -35,9 +41,15 @@ def parse_rows(rows):
             mentions = int(r[31]) if r[31] else 0
         except ValueError:
             mentions = 0
+        try:
+            sources = int(r[32]) if r[32] else 0
+        except ValueError:
+            sources = 0
+        if sources < MIN_SOURCES:
+            continue  # 単一ソースの偽陽性（エンタメ誤分類・誤ジオコーディング）を除外
         out.append({
             "id": r[0], "root": root, "lon": lonf, "lat": latf,
-            "place": r[53], "mentions": mentions, "tone": r[34],
+            "place": r[53], "mentions": mentions, "sources": sources, "tone": r[34],
             "date": r[59], "url": r[60],
         })
     return out

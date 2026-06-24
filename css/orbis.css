@@ -1346,3 +1346,83 @@ body.secfit-on .brief-lead { background: rgba(13, 20, 36, .22); }
 @media (max-width: 768px) {
   body.secfit-on .src-panel { padding: 4px 10px 10px; }
 }
+/* ===== Phase2 国ドリルダウン: 非重畳 split パネル（blur-bleed を構造的に回避） ===== */
+/* #drilldown は不透明純色（#070b14）。backdrop-filter / glass を一切使わない＝square-blur-bleed が原理的に発生しない。 */
+#drilldown.drill-panel {
+  position: absolute; right: 0; top: 0; bottom: 0; width: min(38vw, 380px); z-index: 6;
+  background: #070b14; border-left: 1px solid var(--line);
+  overflow-y: auto; overflow-x: hidden;
+  padding: 14px 14px calc(20px + env(safe-area-inset-bottom));
+  font-size: 12px; color: var(--text);
+  transform: translateX(102%); transition: transform .3s ease;
+}
+/* drill-open でせり出す（PC は右からスライドイン） */
+body.drill-open #drilldown.drill-panel { transform: translateX(0); }
+#drilldown[hidden] { display: none; }
+
+/* drill-open 時に #map-wrap を grid 化し、#map のみ position 上書きで grid セルに収め物理縮小。
+   他オーバーレイ（#starfield/#freshness/#panel/#feed/#legend）は position:absolute のまま参照枠を維持＝連鎖崩れしない。 */
+body.drill-open #map-wrap { display: grid; grid-template-columns: 1fr min(38vw, 380px); }
+body.drill-open #map { position: static; inset: auto; grid-column: 1; }
+/* #drilldown を grid 第2列に収め非重畳に（PC） */
+body.drill-open #drilldown.drill-panel { position: static; grid-column: 2; width: auto; }
+
+/* ヘッダ: タイトル／★／× を横並び */
+#drilldown .dd-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
+  position: sticky; top: 0; background: #070b14; padding-bottom: 6px; z-index: 1; }
+#drilldown .dd-title { flex: 1; margin: 0; font-size: 14px; color: var(--text); }
+#drilldown .dd-watch, #drilldown .dd-close {
+  background: none; border: 1px solid var(--line); color: var(--muted);
+  border-radius: 6px; cursor: pointer; width: 26px; height: 26px; line-height: 1; }
+#drilldown .dd-watch:hover, #drilldown .dd-close:hover { color: var(--cyan); border-color: var(--cyan); }
+
+/* 状態表示（loading/error）: 既定は両メッセージ非表示。ready 時は dd-state 自体を隠す。 */
+#drilldown .dd-state { font-size: 12px; color: var(--muted); margin-bottom: 8px; min-height: 0; }
+#drilldown .dd-loading-msg, #drilldown .dd-error-msg { display: none; }
+#drilldown.dd-loading .dd-loading-msg { display: inline; }
+#drilldown.dd-error .dd-error-msg { display: inline; color: #ffce7a; }
+#drilldown.dd-ready .dd-state { display: none; }
+#drilldown .dd-retry { margin-left: 6px; background: none; border: 1px solid var(--cyan);
+  color: var(--cyan); border-radius: 6px; cursor: pointer; padding: 2px 8px; font-size: 11px; }
+
+/* 行ボタン（region/event）: instability rowbtn と同流儀の全幅クリック行 */
+#drilldown .dd-rowbtn { display: block; width: 100%; text-align: left; background: none;
+  border: 0; border-bottom: 1px solid rgba(28,44,72,.5); color: inherit; font: inherit;
+  cursor: pointer; padding: 7px 4px; }
+#drilldown .dd-rowbtn:hover:not(:disabled) { background: rgba(57,208,255,.08); }
+#drilldown .dd-rowbtn:disabled { opacity: .55; cursor: default; }
+
+/* degraded バナー */
+#drilldown .dd-degraded { font-size: 11px; color: #ffce7a; background: rgba(255,176,40,.10);
+  border: 1px solid rgba(255,176,40,.35); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
+
+/* ウォッチリスト */
+#drilldown .dd-watchlist { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
+#drilldown .dd-wl-h { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--muted); }
+#drilldown .dd-wl-row { display: flex; align-items: center; gap: 6px; }
+#drilldown .dd-wl-name { flex: 1; text-align: left; background: none; border: 0; color: inherit;
+  font: inherit; cursor: pointer; padding: 5px 4px; }
+#drilldown .dd-wl-name:hover:not(:disabled) { background: rgba(57,208,255,.08); }
+#drilldown .dd-wl-name:disabled { opacity: .55; cursor: default; }
+#drilldown .dd-wl-remove { background: none; border: 0; color: var(--cyan); cursor: pointer;
+  width: 24px; height: 24px; line-height: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  #drilldown.drill-panel { transition: none; }
+}
+
+/* モバイル（≤768px）: 下半分 bottom-sheet（上 globe・下 詳細）。mobile-nav.js は触らず body.drill-open 専用駆動。 */
+@media (max-width: 768px) {
+  body.drill-open #map-wrap { grid-template-columns: none; grid-template-rows: 1fr 52vh; }
+  body.drill-open #map { grid-column: auto; grid-row: 1; }
+  #drilldown.drill-panel {
+    right: 0; left: 0; top: auto; bottom: 0; width: auto;
+    border-left: 0; border-top: 1px solid var(--line); border-radius: 16px 16px 0 0;
+    padding-top: 18px; transform: translateY(102%);
+  }
+  body.drill-open #drilldown.drill-panel { transform: translateY(0); position: static; grid-row: 2; }
+  /* ドラッグハンドル風 */
+  #drilldown.drill-panel::before { content: ''; position: absolute; top: 7px; left: 50%;
+    transform: translateX(-50%); width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+}

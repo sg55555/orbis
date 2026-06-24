@@ -43,6 +43,22 @@
         <div id="feed-chips" class="feed-chips"></div>
         <div id="feed-rows"></div>
       </div>
+      <aside id="drilldown" class="drill-panel" hidden aria-label="国の詳細ドリルダウン">
+        <div class="dd-head">
+          <h4 class="dd-title"></h4>
+          <button class="dd-watch" type="button" aria-label="ウォッチリストに追加/削除">★</button>
+          <button class="dd-close" type="button" aria-label="国詳細を閉じる">×</button>
+        </div>
+        <div class="dd-state" aria-live="polite">
+          <span class="dd-loading-msg">読み込み中…</span>
+          <span class="dd-error-msg">読み込みに失敗しました。<button class="dd-retry" type="button">再試行</button></span>
+        </div>
+        <div class="dd-body"></div>
+        <div class="dd-watchlist">
+          <h4 class="dd-wl-h">★ ウォッチリスト</h4>
+          <div class="dd-wl-list"></div>
+        </div>
+      </aside>
       <aside id="legend" class="side-panel legend-panel" aria-label="凡例と使い方">
         <div class="panel-head"><h4>凡例 / Legend</h4>
           <button class="collapse-btn legend-collapse" type="button" aria-label="凡例の開閉" aria-expanded="false">▸</button></div>

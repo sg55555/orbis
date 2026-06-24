@@ -5,7 +5,11 @@ import { getLook } from './lib/look.js';
 const OFM = 'https://tiles.openfreemap.org';
 
 export function buildBaseStyle(look = getLook()) {
-  const jaLabel = ['coalesce', ['get', 'name:ja'], ['get', 'name']];
+  // ラベルは name:ja 優先。欠落時は現地スクリプト(name=アラビア語/キリル等)でなく
+  // ラテン文字(name:latin→name:en)にフォールバックし、最後の手段だけ name(現地名)。
+  // 高zoomで name:ja を持たない地物がアラビア語等で出る問題を回避する。
+  const jaLabel = ['coalesce',
+    ['get', 'name:ja'], ['get', 'name:latin'], ['get', 'name:en'], ['get', 'name']];
   const water = (look && look.water) || '#081a30';
   const land = (look && look.land) || '#182a47';
   return {
