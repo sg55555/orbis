@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>案C 中央フロートページ</title>
+<link rel="stylesheet" href="shared.css">
+<style>
+/* ── 案C：globe を薄暗く落とし、中央に百科事典記事風のフロートページ。広い読み幅・没入 ── */
+html, body { margin: 0; height: 100%; background: var(--bg); font-family: var(--font-body); }
+.globe { position: fixed; inset: 0; overflow: hidden;
+  background: radial-gradient(120% 120% at 50% 35%, #0a1426 0%, #070d18 45%, #05080f 100%); }
+.globe::before { content: ''; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  width: min(86vh, 86%); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle at 38% 32%, #16335c, #0b1c38 55%, #061427 100%);
+  box-shadow: 0 0 110px rgba(57,208,255,0.12), inset -40px -30px 100px rgba(0,0,0,0.6),
+              inset 22px 16px 70px rgba(57,208,255,0.07);
+  border: 1px solid rgba(57,208,255,0.10); }
+.globe::after { content: ''; position: absolute; inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(90,170,230,0.05) 0 1px, transparent 1px 52px),
+    repeating-linear-gradient(90deg, rgba(90,170,230,0.05) 0 1px, transparent 1px 52px);
+  mask: radial-gradient(circle at 50% 50%, #000 32%, transparent 62%);
+  -webkit-mask: radial-gradient(circle at 50% 50%, #000 32%, transparent 62%); }
+
+/* 暗幕スクリム（globe を薄暗く） */
+.scrim { position: fixed; inset: 0; background: rgba(2,5,11,0.62); z-index: 1; }
+
+/* フロートページ本体 */
+.stage { position: fixed; inset: 0; z-index: 2; display: flex; align-items: center; justify-content: center;
+  padding: clamp(14px, 3vh, 40px); }
+.page { position: relative; width: min(920px, 95vw); max-height: 92vh; overflow-y: auto;
+  background: rgba(7,11,20,0.97); border-radius: 16px;
+  border: 1px solid rgba(57,208,255,0.18);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px rgba(57,208,255,0.10);
+  padding: 26px clamp(20px, 3.4vw, 40px) 30px; }
+/* 縁のオーロラ光（線/光/縁） */
+.page::before { content: ''; position: absolute; inset: -1px; border-radius: 16px; pointer-events: none;
+  background: linear-gradient(135deg, var(--aurora-cyan), transparent 40%, transparent 60%, var(--aurora-purple));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px; opacity: .55; }
+.page-close { position: absolute; right: 16px; top: 16px; z-index: 3;
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+  background: rgba(7,11,20,0.8); color: var(--muted); cursor: pointer; line-height: 1; }
+.page-close:hover { color: var(--cyan); border-color: var(--cyan); }
+.page-star { position: absolute; right: 52px; top: 16px; z-index: 3;
+  width: 30px; height: 30px; border-radius: 8px; border: 1px solid var(--line);
+  background: rgba(7,11,20,0.8); color: var(--muted); cursor: pointer; line-height: 1; }
+.page-star:hover { color: var(--cyan); border-color: var(--cyan); }
+
+/* 没入＝メディアを大きく、本文は広い読み幅で気持ちよく */
+.page .pf-media { flex-basis: 280px; }
+.page .pf-name { font-size: 30px; }
+.page .pf-sections { max-width: 66ch; }
+
+.variant-tag { position: fixed; left: 14px; top: 12px; z-index: 9;
+  font-family: var(--font-display); font-size: 11.5px; letter-spacing: .06em; color: var(--text-heading);
+  padding: 5px 11px; border-radius: 999px; border: 1px solid rgba(57,208,255,0.3);
+  background: rgba(7,11,20,0.7); }
+.variant-tag b { color: var(--cyan); }
+</style></head>
+<body>
+<div class="globe"></div>
+<div class="scrim"></div>
+<div class="stage">
+  <article class="page">
+    <button class="page-star" title="ウォッチリスト">★</button>
+    <button class="page-close" title="閉じる">×</button>
+    <div class="mount"></div>
+  </article>
+</div>
+<div class="variant-tag"><b>案C</b> 中央フロートページ（没入）</div>
+<script src="content.js"></script>
+<script>window.mountProfile('.mount');</script>
+</body></html>
