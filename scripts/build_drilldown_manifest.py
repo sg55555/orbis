@@ -44,18 +44,35 @@ def load_bbox_index():
 
 
 def load_centroids():
-    """js/lib/country_centroids.js から EXTRA の lon/lat/margin を読む。"""
+    """js/lib/country_centroids.js から COUNTRY_CENTROIDS 配列をパースして
+    fips -> {lon, lat} の dict を返す。
+
+    country_centroids.js の実構造:
+      export const COUNTRY_CENTROIDS = [
+        { code: "AA", en: "Aruba", lng: -69.97, lat: 12.52 },
+        ...
+      ];
+    キー名は code / lng（lon ではない） / lat。lon として返す際に lng -> lon 変換する。
+    """
     try:
         src = open(CENTROIDS_FILE, encoding="utf-8").read()
-        # export const EXTRA = { "AA": {lon:...,lat:...,margin:...}, ... }
-        m = re.search(r"export const EXTRA\s*=\s*(\{.*?\});", src, re.S)
+        # COUNTRY_CENTROIDS 配列部分を抽出（[ ... ]）
+        m = re.search(r"export const COUNTRY_CENTROIDS\s*=\s*(\[.*?\]);", src, re.S)
         if not m:
             return {}
-        # JSON 化（JS オブジェクトリテラルを単純に評価）。
         raw = m.group(1)
-        # キーを引用符で囲む（簡易変換）。
-        raw = re.sub(r'([{,])\s*([A-Z]{2})\s*:', r'\1"\2":', raw)
-        return json.loads(raw)
+        # JS オブジェクトリテラル → JSON 変換:
+        #   { code: "AA", en: "Aruba", lng: ..., lat: ... }
+        #   → { "code": "AA", "en": "Aruba", "lng": ..., "lat": ... }
+        raw = re.sub(r'([{,])\s*([a-z_][a-z0-9_]*)\s*:', r'\1"\2":', raw)
+        # gen_country_centroids.py は末尾に trailing comma を付ける（,\n]）→ 除去
+        raw = re.sub(r',\s*\]', ']', raw)
+        items = json.loads(raw)
+        return {
+            item["code"]: {"lon": item["lng"], "lat": item["lat"]}
+            for item in items
+            if "code" in item and "lng" in item and "lat" in item
+        }
     except Exception:
         return {}
 

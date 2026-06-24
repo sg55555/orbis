@@ -110,6 +110,19 @@ def main():
             with gzip.open(path, "wt", encoding="utf-8") as fh:
                 json.dump({"type": "FeatureCollection", "features": []}, fh, ensure_ascii=False)
 
+    # FIPS_JA 全キーと生成対象の過不足を検証する（gen_country_centroids.py と同型）。
+    # out_codes = NE から生成した国コード集合 + FIPS_JA から空 FC 補完したコード集合
+    #           = FIPS_JA 全キー ∪ NE 由来コード
+    # missing = FIPS_JA にあるが out_codes に無い（現実装では補完があるため発生しない）
+    # surplus = out_codes にあるが FIPS_JA に無い（NE に未知コードが含まれる場合）
+    ne_codes = set(groups.keys())
+    fips_codes = set(fips_ja)
+    out_codes = ne_codes | fips_codes  # 補完ループで fips_codes 全体をカバー済み
+    missing = sorted(fips_codes - out_codes)
+    surplus = sorted(ne_codes - fips_codes)
+    assert not missing, f'FIPS_JA にあるが admin1 未生成: {missing}'
+    assert not surplus, f'NE データにあるが FIPS_JA に無し（FIPS_JA に追加せよ）: {surplus}'
+
     json.dump(bbox_index, open(BBOX_OUT, "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
     print(f"wrote {len(groups)} country admin1 files + {len(fips_ja)-len(groups)} empty / bbox_index {len(bbox_index)}")
