@@ -1,0 +1,119 @@
+#!/usr/bin/env python3
+"""NE 10m admin1 を国別 split＋name:ja 付与＋頂点間引き＋gzip 出力。
+
+出力:
+  data/static/admin1/<FIPS>.geojson.gz  properties={a1code,name_en,name_ja,bbox}
+  data/static/admin1_bbox.json          {fips:{countryBbox, admin1:{a1code:bbox}}}
+EXTRA68（admin1 無し）国は空 FeatureCollection を明示出力（404 回避）。
+
+入力 NE 10m admin1 は scripts/.cache/ne/ne_10m_admin_1_states_provinces.geojson に
+手調達。name:ja キャッシュ（scripts/.cache/name_ja_*.json）は無ければ空 dict。
+実行: PYTHONPATH=. uv run python scripts/build_admin1.py
+"""
+import gzip
+import json
+import os
+import re
+
+from scripts.lib.ne_prep import (
+    resolve_fips, pick_name_ja, split_by_country, largest_polygon_bbox, simplify_ring,
+)
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+NE_ADMIN1 = os.path.join(ROOT, "scripts/.cache/ne/ne_10m_admin_1_states_provinces.geojson")
+OUT_DIR = os.path.join(ROOT, "data/static/admin1")
+BBOX_OUT = os.path.join(ROOT, "data/static/admin1_bbox.json")
+EPS = 0.01
+
+
+def load_fips_ja():
+    src = open(os.path.join(ROOT, "js/lib/places.js"), encoding="utf-8").read()
+    body = re.search(r"export const FIPS_JA = \{(.*?)\};", src, re.S).group(1)
+    return dict(re.findall(r"([A-Z]{2}):\s*'([^']+)'", body))
+
+
+def load_name_index():
+    gj = json.load(open(os.path.join(ROOT, "data/static/country_bounds.geojson"), encoding="utf-8"))
+    return {f["properties"]["name"]: f["properties"]["code"] for f in gj["features"]}
+
+
+def load_cache(name):
+    p = os.path.join(ROOT, "scripts/.cache", name)
+    try:
+        return json.load(open(p, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def simplify_geometry(geom):
+    gtype = geom.get("type")
+    coords = geom.get("coordinates") or []
+    if gtype == "Polygon":
+        return {"type": "Polygon", "coordinates": [simplify_ring(r, EPS) for r in coords]}
+    if gtype == "MultiPolygon":
+        return {"type": "MultiPolygon",
+                "coordinates": [[simplify_ring(r, EPS) for r in poly] for poly in coords]}
+    return geom
+
+
+def a1code_of(props):
+    for k in ("iso_3166_2", "code_hasc", "adm1_code", "fips"):
+        v = props.get(k)
+        if isinstance(v, str) and v.strip():
+            return v.strip()
+    return None
+
+
+def main():
+    fips_ja = load_fips_ja()
+    name_index = load_name_index()
+    wiki = load_cache("name_ja_wikidata.json")
+    geo = load_cache("name_ja_geonames.json")
+    ne = json.load(open(NE_ADMIN1, encoding="utf-8"))
+
+    groups = split_by_country(ne.get("features", []), lambda f: resolve_fips(f.get("properties") or {}, name_index))
+    os.makedirs(OUT_DIR, exist_ok=True)
+    bbox_index = {}
+
+    for fips, feats in groups.items():
+        out_feats, a1_bboxes = [], {}
+        all_x, all_y = [], []
+        for f in feats:
+            props = f.get("properties") or {}
+            geom = simplify_geometry(f.get("geometry") or {})
+            bbox = largest_polygon_bbox(geom)
+            if bbox is None:
+                continue
+            a1 = a1code_of(props) or f"{fips}-{len(out_feats)}"
+            name_en = props.get("name") or props.get("NAME") or a1
+            name_ja = pick_name_ja(props, wiki, geo)
+            out_feats.append({
+                "type": "Feature",
+                "properties": {"a1code": a1, "name_en": name_en, "name_ja": name_ja, "bbox": bbox},
+                "geometry": geom,
+            })
+            a1_bboxes[a1] = bbox
+            all_x += [bbox[0], bbox[2]]
+            all_y += [bbox[1], bbox[3]]
+        fc = {"type": "FeatureCollection", "features": out_feats}
+        path = os.path.join(OUT_DIR, f"{fips}.geojson.gz")
+        with gzip.open(path, "wt", encoding="utf-8") as fh:
+            json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
+        if all_x:
+            bbox_index[fips] = {"countryBbox": [min(all_x), min(all_y), max(all_x), max(all_y)],
+                                "admin1": a1_bboxes}
+
+    # EXTRA68（admin1 無し国）は空 FC を出力（404 回避）。
+    for fips in fips_ja:
+        path = os.path.join(OUT_DIR, f"{fips}.geojson.gz")
+        if not os.path.exists(path):
+            with gzip.open(path, "wt", encoding="utf-8") as fh:
+                json.dump({"type": "FeatureCollection", "features": []}, fh, ensure_ascii=False)
+
+    json.dump(bbox_index, open(BBOX_OUT, "w", encoding="utf-8"),
+              ensure_ascii=False, separators=(",", ":"))
+    print(f"wrote {len(groups)} country admin1 files + {len(fips_ja)-len(groups)} empty / bbox_index {len(bbox_index)}")
+
+
+if __name__ == "__main__":
+    main()
