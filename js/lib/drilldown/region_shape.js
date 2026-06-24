@@ -18,7 +18,8 @@ export function regionShapePath(rings) {
   if (ring.length > 90) {
     const step = Math.floor(ring.length / 80) || 1;
     ring = ring.filter((_, i) => i % step === 0);
-    if (ring[ring.length - 1] !== ring[0]) ring = ring.concat([ring[0]]);
+    const last = ring[ring.length - 1];
+    if (last[0] !== ring[0][0] || last[1] !== ring[0][1]) ring = ring.concat([ring[0]]);
   }
   const xs = ring.map((p) => p[0]); const ys = ring.map((p) => p[1]);
   const minx = Math.min(...xs); const maxx = Math.max(...xs);
