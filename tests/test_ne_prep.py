@@ -10,6 +10,7 @@ from scripts.lib.ne_prep import (
     largest_polygon_bbox,
     simplify_ring,
     nearest_city_cap,
+    union_country_bbox,
 )
 
 # country_bounds の実態に合わせた最小 name→FIPS インデックス。
@@ -41,6 +42,27 @@ def test_resolve_fips_iso_missing_uses_name():
     # ISO 欠落（-99）でも name 突合で解決する（係争地・小国で頻出）。
     props = {"ISO_A2": "-99", "admin": "South Africa"}
     assert resolve_fips(props, BOUNDS_NAME_INDEX) == "SF"
+
+
+def test_resolve_fips_iso_a2_eh_fallback():
+    # NE は Norway を ISO_A2='-99' / ISO_A2_EH='NO' で入れる（既知 quirk）。
+    # name が bounds_name_index に無くても ISO_A2_EH フォールバックで FIPS=NO に解決する。
+    props = {"ISO_A2": "-99", "ISO_A2_EH": "NO", "ADMIN": "Norway"}
+    assert resolve_fips(props, {}) == "NO"
+
+
+def test_resolve_fips_iso_a2_preferred_over_eh():
+    # ISO_A2 が有効なら ISO_A2_EH は見ない（ISO_A2 優先・EH は -99 時のみ）。
+    props = {"ISO_A2": "CN", "ISO_A2_EH": "ZZ", "admin": "China"}
+    assert resolve_fips(props, BOUNDS_NAME_INDEX) == "CH"
+
+
+def test_resolve_fips_lowercase_iso_a2_admin1():
+    # NE admin1 は小文字 iso_a2 を使う（admin0/places は大文字 ISO_A2）。
+    # admin(国名) が country_bounds 名と form 違い（United Republic of Tanzania）でも
+    # 小文字 iso_a2 で FIPS=TZ に解決する（name_index は空でよい）。
+    props = {"iso_a2": "TZ", "admin": "United Republic of Tanzania", "name": "Mbeya"}
+    assert resolve_fips(props, {}) == "TZ"
 
 
 def test_resolve_fips_conflict_prefers_name():
@@ -209,6 +231,48 @@ def test_largest_polygon_bbox_antimeridian_multipolygon_still_picks_largest():
     }
     bbox = largest_polygon_bbox(geom)
     assert bbox == [0, 0, 30, 40]
+
+
+def test_largest_polygon_bbox_polar_cap_not_wrapped():
+    """南極型: 全経度(-180..180)を占める極冠リングは跨ぎでない。wrap して
+    値域外(-359 等)にせず、全幅 [-180,..,180] を維持する（wrap_span<180 ガード）。"""
+    ring = [[-180, -90], [-90, -85], [0, -80], [90, -85], [180, -90], [-180, -90]]
+    geom = {"type": "Polygon", "coordinates": [ring]}
+    bbox = largest_polygon_bbox(geom)
+    assert bbox[0] >= -180 and bbox[2] <= 180, f"値域外: {bbox}"
+    assert bbox[0] == -180 and bbox[2] == 180, f"極冠は全幅を維持すべき: {bbox}"
+
+
+def test_union_country_bbox_normal():
+    """非跨ぎ国は素朴な min/max 結合（従来挙動）。"""
+    bboxes = [[130, 30, 140, 40], [135, 25, 145, 35]]
+    assert union_country_bbox(bboxes) == [130, 25, 145, 40]
+
+
+def test_union_country_bbox_antimeridian_nz():
+    """NZ 型: 本土(東半球)＋島嶼(西半球)で naive span>180。w>e の折返し形で返し、
+    偽の全幅(span≈356)を出さない。client は e<w を跨ぎとして解釈する。"""
+    bboxes = [
+        [166.0, -47.0, 178.84, -34.0],     # 本土（東半球）
+        [-176.85, -44.5, -176.17, -43.7],  # Chatham（西半球）
+        [-177.96, -31.0, -177.85, -29.0],  # Kermadec（西半球）
+    ]
+    w, s, e, n = union_country_bbox(bboxes)
+    assert w > e, f"跨ぎは w>e の折返し形であるべき: {[w, s, e, n]}"
+    assert -180 <= w <= 180 and -180 <= e <= 180, "経度は値域内"
+    wrap_span = (e + 360) - w
+    assert wrap_span < 180, f"折返し span は実幅(<180)であるべき: {wrap_span}"
+    assert w == 166.0 and e == -176.17
+
+
+def test_union_country_bbox_polar_cap_full_width():
+    """南極型: 全経度を占める国 bbox は折返さず全幅 [-180,..,180] を維持する。"""
+    bboxes = [[-180.0, -90.0, 180.0, -63.0], [10.0, -85.0, 20.0, -80.0]]
+    assert union_country_bbox(bboxes) == [-180.0, -90.0, 180.0, -63.0]
+
+
+def test_union_country_bbox_empty():
+    assert union_country_bbox([]) is None
 
 
 # Minor: Kosovo XK→KV

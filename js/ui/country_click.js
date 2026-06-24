@@ -7,6 +7,7 @@
 // patch #7（二重登録解消）: map.on('click') は main.js(C7) が明示登録する一点に一本化。
 //   initCountryClick は map.on を登録しない（呼び出し側の責務）。
 import { locateFeature } from '../lib/drilldown/geo_poly.js';
+import { bboxCenter } from '../lib/zoom_for_bbox.js';
 
 // deck pick と map.on('click') の二重発火を抑える二重判定のしきい値。
 const DECK_PICK_WINDOW_MS = 350;
@@ -72,7 +73,7 @@ export function initCountryClick({ map, getSnapshots, deps }) {
     }
     if (deps.setDrilldownState) deps.setDrilldownState(deps.rootEl, geo.degraded ? 'error' : 'ready');
     const bbox = deps.countryBbox(fips, deps.bboxIndex);
-    const center = [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2];
+    const center = bboxCenter(bbox); // 日付変更線跨ぎ(e<w)も正規化（naive (w+e)/2 は誤中心）
     if (map && map.flyTo) {
       map.flyTo({ center, zoom: deps.zoomForBbox(bbox), duration: 1500, essential: true });
     }

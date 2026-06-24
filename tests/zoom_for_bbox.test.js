@@ -1,6 +1,30 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { zoomForBbox } from '../js/lib/zoom_for_bbox.js';
+import { zoomForBbox, bboxCenter } from '../js/lib/zoom_for_bbox.js';
+
+test('bboxCenter: 通常 bbox は素朴中点', () => {
+  assert.deepEqual(bboxCenter([122, 24, 154, 46]), [138, 35]);
+});
+
+test('bboxCenter: 日付変更線跨ぎ(e<w) は折返し幅の中点を [-180,180] に正規化', () => {
+  // NZ 型: w=166, e=-176.17（折返し）。実幅 17.83 の中点 = 166+8.915 = 174.915°E。
+  const [lng, lat] = bboxCenter([166, -47, -176.17, -34]);
+  assert.ok(Math.abs(lng - 174.915) < 1e-6, `lng=${lng}（NZ 中心は約 175°E）`);
+  assert.equal(lat, -40.5);
+  assert.ok(lng >= -180 && lng <= 180, '正規化済');
+});
+
+test('bboxCenter: w<-180 形(単一跨ぎ feature)も [-180,180] に正規化', () => {
+  // Fiji 型: [-183,-178] → 中点 -180.5 → +360 → 179.5°E。
+  const [lng] = bboxCenter([-183, -19, -178, -12]);
+  assert.ok(Math.abs(lng - 179.5) < 1e-6, `lng=${lng}（Fiji 中心は約 179.5°E）`);
+});
+
+test('bboxCenter: 不正 bbox は [0,0]', () => {
+  assert.deepEqual(bboxCenter(null), [0, 0]);
+  assert.deepEqual(bboxCenter([1, 2, 3]), [0, 0]);
+  assert.deepEqual(bboxCenter([1, 2, NaN, 4]), [0, 0]);
+});
 
 test('zoomForBbox: 戻り値は [minZoom, maxZoom] 内', () => {
   const z = zoomForBbox([0, 0, 10, 10]);

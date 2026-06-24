@@ -1,11 +1,21 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { fipsCenter } from '../js/lib/drilldown/country_index.js';
+import { COUNTRIES } from '../js/lib/gazetteer.js';
+
+// fipsCenter は COUNTRIES（COUNTRY_CENTROIDS＋FIPS_JA join）を FIPS→[lng,lat] に索引する。
+// 期待値は COUNTRIES から導出し、country_bounds 50m 再生成での centroid 軽微シフトに追従させる
+// （数値直書きは再生成のたびに陳腐化する）。gross 破損は粗い地理レンジで別途検出。
+const CENTROID = new Map(COUNTRIES.map((c) => [c.code, [c.lng, c.lat]]));
 
 test('fipsCenter: 既知FIPS は COUNTRIES の [lng,lat] を返す', () => {
-  // JA(日本)=135.6614,36.2041 / US=-95.8259,37.2345（country_centroids.js 実値）
-  assert.deepEqual(fipsCenter('JA'), [135.6614, 36.2041]);
-  assert.deepEqual(fipsCenter('US'), [-95.8259, 37.2345]);
+  assert.deepEqual(fipsCenter('JA'), CENTROID.get('JA'));
+  assert.deepEqual(fipsCenter('US'), CENTROID.get('US'));
+  // gross 破損検出: JA は日本域・US は米本土域に収まる。
+  const [jlng, jlat] = fipsCenter('JA');
+  assert.ok(jlng >= 128 && jlng <= 146 && jlat >= 30 && jlat <= 46, `JA centroid 域外: ${jlng},${jlat}`);
+  const [ulng, ulat] = fipsCenter('US');
+  assert.ok(ulng >= -130 && ulng <= -65 && ulat >= 24 && ulat <= 50, `US centroid 域外: ${ulng},${ulat}`);
 });
 
 test('fipsCenter: 未知FIPS は null', () => {
@@ -28,8 +38,9 @@ test('countryBbox: extra(EXTRA68) は lon/lat±margin の矩形', () => {
 });
 
 test('countryBbox: どちらにも無いが fipsCenter があれば ±2度', () => {
-  // US は country/extra 索引に無い → fipsCenter(US)=[-95.8259,37.2345] の ±2度
-  assert.deepEqual(countryBbox('US', BBOX_INDEX), [-95.8259 - 2, 37.2345 - 2, -95.8259 + 2, 37.2345 + 2]);
+  // US は country/extra 索引に無い → fipsCenter(US) の ±2度（centroid 実値から導出）
+  const [lng, lat] = fipsCenter('US');
+  assert.deepEqual(countryBbox('US', BBOX_INDEX), [lng - 2, lat - 2, lng + 2, lat + 2]);
 });
 
 test('countryBbox: 索引も centroid も無ければ世界全体 bbox', () => {

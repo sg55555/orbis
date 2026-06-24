@@ -17,6 +17,7 @@ import re
 
 from scripts.lib.ne_prep import (
     resolve_fips, pick_name_ja, split_by_country, largest_polygon_bbox, simplify_ring,
+    union_country_bbox,
 )
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -79,7 +80,7 @@ def main():
 
     for fips, feats in groups.items():
         out_feats, a1_bboxes = [], {}
-        all_x, all_y = [], []
+        feat_bboxes = []
         for f in feats:
             props = f.get("properties") or {}
             geom = simplify_geometry(f.get("geometry") or {})
@@ -95,14 +96,16 @@ def main():
                 "geometry": geom,
             })
             a1_bboxes[a1] = bbox
-            all_x += [bbox[0], bbox[2]]
-            all_y += [bbox[1], bbox[3]]
+            feat_bboxes.append(bbox)
         fc = {"type": "FeatureCollection", "features": out_feats}
         path = os.path.join(OUT_DIR, f"{fips}.geojson.gz")
         with gzip.open(path, "wt", encoding="utf-8") as fh:
             json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        if all_x:
-            country_bboxes[fips] = [min(all_x), min(all_y), max(all_x), max(all_y)]
+        # 国 bbox は union_country_bbox で日付変更線跨ぎ（NZ 等）を折返し形に補正する
+        # （naive min/max は偽の全幅 bbox を生み flyTo が地球全体にズームアウトする）。
+        cb = union_country_bbox(feat_bboxes)
+        if cb is not None:
+            country_bboxes[fips] = cb
 
     # EXTRA68（admin1 無し国）は空 FC を出力（404 回避）。
     for fips in fips_ja:

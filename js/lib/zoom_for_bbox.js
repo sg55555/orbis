@@ -34,3 +34,16 @@ export function zoomForBbox(bbox, { minZoom = 2.5, maxZoom = 6, pad = 1.15 } = {
   const z = Math.log2((REF_PX * EQ_MPP_Z0) / (spanM * pad));
   return Math.max(minZoom, Math.min(maxZoom, z));
 }
+
+// bbox=[w,s,e,n] の中心 [lng,lat]。e<w は日付変更線跨ぎの折返しとみなし、
+// 跨ぎ幅の中点を取って [-180,180] に正規化する（naive (w+e)/2 は跨ぎ国で
+// 反対側の経度=誤った中心になり flyTo が別地点を向くため）。bbox 不正は [0,0]。
+export function bboxCenter(bbox) {
+  if (!Array.isArray(bbox) || bbox.length < 4) return [0, 0];
+  const [w, s, e, n] = bbox;
+  if (![w, s, e, n].every(Number.isFinite)) return [0, 0];
+  let lng = e >= w ? (w + e) / 2 : w + ((e + 360) - w) / 2;
+  if (lng > 180) lng -= 360;
+  if (lng < -180) lng += 360;
+  return [lng, (s + n) / 2];
+}

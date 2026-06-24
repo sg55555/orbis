@@ -47,26 +47,59 @@ def simplify_geometry(geom):
     return geom
 
 
+def _polygon_list(geom):
+    """Polygon/MultiPolygon を polygon（[outer, hole...]）のリストに正規化する。"""
+    t = geom.get("type")
+    coords = geom.get("coordinates") or []
+    if t == "Polygon":
+        return [coords]
+    if t == "MultiPolygon":
+        return list(coords)
+    return []
+
+
+def merge_geometries(geoms):
+    """複数 geometry を 1 つの (Multi)Polygon に統合する。
+    NE が同一国を複数 feature に分割するケース（例: フィンランド本土＋オーランド諸島が
+    別 feature で両方 FIPS=FI に解決）で「最初の1件だけ残す」と本土が落ちるため、
+    同一 FIPS に解決した全 feature のポリゴンを結合する。"""
+    polys = []
+    for g in geoms:
+        polys.extend(_polygon_list(g))
+    if not polys:
+        return {"type": "MultiPolygon", "coordinates": []}
+    if len(polys) == 1:
+        return {"type": "Polygon", "coordinates": polys[0]}
+    return {"type": "MultiPolygon", "coordinates": polys}
+
+
 def main():
     fips_ja = load_fips_ja()
     name_index, fips_to_name, existing_codes = load_existing_bounds()
     ne = json.load(open(NE_50M, encoding="utf-8"))
 
-    out_features, seen, unresolved = [], {}, []
+    # 同一 FIPS に解決する NE feature を全て集めて結合する（本土＋領土の分割表現対策）。
+    geoms_by_code, names_by_code, order, unresolved = {}, {}, [], []
     for f in ne.get("features", []):
         props = f.get("properties") or {}
         code = resolve_fips(props, name_index)
         if not code:
             unresolved.append(props.get("ADMIN") or props.get("admin") or props.get("name"))
             continue
-        if code in seen:
-            continue  # 同一 FIPS の重複は最初だけ（NE の分割表現対策）
-        seen[code] = True
-        name = fips_to_name.get(code) or props.get("ADMIN") or props.get("admin") or code
+        if code not in geoms_by_code:
+            geoms_by_code[code] = []
+            order.append(code)
+            names_by_code[code] = (props.get("ADMIN") or props.get("admin")
+                                   or props.get("NAME") or props.get("name") or code)
+        geoms_by_code[code].append(simplify_geometry(f.get("geometry") or {}))
+
+    out_features = []
+    for code in order:
+        name = fips_to_name.get(code) or names_by_code.get(code) or code
         out_features.append({
             "type": "Feature",
             "properties": {"code": code, "name": name},
-            "geometry": simplify_geometry(f.get("geometry") or {}),
+            "geometry": merge_geometries(geoms_by_code[code]),
         })
 
     out_codes = {f["properties"]["code"] for f in out_features}

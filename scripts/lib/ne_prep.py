@@ -25,16 +25,25 @@ def resolve_fips(ne_props, bounds_name_index):
 
     規則:
       1. ISO_A2 から FIPS_OF_ISO で iso_fips を引く（-99/空/非文字列は無し）。
+         キーは大小文字両対応（admin0=ISO_A2 大文字 / admin1=iso_a2 小文字）。
+         ISO_A2 が使えない時は ISO_A2_EH（de facto ISO）にフォールバック
+         （NE は Norway/France 等で ISO_A2='-99' を入れる。例: Norway -99→NO）。
       2. 国名（admin/ADMIN/geonunit/name の順）を bounds_name_index で name_fips に。
       3. 両方あり一致→その値。両方あり不一致→name_fips を優先（country_bounds が権威）。
       4. 片方のみ→その値。両方 None→None。
     """
-    iso = ne_props.get("ISO_A2")
+    # ISO_A2 を優先し、使えなければ ISO_A2_EH にフォールバック（Norway 等の -99 対策）。
+    # NE admin1 は小文字 iso_a2 を使う（admin0/places は大文字 ISO_A2）ため両表記を読む
+    # ＝admin1 の国名 form 違い（"United Republic of Tanzania" 等）でも ISO で解決できる。
     iso_fips = None
-    if isinstance(iso, str):
-        iso = iso.strip().upper()
-        if iso and iso != "-99":
-            iso_fips = FIPS_OF_ISO.get(iso)
+    for iso_key in ("ISO_A2", "iso_a2", "ISO_A2_EH", "iso_a2_eh"):
+        iso = ne_props.get(iso_key)
+        if isinstance(iso, str):
+            iso = iso.strip().upper()
+            if iso and iso != "-99":
+                iso_fips = FIPS_OF_ISO.get(iso)
+                if iso_fips:
+                    break
 
     name = _ne_country_name(ne_props)
     name_fips = bounds_name_index.get(name) if name else None
@@ -125,9 +134,41 @@ def _ring_bbox_antimeridian(ring):
         wrapped = [x - 360 if x > 0 else x for x in xs]
         wrap_w, wrap_e = min(wrapped), max(wrapped)
         wrap_span = wrap_e - wrap_w
-        if wrap_span < raw_span:
+        # wrap_span < 180 を条件に追加: 南極の極冠リング（全経度 -180..180 を正当に占める）は
+        # wrap しても span がほぼ 360 のまま＝跨ぎでない。これを wrap すると -359.98 等の
+        # 値域外 bbox を生むため、真の跨ぎ（wrap 後 span<180）のときだけ採用する。
+        if wrap_span < raw_span and wrap_span < 180:
             return [wrap_w, min(ys), wrap_e, max(ys)]
     return [raw_w, min(ys), raw_e, max(ys)]
+
+
+def union_country_bbox(bboxes):
+    """admin1 各 feature の bbox 群 [[w,s,e,n],...] を国 bbox に結合する。
+    naive な min/max は日付変更線跨ぎ国（NZ: Chatham/Kermadec が西・本土が東）で
+    偽の全幅 bbox（span≈356）を生むため、跨ぎを検出して w>e の折返し形で返す。
+    （client zoom_for_bbox / bboxCenter は e<w を折返しとして解釈する。）
+    南極等の全経度に渡る極冠は折返しでなく全幅 [-180,..,180] を維持する。"""
+    if not bboxes:
+        return None
+    ws = [b[0] for b in bboxes]
+    es = [b[2] for b in bboxes]
+    s = min(b[1] for b in bboxes)
+    n = max(b[3] for b in bboxes)
+    raw_w, raw_e = min(ws), max(es)
+    # 全経度を占める極冠/全球（南極）は折返さず全幅で返す（値域内）。
+    if raw_w <= -179.9 and raw_e >= 179.9:
+        return [raw_w, s, raw_e, n]
+    if raw_e - raw_w <= 180:
+        return [raw_w, s, raw_e, n]
+    # naive span>180 かつ非全球＝日付変更線跨ぎ。東半球(>=0)の最小経度を w、
+    # 西半球(<0)の最大経度を e とし w>e の折返し形にする（過剰ズームアウト回避）。
+    east = [x for x in ws + es if x >= 0]
+    west = [x for x in ws + es if x < 0]
+    if east and west:
+        w2, e2 = min(east), max(west)
+        if (e2 + 360) - w2 < 180:  # 真の跨ぎ（極冠なら依然>180→不採用）
+            return [w2, s, e2, n]
+    return [raw_w, s, raw_e, n]
 
 
 def largest_polygon_bbox(geometry):

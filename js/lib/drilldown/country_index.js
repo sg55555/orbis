@@ -1,6 +1,7 @@
 // 国ドリルダウンの I/O 索引層（DI seam）。
 // - country_bounds.geojson を一度だけ fetch→loadPolygons でキャッシュ（client FIPS 解決の一次ソース）。
-// - countryBbox: admin1_bbox.json 由来の国 bbox。未登録 FIPS(EXTRA68) は manifest.extra の矩形 / fipsCenter±固定マージン。
+// - countryBbox: admin1_bbox.json 由来の国 bbox（admin1 を持つ国＋ポリゴンのみ国を含む 236 国）。
+//   country bbox 無し（ポリゴン無し領土）は bboxIndex.extra の矩形 → fipsCenter±固定マージンの順でフォールバック。
 // - fipsCenter: gazetteer.COUNTRIES を FIPS→[lng,lat] に索引（COUNTRY_CENTROIDS＋FIPS_JA join 済の単一ソース）。
 import { loadPolygons } from './geo_poly.js';
 import { COUNTRIES } from '../gazetteer.js';
