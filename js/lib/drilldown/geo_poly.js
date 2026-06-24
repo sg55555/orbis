@@ -78,3 +78,12 @@ export function pointInFeature(lon, lat, poly) {
   if (lon < b[0] || lon > b[2] || lat < b[1] || lat > b[3]) return false;
   return pointInRings(lon, lat, poly.rings);
 }
+
+// polys を順に走査し最初にヒットした poly を返す。全ミスは null（海洋/極域）。
+// collectors/lib/geo_country.py:45-58 の point_country 相当（code でなく poly を返す）。
+export function locateFeature(lon, lat, polys) {
+  for (const p of polys) {
+    if (pointInFeature(lon, lat, p)) return p;
+  }
+  return null;
+}

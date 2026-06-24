@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pointInRings, loadPolygons, pointInFeature } from '../js/lib/drilldown/geo_poly.js';
+import { pointInRings, loadPolygons, pointInFeature, locateFeature } from '../js/lib/drilldown/geo_poly.js';
 
 // 共有フィクスチャ: 単純な正方形 (0,0)-(10,10)。GeoJSON 規約どおり始点=終点で閉じる。
 const SQUARE = [
@@ -166,4 +166,35 @@ test('pointInFeature: bbox 端(w,s,e,n)は棄却されない', () => {
   };
   // bbox 内の確実な内部点
   assert.equal(pointInFeature(0.001, 0.001, polyBig), true);
+});
+
+// --- C1.4 locateFeature ---
+
+const POLYS = [
+  { code: 'A', bbox: [0, 0, 4, 4], rings: [[[0, 0], [4, 0], [4, 4], [0, 4], [0, 0]]] },
+  { code: 'B', bbox: [6, 0, 10, 4], rings: [[[6, 0], [10, 0], [10, 4], [6, 4], [6, 0]]] },
+];
+
+test('locateFeature: ヒットした poly オブジェクトを返す', () => {
+  const hit = locateFeature(2, 2, POLYS);
+  assert.equal(hit.code, 'A');
+  const hit2 = locateFeature(8, 2, POLYS);
+  assert.equal(hit2.code, 'B');
+});
+
+test('locateFeature: 重なり時は配列で最初にヒットした poly', () => {
+  const overlap = [
+    { code: 'FIRST', bbox: [0, 0, 10, 10], rings: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]] },
+    { code: 'SECOND', bbox: [0, 0, 10, 10], rings: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]] },
+  ];
+  assert.equal(locateFeature(5, 5, overlap).code, 'FIRST');
+});
+
+test('locateFeature: どこにもヒットしなければ null（海洋/極域）', () => {
+  assert.equal(locateFeature(5, 2, POLYS), null); // 隙間
+  assert.equal(locateFeature(100, 100, POLYS), null); // 完全に外
+});
+
+test('locateFeature: 空 polys は null', () => {
+  assert.equal(locateFeature(5, 5, []), null);
 });
