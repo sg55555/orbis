@@ -49,3 +49,49 @@ test('initCountryClick: map.on("click") を登録する', () => {
   initCountryClick({ map, getSnapshots: () => ({}), deps: baseDeps() });
   assert.equal(typeof map.handlers.click, 'function');
 });
+
+test('handleMapClick: deck pick 直後＆近接座標なら openCountry を抑制', async () => {
+  const map = fakeMap();
+  let opened = 0;
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({}),
+    deps: baseDeps({ loadCountryGeo: async () => { opened += 1; return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: true }; } }),
+  });
+  api.setBoundsPolys(POLYS);
+  api.noteDeckPick({ lng: 1, lat: 1 });            // deck が (1,1) を pick
+  await api.handleMapClick({ lngLat: { lng: 1.05, lat: 1.05 } }); // 近接 → 抑制
+  assert.equal(opened, 0, 'loadCountryGeo を呼ばない（抑制）');
+});
+
+test('handleMapClick: deck pick から離れた座標なら抑制せず開く', async () => {
+  const map = fakeMap();
+  let openedFips = null;
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({}),
+    deps: baseDeps({ loadCountryGeo: async (fips) => { openedFips = fips; return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: true }; } }),
+  });
+  api.setBoundsPolys(POLYS);
+  api.noteDeckPick({ lng: 1, lat: 1 });
+  await api.handleMapClick({ lngLat: { lng: 1.6, lat: 1.6 } }); // 0.5度超え → 抑制しない・国内 → JA
+  assert.equal(openedFips, 'JA');
+});
+
+test('handleMapClick: 海洋クリックは onOceanMiss を呼びパネルを開かない', async () => {
+  const map = fakeMap();
+  let missed = 0;
+  let opened = 0;
+  const api = initCountryClick({
+    map,
+    getSnapshots: () => ({}),
+    deps: baseDeps({
+      onOceanMiss: () => { missed += 1; },
+      loadCountryGeo: async () => { opened += 1; return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: true }; },
+    }),
+  });
+  api.setBoundsPolys(POLYS);
+  await api.handleMapClick({ lngLat: { lng: 50, lat: 50 } }); // 海洋
+  assert.equal(missed, 1);
+  assert.equal(opened, 0);
+});
