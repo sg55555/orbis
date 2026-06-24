@@ -409,7 +409,7 @@ Run: `python -m http.server 8000`（バックグラウンド）
 Run: `NODE_PATH=$(pwd)/node_modules node /tmp/orbis-mui-shot.js`
 Expected: 9枚出力。Read で目視（線/光が揃い面の滲みが無いか・off が before と一致か・b が攻め過ぎでないか）。
 
-- [ ] **Step 3: 太田さんへ実機確認を依頼**
+- [ ] **Step 3: オーナーへ実機確認を依頼**
 
 `?mui=a` `?mui=b` `?mui=off` を**実機スマホ**で比較してもらい（GPU依存の blur/glow は headless と乖離）、採用値（a か b か、微調整指示）を確定。AskUserQuestion で確認。
 

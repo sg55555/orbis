@@ -1,7 +1,7 @@
 # ORBIS 水温(SST)レイヤー 設計
 
 - 日付: 2026-06-18
-- 対象: ORBIS（`/home/shugo/apps/orbis`）
+- 対象: ORBIS（`~/apps/orbis`）
 - 種別: 新レイヤー追加（海面水温 Sea Surface Temperature）
 
 > **実装時の修正（2026-06-18）**: 本文中の「全球 5° グリッド -85..85 / 35行 / 2520点」は実装時に

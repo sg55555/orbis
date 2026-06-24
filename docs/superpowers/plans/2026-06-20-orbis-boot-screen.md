@@ -706,7 +706,7 @@ git commit -m "feat(boot): canvas FX＋テレメトリ＋handoff制御をmain.js
 - [ ] **Step 1: ローカル配信して実機で確認**
 
 Run: `npm run serve`（`python3 -m http.server 8000`）
-ブラウザで以下を見比べる（太田さんのレビュー）:
+ブラウザで以下を見比べる（オーナーのレビュー）:
 - `http://localhost:8000/?boot=12`（既定・採用案）
 - `http://localhost:8000/?boot=1` / `?boot=2` / `?boot=3`（融合配分の比較）
 - `http://localhost:8000/?bootmin=4000`（ゆっくり）/ `?bootmin=0`（最短）

@@ -101,7 +101,7 @@ export function groupLayers(layers, categories = CATEGORIES) { ... }
 - 各層行が**正しい群**の下にある（例：地震が「出来事」群内）。
 - **ⓘ クリックで `.desc-open` がトグル**し説明が表示/非表示になる（チェックボックスの状態は変わらない＝誤作動なし）。
 - 既存 smoke / presets / mobile-nav e2e が緑維持（群化でセレクタが壊れていない）。
-- 注：色味・GPU 依存の見えは headless 不可 → localhost 実物確認＋太田さん確認（[[mistakes]]）。
+- 注：色味・GPU 依存の見えは headless 不可 → localhost 実物確認＋オーナー確認（[[mistakes]]）。
 
 ## リスク・確認事項
 

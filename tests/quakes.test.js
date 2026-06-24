@@ -66,7 +66,7 @@ test('quakePlaceJa: 方角接頭辞・サフィックスの "X region"・島嶼 
   assert.equal(quakePlaceJa('eastern Honshu, Japan'), '日本 本州東部'); // region=日本 先頭＋head方角接頭辞
 });
 
-// --- 地域名（国名）化＝国名が必ず見える（太田さん要望） ---
+// --- 地域名（国名）化＝国名が必ず見える（オーナー要望） ---
 test('quakePlaceJa: 国名・地域名を先頭に出し、国名が必ず含まれる', () => {
   // 米国の地震は州だけでなく「（アメリカ）」を必ず表示（折角の国名日本語化を活かす）
   const ca = quakePlaceJa('8 km W of Cobb, CA');

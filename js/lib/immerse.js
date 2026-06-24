@@ -105,7 +105,7 @@ export function immerseFeed(search) {
 }
 
 // ?space=1|2|3|off（大小無視）。大画面 globe 周辺リッチ化（星密度/微粒子/周辺光）の強さ段。
-// 既定 off＝採用しない（2026-06-21 太田さん実機確定：周辺光が panel グラス越しに四角く滲む＝
+// 既定 off＝採用しない（2026-06-21 オーナー実機確定：周辺光が panel グラス越しに四角く滲む＝
 // 星雲面廃止と同じ問題。星密度/微粒子も四角い範囲内にしか効かず独立価値なし）。1|2|3 は比較用に残置。
 export function immerseSpace(search) {
   const m = /[?&]space=(1|2|3|off)/i.exec(readSearch(search));
@@ -113,7 +113,7 @@ export function immerseSpace(search) {
 }
 
 // ?mui=a|b|off（大小無視）。モバイル(≤768px)の操作UIシェル（下端タブバー＋ボトムシート＋ディマー）の
-// リッチ化。b=採用(既定・2026-06-24 太田さん実機確定)／a=一段控えめ(比較用)／off=before(base のまま・タブは ≡)。
+// リッチ化。b=採用(既定・2026-06-24 オーナー実機確定)／a=一段控えめ(比較用)／off=before(base のまま・タブは ≡)。
 export function immerseMobileUi(search) {
   const m = /[?&]mui=(a|b|off)/i.exec(readSearch(search));
   return m ? m[1].toLowerCase() : 'b';

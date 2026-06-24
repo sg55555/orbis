@@ -14,7 +14,7 @@
 
 - **対象＝全 FIPS_JA 国（FS 補完後 約239件・国/主権領土レベルで網羅）**。座標源は2系統：
   - **171 国＝`data/static/country_bounds.geojson`（geometry 由来 centroid）**（`code`=FIPS／`name`=英語名）。
-  - **欠落68 国＝手キュレート `EXTRA_CENTROIDS`**。110m 低解像度ジオメトリが落とす小国・領土（イスラエル/ノルウェー/シンガポール/バーレーン/マルタ/モルディブ＋アンドラ/サンマリノ/トンガ等の島嶼マイクロ国家）。太田さん承認＝**網羅優先で全件手当て**。
+  - **欠落68 国＝手キュレート `EXTRA_CENTROIDS`**。110m 低解像度ジオメトリが落とす小国・領土（イスラエル/ノルウェー/シンガポール/バーレーン/マルタ/モルディブ＋アンドラ/サンマリノ/トンガ等の島嶼マイクロ国家）。オーナー承認＝**網羅優先で全件手当て**。
 - **UI＝globe 上部中央の常設検索ボックス**（左上はレイヤーパネルが占有のため中央へ）。オートコンプリート候補（日本語名＋英語名）→選択で flyTo。
 - **YAGNI 除外**：地域（US 州等 REGION_JA）／ライブイベント検索／外部ジオコーディング API／過去再生。いずれも将来拡張余地ありだが本スコープ外。
 
@@ -159,4 +159,4 @@ initSearch((country) => {
 - **非編集**：`js/map.js`（globe 描画/projection/レイヤー）、共有 mid-file CSS、SW 版番号。
 - **main.js**：`initSearch` の import と配線1ブロックのみ追加。
 - **process**：本 worktree（`worktree-search-countries`・origin/main 基準）→ writing-plans で実装計画 →（規模相応に SDD or インライン TDD）→ `origin/main` マージ → `HEAD:main` ff push（ローカル main 不変・git-shared-main-tree-integration-collision 厳守）→ cron 周期デプロイで本番反映を curl/実機検証。
-- **実機確認（太田さん）**：上部中央バーの見え・候補の可読性・flyTo 着地・モバイル操作感・`?search` before/after。GPU 依存の見えは headless 不可。
+- **実機確認（オーナー）**：上部中央バーの見え・候補の可読性・flyTo 着地・モバイル操作感・`?search` before/after。GPU 依存の見えは headless 不可。

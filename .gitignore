@@ -9,3 +9,13 @@ playwright-report/
 # データは public な orbis-data repo へ分離(cron が CI で data/snapshots に checkout して push)。
 # main はコードのみ追跡し data/snapshots は追跡しない(Vercel デプロイ枠を食わないため)。
 data/snapshots/
+
+# AI セッション作業ディレクトリ(transcript/checkpoint/worktree)。Public 化後の
+# 誤 `git add .` で会話ログや鍵が混入するのを防ぐ予防ガード(現状は未追跡)。
+.claude/
+.claire/
+
+# ローカル環境変数(将来の鍵混入防止。現状ファイルは存在しない)。
+.env
+.env.local
+.env*.local

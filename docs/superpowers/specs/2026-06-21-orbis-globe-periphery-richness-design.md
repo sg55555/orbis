@@ -72,7 +72,7 @@ related: [[orbis-design-supervision]]
 ## globe 主役の担保（退避路）
 
 - 周辺光は globe 背後（中央 50% 45% 付近）を避け、パネルも避ける。粒子は alpha 極淡。`?space=off` で即 before。
-- 太田さんが「塊っぽい/うるさい/四角い」と感じたら段を下げる or off。
+- オーナーが「塊っぽい/うるさい/四角い」と感じたら段を下げる or off。
 
 ## 性能
 
@@ -84,7 +84,7 @@ related: [[orbis-design-supervision]]
 - `tests/immerse.test.js`：`immerseSpace`（既定/1/2/3/off/大小無視/無効）＋ `immerseClasses` に `space-` が常時付与。
 - e2e：`#starfield` canvas 存在、`?space=off` で `body.space-off`、既定で `body.space-2`（描画の画素は GPU 依存ゆえ構造のみ）。
 
-## 採用条件（実物比較・太田さん確定）
+## 採用条件（実物比較・オーナー確定）
 
 1. ローカル `python -m http.server` で `?space=1|2|3|off` を 4K/FHD/モバイルで実物比較。
 2. **panel/feed/legend のグラス越しに周辺光が四角く見えないこと**（星雲面廃止の再発防止＝最優先）。

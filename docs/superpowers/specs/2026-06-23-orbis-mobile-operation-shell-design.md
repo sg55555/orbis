@@ -25,7 +25,7 @@
 - リッチさは「塊」でなく**線の密度・精緻さ・光の連動**。
 - **「面」装飾は使わない**（radial-gradient の面はグラスUIの blur 越しに四角く滲む = 星雲面廃止 06ee971 / space不採用 f3f8d97 と同根）。点（dot/line）と既存サーフェスの縁/glow で表現する。
 - globe 主役を邪魔しない**抑制的**な発光（脈動は無し or 極微）。
-- 採用は **localhost `?param` 実物比較 ＋ 太田さん実機**。GPU依存（blur/glow/フォント）は headless と乖離するため実機が最終判断。
+- 採用は **localhost `?param` 実物比較 ＋ オーナー実機**。GPU依存（blur/glow/フォント）は headless と乖離するため実機が最終判断。
 
 ## アーキテクチャ・非破壊性
 
@@ -78,7 +78,7 @@
 | `?mui=b` | もう一段攻めた発光・密度（比較用）。 |
 | `?mui=off` | before（base のまま・アイコンは「≡」）。 |
 
-最終採用は localhost で `?mui=a|b|off` を iPhone 幅で切替＋**太田さん実機**比較で確定。
+最終採用は localhost で `?mui=a|b|off` を iPhone 幅で切替＋**オーナー実機**比較で確定。
 
 ## テスト
 
@@ -89,7 +89,7 @@
 
 1. `python -m http.server` で `?mui=a|b|off` をモバイル幅（DevTools / 実機）で切替比較。
 2. Playwright（iPhone 393px）でスクショ（initial / layers / feed / legend）を撮り回帰確認。
-3. **太田さん実機**（GPU依存の blur/glow）で a/b/off を比較し採用値確定。
+3. **オーナー実機**（GPU依存の blur/glow）で a/b/off を比較し採用値確定。
 
 ## コード touchpoints（他セッションが触る時は保持を）
 

@@ -21,7 +21,7 @@
 3ゾーン（mp-a / ui-a+font-on / sec-on）と統一する：
 - orbis＝宇宙的/天体的。主アクセント＝地球の縁の大気ハロ（線/光）。**反射的にサイバーパンク HUD を足さない**。
 - リッチさは「塊」でなく**線の密度・精緻さ・光の連動**で。サーフェスは `.side-panel` グラス＋大気ハロ言語（`::before` のオーロラ上線）に馴染ませる。
-- 採用判断は localhost `?param` 実物比較＋太田さん実機。**GPU 依存（blur/glow/フォント）は必ず実機確認**（headless と乖離）。
+- 採用判断は localhost `?param` 実物比較＋オーナー実機。**GPU 依存（blur/glow/フォント）は必ず実機確認**（headless と乖離）。
 
 ## 4. アーキテクチャ（疎結合・各1責務）
 
@@ -94,7 +94,7 @@ buildLegendModel(layers) -> [
 
 - 既存占有: 左上 `#panel` / 右上 `#feed`,`#freshness`。**空いている右下 or 左下**に `#legend` を `position:absolute`・`z-index:6`。
 - 折りたたみ時は小さなトグル（チップ大）。展開時は最大高を `max-height` で制限し `overflow:auto`（リッチ凡例をスクロール）。
-- 最終位置（右下/左下）は localhost `?legend` 実物比較＋太田さん実機で確定（spec では「右下を第一候補」とし実装時に確認）。
+- 最終位置（右下/左下）は localhost `?legend` 実物比較＋オーナー実機で確定（spec では「右下を第一候補」とし実装時に確認）。
 
 ## 8. immerse トグル
 
@@ -137,7 +137,7 @@ export function immerseLegend(search) {
   - タブ切替で body の表示が入れ替わる。
   - `?legend=off` で `#legend` 非表示。
   - **隔離ポート必須**（バッチ実行の 8000 reuse 汚染回避＝mistakes.md）。
-- **GPU 依存**（glow/blur/swatch 形）は太田さん実機（headless 非対応）。
+- **GPU 依存**（glow/blur/swatch 形）はオーナー実機（headless 非対応）。
 
 ## 12. SW / デプロイ
 

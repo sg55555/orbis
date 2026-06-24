@@ -689,7 +689,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - §6 UI（#ai-brief/lead/cards/flyTo）→ T3/T4。✓
 - §7 コスト/頻度（毎時 Sonnet・cron）→ T2。✓
 - §8 テスト（pytest/node/Playwright）→ T1/T3/T5。✓
-- §9 DoD → T5（e2e＋視覚サニティ）＋実行後の本番（key 設定は太田さん）。✓
+- §9 DoD → T5（e2e＋視覚サニティ）＋実行後の本番（key 設定はオーナー）。✓
 
 **2. Placeholder scan:** TBD/TODO 無し。各ステップに実コード・実コマンド・期待値。✓
 

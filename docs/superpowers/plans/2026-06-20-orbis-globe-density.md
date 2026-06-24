@@ -650,7 +650,7 @@ const SHELL = ['/', '/index.html', '/css/orbis.css', '/js/main.js', '/js/lib/pre
 3. `?dens=2,6,0.15` 等で減衰の強さを比較し、必要なら `densityScale` 既定（z0/z1/min）を `js/lib/geo.js` で調整して再確認（変更したら Task 1 のコミットに追従コミット）。
 4. プリセット chip（概観/紛争/気象/交通）を順にクリック→該当層だけ ON・アクティブ強調。個別トグルで「カスタム」表示。
 
-スクショは画素目視（GPU 依存の見えは headless と乖離・[[mistakes]]）。最終の色味確定は太田さんの実機確認に委ねる。
+スクショは画素目視（GPU 依存の見えは headless と乖離・[[mistakes]]）。最終の色味確定はオーナーの実機確認に委ねる。
 
 - [ ] **Step 5: コミット**
 
@@ -664,11 +664,11 @@ git commit -m "chore(sw): v38＋SHELL に presets.js（P0-1 globe密度配信）
 ## 統合（実装完了後）
 
 1. `npm run test:js && npm run test:e2e` が緑であることを最終確認。
-2. main ツリーへ統合：`ExitWorktree`（keep）→ `git -C /home/shugo/apps/orbis fetch origin && git -C ... merge worktree-globe-density && git -C ... push`。共有ファイル（main.js/css/sw）に触れるので統合時にコンフリクトが出たら統合セッションが解消。
+2. main ツリーへ統合：`ExitWorktree`（keep）→ `git -C ~/apps/orbis fetch origin && git -C ... merge worktree-globe-density && git -C ... push`。共有ファイル（main.js/css/sw）に触れるので統合時にコンフリクトが出たら統合セッションが解消。
 3. Vercel 自動デプロイ → `curl` で sw v38・presets.js 200 を確認 → 本番 Playwright で引き globe の赤鎮静・プリセット切替（モバイル含む）をサニティ。
 4. 記憶整理：Obsidian `Projects/orbis-uiux-improvements.md` 進捗ログに P0-1 完了を追記、MEMORY.md 索引を更新（書き手は統合セッション1人）。
-5. **残（太田さん）**：`?dens` の最終色味／本番実機での引き globe の見え・プリセットの実用感。
+5. **残（オーナー）**：`?dens` の最終色味／本番実機での引き globe の見え・プリセットの実用感。
 
 ## 注意（既存ユーザーの既定）
 
-storage KEY（`orbis.enabled.v1`）は据置のため、**過去に訪問済みのユーザー（太田さん含む）は保存済みレイヤーが優先**され、概観既定は自動適用されない。概観の初期表示を確認するには localStorage をクリアするか「概観」chip を押す。一方、**ズーム連動密度（機能A）は保存状態に関係なく全ユーザーに効く**ので、引き globe の赤洪水抑制は誰でも体感できる。
+storage KEY（`orbis.enabled.v1`）は据置のため、**過去に訪問済みのユーザー（オーナー含む）は保存済みレイヤーが優先**され、概観既定は自動適用されない。概観の初期表示を確認するには localStorage をクリアするか「概観」chip を押す。一方、**ズーム連動密度（機能A）は保存状態に関係なく全ユーザーに効く**ので、引き globe の赤洪水抑制は誰でも体感できる。

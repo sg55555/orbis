@@ -62,7 +62,7 @@ git diff --quiet HEAD^ HEAD -- ':(exclude)data/snapshots'
 ```
 - exit 0（data/snapshots だけ変更）→ deploy skip／exit 非0（他も変更 or HEAD^ 不在）→ build。
 - フォールバック安全：shallow clone で HEAD^ が無い場合は非0＝build（過剰デプロイ側に倒れる＝壊さない）。
-- コードは spec/plan が提供、設定操作は太田さんが実施。
+- コードは spec/plan が提供、設定操作はオーナーが実施。
 
 ## データ契約（raw URL）
 - 形式：`https://raw.githubusercontent.com/sg55555/orbis/main/data/snapshots/<name>.json`

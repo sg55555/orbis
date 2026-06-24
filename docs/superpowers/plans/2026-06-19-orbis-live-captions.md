@@ -16,7 +16,7 @@
 - Orbis SHELL（`index.html` / `js/main.js` / `css/orbis.css`）を変更するため `sw.js` の `CACHE` を **`orbis-v33` → `orbis-v34`** に上げる（上げないと更新が配信されない）。
 - 新規 `js/ui/live-captions.js` / `js/ui/lc-worklet.js` は SHELL に追加しない（cache-first で初回フェッチ）。
 - WS 接続は既定 **`ws://localhost:8900/ws`**、`?lc=wss` で `wss://localhost:8900/ws` に切替（mixed-content で弾かれた時の保険）。
-- e2e は `workers:1`（直列・既存方針）。**`getDisplayMedia` は headless で出せない**ため音声取得経路は e2e 対象外（オーバーレイ描画・mock WS・再接続・cc 連携のみ検証）。実音声→字幕は太田さん実機受入。
+- e2e は `workers:1`（直列・既存方針）。**`getDisplayMedia` は headless で出せない**ため音声取得経路は e2e 対象外（オーバーレイ描画・mock WS・再接続・cc 連携のみ検証）。実音声→字幕はオーナー実機受入。
 - e2e のフック名は Orbis 名前空間で **`window.LC_WS_FACTORY` / `window.LC_RECONNECT_BASE_MS`**（live-translate の `LT_*` とは別。`lc` プレフィックス統一）。
 - live-translate: WebSocket は CORS 非対象ゆえ Origin 検査は追加しない。サーバは `127.0.0.1` バインド。TLS は `LT_TLS_CERT`/`LT_TLS_KEY` 両方そろった時だけ有効。
 - **live-translate リポジトリは git remote 未作成**。Task 1 の commit はローカルのみ（push 不可）。push 対象は orbis のみ。
@@ -27,15 +27,15 @@
 ### Task 1: live-translate TLS 任意有効化（`ssl_kwargs` + Config）
 
 **Files:**
-- Modify: `/home/shugo/apps/live-translate/live_translate/config.py`
-- Modify: `/home/shugo/apps/live-translate/live_translate/server.py:140-144`（`main()`）＋ module レベルに `ssl_kwargs` 追加
-- Test: `/home/shugo/apps/live-translate/tests/test_config.py`（追記）
-- Test: `/home/shugo/apps/live-translate/tests/test_server.py`（`ssl_kwargs` テスト追記）
+- Modify: `~/apps/live-translate/live_translate/config.py`
+- Modify: `~/apps/live-translate/live_translate/server.py:140-144`（`main()`）＋ module レベルに `ssl_kwargs` 追加
+- Test: `~/apps/live-translate/tests/test_config.py`（追記）
+- Test: `~/apps/live-translate/tests/test_server.py`（`ssl_kwargs` テスト追記）
 
 **Interfaces:**
 - Produces: `Config(tls_cert: str = "", tls_key: str = "")`、`ssl_kwargs(cfg: Config) -> dict`（両方そろえば `{"ssl_certfile","ssl_keyfile"}`、片方でも欠ければ `{}`）。
 
-> このタスクは live-translate リポジトリ内で完結。コマンドは `cd /home/shugo/apps/live-translate` 前提。
+> このタスクは live-translate リポジトリ内で完結。コマンドは `cd ~/apps/live-translate` 前提。
 
 - [ ] **Step 1: Config の TLS テストを書く（失敗させる）**
 
@@ -153,7 +153,7 @@ Expected: PASS（既存 21 件 + 新規 4 件 = 25 件）
 - [ ] **Step 9: Commit（live-translate リポジトリ・ローカルのみ）**
 
 ```bash
-cd /home/shugo/apps/live-translate
+cd ~/apps/live-translate
 git add live_translate/config.py live_translate/server.py tests/test_config.py tests/test_server.py
 git commit -m "feat(server): TLS任意有効化(ssl_kwargs + LT_TLS_CERT/KEY) — Orbis字幕オーバーレイのwss保険
 
@@ -165,9 +165,9 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 2: Orbis クライアント — worklet + live-captions モジュール（unit: lcWsUrl）
 
 **Files:**
-- Create: `/home/shugo/apps/orbis/js/ui/lc-worklet.js`
-- Create: `/home/shugo/apps/orbis/js/ui/live-captions.js`
-- Test: `/home/shugo/apps/orbis/tests/live-captions.test.js`
+- Create: `~/apps/orbis/js/ui/lc-worklet.js`
+- Create: `~/apps/orbis/js/ui/live-captions.js`
+- Test: `~/apps/orbis/tests/live-captions.test.js`
 
 **Interfaces:**
 - Produces:
@@ -370,7 +370,7 @@ Expected: PASS（既存 + 新規）
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/ui/lc-worklet.js js/ui/live-captions.js tests/live-captions.test.js
 git commit -m "feat(live-captions): Orbis字幕オーバーレイのクライアントモジュール+worklet(lcWsUrl unit)
 
@@ -382,10 +382,10 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 3: Orbis 統合 — トグル + CSS + main.js 配線 + sw v34
 
 **Files:**
-- Modify: `/home/shugo/apps/orbis/index.html:48-51`（`#media-bar` に `#lc-toggle` 追加）
-- Modify: `/home/shugo/apps/orbis/css/orbis.css:144-146`（`.media-player` 周辺にオーバーレイ CSS 追加）
-- Modify: `/home/shugo/apps/orbis/js/main.js:12`（import）/ `:337-351`（mediaApi 配線の直後）
-- Modify: `/home/shugo/apps/orbis/sw.js:2`（CACHE v33→v34）
+- Modify: `~/apps/orbis/index.html:48-51`（`#media-bar` に `#lc-toggle` 追加）
+- Modify: `~/apps/orbis/css/orbis.css:144-146`（`.media-player` 周辺にオーバーレイ CSS 追加）
+- Modify: `~/apps/orbis/js/main.js:12`（import）/ `:337-351`（mediaApi 配線の直後）
+- Modify: `~/apps/orbis/sw.js:2`（CACHE v33→v34）
 
 **Interfaces:**
 - Consumes: `initLiveCaptions`（Task 2）、`renderMedia` 返り値 `{ news, cams, setCaptions, setPlaying }`（既存 `js/ui/media.js`）、既存 DOM `#media-news .media-player` / `#media-cc-toggle`。
@@ -459,7 +459,7 @@ const CACHE = 'orbis-v34';
 
 - [ ] **Step 6: 構文・unit 回帰確認**
 
-Run: `cd /home/shugo/apps/orbis && npm run test:js && node --check js/main.js`
+Run: `cd ~/apps/orbis && npm run test:js && node --check js/main.js`
 Expected: PASS（unit 全緑）。`node --check` はエラー無し（ESM import のみのファイルは構文チェックのみ）。
 
 > 補足: `node --check` は ESM の import 解決まではしない。構文エラー検出が目的。実体配線は Task 4 の e2e で検証する。
@@ -467,7 +467,7 @@ Expected: PASS（unit 全緑）。`node --check` はエラー無し（ESM import
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add index.html css/orbis.css js/main.js sw.js
 git commit -m "feat(live-captions): AI字幕トグル+オーバーレイCSS+main.js配線(cc連携)・sw v34
 
@@ -479,7 +479,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 4: Orbis e2e（オーバーレイ構造 / mock WS 字幕 / 再接続 / cc 連携）
 
 **Files:**
-- Test: `/home/shugo/apps/orbis/tests/e2e/live-captions.spec.js`
+- Test: `~/apps/orbis/tests/e2e/live-captions.spec.js`
 
 **Interfaces:**
 - Consumes: `window.__orbis.liveCaptions`（Task 3）の `connect` / `renderCaption`、DOM `#lc-toggle` / `#media-cc-toggle` / `#media-news .media-player .lc-overlay`。
@@ -555,7 +555,7 @@ test('live-captions: overlay構造・mock WS字幕・再接続・cc連携', asyn
 
 - [ ] **Step 2: e2e を実行して通すことを確認**
 
-Run: `cd /home/shugo/apps/orbis && npx playwright test live-captions`
+Run: `cd ~/apps/orbis && npx playwright test live-captions`
 Expected: PASS（1 spec）。失敗時は `window.__orbis.liveCaptions` 未定義（news データ未配信）を疑い、`config/live_channels.json` の存在を確認。
 
 - [ ] **Step 3: e2e 全体が緑であることを確認（回帰なし）**
@@ -566,7 +566,7 @@ Expected: PASS（既存 smoke/media/mobile-nav/flight-projection/ship-projection
 - [ ] **Step 4: Commit**
 
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add tests/e2e/live-captions.spec.js
 git commit -m "test(e2e): live-captions オーバーレイ/字幕/再接続/cc連携の構造検証
 
@@ -578,7 +578,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ### Task 5: ドキュメント（mkcert）＋ 最終検証 ＋ push
 
 **Files:**
-- Modify: `/home/shugo/apps/live-translate/README.md`（mkcert 手順を追記）
+- Modify: `~/apps/live-translate/README.md`（mkcert 手順を追記）
 
 **Interfaces:** なし（運用ドキュメント＋デプロイ）。
 
@@ -605,7 +605,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 2: README を commit（live-translate・ローカルのみ）**
 
 ```bash
-cd /home/shugo/apps/live-translate
+cd ~/apps/live-translate
 git add README.md
 git commit -m "docs: Orbis字幕オーバーレイ用の起動/mkcert(wss)手順
 
@@ -615,19 +615,19 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 - [ ] **Step 3: 全テストスイートを最終実行**
 
 ```bash
-cd /home/shugo/apps/live-translate && uv run pytest -q
-cd /home/shugo/apps/orbis && npm run test:js && npm run test:e2e
+cd ~/apps/live-translate && uv run pytest -q
+cd ~/apps/orbis && npm run test:js && npm run test:e2e
 ```
 Expected: 全 PASS。
 
 - [ ] **Step 4: ローカル実物サニティ（任意・視覚）**
 
-`cd /home/shugo/apps/orbis && python3 -m http.server 8000` で開き、`#media` までスクロール → 「AI字幕(日本語)」をチェックすると `#media-cc-toggle` が外れること、status 行に案内が出ることを目視（サーバ未起動なら「接続できません」案内が出るのが正常）。
+`cd ~/apps/orbis && python3 -m http.server 8000` で開き、`#media` までスクロール → 「AI字幕(日本語)」をチェックすると `#media-cc-toggle` が外れること、status 行に案内が出ることを目視（サーバ未起動なら「接続できません」案内が出るのが正常）。
 
 - [ ] **Step 5: orbis を push（live-translate は remote 未作成のためローカルのまま）**
 
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git push origin main
 ```
 > push 先は保護ブランチ直 push ではなく、GitHub 連携の通常運用（main → Vercel 自動デプロイ）。live-translate は remote が無いため push しない（個人ローカル運用で足りる）。
@@ -643,10 +643,10 @@ curl -s https://orbis-beta.vercel.app/ | grep -c 'id="lc-toggle"'    # 1
 ```
 Expected: live-captions.js/lc-worklet.js が 200（JS の content-type）、sw が `orbis-v34`、`lc-toggle` が 1。
 
-- [ ] **Step 7: 残作業の明示（太田さん実機受入）**
+- [ ] **Step 7: 残作業の明示（オーナー実機受入）**
 
 実機受入手順を報告:
-1. `cd /home/shugo/apps/live-translate && uv pip install -r requirements-ml.txt`（初回のみ）→ `uv run python -m live_translate.server`。
+1. `cd ~/apps/live-translate && uv pip install -r requirements-ml.txt`（初回のみ）→ `uv run python -m live_translate.server`。
 2. 本番 Orbis でニュースを選局・**プレーヤーを unmute**・「AI字幕(日本語)」ON・「タブの音声を共有」。
 3. プレーヤー下端に日本語字幕が出る／OFF で消える。出ない＋コンソールに mixed-content エラーなら README の wss 手順（`?lc=wss`）。
 

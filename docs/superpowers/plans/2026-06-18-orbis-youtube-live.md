@@ -10,7 +10,7 @@
 
 参照 spec: `docs/superpowers/specs/2026-06-18-orbis-youtube-live-design.md`
 
-**重要な制約:** playwright 同梱の headless Chromium は YouTube のコーデック(H.264等)/Widevine を持たず**映像を再生(decode)できない**（通常動画も含む。実測済）。よって自動テストは「プレーヤー構築・タブ切替・src・flyTo」のみ検証し、**再生のアサートはしない**。実際の再生確認は太田さんの実ブラウザサニティ（Task 6）。
+**重要な制約:** playwright 同梱の headless Chromium は YouTube のコーデック(H.264等)/Widevine を持たず**映像を再生(decode)できない**（通常動画も含む。実測済）。よって自動テストは「プレーヤー構築・タブ切替・src・flyTo」のみ検証し、**再生のアサートはしない**。実際の再生確認はオーナーの実ブラウザサニティ（Task 6）。
 
 ---
 
@@ -436,7 +436,7 @@ Expected: 全 node 緑（streams 3 追加）＋pytest 緑（変化なし）。
 ブランチで作業していた場合は main へマージ→`git push origin main`。
 push 拒否（collect cron の data refresh 先行）時は `git fetch && git rebase origin/main` で解消（コード/データ非競合）。
 
-- [ ] **Step 4: 太田さんの実ブラウザサニティ（再生の最終確認）**
+- [ ] **Step 4: オーナーの実ブラウザサニティ（再生の最終確認）**
 
 `https://orbis-beta.vercel.app/` を実 Chrome/Edge で開き:
 - 「🔴 LIVE」を開く → 既定チャンネルの**ライブ映像が実際に流れる**（音はミュート）。

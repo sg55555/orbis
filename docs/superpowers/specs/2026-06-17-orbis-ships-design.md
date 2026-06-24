@@ -27,7 +27,7 @@ AISStream.io の全球リアルタイム AIS（船舶位置）を定期取得し
 
 - **ソース**: AISStream.io WebSocket（`wss://stream.aisstream.io/v0/stream`）。無料・要 API キー。
 - **キー**: GitHub リポジトリ Secret `AISSTREAM_API_KEY`（データ同期は GitHub Actions で走るため。
-  Vercel env var は同期に不使用）。生キーは AI に見せず、太田さんが直接 Secret に設定する。
+  Vercel env var は同期に不使用）。生キーは AI に見せず、オーナーが直接 Secret に設定する。
 - **購読**: 接続直後に購読メッセージを送信。全球 BBox `[[[-90,-180],[90,180]]]`、
   `FilterMessageTypes=["PositionReport","ShipStaticData"]`。
 - **時間枠リッスン**: `LISTEN_SECONDS`（既定 28s）。socket タイムアウト＋全体 deadline でループ制御。
@@ -117,7 +117,7 @@ AISStream.io の全球リアルタイム AIS（船舶位置）を定期取得し
 3. subagent 駆動（実装 sonnet / レビュー haiku 二段。spec 準拠＋品質）
 4. マーカー形状・色は python http.server で実物比較 → 頂点と配色を確定
 5. 最終レビュー → main マージ → `git push origin main`（Vercel 自動デプロイ）
-6. 太田さんが `AISSTREAM_API_KEY` を GitHub Secret に設定 → cron or workflow_dispatch で本番データ生成
+6. オーナーが `AISSTREAM_API_KEY` を GitHub Secret に設定 → cron or workflow_dispatch で本番データ生成
 7. 本番 Playwright 検証。push 拒否時は collect cron 競合 → `git pull --no-rebase`。コミットメール noreply 必須。
 
 ## リスク・確認事項

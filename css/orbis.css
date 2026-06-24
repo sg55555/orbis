@@ -755,14 +755,14 @@ body.ui-b .panel-head { border-bottom: 1px solid rgba(57, 208, 255, .18); paddin
 /* media のセクション見出しは sec-on のときだけ表示（off は true before に戻す） */
 body:not(.sec-on) .media-head { display: none; }
 
-/* === 将来セクション追加の規約（太田さん「増えても綺麗にはまるよう」）===
+/* === 将来セクション追加の規約（オーナー「増えても綺麗にはまるよう」）===
    ・全幅セクション: #app 直下に <section> を置くだけで「全幅＋共通端パディング＋章区切り＋reveal」が自動。
    ・2カラムに並べる: .report-row 内に <section> を追加すれば等幅で横並び（3つ目以降も flex で自動分割/折返し）。
    ・統一見出し: <div class="sec-head"><h3 class="sec-h">…</h3><span class="sec-note">…</span></div> で Saira＋オーロラ下線。
      （既存 #ai-brief/#instability は他セッション所有ゆえ .brief-head/.ins-head を直接ターゲットして統一） */
 
 /* (2) 幅・リズム：全幅セクション(#media と将来の #app 直下 section)＝全幅＋共通端パディング。
-   report-row(brief|instability 2カラム)も同じ全幅＋同端パディングで外形を media と一致（太田さんFB＝4Kいっぱい／幅一致）。 */
+   report-row(brief|instability 2カラム)も同じ全幅＋同端パディングで外形を media と一致（オーナーFB＝4Kいっぱい／幅一致）。 */
 body.sec-on #app > section {
   position: relative; width: 100%; max-width: none; margin-left: 0; margin-right: 0;
   padding-left: var(--edge-pad); padding-right: var(--edge-pad);

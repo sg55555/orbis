@@ -27,7 +27,7 @@
 - `index.html`: #media に section header markup を追加＋ `<script type="module" src="js/ui/scroll-reveal.js">`（mobile-nav.js 等と同じ独立モジュール＝main.js 非編集）。
 - `css/orbis.css`: `body.sec-on …` に section 構造（幅/見出し/区切り/メディアボタン/reveal）を追記。base 不変＝`?sec=off`(before)。
 - `js/ui/scroll-reveal.js`: 新規。`body.reveal-ready` 付与→observe #media/#ai-brief/#instability→初回 intersect で `.revealed`。失敗時は reveal-ready 無し＝常時表示（安全）。
-- 比較: localhost で before(`?sec=off`)/after(既定) を Playwright スクショ＋太田さん実機。
+- 比較: localhost で before(`?sec=off`)/after(既定) を Playwright スクショ＋オーナー実機。
 
 ## テスト/配信
 - node:test: `immerseSec`/`immerseClasses(sec-*)`。既存 node/e2e 緑維持。

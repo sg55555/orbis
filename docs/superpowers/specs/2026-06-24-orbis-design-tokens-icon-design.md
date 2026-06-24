@@ -13,7 +13,7 @@ ORBIS（世界リアルタイム監視ダッシュボード）のデザイン基
 - **A. カラー体系化**：色リテラル（hex 約100＋rgba 約228）がCSS全体に散在し、`:root` のトークンはごく一部のみ。セマンティックなトークン体系を `:root` に確立し、保守性・一貫性・将来のリッチ化追記の安定性を上げる。
 - **B. アイコン刷新**：現アイコンは PIL 生成の素朴なワイヤーフレーム球で、本体の「Deep Navy＋Aurora globe」ルックと乖離。さらに **ブラウザタブ用 favicon が未設置**（index.html に `<link rel="icon">` が無い）。本体世界観に統一したアイコンへ刷新し、favicon を新設する。
 
-太田さんの確定事項（2026-06-24・実物比較）:
+オーナーの確定事項（2026-06-24・実物比較）:
 - アイコン採用 = **B 軌道環（orbit-rings）**：globe＋傾きの違う軌道環2本＋発光観測ノード＋オーロラグロー。
 - トークン方針 = **基盤先行・クラスタ集約 承認**。
 
@@ -65,7 +65,7 @@ ORBIS（世界リアルタイム監視ダッシュボード）のデザイン基
 
 ### 3.5 回帰防止
 - 移行は CSS のみ（JS/HTML 不変）。
-- **before/after の実描画スクショ差分**で検証（localhost `?data=github` で AI/データ系セクションも描画させ、主要サーフェスを 4K/FHD で撮り比較）。GPU 依存（blur/glow）は headless と乖離するため、最終は太田さん実機でも確認。
+- **before/after の実描画スクショ差分**で検証（localhost `?data=github` で AI/データ系セクションも描画させ、主要サーフェスを 4K/FHD で撮り比較）。GPU 依存（blur/glow）は headless と乖離するため、最終はオーナー実機でも確認。
 - look トグル（`js/lib/look.js` が一部CSS変数を上書き）との競合に注意：look が触る変数名は変えない（`--glass-*` 等は既存名維持済み）。
 
 ## 4. Part B — アイコン刷新（採用案B 軌道環）
@@ -99,7 +99,7 @@ ORBIS（世界リアルタイム監視ダッシュボード）のデザイン基
 - 生成された**実PNG**で確認（モック不可）。favicon は 16/32px 実レンダを目視。
 - マスカブル安全域：採用案を iOS角丸/Android丸クロップ/正方形＋安全域破線で実画像確認。
 - 本番 curl：`/favicon.svg`・`/favicon-32.png`・`/icons/icon-192.png`・`/icons/icon-512.png`・`/icons/apple-touch-icon.png` が 200／正しい型。
-- 実機サニティ：OSアイコンキャッシュが強いのでホーム再追加/PWA再インストール/タブ再読込で反映確認（太田さん）。
+- 実機サニティ：OSアイコンキャッシュが強いのでホーム再追加/PWA再インストール/タブ再読込で反映確認（オーナー）。
 
 ## 5. 触れるファイル一覧
 - `css/orbis.css`（:root 増設＋foundation surfaces 置換）
@@ -117,7 +117,7 @@ ORBIS（世界リアルタイム監視ダッシュボード）のデザイン基
 ## 7. 統合・ロールアウト
 - worktree で実装 → `ExitWorktree(keep)` → main で `fetch && merge worktree-design-tokens-icon && push`。
 - **css 末尾は複数スレッドが追記し衝突しがち**。今回の `:root` 変更は**冒頭**なので末尾追記系（mp-/ui-/sec-/legend-/feed-/mui-）とは原則衝突しないが、main が進んでいたら冒頭 `:root` で衝突する可能性 → マージ時は両者の定義を保持。
-- 本番 https://orbis-beta.vercel.app/ を push（Vercel 自動デプロイ）→ curl 検証 → 太田さん実機確認 → Obsidian 所有ノート更新。
+- 本番 https://orbis-beta.vercel.app/ を push（Vercel 自動デプロイ）→ curl 検証 → オーナー実機確認 → Obsidian 所有ノート更新。
 
 ## 8. リスク
 - カラー移行の視覚回帰（クラスタ集約の微差）→ before/after スクショ＋実機で担保。foundation surfaces に限定し範囲を絞る。

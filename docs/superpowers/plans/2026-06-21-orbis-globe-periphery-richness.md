@@ -628,7 +628,7 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 
 ---
 
-## 実装後：実物比較（採用段の確定・太田さん）
+## 実装後：実物比較（採用段の確定・オーナー）
 
 全6タスク完了後、`python -m http.server 8000` で `?space=off|1|2|3` を 4K/FHD/モバイルで実物比較し、採用条件（spec §採用条件）を確認:
 1. panel/feed/legend のグラス越しに周辺光が**四角く見えないこと**（最優先）。

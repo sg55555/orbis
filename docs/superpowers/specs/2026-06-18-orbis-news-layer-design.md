@@ -87,7 +87,7 @@ quakes.py 同型の `main()`：
 ### 6. 配線
 - `collect.yml`：`ANTHROPIC_API_KEY` を env に渡すキーゲート手順を追加（`|| echo "news skipped"`）。
 - `requirements.txt`：`anthropic` 追加。
-- 初回本番データは太田さんがローカル collector 実行（要 `ANTHROPIC_API_KEY`）で seed、または CI 手動起動。
+- 初回本番データはオーナーがローカル collector 実行（要 `ANTHROPIC_API_KEY`）で seed、または CI 手動起動。
 
 ## エラーハンドリング
 

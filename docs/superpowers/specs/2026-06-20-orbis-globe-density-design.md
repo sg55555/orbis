@@ -69,7 +69,7 @@ export function densityScale(zoom, { z0 = 2.5, z1 = 5, min = 0.22 } = {}) {
 **A-3. チューニング**
 
 - `DENS`（z0/z1/min）は `js/main.js` で `?dens=` クエリから上書き可能にし、`ctx` に載せてビルダへ渡す（`cfx`/`cmap` と同じ方式）。例：`?dens=2,6,0.15`。
-- 既定値（z0=2.5, z1=5, min=0.22）は **localhost で実物比較 → 太田さん確認** で最終確定（GPU 依存の見えは headless と乖離・mistakes.md / [[orbis-desktop-immersion]]）。コードの既定はこの設計値のまま出す。
+- 既定値（z0=2.5, z1=5, min=0.22）は **localhost で実物比較 → オーナー確認** で最終確定（GPU 依存の見えは headless と乖離・mistakes.md / [[orbis-desktop-immersion]]）。コードの既定はこの設計値のまま出す。
 
 **A-4. 再描画**：`map.on('zoom')` が既に `markBaseDirty()+drawAll()` を呼ぶので**配線追加ゼロ**で反映。conflict/protests は `animated` ではないが、`markBaseDirty()` でキャッシュ無効化されるため zoom 変化時に再構築される。
 
@@ -163,7 +163,7 @@ export function applyPreset(id) {
   - 低ズームで `window.__orbis` 経由 or 描画設定で conflict ブロブの密度が抑制されることを確認（画素飽和はスクショ目視＋設定値 assert）。
 - headless の WebGL globe は ~29s かかるため `test.setTimeout(60000)` を踏襲（mistakes.md / 既存 smoke/media）。
 
-### 手動・実機（太田さん）
+### 手動・実機（オーナー）
 - `?dens=` で z0/z1/min を localhost 実物比較 → 引き globe の赤の鎮まり具合を確認し既定を確定。
 - 本番デプロイ後、引き/寄りの見えとプリセット切替（特にモバイルのシート内 chip）をサニティ。
 

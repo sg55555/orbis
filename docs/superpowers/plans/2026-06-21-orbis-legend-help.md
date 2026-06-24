@@ -14,7 +14,7 @@
 - **main.js は非編集**：body クラスは `main.js:286` が `immerseClasses()` を適用済。トグルは immerse.js への追加だけで効かせる。
 - **共有ファイルは最小差分**：`index.html` / `css/orbis.css`（**末尾追記**）/ `js/lib/immerse.js` / `js/ui/mobile-nav.js` は複数スレッドが触る。追記・追加に留め、css の凡例 CSS は原則 tail ブロックに置く（モバイルシートの既存セレクタへの追記のみ例外的に許容）。
 - **凡例 CSS は tail ブロック集約**：swatch 形は `.layer-row .swatch-*` に scope されているため `#legend` 用に再宣言する（mid-file 共有 CSS を書き換えない）。
-- **テスト**：純粋部は node:test、DOM は Playwright（`tests/e2e/`・workers:1・baseURL localhost:8000・reuseExistingServer）。GPU 依存の見た目（blur/glow/形）は太田さん実機確認（自動テスト対象外）。
+- **テスト**：純粋部は node:test、DOM は Playwright（`tests/e2e/`・workers:1・baseURL localhost:8000・reuseExistingServer）。GPU 依存の見た目（blur/glow/形）はオーナー実機確認（自動テスト対象外）。
 - **コミット**：各タスク末尾でコミット。メッセージ末尾に `Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>`。
 - **カテゴリ**：既存 `categories.js`（出来事=quakes/conflict/protests/news、移動=flights/ships/trade、環境=sst/currents/airtemp）を再利用。新カテゴリを作らない。
 
@@ -722,12 +722,12 @@ Run（確認）: `grep -nE "CACHE|version|network|precache|SHELL" sw.js | head`
 ```bash
 npm run serve   # http://localhost:8000
 ```
-ブラウザで確認（太田さん最終確認用の観点）：
+ブラウザで確認（オーナー最終確認用の観点）：
 - `/`：右下に折りたたみ凡例 → クリックで展開 → 『凡例』/『使い方』タブ切替。
 - 凡例：地震4段リング／海流・水温・気温の冷中暖チップ／航空・船の方向記号／ニュースのカテゴリ色が出る。
 - `/?legend=off`：凡例が消える（before）。
 - モバイル幅（DevTools）：下タブ「≡ 凡例」でシートが開く。
-- 設計言語：グラス＋オーロラ上線＋Saira 見出しが他パネルと揃う（GPU 依存は実機で太田さん確認）。
+- 設計言語：グラス＋オーロラ上線＋Saira 見出しが他パネルと揃う（GPU 依存は実機でオーナー確認）。
 
 - [ ] **Step 5: コミット（必要時）**
 

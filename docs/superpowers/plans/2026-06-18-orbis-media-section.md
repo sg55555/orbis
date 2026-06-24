@@ -10,7 +10,7 @@
 
 参照 spec: `docs/superpowers/specs/2026-06-18-orbis-media-section-design.md`
 
-**重要制約:** headless Chromium は YouTube を再生(decode)できない（[[youtube-embed-headless-no-playback]]）。自動テストは構造（描画・タブ切替・src・flyTo・可視時src設定）のみ。再生は太田さん実ブラウザ確認。
+**重要制約:** headless Chromium は YouTube を再生(decode)できない（[[youtube-embed-headless-no-playback]]）。自動テストは構造（描画・タブ切替・src・flyTo・可視時src設定）のみ。再生はオーナー実ブラウザ確認。
 
 ---
 
@@ -52,7 +52,7 @@
 ```javascript
 const { chromium } = require('playwright');
 const fs = require('fs');
-const cams = JSON.parse(fs.readFileSync('/home/shugo/apps/orbis/config/live_cameras.json', 'utf8'));
+const cams = JSON.parse(fs.readFileSync('~/apps/orbis/config/live_cameras.json', 'utf8'));
 (async () => {
   const browser = await chromium.launch({ headless: true, args: ['--autoplay-policy=no-user-gesture-required'] });
   for (const c of cams) {
@@ -481,7 +481,7 @@ Expected: 全 node 緑（media 4）＋pytest 33 緑＋Playwright 3 緑（smoke/s
 
 ブランチで作業していた場合は main へマージ→`git push origin main`。push 拒否（cron data refresh 先行）時は `git fetch && git rebase origin/main` で解消。
 
-- [ ] **Step 4: 太田さんの実ブラウザサニティ**
+- [ ] **Step 4: オーナーの実ブラウザサニティ**
 
 `https://orbis-beta.vercel.app/` を実 Chrome/Edge で開き:
 - 下にスクロール → `#media` の大画面でニュースが**実際に再生**される。

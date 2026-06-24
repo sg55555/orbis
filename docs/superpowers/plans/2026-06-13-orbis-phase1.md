@@ -51,7 +51,7 @@ orbis/
 **mistakes.md の反映:**
 - 本番配信する `data/snapshots/*.json` と `manifest.json` は **git 追跡必須・`.gitignore` 禁止**。
 - e2e は snapshot を**書き換えない**（読み取りのみ）。フィクスチャで本番配信データを上書きしない。
-- Vercel 静的デプロイは `vercel.json` + `.vercelignore` を最初から用意（Python 誤検知対策）。コミット作者メールは GitHub 一致（設定済: sgograb1411@gmail.com）。
+- Vercel 静的デプロイは `vercel.json` + `.vercelignore` を最初から用意（Python 誤検知対策）。コミット作者メールは GitHub 一致（設定済: 210495115+sg55555@users.noreply.github.com）。
 
 ---
 
@@ -138,7 +138,7 @@ export default defineConfig({
 
 - [ ] **Step 7: 依存をインストール**
 
-Run: `cd /home/shugo/apps/orbis && pip install -r requirements.txt && npm install && npx playwright install chromium`
+Run: `cd ~/apps/orbis && pip install -r requirements.txt && npm install && npx playwright install chromium`
 Expected: 成功（requests/Pillow/Playwright が入る）
 
 - [ ] **Step 8: Commit**
@@ -200,7 +200,7 @@ def test_build_snapshot_shape():
 
 - [ ] **Step 2: テストが失敗することを確認**
 
-Run: `cd /home/shugo/apps/orbis && python -m pytest tests/test_quakes.py -v`
+Run: `cd ~/apps/orbis && python -m pytest tests/test_quakes.py -v`
 Expected: FAIL（`ModuleNotFoundError: collectors.quakes` または ImportError）
 
 - [ ] **Step 3: 最小実装を書く**
@@ -251,7 +251,7 @@ def build_snapshot(points, updated_iso):
 
 - [ ] **Step 4: テストが通ることを確認**
 
-Run: `cd /home/shugo/apps/orbis && python -m pytest tests/test_quakes.py -v`
+Run: `cd ~/apps/orbis && python -m pytest tests/test_quakes.py -v`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: Commit**
@@ -296,7 +296,7 @@ def test_update_manifest_overwrites_same_layer(tmp_path):
 
 - [ ] **Step 2: テストが失敗することを確認**
 
-Run: `cd /home/shugo/apps/orbis && python -m pytest tests/test_manifest.py -v`
+Run: `cd ~/apps/orbis && python -m pytest tests/test_manifest.py -v`
 Expected: FAIL（`ModuleNotFoundError: collectors.lib.manifest`）
 
 - [ ] **Step 3: 最小実装を書く**
@@ -325,7 +325,7 @@ def update_manifest(path, layer, updated_iso, count):
 
 - [ ] **Step 4: テストが通ることを確認**
 
-Run: `cd /home/shugo/apps/orbis && python -m pytest tests/test_manifest.py -v`
+Run: `cd ~/apps/orbis && python -m pytest tests/test_manifest.py -v`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: `quakes.py` に取得・書き出しの実行部を追加**
@@ -371,7 +371,7 @@ if __name__ == "__main__":
 
 - [ ] **Step 6: 実データで1回走らせ、初期スナップショットを生成（e2eが読む本番配信データ）**
 
-Run: `cd /home/shugo/apps/orbis && python -m collectors.quakes`
+Run: `cd ~/apps/orbis && python -m collectors.quakes`
 Expected: `[quakes] wrote N points -> .../data/snapshots/quakes.json`（N>0）。`data/snapshots/quakes.json` と `manifest.json` が生成される。
 
 - [ ] **Step 7: Commit（生成された本番スナップショットも追跡する）**
@@ -422,7 +422,7 @@ test('formatFreshness renders Japanese relative time', () => {
 
 - [ ] **Step 2: テストが失敗することを確認**
 
-Run: `cd /home/shugo/apps/orbis && node --test tests/geo.test.js`
+Run: `cd ~/apps/orbis && node --test tests/geo.test.js`
 Expected: FAIL（`Cannot find module '../js/lib/geo.js'`）
 
 - [ ] **Step 3: 最小実装を書く**
@@ -455,7 +455,7 @@ export function formatFreshness(updatedIso, now = Date.now()) {
 
 - [ ] **Step 4: テストが通ることを確認**
 
-Run: `cd /home/shugo/apps/orbis && node --test tests/geo.test.js`
+Run: `cd ~/apps/orbis && node --test tests/geo.test.js`
 Expected: PASS（3 件）
 
 - [ ] **Step 5: Commit**
@@ -506,7 +506,7 @@ test('buildScatterConfig tolerates empty snapshot', () => {
 
 - [ ] **Step 2: テストが失敗することを確認**
 
-Run: `cd /home/shugo/apps/orbis && node --test tests/quakes.test.js`
+Run: `cd ~/apps/orbis && node --test tests/quakes.test.js`
 Expected: FAIL（`Cannot find module '../js/layers/quakes.js'`）
 
 - [ ] **Step 3: 最小実装を書く**
@@ -571,7 +571,7 @@ export function buildDeckLayers(enabled, snapshots) {
 
 - [ ] **Step 4: テストが通ることを確認**
 
-Run: `cd /home/shugo/apps/orbis && node --test tests/quakes.test.js`
+Run: `cd ~/apps/orbis && node --test tests/quakes.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: Commit**
@@ -632,7 +632,7 @@ export function startPolling(layerIds, intervalMs, cb) {
 
 - [ ] **Step 2: 構文確認（Node で import できることを確認）**
 
-Run: `cd /home/shugo/apps/orbis && node -e "import('./js/snapshot.js').then(()=>console.log('ok'))"`
+Run: `cd ~/apps/orbis && node -e "import('./js/snapshot.js').then(()=>console.log('ok'))"`
 Expected: `ok`（`fetch` はNode18+のグローバルなので import 自体は成功）
 
 - [ ] **Step 3: Commit**
@@ -703,7 +703,7 @@ export function setDeckLayers(overlay, deckLayers) {
 
 - [ ] **Step 2: 構文確認**
 
-Run: `cd /home/shugo/apps/orbis && node -e "import('./js/map.js').then(()=>console.log('ok'))"`
+Run: `cd ~/apps/orbis && node -e "import('./js/map.js').then(()=>console.log('ok'))"`
 Expected: `ok`（グローバル参照は関数内なので import 時にエラーにならない）
 
 - [ ] **Step 3: Commit**
@@ -833,7 +833,7 @@ boot();
 
 - [ ] **Step 4: ローカルで目視確認**
 
-Run: `cd /home/shugo/apps/orbis && python3 -m http.server 8000` を起動し、ブラウザで `http://localhost:8000` を開く（別ターミナル可）。
+Run: `cd ~/apps/orbis && python3 -m http.server 8000` を起動し、ブラウザで `http://localhost:8000` を開く（別ターミナル可）。
 Expected: 濃紺の地球儀が表示され、地震点（色付きの円）が乗る。右上に「地震データ：N分前（M件）」、左下に凡例。確認後サーバ停止。
 
 - [ ] **Step 5: Commit**
@@ -881,7 +881,7 @@ test('globe boots, loading clears, and quake layer renders points', async ({ pag
 
 - [ ] **Step 2: テストを実行して通ることを確認**
 
-Run: `cd /home/shugo/apps/orbis && npx playwright test`
+Run: `cd ~/apps/orbis && npx playwright test`
 Expected: PASS（1 件）。失敗する場合は CDN 読み込み/`window.__orbis` 公開/`data/snapshots/quakes.json` の存在を確認。
 
 > 注（mistakes.md）: このe2eは `data/snapshots/quakes.json` を**読むだけ**で書き換えない。本番配信データを上書きしない設計。
@@ -940,7 +940,7 @@ if __name__ == "__main__":
 
 - [ ] **Step 2: アイコンを生成**
 
-Run: `cd /home/shugo/apps/orbis && python scripts/make_icons.py`
+Run: `cd ~/apps/orbis && python scripts/make_icons.py`
 Expected: `icons written`。`icons/icon-192.png`, `icon-512.png`, `apple-touch-icon.png` が生成される。
 
 - [ ] **Step 3: `manifest.webmanifest` を作成**
@@ -1001,7 +1001,7 @@ if ('serviceWorker' in navigator) {
 
 - [ ] **Step 7: e2e を再実行して回帰がないことを確認**
 
-Run: `cd /home/shugo/apps/orbis && npx playwright test`
+Run: `cd ~/apps/orbis && npx playwright test`
 Expected: PASS（1 件・SW登録後も疎通維持）
 
 - [ ] **Step 8: Commit**
@@ -1045,7 +1045,7 @@ jobs:
       - name: Commit snapshots
         run: |
           git config user.name "orbis-bot"
-          git config user.email "sgograb1411@gmail.com"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
           git add data/snapshots/quakes.json data/snapshots/manifest.json
           if git diff --cached --quiet; then
             echo "no changes"
@@ -1057,7 +1057,7 @@ jobs:
 
 - [ ] **Step 2: ローカルで収集コマンドが動くことを再確認（ワークフローと同一コマンド）**
 
-Run: `cd /home/shugo/apps/orbis && python -m collectors.quakes`
+Run: `cd ~/apps/orbis && python -m collectors.quakes`
 Expected: `[quakes] wrote N points ...`（snapshot 更新）
 
 - [ ] **Step 3: Commit**
@@ -1076,7 +1076,7 @@ git commit -m "ci: scheduled snapshot collection workflow"
 
 - [ ] **Step 1: 全テストを実行して緑を確認**
 
-Run: `cd /home/shugo/apps/orbis && python -m pytest -q && node --test tests/ && npx playwright test`
+Run: `cd ~/apps/orbis && python -m pytest -q && node --test tests/ && npx playwright test`
 Expected: pytest PASS / node:test PASS / Playwright PASS（すべて緑）
 
 - [ ] **Step 2: `README.md` を作成**

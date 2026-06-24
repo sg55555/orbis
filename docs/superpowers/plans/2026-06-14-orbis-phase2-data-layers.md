@@ -71,7 +71,7 @@ test('buildDeckLayers skips disabled and missing-snapshot layers', () => {
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/registry.test.js`
+Run: `cd ~/apps/orbis && node --test tests/registry.test.js`
 Expected: FAIL（`buildDeckLayers` の第3引数 layersOverride 未対応／flat 化していない）
 
 - [ ] **Step 3: 実装** — `js/layers/registry.js` を以下に置換（quakes 登録は維持、import は Task 8/9/10/11 で追加する。まずは flat 化と layersOverride 引数）
@@ -100,16 +100,16 @@ export function buildDeckLayers(enabled, snapshots, layersOverride) {
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/registry.test.js`
+Run: `cd ~/apps/orbis && node --test tests/registry.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: 既存JSテストの回帰確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/*.test.js`
+Run: `cd ~/apps/orbis && node --test tests/*.test.js`
 Expected: 既存（geo/quakes）＋registry すべて PASS
 
 - [ ] **Step 6: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/layers/registry.js tests/registry.test.js
 git commit -m "feat: registry supports layers returning multiple deck layers"
 ```
@@ -145,7 +145,7 @@ test('eventRadius grows with mentions and is clamped', () => {
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/geo2.test.js`
+Run: `cd ~/apps/orbis && node --test tests/geo2.test.js`
 Expected: FAIL（`iconAngle`/`eventRadius` 未定義）
 
 - [ ] **Step 3: 実装** — `js/lib/geo.js` の末尾に追記
@@ -164,12 +164,12 @@ export function eventRadius(mentions) {
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/geo2.test.js`
+Run: `cd ~/apps/orbis && node --test tests/geo2.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/lib/geo.js tests/geo2.test.js
 git commit -m "feat: geo helpers iconAngle + eventRadius"
 ```
@@ -216,7 +216,7 @@ def test_build_snapshot_shape():
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_flights.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_flights.py -v`
 Expected: FAIL（ModuleNotFoundError: collectors.flights）
 
 - [ ] **Step 3: 実装** — `collectors/flights.py`
@@ -266,12 +266,12 @@ def build_snapshot(points, updated_iso):
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_flights.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_flights.py -v`
 Expected: PASS（3 件）
 
 - [ ] **Step 5: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add collectors/flights.py tests/test_flights.py
 git commit -m "feat: OpenSky flights transform + downsample (pure)"
 ```
@@ -322,16 +322,16 @@ if __name__ == "__main__":
 （`json.dump` は `separators=(",",":")` で容量圧縮。`import requests` 等は先頭に移動してもよい。）
 
 - [ ] **Step 2: 実データで1回実行して初期スナップショット生成（ネットワーク）**
-Run: `cd /home/shugo/apps/orbis && python3 -m collectors.flights`
+Run: `cd ~/apps/orbis && python3 -m collectors.flights`
 Expected: `[flights] wrote N points -> .../flights.json`（N>0）。429 等で失敗した場合は数十秒おいて再試行。どうしても取得できなければ DONE_WITH_CONCERNS で報告（後続 e2e のため flights.json が必要）。
 
 - [ ] **Step 3: 既存テスト回帰**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_flights.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_flights.py -v`
 Expected: PASS（fetch/main 追加で既存も維持）
 
 - [ ] **Step 4: Commit（生成スナップショットも追跡）**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add collectors/flights.py data/snapshots/flights.json data/snapshots/manifest.json
 git commit -m "feat: flights collector writes snapshot"
 ```
@@ -381,7 +381,7 @@ def test_split_events_by_category():
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
 Expected: FAIL（ModuleNotFoundError: collectors.gdelt_events）
 
 - [ ] **Step 3: 実装** — `collectors/gdelt_events.py`
@@ -437,12 +437,12 @@ def split_events(events):
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add collectors/gdelt_events.py tests/test_gdelt.py
 git commit -m "feat: GDELT events parse + split (pure)"
 ```
@@ -478,7 +478,7 @@ def test_merge_rolling_caps_to_newest():
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
 Expected: FAIL（merge_rolling 未定義）
 
 - [ ] **Step 3: 実装** — `collectors/gdelt_events.py` に追記
@@ -507,12 +507,12 @@ def merge_rolling(prev, new, now=None, window_hours=WINDOW_HOURS, cap=MAX_PER_LA
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
 Expected: PASS（4 件）
 
 - [ ] **Step 5: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add collectors/gdelt_events.py tests/test_gdelt.py
 git commit -m "feat: GDELT rolling merge (24h window, dedupe, cap)"
 ```
@@ -596,16 +596,16 @@ if __name__ == "__main__":
 注: `_write` は `update_manifest` を使う。ファイル先頭に `from collectors.lib.manifest import update_manifest` を置く構成でよい（main 内の再代入トリックは不要なら削除可）。シンプルに**先頭で import** してよい。
 
 - [ ] **Step 2: 実データで1回実行**
-Run: `cd /home/shugo/apps/orbis && python3 -m collectors.gdelt_events`
+Run: `cd ~/apps/orbis && python3 -m collectors.gdelt_events`
 Expected: `[gdelt] protests=N conflict=M`。`protests.json`/`conflict.json`/`manifest.json` 生成。（1バッチで0件のこともあるが、その場合でもファイルは作られる。可能なら数バッチ分溜めるため2回実行してもよい。）
 
 - [ ] **Step 3: テスト回帰**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
+Run: `cd ~/apps/orbis && python3 -m pytest tests/test_gdelt.py -v`
 Expected: PASS（4 件）
 
 - [ ] **Step 4: Commit（生成スナップショット追跡）**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add collectors/gdelt_events.py data/snapshots/protests.json data/snapshots/conflict.json data/snapshots/manifest.json
 git commit -m "feat: GDELT collector writes protests + conflict snapshots"
 ```
@@ -644,7 +644,7 @@ test('buildIconConfig tolerates empty', () => {
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/flights.test.js`
+Run: `cd ~/apps/orbis && node --test tests/flights.test.js`
 Expected: FAIL（モジュール無し）
 
 - [ ] **Step 3: 実装** — `js/layers/flights.js`
@@ -690,7 +690,7 @@ export const flightsLayer = {
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/flights.test.js`
+Run: `cd ~/apps/orbis && node --test tests/flights.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: registry に登録** — `js/layers/registry.js` を編集
@@ -703,12 +703,12 @@ export const layers = [quakesLayer, flightsLayer];
 （`buildDeckLayers`/`getLayer` は変更不要）
 
 - [ ] **Step 6: 全JSテスト回帰**
-Run: `cd /home/shugo/apps/orbis && node --test tests/*.test.js`
+Run: `cd ~/apps/orbis && node --test tests/*.test.js`
 Expected: 全 PASS
 
 - [ ] **Step 7: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/layers/flights.js js/layers/registry.js tests/flights.test.js
 git commit -m "feat: flights layer (heading-rotated zoom-aware icons)"
 ```
@@ -746,7 +746,7 @@ test('empty tolerated', () => {
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/conflict.test.js`
+Run: `cd ~/apps/orbis && node --test tests/conflict.test.js`
 Expected: FAIL
 
 - [ ] **Step 3: 実装** — `js/layers/conflict.js`
@@ -777,7 +777,7 @@ export const conflictLayer = {
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/conflict.test.js`
+Run: `cd ~/apps/orbis && node --test tests/conflict.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: registry に登録** — `js/layers/registry.js`
@@ -791,7 +791,7 @@ export const layers = [quakesLayer, flightsLayer, conflictLayer];
 
 - [ ] **Step 6: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/layers/conflict.js js/layers/registry.js tests/conflict.test.js
 git commit -m "feat: conflict layer (GDELT red scatter)"
 ```
@@ -828,7 +828,7 @@ test('empty tolerated', () => {
 ```
 
 - [ ] **Step 2: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/protests.test.js`
+Run: `cd ~/apps/orbis && node --test tests/protests.test.js`
 Expected: FAIL
 
 - [ ] **Step 3: 実装** — `js/layers/protests.js`
@@ -859,7 +859,7 @@ export const protestsLayer = {
 ```
 
 - [ ] **Step 4: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/protests.test.js`
+Run: `cd ~/apps/orbis && node --test tests/protests.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 5: registry に登録** — `js/layers/registry.js`
@@ -874,7 +874,7 @@ export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer];
 
 - [ ] **Step 6: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/layers/protests.js js/layers/registry.js tests/protests.test.js
 git commit -m "feat: protests layer (GDELT green scatter)"
 ```
@@ -943,7 +943,7 @@ test('tolerates missing features', () => {
 ```
 
 - [ ] **Step 3: 失敗を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/trade.test.js`
+Run: `cd ~/apps/orbis && node --test tests/trade.test.js`
 Expected: FAIL
 
 - [ ] **Step 4: 実装** — `js/layers/trade.js`
@@ -997,7 +997,7 @@ export const tradeLayer = {
 ```
 
 - [ ] **Step 5: 通過を確認**
-Run: `cd /home/shugo/apps/orbis && node --test tests/trade.test.js`
+Run: `cd ~/apps/orbis && node --test tests/trade.test.js`
 Expected: PASS（2 件）
 
 - [ ] **Step 6: registry に登録** — `js/layers/registry.js`
@@ -1013,7 +1013,7 @@ export const layers = [quakesLayer, flightsLayer, conflictLayer, protestsLayer, 
 
 - [ ] **Step 7: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add data/static/trade_routes.geojson js/layers/trade.js js/layers/registry.js tests/trade.test.js
 git commit -m "feat: trade routes layer (static GeoJSON: lanes + chokepoints)"
 ```
@@ -1111,7 +1111,7 @@ boot();
 
 - [ ] **Step 3: ローカル配信で主要アセットが 200 か確認（ヘッドレス不可なので HTTP のみ）**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 python3 -m http.server 8000 >/tmp/orbis_http.log 2>&1 &
 SRV=$!; sleep 1
 for p in / js/main.js data/snapshots/flights.json data/snapshots/conflict.json data/snapshots/protests.json data/static/trade_routes.geojson; do
@@ -1123,7 +1123,7 @@ Expected: すべて 200。
 
 - [ ] **Step 4: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add js/main.js css/orbis.css
 git commit -m "feat: render all layers + registry-driven legend"
 ```
@@ -1177,14 +1177,14 @@ jobs:
 
 - [ ] **Step 2: ローカルで3収集器が動くことを確認（ワークフローと同コマンド）**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 python3 -m collectors.quakes && python3 -m collectors.flights && python3 -m collectors.gdelt_events
 ```
 Expected: 3つとも書き出しログ。`data/snapshots/` に quakes/flights/protests/conflict.json と manifest.json。
 
 - [ ] **Step 3: Commit（更新スナップショット含む）**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add .github/workflows/collect.yml data/snapshots/*.json
 git commit -m "ci: collect flights + GDELT events every 15 min"
 ```
@@ -1228,11 +1228,11 @@ test('globe boots and all phase-2 layers render', async ({ page }) => {
 注: conflict/protests は GDELT バッチによっては0件のことがあるため、e2e の必須アサーションには含めない（quakes/flights/trade で疎通を担保）。
 
 - [ ] **Step 2: e2e を実行**
-Run: `cd /home/shugo/apps/orbis && npx playwright test`
+Run: `cd ~/apps/orbis && npx playwright test`
 Expected: 1 passed。失敗時は `data/snapshots/flights.json` の存在と件数、`window.__orbis.counts` を確認（`page.on('console')` でエラー収集）。assertion を弱めて通すのは禁止。
 
 - [ ] **Step 3: 全テストスイートを緑で確認**
-Run: `cd /home/shugo/apps/orbis && python3 -m pytest -q && node --test tests/*.test.js && npx playwright test`
+Run: `cd ~/apps/orbis && python3 -m pytest -q && node --test tests/*.test.js && npx playwright test`
 Expected: pytest（quakes2+manifest2+flights3+gdelt4=11）／node:test（geo3+quakes2+registry2+geo2:2+flights2+conflict2+protests2+trade2=17）／Playwright 1 passed。すべて緑。
 
 - [ ] **Step 4: README のレイヤー説明を更新** — `README.md` の Phase 行を編集
@@ -1243,7 +1243,7 @@ Expected: pytest（quakes2+manifest2+flights3+gdelt4=11）／node:test（geo3+qu
 
 - [ ] **Step 5: Commit**
 ```bash
-cd /home/shugo/apps/orbis
+cd ~/apps/orbis
 git add tests/e2e/smoke.spec.js README.md
 git commit -m "test: e2e covers phase-2 layers; docs: update README"
 ```

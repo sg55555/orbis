@@ -11,7 +11,7 @@
   const body = document.body;
   if (!body) return;
   // #app 直下の全 <section>（#media＋将来追加の全幅セクション）と .report-row（2カラム単位）を reveal。
-  // ＝将来セクションを #app 直下 or .report-row 内に置けば自動で演出対象になる（太田さん「増えても綺麗に」）。
+  // ＝将来セクションを #app 直下 or .report-row 内に置けば自動で演出対象になる（オーナー「増えても綺麗に」）。
   const targets = [
     ...document.querySelectorAll('#app > section'),
     ...document.querySelectorAll('.report-row'),

@@ -249,7 +249,7 @@ Expected: static ok（data/static は残存）
 
 ---
 
-## 手動セットアップ（コード外・ロールアウト前に太田さんが実施）
+## 手動セットアップ（コード外・ロールアウト前にオーナーが実施）
 1. public repo 作成: gh repo create sg55555/orbis-data --public --description "orbis 自動生成データ(編集禁止)"
 2. 現データ seed: 現 main の data/snapshots/*.json と *_history.json を orbis-data のルート直下へコピーして初回 commit/push（手順は実装後に私が補助スクリプトを提示可）。
 3. fine-grained PAT 発行（Repository=orbis-data のみ・Contents: Read and write）。
