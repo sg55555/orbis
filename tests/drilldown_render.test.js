@@ -44,9 +44,13 @@ function makeEl(tag) {
       if (i >= 0) { el.children.splice(i, 1); child.parentNode = null; }
       return child;
     },
+    onclick: null,
     addEventListener(type, fn) { (el._listeners[type] ||= []).push(fn); },
-    // テスト用: 登録済みの click ハンドラを発火
-    click() { (el._listeners.click || []).forEach((fn) => fn({ type: 'click' })); },
+    // テスト用: 登録済みの click ハンドラを発火（onclick プロパティも含む）
+    click() {
+      if (typeof el.onclick === 'function') el.onclick({ type: 'click' });
+      (el._listeners.click || []).forEach((fn) => fn({ type: 'click' }));
+    },
     // class / id による子孫検索（render 層が使う最小機能のみ）
     querySelector(sel) { return el._find((c) => el._matches(c, sel)) || null; },
     querySelectorAll(sel) { const out = []; el._walk((c) => { if (el._matches(c, sel)) out.push(c); }); return out; },
@@ -220,5 +224,37 @@ test('renderWatchlist: 空配列でリストをクリア', () => {
     renderWatchlist(root, [{ code: 'US', name_ja: 'アメリカ合衆国', score: 60, lon: -98, lat: 39 }], { onSelect() {}, onRemove() {} });
     renderWatchlist(root, [], { onSelect() {}, onRemove() {} });
     assert.equal(root.querySelector('.dd-wl-list').children.length, 0);
+  });
+});
+
+// M-1 回帰テスト: 同一 rootEl に renderDrilldown を2回呼んでも
+// onClose/onWatchToggle はちょうど1回しか発火しないこと。
+// （実使用では openCountry が同じ #drilldown を再利用するため再現する）
+test('renderDrilldown: 同一 rootEl に2回呼んでも onClose はちょうど1回発火（二重発火なし）', () => {
+  withDoc(() => {
+    const root = makeRoot();
+    let closed = 0;
+    const cb = () => { closed += 1; };
+    // 1回目
+    renderDrilldown(root, sampleModel(), { onSelect() {}, onClose: cb, onWatchToggle() {} });
+    // 2回目（同じ rootEl・同じ .dd-close/.dd-watch ノードが再利用される）
+    renderDrilldown(root, sampleModel(), { onSelect() {}, onClose: cb, onWatchToggle() {} });
+    // クリック1回→cb が1回だけ呼ばれるべき
+    root.querySelector('.dd-close').click();
+    assert.equal(closed, 1, 'onClose は2回呼んでも1回だけ発火（二重発火しない）');
+  });
+});
+
+test('renderDrilldown: 同一 rootEl に2回呼んでも onWatchToggle はちょうど1回発火（二重発火なし）', () => {
+  withDoc(() => {
+    const root = makeRoot();
+    let toggled = 0;
+    const cb = (code) => { toggled += 1; };
+    // 1回目
+    renderDrilldown(root, sampleModel(), { onSelect() {}, onClose() {}, onWatchToggle: cb });
+    // 2回目
+    renderDrilldown(root, sampleModel(), { onSelect() {}, onClose() {}, onWatchToggle: cb });
+    root.querySelector('.dd-watch').click();
+    assert.equal(toggled, 1, 'onWatchToggle は2回呼んでも1回だけ発火（二重発火しない）');
   });
 });

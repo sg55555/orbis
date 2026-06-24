@@ -98,7 +98,46 @@ body.drill-open #drilldown.drill-panel { position: static; grid-column: 2; width
 7. **SW v45 反映**: 新コード（drilldown.js 等）が旧キャッシュで配信されないこと（ハードリロードで確認）。
 8. **patch #7 join 実装確認**: ウォッチリスト表示（instability データロード後に renderWatchlist が score 降順で表示）。join 呼び出し側は main.js の instability ロード完了コールバック内への追加が必要。
 
+---
+
+## C7 correctness/scope concern 修正（2026-06-24、commit b775662）
+
+### 修正1: map.on('click') 二重登録の解消
+
+**問題**: `country_click.js` L86 と `main.js` L382 の両方で `map.on('click', handleMapClick)` を登録しており、国クリック時に handleMapClick が2回呼ばれる状態だった。
+
+**解消方法**: `country_click.js` 内部の `map.on('click', handleMapClick)` を削除し、main.js 側の登録を唯一の登録点とした。コメントで明示（`// patch #7（二重登録解消）: country_click.js は map.on を登録しない。ここが唯一の登録点。`）。
+
+**確認方法**: `drilldown_country_click.test.js` の更新テスト「map.on を内部登録しない（外部配線に委ねる）」が `map.handlers.click === undefined` を検証。
+
+### 修正2: patch #7 watchlist join の配線
+
+**joinWatchCountries のシグネチャ**:
+```javascript
+export function joinWatchCountries(codes, instabilityCountries, fipsCenterFn)
+// codes: string[] (FIPS コード配列)
+// instabilityCountries: instability.countries 配列 or null
+// fipsCenterFn: code → [lng, lat] or null
+// 戻り値: [{code, name_ja, score, level?, lon, lat}]
+```
+
+**圏外国フォールバック**: instabilityCountries に含まれない国は `score=0`、`level` なし、fipsCenterFn の座標を使用。fipsCenterFn が null を返す場合は `lon=0, lat=0`（renderWatchlist が disabled で表示を残す）。順序は orderByInstability 準拠（score 降順・同 score は元の list 順）。
+
+**main.js 配線追加**:
+- import: `fipsCenter`（country_index）、`renderWatchlist`（drilldown）、`makeWatchlistStore, addCode, removeCode, joinWatchCountries`（watchlist）
+- module-level: `_wlStore`、`_watchCodes`、`_insCountries` を追加
+- `refreshWatchlist()` 関数: `joinWatchCountries(_watchCodes, _insCountries, fipsCenter)` で join してから `renderWatchlist` に渡す
+- instability fetch 完了後: `_insCountries = ins.countries; refreshWatchlist();` を追加
+- `initCountryClick` deps に `onWatchToggle`: addCode/removeCode でトグルし `_wlStore.save` + `refreshWatchlist`
+
+**テスト**: `tests/drilldown_watchlist_join.test.js` 新規10件（全緑）。
+
+### テスト結果（修正後）
+
+- `node --test tests/drilldown_render.test.js tests/drilldown_watchlist.test.js`: 30 pass / 0 fail
+- `node --test tests/drilldown_watchlist_join.test.js`: 10 pass / 0 fail
+- **`node --test tests/*.test.js`: 527 pass / 0 fail**（baseline 516 + 今回新規 11）
+
 ## 注意事項
 
 - **実データ未生成**: `data/static/admin1/` の GeoJSON.gz ファイルは Natural Earth データ未調達のため存在しない。実際の国クリック→詳細表示の end-to-end は NE データ準備後。
-- **country_click.js の内部 map.on**: C6 実装が `initCountryClick` 内で `map.on('click', handleMapClick)` を自動登録する。main.js も同ハンドラを追加登録しているため二重登録となるが、handleMapClick は token ベースのレース破棄で idempotent に動作する。統合時に C6 の内部登録を外す（main.js 側に一本化）ことを推奨。

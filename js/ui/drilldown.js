@@ -39,8 +39,8 @@ export function renderDrilldown(rootEl, model, { onSelect, onClose, onWatchToggl
   const header = model.header || {};
 
   if (titleEl) titleEl.innerHTML = drilldownHeaderHtml(header);
-  if (closeBtn && onClose) { closeBtn.innerHTML = '×'; closeBtn.addEventListener('click', () => onClose()); }
-  if (watchBtn && onWatchToggle) { watchBtn.innerHTML = '★'; watchBtn.addEventListener('click', () => onWatchToggle(header.code)); }
+  if (closeBtn && onClose) { closeBtn.innerHTML = '×'; closeBtn.onclick = () => onClose(); }
+  if (watchBtn && onWatchToggle) { watchBtn.innerHTML = '★'; watchBtn.onclick = () => onWatchToggle(header.code); }
 
   if (body) {
     body.innerHTML = '';
