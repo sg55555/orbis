@@ -55,3 +55,11 @@ test('第1波 foundation トークンが本文で参照されている', () => {
     assert.ok(css.includes(`var(${t})`), `${t} が未参照`);
   }
 });
+
+test('第2波 foundation トークン（状態色 stale）が本文で参照されている', () => {
+  // cyan rim/glow・黒影・白inset は alpha が多種に散り二重用途のため段階移行へ繰延。
+  // 第2波は value-unique で安全な stale 状態色のみ。
+  for (const t of ['--cat-stale', '--cat-amber-border', '--cat-amber-glow']) {
+    assert.ok(css.includes(`var(${t})`), `${t} が未参照`);
+  }
+});
