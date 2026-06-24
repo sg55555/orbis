@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { degradedNoticeHtml } from '../js/lib/drilldown/drilldown_view.js';
+import { degradedNoticeHtml, eventLineHtml } from '../js/lib/drilldown/drilldown_view.js';
 
 test('degradedNoticeHtml: 4種すべてが固有の説明文を返す', () => {
   const extra = degradedNoticeHtml('extra');
@@ -27,4 +27,47 @@ test('degradedNoticeHtml: 未知 kind は汎用フォールバック文（落ち
   const html = degradedNoticeHtml('unknown-kind-xyz');
   assert.equal(typeof html, 'string');
   assert.match(html, /class="dd-degraded"/);
+});
+
+test('eventLineHtml: 都市名ありは「県名 — 都市名でイベント」形式', () => {
+  const html = eventLineHtml({
+    regionName: 'カリフォルニア州', cityName: 'ロサンゼルス',
+    layerId: 'protests', title: '抗議',
+  });
+  assert.match(html, /カリフォルニア州/);
+  assert.match(html, /ロサンゼルス/);
+  assert.match(html, /で抗議/);
+});
+
+test('eventLineHtml: 都市名なしは都市部分を省きフォールバック', () => {
+  const html = eventLineHtml({
+    regionName: 'カリフォルニア州', cityName: null,
+    layerId: 'protests', title: '抗議',
+  });
+  assert.match(html, /カリフォルニア州/);
+  assert.doesNotMatch(html, /—\s*でイベント/); // 空都市の壊れた整形が出ない
+  assert.match(html, /抗議/);
+});
+
+test('eventLineHtml: レイヤー絵文字が instability 並びに一致', () => {
+  assert.match(eventLineHtml({ regionName: 'X', cityName: 'C', layerId: 'conflict', title: 't' }), /⚔/);
+  assert.match(eventLineHtml({ regionName: 'X', cityName: 'C', layerId: 'protests', title: 't' }), /📢/);
+  assert.match(eventLineHtml({ regionName: 'X', cityName: 'C', layerId: 'news', title: 't' }), /📰/);
+  assert.match(eventLineHtml({ regionName: 'X', cityName: 'C', layerId: 'quakes', title: 't' }), /🌐/);
+});
+
+test('eventLineHtml: XSS エスケープ（regionName/cityName/title）', () => {
+  const html = eventLineHtml({
+    regionName: '<script>a</script>', cityName: '"><img src=x>',
+    layerId: 'news', title: '<b>x</b>',
+  });
+  assert.doesNotMatch(html, /<script>a<\/script>/);
+  assert.doesNotMatch(html, /<img src=x>/);
+  assert.doesNotMatch(html, /<b>x<\/b>/);
+  assert.match(html, /&lt;script&gt;/);
+});
+
+test('eventLineHtml: ev 欠落でも落ちない', () => {
+  assert.equal(typeof eventLineHtml(null), 'string');
+  assert.equal(typeof eventLineHtml({}), 'string');
 });
