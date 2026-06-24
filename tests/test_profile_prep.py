@@ -67,3 +67,17 @@ def test_build_profile_prompt_grounds_and_lists_sections():
     assert "- lat:" not in p                      # None の事実(lat)は列挙しない（"population"内の"lat"は誤検出回避）
     assert "観光名所" in p and "概要" in p        # セクション候補を提示
     assert "根拠" in p or "事実に無い" in p       # 幻覚抑制の指示
+
+
+from scripts.lib.profile_prep import parse_profile_response
+
+def test_parse_profile_response_valid_and_filtered():
+    text = '前置き {"sections":[{"title":"概要","body":"…"},{"title":"気候","body":" "},' \
+           '{"title":"不正","body":"x"},{"title":"観光名所","body":"名所が多い"}]} 後置き'
+    out = parse_profile_response(text)
+    assert [s["title"] for s in out] == ["概要", "観光名所"]   # 空body/不正title 除外
+    assert out[1]["body"] == "名所が多い"
+
+def test_parse_profile_response_bad_json():
+    assert parse_profile_response("not json") == []
+    assert parse_profile_response(None) == []

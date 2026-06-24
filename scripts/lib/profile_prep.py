@@ -70,3 +70,24 @@ def build_profile_prompt(name_ja, level, facts, wiki_summary):
         f"title は次から該当するものだけ・順序維持: {', '.join(SECTIONS)}。\n"
         f"各 body は 1〜3 文の簡潔な日本語。根拠が無いセクションは省略し、断定は避ける。"
     )
+
+
+def parse_profile_response(text):
+    """LLM 応答テキスト→ sections。SECTIONS の title・非空 body のみ・重複除外。"""
+    if not isinstance(text, str):
+        return []
+    m = re.search(r"\{.*\}", text, re.S)
+    if not m:
+        return []
+    try:
+        data = json.loads(m.group(0))
+    except ValueError:
+        return []
+    out, seen = [], set()
+    for s in (data or {}).get("sections") or []:
+        t = (s or {}).get("title")
+        b = (s or {}).get("body")
+        if t in SECTIONS and t not in seen and isinstance(b, str) and b.strip():
+            out.append({"title": t, "body": b.strip()})
+            seen.add(t)
+    return out
