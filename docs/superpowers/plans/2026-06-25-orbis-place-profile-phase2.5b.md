@@ -22,7 +22,7 @@
 
 ## File Structure
 
-- Create `js/lib/drilldown/region_shape.js` — `ringsFromGeometry(geom)` ＋ `regionShapePath(rings)`（純）。
+- Create `js/lib/drilldown/region_shape.js` — `regionShapePath(rings)`（純）。
 - Create `js/lib/drilldown/profile_view.js` — `formatFacts(facts)` ＋ `profileHtml(model)`（純・HTML）。
 - Create `js/lib/drilldown/resolve_place.js` — `resolvePlace(lon, lat, ctx)`（純）。
 - Create `js/lib/drilldown/profile_data.js` — `loadProfile(level, id, opts)` ＋ `__resetProfileCache()`（DI seam）。
@@ -43,25 +43,15 @@
 - Test: `tests/profile_region_shape.test.js`
 
 **Interfaces:**
-- Produces: `ringsFromGeometry(geom) -> number[][][]`（GeoJSON Polygon/MultiPolygon → 外環配列。各環＝`[ [lon,lat], ... ]`。非対応は `[]`）。
-- Produces: `regionShapePath(rings) -> { d: string, viewBox: string } | null`（最大面積の外環を bbox 正規化・長辺=100・Y 反転・~80点に間引き・SVG パス。空/点不足は null）。
+- Produces: `regionShapePath(rings) -> { d: string, viewBox: string } | null`（`rings`＝loadPolygons 出力の `.rings`＝環配列・各環 `[ [lon,lat], ... ]`。最大面積の環を bbox 正規化・長辺=100・Y 反転・~80点に間引き・SVG パス。空/点不足は null）。
+- 注: クライアントの形状源は国=`boundsPolys` hit `.rings`／県=`admin1Polys` hit `.rings`（共に loadPolygons 形式）なので、GeoJSON geometry→rings 変換は本実装では不要（YAGNI のため設けない）。
 
 - [ ] **Step 1: 失敗するテストを書く**（`tests/profile_region_shape.test.js`）
 
 ```javascript
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { ringsFromGeometry, regionShapePath } from '../js/lib/drilldown/region_shape.js';
-
-test('ringsFromGeometry: Polygon と MultiPolygon の外環を返す', () => {
-  const poly = { type: 'Polygon', coordinates: [[[0, 0], [2, 0], [2, 2], [0, 2], [0, 0]], [[0.5, 0.5], [1, 0.5], [1, 1], [0.5, 0.5]]] };
-  const r1 = ringsFromGeometry(poly);
-  assert.equal(r1.length, 1);                 // 外環のみ（穴は無視）
-  assert.deepEqual(r1[0][0], [0, 0]);
-  const multi = { type: 'MultiPolygon', coordinates: [[[[0, 0], [1, 0], [1, 1], [0, 0]]], [[[5, 5], [9, 5], [9, 9], [5, 5]]]] };
-  assert.equal(ringsFromGeometry(multi).length, 2);
-  assert.deepEqual(ringsFromGeometry(null), []);
-});
+import { regionShapePath } from '../js/lib/drilldown/region_shape.js';
 
 test('regionShapePath: 最大環を viewBox 正規化（長辺100・Y反転）', () => {
   // 小三角と、横長(幅10×高さ2)の大三角。大きい方が選ばれる。
@@ -90,17 +80,9 @@ test('regionShapePath: 空/点不足は null', () => {
 - [ ] **Step 3: 実装**（`js/lib/drilldown/region_shape.js`）
 
 ```javascript
-// 地域ポリゴン → 形状シルエット SVG パス（純関数・DOM/fetch 非依存）。
-// クライアントが既に読み込み済のポリゴン（国=country_bounds rings / 県=admin1 geometry）から
-// 実行時生成し、profile JSON のスキーマは変えない。都市(点)はポリゴン無し→呼び出し側で null 扱い。
-
-// GeoJSON Polygon/MultiPolygon → 外環配列（穴・点列は無視）。
-export function ringsFromGeometry(geom) {
-  if (!geom || !geom.coordinates) return [];
-  if (geom.type === 'Polygon') return [geom.coordinates[0]];
-  if (geom.type === 'MultiPolygon') return geom.coordinates.map((p) => p[0]).filter(Boolean);
-  return [];
-}
+// 地域ポリゴン rings → 形状シルエット SVG パス（純関数・DOM/fetch 非依存）。
+// クライアントが既に読み込み済のポリゴン（国=country_bounds rings / 県=admin1 rings・共に
+// loadPolygons 形式）から実行時生成し、profile JSON のスキーマは変えない。都市(点)は null 扱い。
 
 function _area(ring) {
   let s = 0;
@@ -134,13 +116,13 @@ export function regionShapePath(rings) {
 }
 ```
 
-- [ ] **Step 4: 合格を確認** — Run: `node --test tests/profile_region_shape.test.js` Expected: PASS（3 件）
+- [ ] **Step 4: 合格を確認** — Run: `node --test tests/profile_region_shape.test.js` Expected: PASS（2 件）
 
 - [ ] **Step 5: コミット**
 
 ```bash
 git add js/lib/drilldown/region_shape.js tests/profile_region_shape.test.js
-git commit -m "feat(profiles): region_shape（ポリゴン→形状シルエットSVGパス・純関数）"
+git commit -m "feat(profiles): region_shape（rings→形状シルエットSVGパス・純関数）"
 ```
 
 ---
@@ -218,6 +200,11 @@ test('profileHtml: XSS エスケープ（body の < > を素通ししない）',
   assert.doesNotMatch(h, /<img src=x/);
   assert.match(h, /&lt;img/);
 });
+
+test('profileHtml: events 空はフッタ非表示', () => {
+  const h = profileHtml({ ...BASE, events: [] });
+  assert.doesNotMatch(h, /pf-events/);
+});
 ```
 
 - [ ] **Step 2: 失敗を確認** — Run: `node --test tests/profile_view.test.js` Expected: FAIL（モジュール未作成）
@@ -227,12 +214,12 @@ test('profileHtml: XSS エスケープ（body の < > を素通ししない）',
 - `import { escapeHtml } from '../selection.js';`
 - `ICONS`（content.js から移植）・`KIND = {country:['COUNTRY','国'], admin1:['ADMIN1','県'], city:['CITY','都市']}`。
 - `formatFacts(facts)`：`population`→`{label:'人口', value:(>=1e6? (v/1e6 を小数1) : toLocaleString), unit:(>=1e6?'M':'人')}`、`area_km2`→`{label:'面積', value:toLocaleString, unit:'km²'}`、`lat&&lon`→`{label:'位置', value:`${lat}°N`, unit:`${lon}°E`}`、`elevation_m`→`{label:'標高', value, unit:'m'}`。null は push しない。全て escapeHtml。
-- `profileHtml(model)`：パンくず（breadcrumb を `›` 区切り・最終要素は `aria-current`・各 button は `data-level`/`data-id`）→ ヒーロー（メディア＝画像スロット＋ミニグローブ[miniDot 由来 or 既定]、識別＝種別バッジ＋`pf-name-row`[h1 名前＋`shapePath` あれば `pf-shape` svg]＋`pf-facts` HUD）→ `degraded` ならバナー＋（セクション省略）／非 degraded なら `sections` を `pf-sec`（アイコン＋見出し＋body）で→ `pf-events`（events 件数バッジ＋行）→ `pf-source`（wikipedia_url リンク＋QID）。全テキスト escapeHtml。
+- `profileHtml(model)`：パンくず（breadcrumb を `›` 区切り・最終要素は `aria-current`・各 button は `data-level`/`data-id`）→ ヒーロー（メディア＝画像スロット＋ミニグローブ[miniDot 由来 or 既定]、識別＝種別バッジ＋`pf-name-row`[h1 名前＋`shapePath` あれば `pf-shape` svg]＋`pf-facts` HUD）→ `degraded` ならバナー＋（セクション省略）／非 degraded なら `sections` を `pf-sec`（アイコン＋見出し＋body）で→ **`events.length>0` のときのみ** `pf-events`（件数バッジ＋行）→ `pf-source`（wikipedia_url リンク＋QID）。全テキスト escapeHtml。
 - クラス名・構造は shared.css / content.js に厳密一致させる（CSS 移植 Task 8 と整合）。
 
 （実装の確定形は content.js を参照。テスト（Step 1）が pass する HTML を出すこと。）
 
-- [ ] **Step 4: 合格を確認** — Run: `node --test tests/profile_view.test.js` Expected: PASS（5 件）
+- [ ] **Step 4: 合格を確認** — Run: `node --test tests/profile_view.test.js` Expected: PASS（6 件）
 
 - [ ] **Step 5: コミット**
 
@@ -604,7 +591,9 @@ test('openPlace: resolve→loadProfile→renderProfile を通り navigate も再
 
 - [ ] **Step 2: 失敗を確認** — Run: `node --test tests/drilldown_country_click.test.js` Expected: FAIL（openPlace/navigate 未実装）
 
-- [ ] **Step 3: 実装** — `country_click.js` に `openPlace(lon,lat)` と `navigate(level,id)` を追加し、`handleMapClick` を openPlace 呼び出しへ。openPlace は既存 openCountry の骨格（hidden 解除・state・token・flyTo）を流用しつつ、本体を resolvePlace→loadProfile→model→renderProfile に差し替える。形状 rings は §Interfaces の源（country=boundsPolys hit `.rings`／admin1=`admin1Hit.rings`／city=null）、`shapePath = rings ? deps.regionShapePath(rings) : null`。navigate(level,id) は当該 level のプロフィールを loadProfile→renderProfile で再描画（chain は保持済を流用）。deps に `resolvePlace/loadProfile/regionShapePath/renderProfile/pip/nearest/profilesManifest`（＋既存 `loadPolygonsFn`）を追加。`resolvePlace` には ctx として `{fips, countryName:(boundsPolys hit.name_ja), admin1Polys, cities:geo.cities, manifest:profilesManifest, pip, nearest}` を渡す。返り値に `openPlace, navigate` を追加。
+- [ ] **Step 3: 実装** — `country_click.js` に `openPlace(lon,lat)` と `navigate(level,id)` を追加し、`handleMapClick` を openPlace 呼び出しへ。openPlace は既存 openCountry の骨格（hidden 解除・state・token・flyTo）を流用しつつ、本体を resolvePlace→loadProfile→model→renderProfile に差し替える。形状 rings は §Interfaces の源（country=boundsPolys hit `.rings`／admin1=`admin1Hit.rings`／city=null）、`shapePath = rings ? deps.regionShapePath(rings) : null`。navigate(level,id) は当該 level のプロフィールを loadProfile→renderProfile で再描画（chain は保持済を流用）。
+  **events（近隣の動向フッタ用）**＝既存 `deps.buildDrilldown({fips, snapshots:getSnapshots(), countryPolys, admin1Polys, cities, ...})` の `events` を `{emoji: LAYER_EMOJI[layerId]||'・', where: cityName||regionName||'', title}` に map（LAYER_EMOJI={conflict:'⚔',protests:'📢',news:'📰',quakes:'🌐'}・country_click 内に定義 or drilldown_view から import）。失敗時/空は `[]`（フッタ非表示）。
+  deps に `resolvePlace/loadProfile/regionShapePath/renderProfile/pip/nearest/profilesManifest`（＋既存 `buildDrilldown/loadPolygonsFn`）を追加。`resolvePlace` には ctx として `{fips, countryName:(boundsPolys hit.name_ja), admin1Polys, cities:geo.cities, manifest:profilesManifest, pip, nearest}` を渡す。返り値に `openPlace, navigate` を追加。
 
 - [ ] **Step 4: 合格を確認** — Run: `node --test tests/drilldown_country_click.test.js` Expected: PASS（既存＋新規）
 - [ ] **Step 5: コミット**
@@ -791,6 +780,6 @@ test('main.js: Esc / #drill-scrim で閉じる', () => {
 - model 形 `{profile, breadcrumb, shapePath:{d,viewBox}|null, miniDot, events, target}` は Task 2（消費）・Task 5（renderProfile）・Task 6（組立）で一致。
 - `resolvePlace(...) -> {chain, target}`：Task 3 定義・Task 6 利用一致。
 - `loadProfile(level,id,{manifest,fetchFn}) -> profile|null`：Task 4 定義・Task 6 利用一致。
-- `regionShapePath(rings) -> {d,viewBox}|null` ＋ `ringsFromGeometry(geom) -> rings`：Task 1 定義・Task 6 利用一致。
+- `regionShapePath(rings) -> {d,viewBox}|null`：Task 1 定義・Task 6（poly.rings 投入）利用一致。
 - `renderProfile(rootEl, model, {onClose,onWatchToggle,onNavigate})`：Task 5 定義・Task 6/9 利用一致。
 - CSS クラス `.pf-*`：Task 2（HTML）と Task 8（CSS）で同名（shared.css 準拠）。
