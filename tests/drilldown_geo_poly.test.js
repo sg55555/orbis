@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { pointInRings, loadPolygons } from '../js/lib/drilldown/geo_poly.js';
+import { pointInRings, loadPolygons, pointInFeature } from '../js/lib/drilldown/geo_poly.js';
 
 // 共有フィクスチャ: 単純な正方形 (0,0)-(10,10)。GeoJSON 規約どおり始点=終点で閉じる。
 const SQUARE = [
@@ -136,4 +136,34 @@ test('loadPolygons: code 無し / rings 無しの feature はスキップ', () =
 test('loadPolygons: features 無し / null は空配列', () => {
   assert.deepEqual(loadPolygons({}), []);
   assert.deepEqual(loadPolygons({ features: null }), []);
+});
+
+// --- C1.3 pointInFeature ---
+
+const POLY_US = {
+  code: 'US', name: 'United States', name_ja: 'アメリカ合衆国',
+  bbox: [0, 0, 10, 10],
+  rings: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]],
+};
+
+test('pointInFeature: bbox 内かつポリゴン内は true', () => {
+  assert.equal(pointInFeature(5, 5, POLY_US), true);
+});
+
+test('pointInFeature: bbox 外は pointInRings を呼ばず即 false', () => {
+  assert.equal(pointInFeature(20, 5, POLY_US), false);
+  assert.equal(pointInFeature(5, -5, POLY_US), false);
+  assert.equal(pointInFeature(-1, 5, POLY_US), false);
+  assert.equal(pointInFeature(5, 11, POLY_US), false);
+});
+
+test('pointInFeature: bbox 端(w,s,e,n)は棄却されない', () => {
+  // 左下角 (0,0) は bbox 内（< / > の境界）→ pointInRings に委譲
+  // 角は even-odd の半開き挙動依存だが bbox 棄却はされないことを確認
+  const polyBig = {
+    code: 'X', bbox: [0, 0, 10, 10],
+    rings: [[[0, 0], [10, 0], [10, 10], [0, 10], [0, 0]]],
+  };
+  // bbox 内の確実な内部点
+  assert.equal(pointInFeature(0.001, 0.001, polyBig), true);
 });

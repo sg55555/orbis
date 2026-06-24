@@ -70,3 +70,11 @@ export function loadPolygons(geojson, { codeKey = 'code' } = {}) {
   }
   return polys;
 }
+
+// bbox 早期棄却→pointInRings。collectors/lib/geo_country.py:52-57 の per-poly 判定相当。
+// poly = {code, name, name_ja, bbox:[w,s,e,n], rings}
+export function pointInFeature(lon, lat, poly) {
+  const b = poly.bbox;
+  if (lon < b[0] || lon > b[2] || lat < b[1] || lat > b[3]) return false;
+  return pointInRings(lon, lat, poly.rings);
+}
