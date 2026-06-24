@@ -9,8 +9,8 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const sw = readFileSync(join(__dirname, '..', 'sw.js'), 'utf8');
 
-test('sw.js: CACHE は orbis-v47', () => {
-  assert.match(sw, /const\s+CACHE\s*=\s*['"]orbis-v47['"]/);
+test('sw.js: CACHE は orbis-v49', () => {
+  assert.match(sw, /const\s+CACHE\s*=\s*['"]orbis-v49['"]/);
 });
 
 test('sw.js: bypass 条件（snapshots/raw/cartocdn）は維持', () => {
