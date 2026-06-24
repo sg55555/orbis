@@ -2,6 +2,7 @@
 // region/event 行に onSelect を配線する。map/fetch は呼ばずコールバックで外部委譲（instability mkRow 同型）。
 import { drilldownHeaderHtml, regionRowHtml, eventLineHtml, degradedNoticeHtml } from '../lib/drilldown/drilldown_view.js';
 import { rowHtml } from './instability.js';
+import { profileHtml } from '../lib/drilldown/profile_view.js';
 
 const STATE_CLASSES = { loading: 'dd-loading', error: 'dd-error', ready: 'dd-ready' };
 
@@ -64,6 +65,24 @@ export function renderDrilldown(rootEl, model, { onSelect, onClose, onWatchToggl
         onSelect));
     }
   }
+}
+
+// rootEl=#drilldown。model（profile_view のモデル）を .dd-body に描画し、パンくず/close/watch を配線。
+export function renderProfile(rootEl, model, { onClose, onWatchToggle, onNavigate } = {}) {
+  if (!rootEl || !model) return;
+  const body = rootEl.querySelector('.dd-body');
+  const closeBtn = rootEl.querySelector('.dd-close');
+  const watchBtn = rootEl.querySelector('.dd-watch');
+  if (body) {
+    body.innerHTML = profileHtml(model);
+    if (onNavigate) {
+      for (const btn of body.querySelectorAll('.pf-crumbs button[data-level]')) {
+        btn.addEventListener('click', () => onNavigate(btn.dataset.level, btn.dataset.id));
+      }
+    }
+  }
+  if (closeBtn && onClose) { closeBtn.onclick = () => onClose(); }
+  if (watchBtn && onWatchToggle && model.target) { watchBtn.onclick = () => onWatchToggle(model.target.id); }
 }
 
 // rootEl=#drilldown。countries=orderByInstability 済の [{code,name_ja,score,lon,lat}]。
