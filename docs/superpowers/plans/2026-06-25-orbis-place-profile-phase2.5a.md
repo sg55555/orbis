@@ -8,6 +8,8 @@
 
 **Tech Stack:** Python 3（stdlib: json/re/os/gzip/time/urllib）、requests>=2.31.0、anthropic>=0.39.0、Claude Sonnet 4.6（`claude-sonnet-4-6`）、node:test/pytest。
 
+> **⚠️ 今回の実行範囲＝ダミーモード（ユーザー決定 2026-06-25）**：実 LLM 生成（約11,600件・数千円）は**将来タスクへ延期**。今回は **`PROFILE_DUMMY=1` でダミーのセクション本文を埋めた日本サブセットを生成**し、**UI（別途 2.5b）でデザイン・体裁が分かるところまで**を目標とする。Wikidata/Wikipedia 取得も省略可（ダミーは facts も簡易）。将来「やはりこう生成したい」となったら Task 9 の `ask_llm` を実 Claude にして全生成（2.5c）。Task 1-8（純関数）・Task 9（build_profiles・ダミー分岐込み）・Task 10（ダミー生成）を subagent-driven で実装する。real LLM 生成（旧 Task 10 の API キー版）は本計画の対象外＝将来タスク。
+
 ## Global Constraints
 
 - 純関数は **stdlib のみ**（profile_prep.py は json/re/math/urllib のみ。requests/anthropic は build_profiles.py だけ）。
@@ -513,7 +515,7 @@ import time
 
 import requests
 
-from scripts.lib.profile_prep import generate_profile, resolve_qid
+from scripts.lib.profile_prep import generate_profile, resolve_qid, SECTIONS
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NE = os.path.join(ROOT, "scripts/.cache/ne")
@@ -578,6 +580,11 @@ def fetch_wikipedia(title):
 
 
 def ask_llm(prompt):
+    # ダミーモード(PROFILE_DUMMY=1): 実 LLM を呼ばずデザイン確認用のサンプル本文を返す（API キー不要）。
+    if os.environ.get("PROFILE_DUMMY") == "1":
+        return json.dumps({"sections": [
+            {"title": t, "body": f"（サンプル）{t}の説明テキスト。デザイン・体裁確認用のダミーです。"}
+            for t in SECTIONS]}, ensure_ascii=False)
     if not os.environ.get("ANTHROPIC_API_KEY"):
         return ""
     try:
@@ -592,15 +599,29 @@ def ask_llm(prompt):
         return ""
 
 
+DUMMY = os.environ.get("PROFILE_DUMMY") == "1"
+
+
+def _dummy_wikidata(qid):
+    return {"claims": {"P1082": [{"mainsnak": {"datavalue": {"value": {"amount": "+1000000"}}}}],
+                       "P2046": [{"mainsnak": {"datavalue": {"value": {"amount": "+1000"}}}}]},
+            "sitelinks": {"jawiki": {"title": "（ダミー）"}}}
+
+
+def _dummy_wikipedia(title):
+    return "（ダミー要約）デザイン・体裁確認用のサンプル説明文です。"
+
+
 def _gen_cached(level, pid, name_ja, qid):
-    """generated_<level>_<pid>.json をキャッシュ。無ければ生成。"""
-    cname = f"gen_{level}_{re.sub(r'[^A-Za-z0-9_-]', '_', pid)}.json"
+    """generated_<level>_<pid>.json をキャッシュ。無ければ生成。ダミーは別キャッシュ名。"""
+    cname = f"{'dummy_' if DUMMY else ''}gen_{level}_{re.sub(r'[^A-Za-z0-9_-]', '_', pid)}.json"
     cached = _cache_get(cname)
     if cached is not None:
         return cached
-    prof = generate_profile(level, pid, name_ja, qid,
-                            fetch_wikidata=fetch_wikidata, fetch_wikipedia=fetch_wikipedia,
-                            ask_llm=ask_llm)
+    fw = _dummy_wikidata if DUMMY else fetch_wikidata
+    fwp = _dummy_wikipedia if DUMMY else fetch_wikipedia
+    prof = generate_profile(level, pid, name_ja, qid or ("Q_DUMMY" if DUMMY else None),
+                            fetch_wikidata=fw, fetch_wikipedia=fwp, ask_llm=ask_llm)
     _cache_put(cname, prof)
     return prof
 
@@ -705,10 +726,11 @@ git commit -m "feat(profiles): build_profiles.py（Wikidata/Wikipedia取得+Clau
 
 **Files:** Generated `data/static/profiles/**`（JA 分）・`data/static/profiles_manifest.json`
 
-- [ ] **Step 1: 日本分を生成**（要 `ANTHROPIC_API_KEY`。NE キャッシュは Phase2 と同じく `scripts/.cache/ne/` に存在＝無ければ Phase2 の取得手順で再取得）
+- [ ] **Step 1: 日本分をダミー生成**（API キー不要・実取得もダミーで省略。NE キャッシュは admin1 反復に必要＝無ければ Phase2 の取得手順で `scripts/.cache/ne/` に再取得。cities は `data/static/cities/JA.json`＝Phase2 生成済を使用）
 
-Run: `PROFILE_FIPS=JA PYTHONPATH=. python3 scripts/build_profiles.py`
-Expected: `[profiles] country=1 admin1=47 city=69`（日本＝1国＋47都道府県＋約69都市）
+Run: `PROFILE_DUMMY=1 PROFILE_FIPS=JA PYTHONPATH=. python3 scripts/build_profiles.py`
+Expected: `[profiles] country=1 admin1=47 city=69`（日本＝1国＋47都道府県＋約69都市・全件 degraded=false でダミーセクション入り）
+（将来タスク＝実 LLM 生成: `ANTHROPIC_API_KEY` を設定し `PROFILE_DUMMY` 無しで実行→全 FIPS で 2.5c）
 
 - [ ] **Step 2: カバレッジ/サイズ/品質を実測**
 
