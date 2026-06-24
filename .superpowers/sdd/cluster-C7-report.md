@@ -141,3 +141,21 @@ export function joinWatchCountries(codes, instabilityCountries, fipsCenterFn)
 ## 注意事項
 
 - **実データ未生成**: `data/static/admin1/` の GeoJSON.gz ファイルは Natural Earth データ未調達のため存在しない。実際の国クリック→詳細表示の end-to-end は NE データ準備後。
+
+---
+
+## M-1 二重発火バグ修正（2026-06-24、commit 9d5beaf）
+
+### 判定: **実バグ（false positive ではない）**
+
+**問題の確定方法**:
+- 追加した回帰テスト（同一 rootEl に renderDrilldown を2回呼び → onClose/onWatchToggle をクリック1回）が修正前に **fail（actual=2, expected=1）** → 実際に二重発火していることを確認。
+- 原因: `closeBtn` と `watchBtn` は `#drilldown` の固定ノード（innerHTML 再構築されない）。`renderDrilldown` 呼び出し毎に `addEventListener` が積み重なり、2回呼ぶと同じノードに2個のハンドラが登録される。`body` 内の行ボタンは `body.innerHTML = ''` で毎回破棄・再生成されるため二重発火しないが、`.dd-close`/`.dd-watch` は再生成されない点が見落とされていた。
+
+**修正方法**:
+- `js/ui/drilldown.js` の `closeBtn`/`watchBtn` 配線を `addEventListener('click', ...)` → **`onclick = ...`（プロパティ代入）** に変更。代入は毎回上書きなのでハンドラは常に最新の1個だけが有効。
+- テスト DOM シム（`tests/drilldown_render.test.js` の `makeEl`）の `click()` メソッドに `onclick` プロパティ発火を追加（`addEventListener` 経由のリスナーと共存）。
+
+**テスト結果（修正後）**:
+- `node --test tests/drilldown_render.test.js`: **10 pass / 0 fail**（元の 8 件 + 回帰テスト 2 件）
+- `node --test tests/*.test.js`: **529 pass / 0 fail**（baseline 527 + 新規 2 件）
