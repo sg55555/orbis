@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { addCode, removeCode, hasCode, orderByInstability } from '../js/lib/drilldown/watchlist.js';
+import { addCode, removeCode, hasCode, orderByInstability, makeWatchlistStore } from '../js/lib/drilldown/watchlist.js';
 
 test('addCode: 末尾追加・順序保持・新配列を返し元を破壊しない', () => {
   const base = ['UP', 'RS'];
@@ -81,4 +81,64 @@ test('orderByInstability: countries 欠落でも落ちない（list をそのま
 
 test('orderByInstability: list が非配列なら空配列', () => {
   assert.deepEqual(orderByInstability(null, [{ code: 'A', score: 1 }]), []);
+});
+
+function fakeStorage(init) {
+  const m = new Map(init ? Object.entries(init) : []);
+  return {
+    getItem: (k) => (m.has(k) ? m.get(k) : null),
+    setItem: (k, v) => { m.set(k, v); },
+    _dump: () => m,
+  };
+}
+
+test('makeWatchlistStore: save→load の round-trip（配列を保持）', () => {
+  const storage = fakeStorage();
+  const store = makeWatchlistStore({ storage });
+  store.save(['UP', 'RS']);
+  assert.deepEqual(store.load(), ['UP', 'RS']);
+});
+
+test('makeWatchlistStore: 既定キー orbis.watchlist に書く', () => {
+  const storage = fakeStorage();
+  const store = makeWatchlistStore({ storage });
+  store.save(['JA']);
+  assert.equal(storage.getItem('orbis.watchlist'), JSON.stringify(['JA']));
+});
+
+test('makeWatchlistStore: key 上書き可能', () => {
+  const storage = fakeStorage();
+  const store = makeWatchlistStore({ storage, key: 'k.custom' });
+  store.save(['JA']);
+  assert.equal(storage.getItem('k.custom'), JSON.stringify(['JA']));
+});
+
+test('makeWatchlistStore: 未保存時 load は []', () => {
+  const store = makeWatchlistStore({ storage: fakeStorage() });
+  assert.deepEqual(store.load(), []);
+});
+
+test('makeWatchlistStore: 破損 JSON は [] にフォールバック', () => {
+  const store = makeWatchlistStore({ storage: fakeStorage({ 'orbis.watchlist': '{not json' }) });
+  assert.deepEqual(store.load(), []);
+});
+
+test('makeWatchlistStore: 配列でない JSON（オブジェクト）も [] にフォールバック', () => {
+  const store = makeWatchlistStore({ storage: fakeStorage({ 'orbis.watchlist': '{"a":1}' }) });
+  assert.deepEqual(store.load(), []);
+});
+
+test('makeWatchlistStore: storage 無し（null）でも load=[]・save は no-op で落ちない', () => {
+  const store = makeWatchlistStore({ storage: null });
+  assert.deepEqual(store.load(), []);
+  assert.doesNotThrow(() => store.save(['UP']));
+});
+
+test('makeWatchlistStore: setItem が throw しても save は握りつぶす', () => {
+  const storage = {
+    getItem: () => null,
+    setItem: () => { throw new Error('quota'); },
+  };
+  const store = makeWatchlistStore({ storage });
+  assert.doesNotThrow(() => store.save(['UP']));
 });
