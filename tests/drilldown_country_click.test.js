@@ -44,10 +44,23 @@ test('resolveFipsAt: 海洋/極域(miss)は null', () => {
   assert.equal(api.resolveFipsAt(50, 50, POLYS), null);
 });
 
-test('initCountryClick: map.on("click") を登録する', () => {
+// patch #7（二重登録解消）: initCountryClick は map.on('click') を内部登録しない。
+// main.js(C7) が cc = initCountryClick(...); map.on('click', cc.handleMapClick) で登録するのが唯一の登録点。
+// handleMapClick は戻り値として公開されるので、呼び出し元が任意のタイミングで登録できる。
+test('initCountryClick: map.on("click") を内部登録しない（外部配線に委ねる）', () => {
   const map = fakeMap();
   initCountryClick({ map, getSnapshots: () => ({}), deps: baseDeps() });
-  assert.equal(typeof map.handlers.click, 'function');
+  // 内部登録されていないことを確認（map.on が呼ばれていない → handlers.click は undefined）
+  assert.equal(map.handlers.click, undefined, '内部登録なし');
+});
+
+test('initCountryClick: handleMapClick が戻り値として公開されている（外部から登録可能）', () => {
+  const map = fakeMap();
+  const api = initCountryClick({ map, getSnapshots: () => ({}), deps: baseDeps() });
+  assert.equal(typeof api.handleMapClick, 'function', 'handleMapClick は公開関数');
+  // 外部から登録できる
+  map.on('click', api.handleMapClick);
+  assert.equal(map.handlers.click, api.handleMapClick, '外部から登録すると map.handlers.click に入る');
 });
 
 test('handleMapClick: deck pick 直後＆近接座標なら openCountry を抑制', async () => {

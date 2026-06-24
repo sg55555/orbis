@@ -4,6 +4,8 @@
 // patch #4: noteDeckPick(lngLat) を公開し内部 deckPick を更新。handleMapClick が時刻＋座標の二重判定で排他。
 // patch #5: setBoundsPolys(polys) を公開。main.js(C7) が loadCountryBounds→setBoundsPolys を配線する前提。
 // patch #6: loadCountryGeo は fetchFn を deps 経由で DI（本番は既定 fetch）。
+// patch #7（二重登録解消）: map.on('click') は main.js(C7) が明示登録する一点に一本化。
+//   initCountryClick は map.on を登録しない（呼び出し側の責務）。
 import { locateFeature } from '../lib/drilldown/geo_poly.js';
 
 // deck pick と map.on('click') の二重発火を抑える二重判定のしきい値。
@@ -83,7 +85,8 @@ export function initCountryClick({ map, getSnapshots, deps }) {
 
   function setBoundsPolys(polys) { boundsPolys = polys; }
 
-  if (map && map.on) map.on('click', handleMapClick);
+  // map.on('click') は main.js(C7) が cc = initCountryClick(...); map.on('click', cc.handleMapClick) で登録する。
+  // ここで登録すると main.js 側と二重になる（patch #7 解消）。
 
   return { resolveFipsAt, handleMapClick, openCountry, closeCountry, noteDeckPick, setBoundsPolys };
 }

@@ -28,7 +28,9 @@ import { tempAt } from './layers/airtemp.js';
 import { sstAt } from './layers/sst.js';
 import { aggregateByCountry, buildHotspotConfigs } from './lib/aggregate.js';
 import { initCountryClick } from './ui/country_click.js';
-import { loadCountryBounds } from './lib/drilldown/country_index.js';
+import { loadCountryBounds, fipsCenter } from './lib/drilldown/country_index.js';
+import { renderWatchlist } from './ui/drilldown.js';
+import { makeWatchlistStore, addCode, removeCode, joinWatchCountries } from './lib/drilldown/watchlist.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
@@ -73,6 +75,10 @@ let selPopup = null;      // 着地点を示す maplibre ポップアップ（bo
 let selectedFlight = null; // { point, arrival[lon,lat] } 航空クリックで選択
 let selectedShip = null;   // { point, arrival[lon,lat] } 船舶クリックで選択
 let cc = null;             // 国ドリルダウン: initCountryClick の戻り値（boot 後に初期化）
+// ウォッチリスト（localStorage 永続）。boot 後に makeWatchlistStore で初期化。
+const _wlStore = makeWatchlistStore({ storage: typeof localStorage !== 'undefined' ? localStorage : null });
+let _watchCodes = _wlStore.load();  // string[]（FIPS コード配列）
+let _insCountries = null;           // instability.countries（joinWatchCountries で参照）
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
 const SHIP_PROJECT_MIN = 600; // 船は低速なので約10時間の長延長（12knで約222km先）。引きで到達ポインタが船首に重ならないように。
 
@@ -373,11 +379,42 @@ function boot() {
   // 国ドリルダウン（別系統 map.on('click')）: deck onClick の early return より前で拾えないため独立配線。
   // snapshots は module-local（window.__orbis に載らない）ゆえ getSnapshots DI クロージャで渡す。
   // deck pick 排他は cc.noteDeckPick(info.coordinate) で正準配線（patch #4）。
-  // country_click.js が内部でも map.on('click') を登録するが、明示配線で仕様を文書化する。
+  // patch #7（二重登録解消）: country_click.js は map.on を登録しない。ここが唯一の登録点。
+  // patch #7: ウォッチリスト描画（join 済み国オブジェクト配列を renderWatchlist に渡す）。
+  const wlRoot = document.getElementById('drilldown');
+  function refreshWatchlist() {
+    const countries = joinWatchCountries(_watchCodes, _insCountries, fipsCenter);
+    renderWatchlist(wlRoot, countries, {
+      onSelect: (c) => {
+        map.flyTo({ center: [c.lon, c.lat], zoom: 4, duration: 1500, essential: true });
+        selected = { lon: c.lon, lat: c.lat, title: c.name_ja, layerId: 'watchlist', at: performance.now() };
+        if (window.__orbis) window.__orbis.selected = selected;
+        drawAll(overlay);
+      },
+      onRemove: (code) => {
+        _watchCodes = removeCode(_watchCodes, code);
+        _wlStore.save(_watchCodes);
+        refreshWatchlist();
+      },
+    });
+  }
+
   cc = initCountryClick({
     map,
     getSnapshots: () => snapshots,
-    deps: { fetch },
+    deps: {
+      fetch,
+      onWatchToggle: (code) => {
+        // ★ クリックでウォッチリストのトグル（追加/削除）
+        if (Array.isArray(_watchCodes) && _watchCodes.includes(code)) {
+          _watchCodes = removeCode(_watchCodes, code);
+        } else {
+          _watchCodes = addCode(_watchCodes, code);
+        }
+        _wlStore.save(_watchCodes);
+        refreshWatchlist();
+      },
+    },
   });
   map.on('click', cc.handleMapClick);
   // patch #5: country_bounds polys を注入し、resolveFipsAt が陸地で FIPS を解決できるようにする。
@@ -515,6 +552,9 @@ function boot() {
             drawAll(overlay);
           },
         });
+        // patch #7: instability.countries をキャッシュし、ウォッチリストの join に使う。
+        _insCountries = ins.countries;
+        refreshWatchlist();
         if (window.__orbis) window.__orbis.instability = ins;
       } else if (insRoot) {
         insRoot.style.display = 'none';

@@ -38,6 +38,37 @@ export function orderByInstability(list, countries) {
     .map((x) => x.code);
 }
 
+// コード配列（string[]）を国オブジェクト配列（renderWatchlist 向け）に join する純ヘルパ。
+// patch #7: ウォッチリスト描画時に main.js から呼ばれる（DI seam）。
+// - codes: string[]（ウォッチリストの FIPS コード配列）
+// - instabilityCountries: instability.countries（{code, score, level?} 等）または null/undefined
+// - fipsCenterFn: code → [lng, lat] or null（country_index.fipsCenter を渡す）
+// 戻り値: [{code, name_ja, score, level?, lon, lat}]・orderByInstability 準拠の順序。
+// 圏外国（instabilityCountries に無い）は score=0 で必ず含める（消えない）。
+// fipsCenterFn が null を返す国は lon=0/lat=0 フォールバック（disabled で表示は残す）。
+export function joinWatchCountries(codes, instabilityCountries, fipsCenterFn) {
+  if (!Array.isArray(codes)) return [];
+  const iArr = Array.isArray(instabilityCountries) ? instabilityCountries : [];
+  const insMap = new Map(iArr.map((c) => [c.code, c]));
+
+  // orderByInstability 準拠の順序（score 降順・同 score は元順）
+  const sorted = orderByInstability(codes, iArr);
+
+  return sorted.map((code) => {
+    const ins = insMap.get(code);
+    const ctr = fipsCenterFn ? fipsCenterFn(code) : null;
+    const obj = {
+      code,
+      name_ja: (ins && ins.name_ja) || code,  // instability が name_ja を持てばそちら、なければ code
+      score: ins ? (ins.score || 0) : 0,
+      lon: ctr ? ctr[0] : 0,
+      lat: ctr ? ctr[1] : 0,
+    };
+    if (ins && ins.level != null) obj.level = ins.level;
+    return obj;
+  });
+}
+
 // localStorage 薄ラッパ（state.js readStored/writeStored 同型）。storage を DI。
 // load: 破損 JSON / 非配列 / storage 欠落 → []。save: 失敗は握りつぶす。
 export function makeWatchlistStore({ storage, key = 'orbis.watchlist' } = {}) {
