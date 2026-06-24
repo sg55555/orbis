@@ -171,3 +171,58 @@ def test_simplify_ring_short_ring_unchanged():
     full = [[0, 0], [1, 0], [2, 0], [3, 0], [3, 3], [0, 0]]
     out = simplify_ring(full, 0)
     assert out == full and out is not full
+
+
+# Important-4: largest_polygon_bbox のアンチメリディアンガード
+def test_largest_polygon_bbox_antimeridian_single_polygon():
+    """フィジー型: 単一 Polygon のリングが ±180 を跨ぐ（lon_span > 180）。
+    経度ラップで実 span を取り、過剰全幅 bbox（lonSpan ≈ 360）を返さない。"""
+    # フィジー近似: 経度が 177 〜 -178 を跨ぐ単一リング
+    ring = [[177, -18], [180, -18], [-178, -18], [-178, -15], [177, -15], [177, -18]]
+    geom = {"type": "Polygon", "coordinates": [ring]}
+    bbox = largest_polygon_bbox(geom)
+    assert bbox is not None
+    # raw_span = (-178) - 177 が負 → abs = 355 > 180 なので wrap が選ばれる。
+    # wrapped: 正の経度を -360: [177-360=-183, 180-360=-180, -178, -178, 177-360=-183]
+    # wrap_w=-183, wrap_e=-178 → span=5（小さい）, raw_span=355（大きい）→ wrap 採用
+    lon_span = bbox[2] - bbox[0]
+    assert lon_span < 180, f"アンチメリディアン跨ぎ単一 Polygon の lon_span は 180 未満であるべき: {lon_span}"
+    assert lon_span > 0, f"lon_span は正であるべき: {lon_span}"
+
+
+def test_largest_polygon_bbox_normal_polygon_unchanged():
+    """通常（アンチメリディアン非跨ぎ）Polygon は従来と同じ結果。"""
+    ring = [[130, 30], [145, 30], [145, 45], [130, 45], [130, 30]]
+    geom = {"type": "Polygon", "coordinates": [ring]}
+    bbox = largest_polygon_bbox(geom)
+    assert bbox == [130, 30, 145, 45]
+
+
+def test_largest_polygon_bbox_antimeridian_multipolygon_still_picks_largest():
+    """MultiPolygon で本土が大きい場合は本土を選ぶ（従来と同じ）。"""
+    geom = {
+        "type": "MultiPolygon",
+        "coordinates": [
+            [[[170, -5], [179, -5], [179, 5], [170, 5], [170, -5]]],   # 小・幅9
+            [[[0, 0], [30, 0], [30, 40], [0, 40], [0, 0]]],            # 大・幅30高40
+        ],
+    }
+    bbox = largest_polygon_bbox(geom)
+    assert bbox == [0, 0, 30, 40]
+
+
+# Minor: Kosovo XK→KV
+from scripts.lib.fips_of_iso import FIPS_OF_ISO
+
+
+def test_fips_of_iso_kosovo_xk_to_kv():
+    """Kosovo: ISO XK → FIPS KV が明示登録されていること（name 突合頼みを解消）。"""
+    assert FIPS_OF_ISO.get("XK") == "KV", "Kosovo: XK→KV が FIPS_OF_ISO に登録されていない"
+
+
+def test_resolve_fips_kosovo_via_iso():
+    """Kosovo の NE feature が ISO_A2='XK' を持つ場合、resolve_fips が KV を返す。"""
+    # Kosovo は BOUNDS_NAME_INDEX に無い（小国/係争地で country_bounds に無い場合）→ ISO で解決。
+    props = {"ISO_A2": "XK", "admin": "Kosovo"}
+    result = resolve_fips(props, BOUNDS_NAME_INDEX)  # name 突合: "Kosovo" は BOUNDS_NAME_INDEX に無い→ISO 採用
+    assert result == "KV", f"XK は KV に解決されるべき、実際: {result}"

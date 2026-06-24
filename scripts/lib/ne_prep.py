@@ -111,10 +111,31 @@ def _ring_bbox(ring):
     return [min(xs), min(ys), max(xs), max(ys)]
 
 
+def _ring_bbox_antimeridian(ring):
+    """outer ring の bbox を計算する。アンチメリディアン跨ぎ（lon span > 180）を検出した場合は
+    経度をラップして実 span を取り、過剰全幅 bbox を返さない。
+    戻り値: [w, s, e, n]（e<w の場合はアンチメリディアン折返しを示す）。"""
+    xs = [c[0] for c in ring]
+    ys = [c[1] for c in ring]
+    raw_w, raw_e = min(xs), max(xs)
+    raw_span = raw_e - raw_w
+    if raw_span > 180:
+        # アンチメリディアン跨ぎの可能性: 正の経度を -360 オフセットして再計算し、
+        # span が小さい方を採用する（フィジー等・単一リングが ±180 を跨ぐケース）。
+        wrapped = [x - 360 if x > 0 else x for x in xs]
+        wrap_w, wrap_e = min(wrapped), max(wrapped)
+        wrap_span = wrap_e - wrap_w
+        if wrap_span < raw_span:
+            return [wrap_w, min(ys), wrap_e, max(ys)]
+    return [raw_w, min(ys), raw_e, max(ys)]
+
+
 def largest_polygon_bbox(geometry):
     """Polygon / MultiPolygon から最大面積ポリゴン（outer ring）の bbox [w,s,e,n]。
     面積は bbox 近似（gen_country_centroids.py 同型）。MultiPolygon で本土を選ぶ
-    ことで太平洋跨ぎ（lonSpan>180 の偽 bbox）を回避する。空は None。"""
+    ことで太平洋跨ぎ（lonSpan>180 の偽 bbox）を回避する。
+    単一 Polygon でも lon span>180 を検出したらラップして実 span を取る（Important-4）。
+    空は None。"""
     if not geometry:
         return None
     gtype = geometry.get("type")
@@ -129,8 +150,10 @@ def largest_polygon_bbox(geometry):
     for poly in polys:
         if not poly or not poly[0]:
             continue
-        bbox = _ring_bbox(poly[0])  # outer ring
-        area = (bbox[2] - bbox[0]) * (bbox[3] - bbox[1])
+        bbox = _ring_bbox_antimeridian(poly[0])  # outer ring（アンチメリディアン対応）
+        # bbox 面積: span が -360 オフセット後は w<e なのでそのまま差を取る。
+        lon_span = bbox[2] - bbox[0]
+        area = lon_span * (bbox[3] - bbox[1])
         if area > best_area:
             best_area = area
             best = bbox
