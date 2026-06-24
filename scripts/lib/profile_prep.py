@@ -48,3 +48,10 @@ def wikidata_facts(entity):
         "lat": lat, "lon": lon,
         "elevation_m": _claim_amount(claims, "P2044"),
     }
+
+
+def ja_wikipedia_title(entity):
+    """entity の日本語 Wikipedia サイトリンク title。無ければ None。"""
+    sl = (entity or {}).get("sitelinks") or {}
+    t = (sl.get("jawiki") or {}).get("title")
+    return t.strip() if isinstance(t, str) and t.strip() else None

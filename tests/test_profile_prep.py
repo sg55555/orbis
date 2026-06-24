@@ -45,3 +45,11 @@ def test_wikidata_facts_extracts():
 def test_wikidata_facts_missing_all_none():
     f = wikidata_facts({})
     assert f == {"population": None, "area_km2": None, "lat": None, "lon": None, "elevation_m": None}
+
+
+from scripts.lib.profile_prep import ja_wikipedia_title
+
+def test_ja_wikipedia_title():
+    assert ja_wikipedia_title({"sitelinks": {"jawiki": {"title": "東京都"}}}) == "東京都"
+    assert ja_wikipedia_title({"sitelinks": {"enwiki": {"title": "Tokyo"}}}) is None
+    assert ja_wikipedia_title({}) is None
