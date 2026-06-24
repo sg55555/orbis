@@ -28,8 +28,12 @@ import { tempAt } from './layers/airtemp.js';
 import { sstAt } from './layers/sst.js';
 import { aggregateByCountry, buildHotspotConfigs } from './lib/aggregate.js';
 import { initCountryClick } from './ui/country_click.js';
-import { loadCountryBounds, fipsCenter } from './lib/drilldown/country_index.js';
-import { renderWatchlist } from './ui/drilldown.js';
+import { loadCountryBounds, countryBbox, fipsCenter } from './lib/drilldown/country_index.js';
+import { renderDrilldown, setDrilldownState, renderWatchlist } from './ui/drilldown.js';
+import { loadCountryGeo } from './lib/drilldown/country_data.js';
+import { buildDrilldown } from './lib/drilldown/aggregate_admin1.js';
+import { loadPolygons } from './lib/drilldown/geo_poly.js';
+import { zoomForBbox } from './lib/zoom_for_bbox.js';
 import { makeWatchlistStore, addCode, removeCode, joinWatchCountries } from './lib/drilldown/watchlist.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
@@ -399,11 +403,77 @@ function boot() {
     });
   }
 
+  // Critical-1: bboxIndex / manifest を boot 時に fetch して deps に注入する。
+  let _bboxIndex = { country: {}, extra: {} };
+  let _manifest = {};
+  // 非同期取得（失敗しても空 index/manifest でフォールバック動作）
+  fetch('data/static/admin1_bbox.json').then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d && typeof d === 'object') _bboxIndex = d;
+  }).catch(() => {});
+  fetch('data/static/drilldown_manifest.json').then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d && typeof d === 'object') _manifest = d;
+  }).catch(() => {});
+
+  const drilldownRootEl = document.getElementById('drilldown');
+
   cc = initCountryClick({
     map,
     getSnapshots: () => snapshots,
     deps: {
-      fetch,
+      // Critical-1: fetch↔fetchFn 名不一致を解消
+      fetchFn: fetch,
+      // 国 geo 遅延取得（manifest / fetchFn DI）
+      loadCountryGeo: (fips, opts) => loadCountryGeo(fips, {
+        manifest: opts && opts.manifest != null ? opts.manifest : _manifest,
+        fetchFn: fetch,
+      }),
+      // ドリルダウン集計（純粋関数）
+      buildDrilldown,
+      // ドリルダウン描画
+      renderDrilldown,
+      setDrilldownState,
+      // bbox / zoom
+      countryBbox,
+      zoomForBbox,
+      // admin1 polys 構築（geo.admin1 GeoJSON → loadPolygons でリング化）
+      loadPolygonsFn: (admin1GeoJson) => loadPolygons(admin1GeoJson, { codeKey: 'a1code' }),
+      // Critical-3: bboxIndex / manifest は boot で fetch した参照を渡す（クロージャ経由）
+      get bboxIndex() { return _bboxIndex; },
+      get manifest() { return _manifest; },
+      // パネル DOM 要素
+      rootEl: drilldownRootEl,
+      bodyEl: document.body,
+      // instability / forecast の該当国データ取得クロージャ
+      getInstabilityCountry: (fips) => {
+        const ins = window.__orbis && window.__orbis.instability;
+        if (!ins || !Array.isArray(ins.countries)) return null;
+        return ins.countries.find((c) => c.code === fips) || null;
+      },
+      getForecastCards: (fips) => {
+        const fc = window.__orbis && window.__orbis.forecasts;
+        if (!fc || !Array.isArray(fc.cards)) return [];
+        return fc.cards.filter((c) => c.fips === fips || c.place_fips === fips);
+      },
+      // onSelectEvent: 既存 selected/flyTo/drawAll/selPopup 契約に合流
+      onSelectEvent: (ev) => {
+        if (ev && typeof ev.lon === 'number' && typeof ev.lat === 'number') {
+          selected = { lon: ev.lon, lat: ev.lat, title: ev.title || '', layerId: ev.layerId || 'country', at: performance.now() };
+          if (window.__orbis) window.__orbis.selected = selected;
+          map.flyTo({ center: [ev.lon, ev.lat], zoom: 5, duration: 1500, essential: true });
+          const html = selectionPopupHtml({ lon: ev.lon, lat: ev.lat, title: ev.title || '', layerId: ev.layerId || 'country' });
+          if (selPopup) selPopup.setLngLat([ev.lon, ev.lat]).setHTML(html).addTo(map);
+          drawAll(overlay);
+        }
+      },
+      // onOceanMiss: 既存 share-toast で通知（「この地点は国を特定できません」）
+      onOceanMiss: () => {
+        const toast = document.getElementById('share-toast');
+        if (!toast) return;
+        toast.textContent = 'この地点は国を特定できません';
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2400);
+      },
+      // ウォッチリストトグル
       onWatchToggle: (code) => {
         // ★ クリックでウォッチリストのトグル（追加/削除）
         if (Array.isArray(_watchCodes) && _watchCodes.includes(code)) {
