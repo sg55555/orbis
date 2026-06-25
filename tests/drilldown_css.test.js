@@ -10,10 +10,10 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const css = readFileSync(join(__dirname, '..', 'css', 'orbis.css'), 'utf8');
 
-test('css: #drilldown は中央フロート（fixed・中央寄せ・幅 min(920px,95vw)）', () => {
+test('css: #drilldown は中央フロート（fixed・中央寄せ・幅 min(…px,95vw) でキャップ）', () => {
   const m = (css.match(/#drilldown(?:\.drill-panel)?\s*\{[^}]*\}/g) || []).join('\n');
   assert.match(m, /position:\s*fixed/);
-  assert.match(m, /min\(\s*920px/);
+  assert.match(m, /width:\s*min\(\s*\d+px,\s*95vw\)/);
 });
 test('css: #drilldown は backdrop-filter / glass-blur を使わない（blur-bleed 回避）', () => {
   const m = (css.match(/#drilldown(?:\.drill-panel)?\s*\{[^}]*\}/g) || []).join('\n');

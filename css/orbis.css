@@ -1211,7 +1211,7 @@ body.drill-open #drill-scrim { display: block; }
 /* フロートページ本体 */
 #drilldown.drill-panel {
   position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  width: min(920px, 95vw); max-height: 92vh; z-index: 6;
+  width: min(1280px, 95vw); max-height: 95vh; z-index: 6;
   background: rgba(7,11,20,0.97); border-radius: 16px;
   border: 1px solid var(--rim-cyan-18);
   box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px var(--glow-cyan-weak);
