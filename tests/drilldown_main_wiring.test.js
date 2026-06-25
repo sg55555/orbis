@@ -94,7 +94,7 @@ test('main.js: deps に manifest を渡す', () => {
 });
 
 // Critical-2: hidden 解除の静的検証
-test('country_click.js: openCountry が hidden 属性を外す', () => {
+test('country_click.js: openPlace が hidden 属性を外す', () => {
   const ccSrc = readFileSync(join(__dirname, '..', 'js', 'ui', 'country_click.js'), 'utf8');
   assert.match(ccSrc, /removeAttribute\(['"]hidden['"]\)/);
 });
@@ -102,4 +102,17 @@ test('country_click.js: openCountry が hidden 属性を外す', () => {
 test('country_click.js: closeCountry が hidden 属性を戻す', () => {
   const ccSrc = readFileSync(join(__dirname, '..', 'js', 'ui', 'country_click.js'), 'utf8');
   assert.match(ccSrc, /setAttribute\(['"]hidden['"]/);
+});
+
+// Task 9: profiles_manifest fetch + profile deps 配線 + Esc/スクリム close
+test('main.js: profiles_manifest を fetch し profile deps を配線', () => {
+  assert.match(src, /profiles_manifest\.json/);
+  assert.match(src, /resolvePlace/);
+  assert.match(src, /loadProfile/);
+  assert.match(src, /renderProfile/);
+});
+
+test('main.js: Esc / #drill-scrim で閉じる', () => {
+  assert.match(src, /drill-scrim/);
+  assert.match(src, /Escape/);
 });

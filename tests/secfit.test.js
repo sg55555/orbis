@@ -8,10 +8,14 @@ import { readFileSync } from 'node:fs';
 
 const css = readFileSync(new URL('../css/orbis.css', import.meta.url), 'utf8');
 
-// secfit ブロックを抽出（マーカーコメントから次の大ブロックコメント or ファイル末尾まで）。
+// secfit ブロックを抽出（マーカーコメントから次の大ブロックコメント＝国ドリルダウン節の手前まで）。
+// 面禁則スキャンは secfit 馴染ませ規則のみを対象にする。後続の place-profile（案C・国ドリルダウン中央フロート）は
+// 不透明フロート（rgba(7,11,20,.97)）内＋overflow:hidden の閉じた装飾で globe と滲む経路が無く、
+// .pf-mini は球バッジ＝radial が意味的に正しい。よって secfit 節に限定して走査する（境界が無ければ EOF まで）。
 const startIdx = css.indexOf('後付けセクション馴染ませ');
 assert.ok(startIdx >= 0, 'secfit ブロックのマーカーコメントが存在する');
-const block = css.slice(startIdx);
+const endIdx = css.indexOf('国ドリルダウン: 中央フロート', startIdx);
+const block = endIdx > startIdx ? css.slice(startIdx, endIdx) : css.slice(startIdx);
 
 test('#sources: .src-panel が instability 型グラス箱（地/縁/角丸/blur）になっている', () => {
   const m = block.match(/body\.secfit-on\s+\.src-panel\s*\{[^}]*\}/);

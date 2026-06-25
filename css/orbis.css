@@ -1346,42 +1346,54 @@ body.secfit-on .brief-lead { background: rgba(13, 20, 36, .22); }
 @media (max-width: 768px) {
   body.secfit-on .src-panel { padding: 4px 10px 10px; }
 }
-/* ===== Phase2 国ドリルダウン: 非重畳 split パネル（blur-bleed を構造的に回避） ===== */
-/* #drilldown は不透明純色（#070b14）。backdrop-filter / glass を一切使わない＝square-blur-bleed が原理的に発生しない。 */
-#drilldown.drill-panel {
-  position: absolute; right: 0; top: 0; bottom: 0; width: min(38vw, 380px); z-index: 6;
-  background: #070b14; border-left: 1px solid var(--line);
-  overflow-y: auto; overflow-x: hidden;
-  padding: 14px 14px calc(20px + env(safe-area-inset-bottom));
-  font-size: 12px; color: var(--text);
-  transform: translateX(102%); transition: transform .3s ease;
+/* ===== Phase2 国ドリルダウン: 中央フロート＋スクリム（案C）===== */
+/* #drilldown は近不透明純色（rgba(7,11,20,0.97)）。backdrop-filter / glass を一切使わない＝blur-bleed が原理的に発生しない。
+   globe はスクリムで暗くするだけ（縮小しない）。旧 grid-push（body.drill-open #map-wrap / #map）は廃止。 */
+
+/* 暗幕スクリム（globe を薄暗く） */
+#drill-scrim {
+  position: fixed; inset: 0; background: var(--bg-scrim-b); z-index: 5;
 }
-/* drill-open でせり出す（PC は右からスライドイン） */
-body.drill-open #drilldown.drill-panel { transform: translateX(0); }
+#drill-scrim[hidden] { display: none; }
+body.drill-open #drill-scrim { display: block; }
+
+/* フロートページ本体 */
+#drilldown.drill-panel {
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: min(1280px, 95vw); max-height: 95vh; z-index: 6;
+  background: rgba(7,11,20,0.97); border-radius: 16px;
+  border: 1px solid var(--rim-cyan-18);
+  box-shadow: 0 30px 90px rgba(0,0,0,0.6), 0 0 60px var(--glow-cyan-weak);
+  overflow-y: auto; overflow-x: hidden;
+  padding: 26px clamp(20px, 3.4vw, 40px) 30px;
+  font-size: 13px; color: var(--text);
+  visibility: hidden; opacity: 0; transition: opacity .25s ease, visibility .25s ease;
+}
+/* 縁のオーロラ光（線/光/縁） — NO backdrop-filter */
+#drilldown.drill-panel::before {
+  content: ''; position: absolute; inset: -1px; border-radius: 16px; pointer-events: none;
+  background: linear-gradient(135deg, var(--aurora-line-cyan), transparent 40%, transparent 60%, var(--aurora-line-purple));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude; padding: 1px; opacity: .55;
+}
 #drilldown[hidden] { display: none; }
+body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
 
-/* drill-open 時に #map-wrap を grid 化し、#map のみ position 上書きで grid セルに収め物理縮小。
-   他オーバーレイ（#starfield/#freshness/#panel/#feed/#legend）は position:absolute のまま参照枠を維持＝連鎖崩れしない。 */
-body.drill-open #map-wrap { display: grid; grid-template-columns: 1fr min(38vw, 380px); }
-body.drill-open #map { position: static; inset: auto; grid-column: 1; }
-/* #drilldown を grid 第2列に収め非重畳に（PC） */
-body.drill-open #drilldown.drill-panel { position: static; grid-column: 2; width: auto; }
-
-/* ヘッダ: タイトル／★／× を横並び */
-#drilldown .dd-head { display: flex; align-items: center; gap: 8px; margin-bottom: 8px;
-  position: sticky; top: 0; background: #070b14; padding-bottom: 6px; z-index: 1; }
-#drilldown .dd-title { flex: 1; margin: 0; font-size: 14px; color: var(--text); }
+/* ヘッダ: ★/× はフロート右上角に絶対配置。dd-title/dd-state はプロフィールでは未使用。 */
+#drilldown .dd-head {
+  position: absolute; top: 14px; right: 14px; z-index: 3;
+  display: flex; align-items: center; gap: 6px;
+}
+#drilldown .dd-title, #drilldown .dd-state { display: none; }
 #drilldown .dd-watch, #drilldown .dd-close {
-  background: none; border: 1px solid var(--line); color: var(--muted);
-  border-radius: 6px; cursor: pointer; width: 26px; height: 26px; line-height: 1; }
+  background: rgba(7,11,20,0.8); border: 1px solid var(--line); color: var(--muted);
+  border-radius: 8px; cursor: pointer; width: 30px; height: 30px; line-height: 1; }
 #drilldown .dd-watch:hover, #drilldown .dd-close:hover { color: var(--cyan); border-color: var(--cyan); }
 
 /* 状態表示（loading/error）: 既定は両メッセージ非表示。ready 時は dd-state 自体を隠す。 */
-#drilldown .dd-state { font-size: 12px; color: var(--muted); margin-bottom: 8px; min-height: 0; }
 #drilldown .dd-loading-msg, #drilldown .dd-error-msg { display: none; }
-#drilldown.dd-loading .dd-loading-msg { display: inline; }
-#drilldown.dd-error .dd-error-msg { display: inline; color: #ffce7a; }
-#drilldown.dd-ready .dd-state { display: none; }
+#drilldown.dd-loading .dd-loading-msg { display: inline; font-size: 12px; color: var(--muted); }
+#drilldown.dd-error .dd-error-msg { display: inline; font-size: 12px; color: #ffce7a; }
 #drilldown .dd-retry { margin-left: 6px; background: none; border: 1px solid var(--cyan);
   color: var(--cyan); border-radius: 6px; cursor: pointer; padding: 2px 8px; font-size: 11px; }
 
@@ -1391,10 +1403,6 @@ body.drill-open #drilldown.drill-panel { position: static; grid-column: 2; width
   cursor: pointer; padding: 7px 4px; }
 #drilldown .dd-rowbtn:hover:not(:disabled) { background: rgba(57,208,255,.08); }
 #drilldown .dd-rowbtn:disabled { opacity: .55; cursor: default; }
-
-/* degraded バナー */
-#drilldown .dd-degraded { font-size: 11px; color: #ffce7a; background: rgba(255,176,40,.10);
-  border: 1px solid rgba(255,176,40,.35); border-radius: 8px; padding: 8px 10px; margin-bottom: 10px; }
 
 /* ウォッチリスト */
 #drilldown .dd-watchlist { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 10px; }
@@ -1412,17 +1420,237 @@ body.drill-open #drilldown.drill-panel { position: static; grid-column: 2; width
   #drilldown.drill-panel { transition: none; }
 }
 
-/* モバイル（≤768px）: 下半分 bottom-sheet（上 globe・下 詳細）。mobile-nav.js は触らず body.drill-open 専用駆動。 */
+/* ===== .pf-* プロフィール本体（shared.css から移植・orbis.css トークンにマッピング） =====
+   トークンマッピング:
+     --panel-solid   → rgba(7,11,20,0.97) ≈ #070b14（#drilldown の背景と同値）
+     --aurora-cyan   → var(--aurora-line-cyan) = rgba(57,208,255,0.5)
+     --aurora-purple → var(--aurora-line-purple) = rgba(138,92,246,0.4)
+     --rim-cyan      → var(--glass-rim) = rgba(90,200,255,0.22)
+     --bg-card-soft  → var(--bg-card-soft) （orbis.css に既存・同値）
+     --muted-2       → var(--muted) ＝ #5b7fb0（shared.css --muted-2 = #5b7fb0 と一致）
+     --font-word     → var(--font-word)（orbis.css に既存）
+     --text-bright   → var(--text-bright)（orbis.css に既存）
+     --text-heading  → var(--text-heading)（orbis.css に既存）
+   @import Google Fonts は不要（--font-display 'Saira' / --font-word 'Orbitron' は既存）
+*/
+
+.profile {
+  color: var(--text);
+  font-family: var(--font-body, system-ui, "Segoe UI", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif);
+  font-size: 13px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* パンくず（国 › 県 › 市） */
+.pf-crumbs {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+  font-family: var(--font-display); font-size: 11.5px; letter-spacing: .04em;
+  color: var(--muted); margin-bottom: 12px;
+}
+.pf-crumbs button {
+  background: none; border: 0; color: var(--muted); cursor: pointer;
+  font: inherit; padding: 2px 2px; border-radius: 4px;
+}
+.pf-crumbs button:hover { color: var(--cyan); }
+.pf-crumbs .pf-crumb-cur { color: var(--text-heading); }
+.pf-crumbs .pf-sep { color: #3a567f; }
+
+/* ── ヒーロー（全部入り：画像スロット＋ミニマップ＋HUD） */
+.pf-hero {
+  display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start;
+  padding-bottom: 16px; margin-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+}
+.pf-hero::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--aurora-line-cyan) 30%, var(--aurora-line-purple) 70%, transparent);
+  opacity: .8;
+}
+
+/* メディアスタック＝画像スロット＋ミニマップのコーナーインセット */
+.pf-media {
+  position: relative; flex: 0 0 220px; max-width: 100%;
+  aspect-ratio: 16 / 10; border-radius: 12px; overflow: hidden;
+  border: 1px solid var(--line);
+  background:
+    radial-gradient(120% 90% at 70% 10%, rgba(57,208,255,0.10), transparent 60%),
+    radial-gradient(120% 120% at 20% 100%, rgba(138,92,246,0.12), transparent 60%),
+    linear-gradient(160deg, #0a1426, #060a14);
+}
+.pf-media-label {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 6px;
+  color: #4f6b96; font-size: 10.5px; letter-spacing: .04em; text-align: center;
+}
+.pf-media-label svg { width: 26px; height: 26px; opacity: .65; }
+.pf-media::before {
+  content: ''; position: absolute; inset: 0; opacity: .5;
+  background-image: repeating-linear-gradient(135deg, rgba(90,200,255,0.04) 0 10px, transparent 10px 20px);
+}
+
+/* ミニマップ（グローブ＋発光ドット）＝メディア右下に重ねる小バッジ */
+.pf-mini {
+  position: absolute; right: 8px; bottom: 8px; width: 64px; height: 64px;
+  border-radius: 50%; overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #0c1830, #05080f);
+  border: 1px solid var(--glass-rim);
+  box-shadow: 0 0 12px rgba(57,208,255,0.25), inset 0 0 10px rgba(8,16,32,0.8);
+}
+.pf-mini svg { width: 100%; height: 100%; display: block; }
+.pf-mini-grat { fill: none; stroke: rgba(90,170,230,0.35); stroke-width: .6; }
+.pf-mini-rim { fill: none; stroke: rgba(57,208,255,0.4); stroke-width: 1; }
+.pf-mini-dot { fill: var(--cyan); }
+.pf-mini-glow { fill: rgba(57,208,255,0.25); }
+
+/* ヒーロー右側：種別バッジ＋地域名＋データ HUD */
+.pf-id { flex: 1 1 240px; min-width: 200px; }
+.pf-kind {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-display); font-size: 10.5px; font-weight: 600;
+  letter-spacing: .14em; text-transform: uppercase;
+  color: var(--cyan); padding: 3px 9px; border-radius: 999px;
+  border: 1px solid rgba(57,208,255,0.35);
+  background: rgba(57,208,255,0.06);
+}
+.pf-kind .pf-kind-ja { color: var(--text-heading); letter-spacing: .08em; }
+/* 地域名 ＋ 右側の形状シルエット */
+.pf-name-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin: 9px 0 2px;
+}
+.pf-name {
+  margin: 0; font-family: var(--font-display); font-weight: 700;
+  font-size: 26px; line-height: 1.1; color: var(--text-bright);
+  text-shadow: 0 0 18px rgba(57,208,255,0.18);
+}
+.pf-shape { flex: 0 0 auto; width: 132px; max-width: 42%; line-height: 0; }
+.pf-shape svg { width: 100%; height: auto; display: block; overflow: visible; }
+.pf-shape path {
+  fill: rgba(57,208,255,0.05); stroke: var(--cyan); stroke-width: 1.4;
+  stroke-linejoin: round; stroke-linecap: round; vector-effect: non-scaling-stroke;
+  filter: drop-shadow(0 0 5px rgba(57,208,255,0.45));
+}
+.pf-name-en {
+  font-family: var(--font-word); font-weight: 500; font-size: 12px;
+  letter-spacing: .12em; color: var(--muted); text-transform: uppercase; display: block;
+  margin-top: 3px; text-shadow: none;
+}
+
+/* データ HUD＝事実をモノスペース風に整列 */
+.pf-facts {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px; margin: 12px 0 0; padding: 0;
+  border: 1px solid var(--line); border-radius: 10px; overflow: hidden;
+  background: var(--line);
+}
+.pf-fact {
+  background: rgba(7,11,20,0.97); padding: 7px 10px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.pf-fact dt {
+  font-family: var(--font-display); font-size: 9.5px; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--muted);
+}
+.pf-fact dd {
+  margin: 0; font-family: var(--font-word); font-size: 14px; font-weight: 500;
+  color: var(--text-heading); letter-spacing: .01em;
+}
+.pf-fact dd small { font-size: 10px; color: var(--muted); font-family: var(--font-display); margin-left: 2px; }
+
+/* ── 本文セクション */
+.pf-sections { display: flex; flex-direction: column; gap: 14px; }
+.pf-sec { position: relative; }
+.pf-sec-h {
+  display: flex; align-items: center; gap: 8px;
+  margin: 0 0 5px; font-family: var(--font-display); font-weight: 600;
+  font-size: 13.5px; letter-spacing: .05em; color: var(--text-heading);
+  padding-bottom: 5px; position: relative;
+}
+/* sec-h のオーロラ下線 */
+.pf-sec-h::after {
+  content: ''; position: absolute; left: 0; bottom: 0; width: 38px; height: 2px;
+  background: linear-gradient(90deg, var(--cyan), var(--aurora-line-purple));
+  border-radius: 2px;
+}
+.pf-sec-ic {
+  flex: 0 0 auto; width: 17px; height: 17px; color: var(--cyan);
+  filter: drop-shadow(0 0 4px rgba(57,208,255,0.4));
+}
+.pf-sec-ic svg { width: 100%; height: 100%; fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.pf-sec p { margin: 0; color: var(--text); }
+
+/* ── 近隣の最近の動向（イベント折りたたみ・下部・小さく） */
+.pf-events {
+  margin-top: 18px; border: 1px solid var(--line); border-radius: 10px;
+  background: var(--bg-card-soft); overflow: hidden;
+}
+.pf-events > summary {
+  list-style: none; cursor: pointer; padding: 9px 12px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: var(--font-display); font-size: 11.5px; letter-spacing: .06em;
+  color: var(--muted); user-select: none;
+}
+.pf-events > summary::-webkit-details-marker { display: none; }
+.pf-events > summary::before {
+  content: '▸'; color: var(--cyan); font-size: 10px; transition: transform .2s;
+}
+.pf-events[open] > summary::before { transform: rotate(90deg); }
+.pf-ev-count {
+  margin-left: auto; font-family: var(--font-word); font-size: 11px;
+  color: var(--text); background: rgba(57,208,255,0.10);
+  border: 1px solid rgba(57,208,255,0.25); border-radius: 999px; padding: 1px 8px;
+}
+.pf-ev-list { padding: 2px 12px 10px; }
+.pf-ev {
+  display: flex; align-items: baseline; gap: 8px; padding: 5px 0;
+  border-top: 1px solid rgba(28,44,72,0.5); font-size: 12px; color: var(--text);
+}
+.pf-ev:first-child { border-top: 0; }
+.pf-ev-emoji { flex: 0 0 auto; }
+.pf-ev-where { color: var(--muted); }
+
+/* ── 出典フッタ */
+.pf-source {
+  margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line);
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px;
+  font-size: 11px; color: var(--muted);
+}
+.pf-source a {
+  color: var(--cyan); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.pf-source a:hover { text-decoration: underline; }
+.pf-source .pf-qid { font-family: var(--font-word); letter-spacing: .04em; opacity: .8; }
+
+/* degraded（QID 無し/本文皆無）バナー */
+.pf-degraded {
+  margin-bottom: 12px; font-size: 11.5px; color: #ffce7a;
+  background: rgba(255,176,40,0.08); border: 1px solid rgba(255,176,40,0.3);
+  border-radius: 8px; padding: 8px 11px;
+}
+
+/* モバイル（≤768px）: 全幅ボトムシート。globe はスクリムで暗くするだけ（縮小しない）。 */
 @media (max-width: 768px) {
-  body.drill-open #map-wrap { grid-template-columns: none; grid-template-rows: 1fr 52vh; }
-  body.drill-open #map { grid-column: auto; grid-row: 1; }
   #drilldown.drill-panel {
-    right: 0; left: 0; top: auto; bottom: 0; width: auto;
-    border-left: 0; border-top: 1px solid var(--line); border-radius: 16px 16px 0 0;
-    padding-top: 18px; transform: translateY(102%);
+    left: 0; right: 0; bottom: 0; top: auto;
+    transform: none; width: auto; max-height: 88vh;
+    border-radius: 16px 16px 0 0;
+    visibility: hidden; opacity: 0;
   }
-  body.drill-open #drilldown.drill-panel { transform: translateY(0); position: static; grid-row: 2; }
-  /* ドラッグハンドル風 */
-  #drilldown.drill-panel::before { content: ''; position: absolute; top: 7px; left: 50%;
-    transform: translateX(-50%); width: 40px; height: 4px; border-radius: 2px; background: var(--line); }
+  body.drill-open #drilldown.drill-panel {
+    visibility: visible; opacity: 1;
+  }
+  /* ドラッグハンドル */
+  #drilldown.drill-panel::before {
+    content: ''; position: absolute; inset: auto;
+    top: 7px; left: 50%;
+    transform: translateX(-50%); width: 40px; height: 4px;
+    border-radius: 2px; background: var(--line);
+    /* オーロラオーバーレイの ::before を上書き — モバイルでは縁光を無効化 */
+    background-image: none; -webkit-mask: none; mask: none; padding: 0;
+    opacity: 1;
+  }
 }

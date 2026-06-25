@@ -29,10 +29,14 @@ import { sstAt } from './layers/sst.js';
 import { aggregateByCountry, buildHotspotConfigs } from './lib/aggregate.js';
 import { initCountryClick } from './ui/country_click.js';
 import { loadCountryBounds, countryBbox, fipsCenter } from './lib/drilldown/country_index.js';
-import { renderDrilldown, setDrilldownState, renderWatchlist } from './ui/drilldown.js';
+import { renderDrilldown, setDrilldownState, renderWatchlist, renderProfile } from './ui/drilldown.js';
 import { loadCountryGeo } from './lib/drilldown/country_data.js';
 import { buildDrilldown } from './lib/drilldown/aggregate_admin1.js';
-import { loadPolygons } from './lib/drilldown/geo_poly.js';
+import { loadPolygons, pointInFeature } from './lib/drilldown/geo_poly.js';
+import { loadProfile } from './lib/drilldown/profile_data.js';
+import { resolvePlace } from './lib/drilldown/resolve_place.js';
+import { regionShapePath } from './lib/drilldown/region_shape.js';
+import { nearestCity } from './lib/drilldown/nearest.js';
 import { zoomForBbox } from './lib/zoom_for_bbox.js';
 import { makeWatchlistStore, addCode, removeCode, joinWatchCountries } from './lib/drilldown/watchlist.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
@@ -413,6 +417,10 @@ function boot() {
   fetch('data/static/drilldown_manifest.json').then((r) => r.ok ? r.json() : null).then((d) => {
     if (d && typeof d === 'object') _manifest = d;
   }).catch(() => {});
+  let _profilesManifest = {};
+  fetch('data/static/profiles_manifest.json').then((r) => r.ok ? r.json() : null).then((d) => {
+    if (d && typeof d === 'object') _profilesManifest = d;
+  }).catch(() => {});
 
   const drilldownRootEl = document.getElementById('drilldown');
 
@@ -440,6 +448,14 @@ function boot() {
       // Critical-3: bboxIndex / manifest は boot で fetch した参照を渡す（クロージャ経由）
       get bboxIndex() { return _bboxIndex; },
       get manifest() { return _manifest; },
+      // Task 9: profile 系 deps
+      resolvePlace,
+      loadProfile,
+      regionShapePath,
+      renderProfile,
+      pip: pointInFeature,
+      nearest: nearestCity,
+      get profilesManifest() { return _profilesManifest; },
       // パネル DOM 要素
       rootEl: drilldownRootEl,
       bodyEl: document.body,
@@ -489,6 +505,10 @@ function boot() {
   map.on('click', cc.handleMapClick);
   // patch #5: country_bounds polys を注入し、resolveFipsAt が陸地で FIPS を解決できるようにする。
   loadCountryBounds(fetch).then((polys) => cc.setBoundsPolys(polys)).catch(() => {});
+  // Task 9: Esc キーと #drill-scrim クリックでパネルを閉じる。
+  const scrimEl = document.getElementById('drill-scrim');
+  if (scrimEl) scrimEl.addEventListener('click', () => cc && cc.closeCountry());
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') cc && cc.closeCountry(); });
 
   // 着地点ポップアップ（クリック地点に追従。閉じても再クリックで再表示）。
   selPopup = new maplibregl.Popup({ closeButton: true, closeOnClick: false, offset: 20, className: 'orbis-popup' });

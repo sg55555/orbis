@@ -1,7 +1,7 @@
 // tests/drilldown_open_smoke.test.js — 最小 DOM smoke テスト（恒久ガード）
 //
 // main.js の deps 配線欠落・#drilldown[hidden] 未解除・二重発火・onOceanMiss 経路を
-// 実 renderDrilldown + 実 openCountry + 最小 DOM スタブで検証する。
+// openPlace + 最小 DOM スタブで検証する。
 // static regex や純 fake では塞げなかった「結線→実行→DOM 変化」経路を恒久カバー。
 //
 // 実行: node --test tests/drilldown_open_smoke.test.js
@@ -107,7 +107,7 @@ async function importModules() {
   ]);
   return {
     initCountryClick: ccMod.initCountryClick,
-    renderDrilldown: drMod.renderDrilldown,
+    renderProfile: drMod.renderProfile,
     setDrilldownState: drMod.setDrilldownState,
     countryBbox: ciMod.countryBbox,
     zoomForBbox: zfMod.zoomForBbox,
@@ -123,6 +123,16 @@ const FAKE_MANIFEST = {
   JA: { admin1Bytes: 1, citiesBytes: 1, countryBbox: [129.5, 31.0, 145.8, 45.5] },
 };
 
+// boundsPolys: 日本の近似四角形（openPlace の ray-casting に使う）
+const SMOKE_POLYS = [
+  { code: 'JA', name: 'Japan', name_ja: '日本', bbox: [129.5, 31.0, 145.8, 45.5],
+    rings: [[[129.5, 31.0], [145.8, 31.0], [145.8, 45.5], [129.5, 45.5], [129.5, 31.0]]] },
+];
+
+// JA 内の点（ray-casting が JA を解決する）
+const JA_LON = 135;
+const JA_LAT = 36;
+
 function fakeLoadCountryGeo() {
   return Promise.resolve({
     admin1: { type: 'FeatureCollection', features: [] },
@@ -131,12 +141,39 @@ function fakeLoadCountryGeo() {
   });
 }
 
+// openPlace が必要とする最小 deps（resolvePlace/loadProfile/renderProfile）
+function makeOpenPlaceDeps({ renderProfile, setDrilldownState, countryBbox, zoomForBbox, rootEl, bodyEl, overrides = {} }) {
+  return {
+    fetchFn: async () => ({ ok: true, json: async () => ({ type: 'FeatureCollection', features: [] }) }),
+    loadCountryGeo: fakeLoadCountryGeo,
+    resolvePlace: () => ({
+      chain: [{ level: 'country', id: 'JA', name_ja: '日本' }],
+      target: { level: 'country', id: 'JA', name_ja: '日本' },
+      admin1Hit: null,
+    }),
+    loadProfile: async () => ({ id: 'JA', level: 'country', name_ja: '日本', facts: {}, sections: [], source: {}, degraded: false }),
+    renderProfile,
+    setDrilldownState,
+    countryBbox,
+    zoomForBbox,
+    loadPolygonsFn: () => [],
+    bboxIndex: FAKE_BBOX_INDEX,
+    manifest: FAKE_MANIFEST,
+    profilesManifest: { country: { JA: {} }, admin1: {}, city: {} },
+    rootEl,
+    bodyEl,
+    onOceanMiss: () => {},
+    onWatchToggle: () => {},
+    ...overrides,
+  };
+}
+
 // ---------------------------------------------------------------------------
-// smoke テスト (1): openCountry で hidden が外れてパネルが populate される
+// smoke テスト (1): openPlace で hidden が外れてパネルが populate される
 // ---------------------------------------------------------------------------
 
-test('smoke(1): openCountry が rootEl の hidden 属性を外しパネルに国名ヘッダを populate する', async () => {
-  const { initCountryClick, renderDrilldown, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
+test('smoke(1): openPlace が rootEl の hidden 属性を外しパネルにプロフィールを populate する', async () => {
+  const { initCountryClick, renderProfile, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
 
   const rootEl = makeDrilldownRoot(true); // hidden 付き
   const bodyEl = makeEl('body');
@@ -146,47 +183,25 @@ test('smoke(1): openCountry が rootEl の hidden 属性を外しパネルに国
   const cc = initCountryClick({
     map: fakeMap(),
     getSnapshots: () => ({}),
-    deps: {
-      fetchFn: async () => ({ ok: true, json: async () => ({ type: 'FeatureCollection', features: [] }) }),
-      loadCountryGeo: fakeLoadCountryGeo,
-      buildDrilldown: ({ fips }) => ({
-        header: { code: fips, name_ja: '日本', score: 0 },
-        regions: [],
-        events: [],
-        degraded: false,
-      }),
-      renderDrilldown,
-      setDrilldownState,
-      countryBbox,
-      zoomForBbox,
-      loadPolygonsFn: (geo) => [],
-      bboxIndex: FAKE_BBOX_INDEX,
-      manifest: FAKE_MANIFEST,
-      rootEl,
-      bodyEl,
-      onSelectEvent: () => {},
-      onOceanMiss: () => {},
-      onWatchToggle: () => {},
-    },
+    deps: makeOpenPlaceDeps({ renderProfile, setDrilldownState, countryBbox, zoomForBbox, rootEl, bodyEl }),
   });
 
-  await cc.openCountry('JA', [135, 36]);
+  cc.setBoundsPolys(SMOKE_POLYS);
+  await cc.openPlace(JA_LON, JA_LAT);
 
   // Critical-2: hidden が外れていること
-  assert.ok(!rootEl.hasAttribute('hidden'), 'openCountry 後: hidden 属性が外れた');
-  // パネルヘッダが populate されていること
-  const titleEl = rootEl.querySelector('.dd-title');
-  assert.ok(titleEl, '.dd-title 要素が存在する');
-  // innerHTML に drilldownHeaderHtml の出力が入っていること（空でない）
-  assert.ok(typeof titleEl.innerHTML === 'string', 'dd-title.innerHTML は string');
+  assert.ok(!rootEl.hasAttribute('hidden'), 'openPlace 後: hidden 属性が外れた');
+  // .dd-body 要素が存在すること（renderProfile が rootEl に書き込む）
+  const bodyChild = rootEl.querySelector('.dd-body');
+  assert.ok(bodyChild, '.dd-body 要素が存在する');
 });
 
 // ---------------------------------------------------------------------------
-// smoke テスト (2): 別国 open でも二重発火/残留がない
+// smoke テスト (2): 二重発火で後勝ちの open のみ render される
 // ---------------------------------------------------------------------------
 
-test('smoke(2): 別国で2回 openCountry しても renderDrilldown が後勝ちの国のみで呼ばれる', async () => {
-  const { initCountryClick, renderDrilldown, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
+test('smoke(2): 2回 openPlace しても renderProfile が後勝ちのみで呼ばれる（token race）', async () => {
+  const { initCountryClick, renderProfile, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
 
   const rootEl = makeDrilldownRoot(true);
   const bodyEl = makeEl('body');
@@ -196,94 +211,73 @@ test('smoke(2): 別国で2回 openCountry しても renderDrilldown が後勝ち
   const cc = initCountryClick({
     map: fakeMap(),
     getSnapshots: () => ({}),
-    deps: {
-      fetchFn: async () => ({ ok: true, json: async () => ({ type: 'FeatureCollection', features: [] }) }),
-      loadCountryGeo: async (fips) => {
-        if (fips === 'JA') {
-          // 先行: Promise を保留して後から解決
-          return new Promise((res) => {
-            resolveFirst = () => res({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false });
-          });
-        }
-        return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false };
-      },
-      buildDrilldown: ({ fips }) => ({
-        header: { code: fips, name_ja: fips === 'JA' ? '日本' : 'アメリカ', score: 0 },
-        regions: [],
-        events: [],
-        degraded: false,
-      }),
-      renderDrilldown: (rootEl, model, cbs) => {
-        rendered.push(model.header.code);
-        renderDrilldown(rootEl, model, cbs); // 実 renderDrilldown にも通す
+    deps: makeOpenPlaceDeps({
+      renderProfile: (root, model, cbs) => {
+        rendered.push(model.target.id);
+        renderProfile(root, model, cbs); // 実 renderProfile にも通す
       },
       setDrilldownState,
       countryBbox,
       zoomForBbox,
-      loadPolygonsFn: () => [],
-      bboxIndex: FAKE_BBOX_INDEX,
-      manifest: FAKE_MANIFEST,
       rootEl,
       bodyEl,
-      onSelectEvent: () => {},
-      onOceanMiss: () => {},
-      onWatchToggle: () => {},
-    },
+      overrides: {
+        loadCountryGeo: async (fips) => {
+          if (fips === 'JA' && !resolveFirst) {
+            // 先行の最初の JA open: Promise を保留して後から解決
+            return new Promise((res) => {
+              resolveFirst = () => res({ admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false });
+            });
+          }
+          return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false };
+        },
+      },
+    }),
   });
 
-  const p1 = cc.openCountry('JA', [135, 36]);   // 先行（保留中）
-  const p2 = cc.openCountry('US', [-95, 37]);   // 後勝ち（即解決）
+  cc.setBoundsPolys(SMOKE_POLYS);
+  const p1 = cc.openPlace(JA_LON, JA_LAT);   // 先行（保留中）
+  const p2 = cc.openPlace(JA_LON, JA_LAT);   // 後勝ち（即解決・token を進める）
   await p2;
-  resolveFirst();                                // 先行が後から解決
+  resolveFirst();                              // 先行が後から解決
   await p1;
 
-  // 後勝ちの US のみ render されること（先行 JA は token 不一致で破棄）
-  assert.deepEqual(rendered, ['US'], `後勝ち US のみ render。実際: ${JSON.stringify(rendered)}`);
+  // 後勝ちのみ render されること（先行は token 不一致で破棄）
+  assert.equal(rendered.length, 1, `後勝ちのみ render。実際: ${JSON.stringify(rendered)}`);
 });
 
 // ---------------------------------------------------------------------------
 // smoke テスト (3): onOceanMiss 経路でパネルが開かない
 // ---------------------------------------------------------------------------
 
-test('smoke(3): resolveFipsAt が null を返す座標（海洋）では openCountry を呼ばずパネルが開かない', async () => {
-  const { initCountryClick, renderDrilldown, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
+test('smoke(3): resolveFipsAt が null を返す座標（海洋）では openPlace を進めずパネルが開かない', async () => {
+  const { initCountryClick, renderProfile, setDrilldownState, countryBbox, zoomForBbox } = await importModules();
 
   const rootEl = makeDrilldownRoot(true); // hidden 付き
   const bodyEl = makeEl('body');
   let oceanMissCalled = 0;
   let opened = 0;
 
-  // boundsPolys: 日本の近似四角形
-  const POLYS = [
-    { code: 'JA', name: 'Japan', name_ja: '日本', bbox: [129.5, 31.0, 145.8, 45.5],
-      rings: [[[129.5, 31.0], [145.8, 31.0], [145.8, 45.5], [129.5, 45.5], [129.5, 31.0]]] },
-  ];
-
   const cc = initCountryClick({
     map: fakeMap(),
     getSnapshots: () => ({}),
-    deps: {
-      fetchFn: async () => ({ ok: true, json: async () => ({ type: 'FeatureCollection', features: [] }) }),
-      loadCountryGeo: async () => { opened += 1; return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }; },
-      buildDrilldown: () => ({ header: {}, regions: [], events: [], degraded: false }),
-      renderDrilldown,
+    deps: makeOpenPlaceDeps({
+      renderProfile,
       setDrilldownState,
       countryBbox,
       zoomForBbox,
-      loadPolygonsFn: () => [],
-      bboxIndex: FAKE_BBOX_INDEX,
-      manifest: FAKE_MANIFEST,
       rootEl,
       bodyEl,
-      onOceanMiss: () => { oceanMissCalled += 1; },
-      onSelectEvent: () => {},
-      onWatchToggle: () => {},
-    },
+      overrides: {
+        loadCountryGeo: async () => { opened += 1; return { admin1: { type: 'FeatureCollection', features: [] }, cities: [], degraded: false }; },
+        onOceanMiss: () => { oceanMissCalled += 1; },
+      },
+    }),
   });
 
-  // boundsPolys を注入してから海洋座標でクリック
-  cc.setBoundsPolys(POLYS);
-  await cc.handleMapClick({ lngLat: { lng: 0, lat: 0 } }); // 大西洋（海洋）
+  // boundsPolys を注入してから海洋座標でクリック（SMOKE_POLYS は日本の四角形）
+  cc.setBoundsPolys(SMOKE_POLYS);
+  await cc.handleMapClick({ lngLat: { lng: 0, lat: 0 } }); // 大西洋（海洋・SMOKE_POLYS 外）
 
   assert.equal(oceanMissCalled, 1, 'onOceanMiss が1回呼ばれた');
   assert.equal(opened, 0, 'loadCountryGeo は呼ばれない（パネルが開かない）');

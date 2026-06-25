@@ -22,6 +22,10 @@ test('index.html: #drilldown aside と必須 child クラスが存在', () => {
   assert.match(html, /class="dd-wl-list"/);
 });
 
+test('index.html: #drill-scrim（中央フロート用の暗幕）が存在', () => {
+  assert.match(html, /<div id="drill-scrim"[^>]*hidden/);
+});
+
 test('index.html: mobile-tabs は3ボタンのまま（mobile-nav.js 無改修の前提を守る）', () => {
   const tabs = (html.match(/class="mobile-tab"/g) || []).length;
   assert.equal(tabs, 3, 'mobile-tab は layers/feed/legend の3つから増えていない');
