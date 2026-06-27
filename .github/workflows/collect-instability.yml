@@ -1,8 +1,10 @@
 # .github/workflows/collect-instability.yml
 name: collect-instability
 on:
-  schedule:
-    - cron: '47 */2 * * *'    # 2時間毎:47（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット・push直列はgroup collect）
+  # schedule無効化(2026-06-28・Claude APIクレジット節約)。手動更新のみ＝Actions UI/CLIのworkflow_dispatchで実行。
+  # 復活させる場合は下記schedule 2行のコメントを外す。
+  # schedule:
+  #   - cron: '47 */2 * * *'    # 2時間毎:47（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット・push直列はgroup collect）
   workflow_dispatch: {}
 permissions:
   contents: write

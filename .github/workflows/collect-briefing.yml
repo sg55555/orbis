@@ -1,7 +1,9 @@
 name: collect-briefing
 on:
-  schedule:
-    - cron: '17 */2 * * *'    # 2時間毎:17（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット）
+  # schedule無効化(2026-06-28・Claude APIクレジット節約)。手動更新のみ＝Actions UI/CLIのworkflow_dispatchで実行。
+  # 復活させる場合は下記schedule 2行のコメントを外す。
+  # schedule:
+  #   - cron: '17 */2 * * *'    # 2時間毎:17（Vercel Hobbyデプロイ上限対策で毎時→2h・別オフセット）
   workflow_dispatch: {}
 permissions:
   contents: write

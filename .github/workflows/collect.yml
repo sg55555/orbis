@@ -8,7 +8,12 @@ on:
     # デプロイを誘発するため cron 総数を抑制（collect 96→48・briefing/instability 各24→12・slow 8 ＝計 ~80/日）。
     # クライアント補間があるので 30分スナップショットでも near-realtime 感は維持。恒久策はデータ配信の Vercel 分離。
     - cron: '7,37 * * * *'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      include_news:
+        description: 'AIニュース翻訳(Claude/Haiku)を実行。既定OFF=クレジット節約。手動でニュースも更新したい時だけ true に。'
+        type: boolean
+        default: false
 permissions:
   contents: write
 concurrency:
@@ -40,6 +45,9 @@ jobs:
           AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
         run: python -m collectors.ships || echo "ships collect failed (see log above)"
       - name: Collect news
+        # 既定OFF=Claude APIクレジット節約(2026-06-28)。schedule/外部dispatch(cron-job.org 15分毎)では実行せず、
+        # 手動実行で include_news=true の時だけAI翻訳。地震/航空/船/GDELT等の無料データは従来通り自動更新される。
+        if: ${{ github.event.inputs.include_news == 'true' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m collectors.news || echo "news skipped"

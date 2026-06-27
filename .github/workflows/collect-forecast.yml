@@ -1,8 +1,10 @@
 # .github/workflows/collect-forecast.yml
 name: collect-forecast
 on:
-  schedule:
-    - cron: '42 */2 * * *'    # 2時間毎:42（Vercel Hobbyデプロイ上限対策で毎時→2h・briefing/instabilityと同cadence・別オフセット）
+  # schedule無効化(2026-06-28・Claude APIクレジット節約)。手動更新のみ＝Actions UI/CLIのworkflow_dispatchで実行。
+  # 復活させる場合は下記schedule 2行のコメントを外す。
+  # schedule:
+  #   - cron: '42 */2 * * *'    # 2時間毎:42（Vercel Hobbyデプロイ上限対策で毎時→2h・briefing/instabilityと同cadence・別オフセット）
   workflow_dispatch: {}
 permissions:
   contents: write
