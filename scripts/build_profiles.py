@@ -2,8 +2,17 @@
 """地域(国/県/都市)の Wikipedia(ja)/Wikidata 事実を Claude で日本語プロフィール化し
 data/static/profiles/** ＋ profiles_manifest.json を生成する（build 時オフライン）。
 
+新スキーマ v2（因果レイヤー/確度/年表/観光・§docs/superpowers/specs/2026-07-04-...）を
+Anthropic Message Batches API（50%オフ）で一括生成する。PASS1（全対象の取得＋プロンプト
+構築・LLM未呼び出し）→ PASS2（Batch 送信・回収・custom_id ひも付け・パース・書き出し）の
+2パス構成。PROFILE_BATCH=0 で generate_profile_v2 の逐次呼び出しにフォールバック（少数検証用）。
+ANTHROPIC_API_KEY 必須（無ければ全 degraded・事実のみ表示）。
+
+旧スキーマ（sections[{title,body}]）の PROFILE_DUMMY=1 デザイン確認パイプラインは
+非破壊で残置（フロントの新スキーマ移行が終わるまでの互換用）。
+
 対象国は env PROFILE_FIPS（カンマ区切り FIPS・既定=FIPS_JA 全部）。
-キャッシュ scripts/.cache/profiles/ に raw/生成を保存し再実行はスキップ。
+キャッシュ scripts/.cache/profiles/ に raw/生成を保存し再実行はスキップ（v2 は v2_* 別名）。
 実行: PYTHONPATH=. python3 scripts/build_profiles.py
 """
 import gzip
@@ -14,7 +23,12 @@ import time
 
 import requests
 
-from scripts.lib.profile_prep import generate_profile, resolve_qid, SECTIONS
+from scripts.lib.profile_prep import (
+    generate_profile, resolve_qid, SECTIONS,
+    generate_profile_v2, wikidata_facts, named_props, ja_wikipedia_title,
+    extract_sections, build_profile_prompt_v2, parse_profile_v2,
+    assemble_profile_v2, is_degraded_v2, PROFILE_SYSTEM_V2,
+)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NE = os.path.join(ROOT, "scripts/.cache/ne")
@@ -112,7 +126,8 @@ def _dummy_wikipedia(title):
 
 
 def _gen_cached(level, pid, name_ja, qid):
-    """generated_<level>_<pid>.json をキャッシュ。無ければ生成。ダミーは別キャッシュ名。"""
+    """generated_<level>_<pid>.json をキャッシュ。無ければ生成。ダミーは別キャッシュ名。
+    （旧スキーマ v1・PROFILE_DUMMY=1 のデザイン確認パイプライン専用。v2 は _pass1_prepare/run_batch/generate_profile_v2。）"""
     cname = f"{'dummy_' if DUMMY else ''}gen_{level}_{re.sub(r'[^A-Za-z0-9_-]', '_', pid)}.json"
     cached = _cache_get(cname)
     if cached is not None:
@@ -123,6 +138,221 @@ def _gen_cached(level, pid, name_ja, qid):
                             fetch_wikidata=fw, fetch_wikipedia=fwp, ask_llm=ask_llm)
     _cache_put(cname, prof)
     return prof
+
+
+# ============================================================
+# v2（因果レイヤー/確度/年表/観光・Anthropic Message Batches API）
+# ============================================================
+
+def fetch_wikidata_props(qids):
+    """QID リスト → 日本語ラベル dict（wbgetentities batch・QID 単位キャッシュ v2_label_*）。
+    named_props の label_resolver として注入する。未解決 QID は None（呼び側の dedup_names で除外）。"""
+    qids = list(dict.fromkeys(q for q in qids if q))  # 順序保持で重複除去
+    out = {}
+    missing = []
+    for q in qids:
+        cached = _cache_get(f"v2_label_{q}.json")
+        if cached is not None:
+            out[q] = cached.get("label")
+        else:
+            missing.append(q)
+    for i in range(0, len(missing), 50):  # wbgetentities の ids 上限（通常ユーザー）
+        chunk = missing[i:i + 50]
+        try:
+            r = requests.get("https://www.wikidata.org/w/api.php", params={
+                "action": "wbgetentities", "ids": "|".join(chunk),
+                "props": "labels", "languages": "ja", "format": "json",
+            }, timeout=30, headers=UA)
+            r.raise_for_status()
+            entities = r.json().get("entities") or {}
+        except Exception:
+            entities = {}
+        for q in chunk:
+            label = None
+            v = (((entities.get(q) or {}).get("labels") or {}).get("ja") or {}).get("value")
+            if isinstance(v, str) and v.strip():
+                label = v.strip()
+            out[q] = label
+            _cache_put(f"v2_label_{q}.json", {"label": label})
+        time.sleep(0.2)
+    return out
+
+
+def fetch_article_plaintext(title):
+    """ja Wikipedia extracts(explaintext) で全文プレーンテキストを取得（v2・キャッシュ v2_wp_*）。
+    extract_sections で節抽出する前段。取得失敗/該当ページ無しは空文字。"""
+    key = re.sub(r"[^A-Za-z0-9_]", "_", title)[:80]
+    cname = f"v2_wp_{key}.json"
+    cached = _cache_get(cname)
+    if cached is not None:
+        return cached.get("text") or ""
+    url = "https://ja.wikipedia.org/w/api.php"
+    try:
+        r = requests.get(url, params={
+            "action": "query", "prop": "extracts", "explaintext": 1,
+            "titles": title, "format": "json",
+        }, timeout=30, headers=UA)
+        r.raise_for_status()
+        pages = ((r.json().get("query") or {}).get("pages") or {})
+        page = next(iter(pages.values()), {}) if pages else {}
+        text = page.get("extract") or ""
+    except Exception:
+        text = ""
+    _cache_put(cname, {"text": text})
+    time.sleep(0.2)
+    return text
+
+
+def ask_llm_v2(prompt):
+    """v2 逐次 LLM 呼び出し（PROFILE_BATCH=0 の少数検証/ダミー用フォールバック）。
+    ANTHROPIC_API_KEY 無ければ空文字（呼び出し元で degraded 扱いになる・generate_profile_v2 と同じ規約）。"""
+    if not os.environ.get("ANTHROPIC_API_KEY"):
+        return ""
+    try:
+        import anthropic
+        client = anthropic.Anthropic()
+        msg = client.messages.create(model=MODEL, max_tokens=2000, temperature=0,
+                                     system=PROFILE_SYSTEM_V2,
+                                     messages=[{"role": "user", "content": prompt}])
+        return next((b.text for b in msg.content if getattr(b, "type", None) == "text"), "")
+    except Exception as e:
+        print(f"[profiles] llm error: {e}")
+        return ""
+
+
+def run_batch(prompts):
+    """prompts: list[(custom_id, prompt)] → {custom_id: response_text}。
+    Anthropic Message Batches API（50%オフ）。custom_id で結果をひも付ける（順序は保証されない＝
+    位置対応させない）。実行は課金を伴う（Task5では未実行・配線のみ。実行はユーザー承認後の Task8）。
+    anthropic は遅延 import（未インストールでも本モジュールの import/pytest 収集を壊さない）。"""
+    import anthropic
+    from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
+    from anthropic.types.messages.batch_create_params import Request
+
+    client = anthropic.Anthropic()
+    reqs = [Request(custom_id=cid, params=MessageCreateParamsNonStreaming(
+                model=MODEL, max_tokens=2000, temperature=0, system=PROFILE_SYSTEM_V2,
+                messages=[{"role": "user", "content": p}]))
+            for cid, p in prompts]
+    batch = client.messages.batches.create(requests=reqs)
+    while client.messages.batches.retrieve(batch.id).processing_status != "ended":
+        time.sleep(30)
+    out = {}
+    for r in client.messages.batches.results(batch.id):
+        if r.result.type == "succeeded":
+            out[r.custom_id] = next((b.text for b in r.result.message.content if b.type == "text"), "")
+    return out
+
+
+def _collect_targets(fips_ja, targets):
+    """(level, pid, name_ja, qid, belongs_to) のリストを構築（country→admin1→city の順）。
+    国/県/都市の対象発見ロジックは v1 main() を踏襲（NE admin0/admin1・cities/<FIPS>.json）。
+    belongs_to は国のみ None・県/都市は所属国 {"level":"country","id":fips,"name_ja":...}（外交リンク・§spec6）。"""
+    items = []
+
+    # 国: NE admin0 から QID。
+    ne0 = json.load(open(os.path.join(NE, "ne_50m_admin_0_countries.geojson"), encoding="utf-8"))
+    iso_to_qid = {}
+    for f in ne0["features"]:
+        p = f["properties"]
+        iso_to_qid[(p.get("ISO_A2") or "").upper()] = resolve_qid(p)
+
+    from scripts.lib.fips_of_iso import FIPS_OF_ISO
+    qid_by_fips = {}
+    for iso, q in iso_to_qid.items():
+        fp = FIPS_OF_ISO.get(iso)
+        if fp and q:
+            qid_by_fips.setdefault(fp, q)
+
+    for fips in targets:
+        name_ja = fips_ja.get(fips, fips)
+        items.append(("country", fips, name_ja, qid_by_fips.get(fips), None))
+
+    # 県/州: NE admin1（a1code・wikidataid）。対象国のみ。
+    ne1 = json.load(open(os.path.join(NE, "ne_10m_admin_1_states_provinces.geojson"), encoding="utf-8"))
+    from scripts.lib.ne_prep import resolve_fips
+    name_index = {f["properties"]["name"]: f["properties"]["code"]
+                  for f in json.load(open(os.path.join(ROOT, "data/static/country_bounds.geojson"), encoding="utf-8"))["features"]}
+    for f in ne1["features"]:
+        p = f["properties"]
+        fips = resolve_fips(p, name_index)
+        if fips not in targets:
+            continue
+        a1 = p.get("iso_3166_2") or p.get("code_hasc") or p.get("adm1_code")
+        if not a1:
+            continue
+        name_ja = p.get("name_ja") or p.get("name") or a1
+        belongs_to = {"level": "country", "id": fips, "name_ja": fips_ja.get(fips, fips)}
+        items.append(("admin1", a1, name_ja, resolve_qid(p), belongs_to))
+
+    # 都市: cities/<FIPS>.json（qid 付与済）。対象国のみ。
+    for fips in targets:
+        cpath = os.path.join(ROOT, "data/static/cities", f"{fips}.json")
+        if not os.path.exists(cpath):
+            continue
+        belongs_to = {"level": "country", "id": fips, "name_ja": fips_ja.get(fips, fips)}
+        for c in json.load(open(cpath, encoding="utf-8")):
+            qid = c.get("qid") or None
+            if not qid:
+                continue
+            name_ja = c.get("name_ja") or c.get("name") or qid
+            items.append(("city", qid, name_ja, qid, belongs_to))
+
+    return items
+
+
+def _pass1_prepare(items, generated_at):
+    """PASS1: 全対象の Wikidata/Wikipedia 取得＋プロンプト構築（LLM未呼び出し）。
+    qid 無し／本文(節抽出後)が空、のいずれかは即 degraded profile を組み立てて immediate へ
+    （Batch 対象外）。それ以外は prompts へ (custom_id, prompt) を積み、pending に組立材料を保持する。
+    戻り値: (immediate: [(level,pid,prof)], prompts: [(custom_id,prompt)], pending: {custom_id: dict})"""
+    immediate = []
+    prompts = []
+    pending = {}
+    for level, pid, name_ja, qid, belongs_to in items:
+        if not qid:
+            prof = assemble_profile_v2(pid, level, name_ja, wikidata_facts({}),
+                                       {"layers": [], "timeline": [], "tourism": []},
+                                       {"qid": None, "wikipedia_url": None, "wikidata_props": []},
+                                       True, belongs_to, generated_at)
+            immediate.append((level, pid, prof))
+            continue
+        entity = fetch_wikidata(qid) or {}
+        facts = wikidata_facts(entity)
+        named = named_props(entity, label_resolver=fetch_wikidata_props)
+        title = ja_wikipedia_title(entity)
+        section_text = extract_sections(fetch_article_plaintext(title)) if title else ""
+        url = f"https://ja.wikipedia.org/wiki/{title}" if title else None
+        props = [p for p, v in [("P37", named["languages"]), ("P47", named["borders"]), ("P463", named["memberships"])] if v]
+        source = {"qid": qid, "wikipedia_url": url, "wikidata_props": props}
+        if not section_text:
+            prof = assemble_profile_v2(pid, level, name_ja, facts,
+                                       {"layers": [], "timeline": [], "tourism": []},
+                                       source, True, belongs_to, generated_at)
+            immediate.append((level, pid, prof))
+            continue
+        belongs_name = (belongs_to or {}).get("name_ja") if belongs_to else None
+        prompt = build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_name)
+        cid = f"{level}:{pid}"
+        prompts.append((cid, prompt))
+        pending[cid] = {"level": level, "pid": pid, "name_ja": name_ja, "facts": facts,
+                        "source": source, "belongs_to": belongs_to}
+    return immediate, prompts, pending
+
+
+def _pass2_finish(pending, results, generated_at):
+    """PASS2: run_batch の結果(custom_id→応答テキスト)をパース・組立。
+    custom_id でひも付け（Batch の結果順序は不定＝位置で対応させない）。結果に無い custom_id
+    （failed/expired 等）は応答テキスト無し扱い＝parse_profile_v2("") で degraded になる。"""
+    out = []
+    for cid, meta in pending.items():
+        text = results.get(cid, "")
+        parsed = parse_profile_v2(text)
+        prof = assemble_profile_v2(meta["pid"], meta["level"], meta["name_ja"], meta["facts"],
+                                   parsed, meta["source"], is_degraded_v2(meta["source"]["qid"], parsed),
+                                   meta["belongs_to"], generated_at)
+        out.append((meta["level"], meta["pid"], prof))
+    return out
 
 
 def _write(level, pid, prof, gz):
@@ -138,10 +368,17 @@ def _write(level, pid, prof, gz):
     return os.path.getsize(path)
 
 
-def main():
-    fips_ja = load_fips_ja()
-    target = os.environ.get("PROFILE_FIPS")
-    targets = [c.strip() for c in target.split(",")] if target else list(fips_ja)
+def _write_manifest(manifest, targets):
+    os.makedirs(OUT, exist_ok=True)
+    json.dump(manifest, open(os.path.join(ROOT, "data/static/profiles_manifest.json"), "w", encoding="utf-8"),
+              ensure_ascii=False, separators=(",", ":"))
+    nc, na, ncity = len(manifest["country"]), len(manifest["admin1"]), len(manifest["city"])
+    print(f"[profiles] country={nc} admin1={na} city={ncity} (targets={targets[:5]}{'…' if len(targets) > 5 else ''})")
+
+
+def _main_dummy(fips_ja, targets):
+    """旧スキーマ v1・PROFILE_DUMMY=1 デザイン確認パイプライン（非破壊で残置）。
+    実 HTTP/実 LLM を呼ばずサンプル本文を生成（_dummy_wikidata/_dummy_wikipedia/ask_llm の PROFILE_DUMMY 分岐）。"""
     manifest = {"country": {}, "admin1": {}, "city": {}}
 
     # 国: NE admin0 から QID。
@@ -196,11 +433,46 @@ def main():
             b = _write("city", qid, prof, gz=True)
             manifest["city"][qid] = {"bytes": b, "degraded": prof["degraded"]}
 
-    os.makedirs(OUT, exist_ok=True)
-    json.dump(manifest, open(os.path.join(ROOT, "data/static/profiles_manifest.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, separators=(",", ":"))
-    nc, na, ncity = len(manifest["country"]), len(manifest["admin1"]), len(manifest["city"])
-    print(f"[profiles] country={nc} admin1={na} city={ncity} (targets={targets[:5]}{'…' if len(targets) > 5 else ''})")
+    _write_manifest(manifest, targets)
+
+
+def _main_v2(fips_ja, targets):
+    """v2（Batch API）本線。PROFILE_BATCH=0 で generate_profile_v2 の逐次呼び出しにフォールバック
+    （少数検証用・Batch を経由しない）。既定は PASS1（取得＋プロンプト構築）→PASS2（Batch回収→組立）。
+    ANTHROPIC_API_KEY 無しは全 degraded（ask_llm_v2/run_batch いずれも空応答扱いに帰着）。"""
+    items = _collect_targets(fips_ja, targets)
+    generated_at = time.strftime("%Y-%m-%d")
+
+    if os.environ.get("PROFILE_BATCH") == "0":
+        finished = [
+            (level, pid, generate_profile_v2(
+                level, pid, name_ja, qid, belongs_to, generated_at,
+                fetch_wikidata=fetch_wikidata, fetch_article=fetch_article_plaintext,
+                label_resolver=fetch_wikidata_props, ask_llm=ask_llm_v2))
+            for level, pid, name_ja, qid, belongs_to in items
+        ]
+    else:
+        immediate, prompts, pending = _pass1_prepare(items, generated_at)
+        results = run_batch(prompts) if prompts and os.environ.get("ANTHROPIC_API_KEY") else {}
+        finished = immediate + _pass2_finish(pending, results, generated_at)
+
+    manifest = {"country": {}, "admin1": {}, "city": {}}
+    for level, pid, prof in finished:
+        b = _write(level, pid, prof, gz=(level != "country"))
+        manifest[level][pid] = {"bytes": b, "degraded": prof["degraded"]}
+
+    _write_manifest(manifest, targets)
+
+
+def main():
+    fips_ja = load_fips_ja()
+    target = os.environ.get("PROFILE_FIPS")
+    targets = [c.strip() for c in target.split(",")] if target else list(fips_ja)
+
+    if DUMMY:
+        _main_dummy(fips_ja, targets)
+    else:
+        _main_v2(fips_ja, targets)
 
 
 if __name__ == "__main__":

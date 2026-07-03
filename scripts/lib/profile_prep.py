@@ -333,3 +333,31 @@ def assemble_profile_v2(pid, level, name_ja, facts, parsed, source, degraded, be
         "tourism": parsed["tourism"], "source": source, "degraded": bool(degraded),
         "generated_at": generated_at,
     }
+
+
+def generate_profile_v2(level, pid, name_ja, qid, belongs_to, generated_at,
+                        *, fetch_wikidata, fetch_article, label_resolver, ask_llm):
+    """1 地域の v2 プロフィール生成（逐次モード用）。I/O は全て注入（テスト可能・build_profiles が実 I/O を渡す）。
+    qid 無し／ja Wikipedia 無し／節本文が抽出できない／layers 皆無 → degraded（事実のみ表示にフォールバック）。
+    Batch 一括生成（既定）では PASS1/PASS2 に分解した同等ロジックを build_profiles.py 側で実施する
+    （本関数は PROFILE_BATCH=0 の少数検証/ダミー用フォールバックとして使う）。"""
+    if not qid:
+        return assemble_profile_v2(pid, level, name_ja, wikidata_facts({}),
+                                   {"layers": [], "timeline": [], "tourism": []},
+                                   {"qid": None, "wikipedia_url": None, "wikidata_props": []},
+                                   True, belongs_to, generated_at)
+    entity = fetch_wikidata(qid) or {}
+    facts = wikidata_facts(entity)
+    named = named_props(entity, label_resolver=label_resolver)
+    title = ja_wikipedia_title(entity)
+    section_text = extract_sections(fetch_article(title)) if title else ""
+    parsed = {"layers": [], "timeline": [], "tourism": []}
+    if section_text:
+        belongs_name = (belongs_to or {}).get("name_ja") if belongs_to else None
+        prompt = build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_name)
+        parsed = parse_profile_v2(ask_llm(prompt))
+    url = f"https://ja.wikipedia.org/wiki/{title}" if title else None
+    props = [p for p, v in [("P37", named["languages"]), ("P47", named["borders"]), ("P463", named["memberships"])] if v]
+    return assemble_profile_v2(pid, level, name_ja, facts, parsed,
+                               {"qid": qid, "wikipedia_url": url, "wikidata_props": props},
+                               is_degraded_v2(qid, parsed), belongs_to, generated_at)

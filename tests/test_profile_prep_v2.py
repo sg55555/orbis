@@ -6,6 +6,7 @@ from scripts.lib.profile_prep import (
     dedup_names, named_props, wikidata_facts, extract_sections,
     LAYERS, PROFILE_SYSTEM_V2, build_profile_prompt_v2,
     parse_profile_v2, assemble_profile_v2, is_degraded_v2,
+    generate_profile_v2,
 )
 
 
@@ -418,3 +419,91 @@ def test_parse_v2_timeline_confidence_unhashable_falls_back_to_certain():
           '{"year":2001,"event":"別件","confidence":{"a":1}}]}'
     r = parse_profile_v2(txt)
     assert [t["confidence"] for t in r["timeline"]] == ["certain", "certain"]
+
+
+"""Task5: 取得配線（generate_profile_v2・I/O注入・逐次モード用）のテスト。"""
+
+
+def test_generate_v2_degraded_without_qid():
+    p = generate_profile_v2("city", "Qx", "街", None, {"level": "country", "id": "JP", "name_ja": "日本"}, "2026-07-04",
+        fetch_wikidata=lambda q: {}, fetch_article=lambda t: "", label_resolver=lambda qs: {}, ask_llm=lambda p: "")
+    assert p["degraded"] is True and p["belongs_to"]["name_ja"] == "日本"
+
+
+def test_generate_v2_builds_layers():
+    ent = {"claims": {"P1082": [{"mainsnak": {"datavalue": {"value": {"amount": "+100"}}}}]}, "sitelinks": {"jawiki": {"title": "X"}}}
+    llm = '{"layers":[{"key":"geography","title":"地勢","body":"本文","confidence":[{"label":"certain","kind":"地理","note":"n"}]}],"timeline":[],"tourism":[]}'
+    p = generate_profile_v2("country", "XX", "エックス", "Q1", None, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=lambda t: "== 歴史 ==\n史。", label_resolver=lambda qs: {}, ask_llm=lambda pr: llm)
+    assert p["degraded"] is False and p["layers"][0]["key"] == "geography"
+
+
+def test_generate_v2_qid_without_entity_is_degraded_but_qid_preserved_in_source():
+    # fetch_wikidata が None/{} を返す(取得失敗/未整備) → facts空・named空・title無 → degraded True だが source.qid は残す
+    p = generate_profile_v2("country", "ZZ", "ゼット", "Q999", None, "2026-07-04",
+        fetch_wikidata=lambda q: None, fetch_article=lambda t: "本文", label_resolver=lambda qs: {}, ask_llm=lambda pr: "")
+    assert p["degraded"] is True
+    assert p["source"] == {"qid": "Q999", "wikipedia_url": None, "wikidata_props": []}
+
+
+def test_generate_v2_no_jawiki_title_skips_fetch_article_and_llm():
+    # jaWikipedia サイトリンク無し → fetch_article/ask_llm を呼ばずに degraded（余計な I/O をしない）
+    ent = {"claims": {}, "sitelinks": {}}
+    def boom(*a, **kw):
+        raise AssertionError("呼ばれるべきでない")
+    p = generate_profile_v2("country", "YY", "ワイ", "Q2", None, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=boom, label_resolver=lambda qs: {}, ask_llm=boom)
+    assert p["degraded"] is True
+    assert p["source"]["wikipedia_url"] is None
+
+
+def test_generate_v2_empty_section_text_skips_llm_call():
+    # 本文はあるが節抽出結果が空（節見出しが allowlist に無い等）→ ask_llm を呼ばず degraded
+    ent = {"claims": {}, "sitelinks": {"jawiki": {"title": "X"}}}
+    def boom(*a, **kw):
+        raise AssertionError("呼ばれるべきでない")
+    p = generate_profile_v2("country", "WW", "ダブリュー", "Q3", None, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=lambda t: "== 脚注 ==\n無関係本文。", label_resolver=lambda qs: {}, ask_llm=boom)
+    assert p["degraded"] is True
+    assert p["source"]["wikipedia_url"] == "https://ja.wikipedia.org/wiki/X"
+
+
+def test_generate_v2_belongs_to_propagates_into_prompt_and_output():
+    # belongs_to.name_ja が build_profile_prompt_v2 の所属国注記へ伝播し、出力にもそのまま残る
+    ent = {"claims": {}, "sitelinks": {"jawiki": {"title": "大阪市"}}}
+    captured = {}
+    def ask_llm(prompt):
+        captured["prompt"] = prompt
+        return '{"layers":[{"key":"geography","body":"本文"}]}'
+    belongs_to = {"level": "country", "id": "JP", "name_ja": "日本"}
+    p = generate_profile_v2("city", "Q123", "大阪市", "Q456", belongs_to, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=lambda t: "== 歴史 ==\n史。",
+        label_resolver=lambda qs: {}, ask_llm=ask_llm)
+    assert "所属国「日本」" in captured["prompt"]
+    assert p["belongs_to"] == belongs_to
+
+
+def test_generate_v2_wikidata_props_lists_only_present_props():
+    # named_props の languages/borders/memberships のうち非空のものだけ source.wikidata_props に載る
+    ent = {"claims": {"P37": [{"mainsnak": {"datavalue": {"value": {"id": "Q1860"}}}}]},
+           "sitelinks": {"jawiki": {"title": "X"}}}
+    p = generate_profile_v2("country", "V1", "ブイワン", "Q7", None, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=lambda t: "== 歴史 ==\n史。",
+        label_resolver=lambda qs: {"Q1860": "英語"}, ask_llm=lambda pr: "")
+    assert p["source"]["wikidata_props"] == ["P37"]
+
+
+def test_generate_v2_llm_call_receives_facts_and_named_props_grounded_prompt():
+    # ask_llm へ渡るプロンプトに facts と named_props の固有名が実際に埋め込まれる（grounding の配線確認）
+    ent = {"claims": {"P1082": [{"mainsnak": {"datavalue": {"value": {"amount": "+5000"}}}}],
+                      "P37": [{"mainsnak": {"datavalue": {"value": {"id": "Q1860"}}}}]},
+           "sitelinks": {"jawiki": {"title": "X"}}}
+    captured = {}
+    def ask_llm(prompt):
+        captured["prompt"] = prompt
+        return ""
+    generate_profile_v2("country", "G1", "ジーワン", "Q8", None, "2026-07-04",
+        fetch_wikidata=lambda q: ent, fetch_article=lambda t: "== 歴史 ==\n史。",
+        label_resolver=lambda qs: {"Q1860": "英語"}, ask_llm=ask_llm)
+    assert "population: 5000" in captured["prompt"]
+    assert "英語" in captured["prompt"]
