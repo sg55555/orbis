@@ -288,7 +288,8 @@ def parse_profile_v2(text):
         if k in _LAYER_KEYS and k not in seen and isinstance(b, str) and b.strip():
             raw_conf = s.get("confidence")
             conf = [c for c in (raw_conf if isinstance(raw_conf, list) else [])
-                    if isinstance(c, dict) and c.get("label") in _CONF and c.get("note")]
+                    if isinstance(c, dict) and isinstance(c.get("label"), str)
+                    and c.get("label") in _CONF and c.get("note")]
             raw_dig = s.get("dig_deeper")
             dig = [d for d in (raw_dig if isinstance(raw_dig, list) else [])
                    if isinstance(d, str) and d.strip()]
@@ -311,7 +312,7 @@ def parse_profile_v2(text):
         conf = t.get("confidence")
         cn = t.get("cause_note")
         timeline.append({"year": str(t.get("year")), "event": ev.strip(),
-                         "confidence": conf if conf in _CONF else "certain",
+                         "confidence": conf if isinstance(conf, str) and conf in _CONF else "certain",
                          "cause_note": cn.strip() if isinstance(cn, str) else ""})
     raw_tourism = data.get("tourism")
     raw_tourism = raw_tourism if isinstance(raw_tourism, list) else []

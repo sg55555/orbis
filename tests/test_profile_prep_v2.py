@@ -401,3 +401,20 @@ def test_parse_v2_tourism_not_a_list_returns_empty():
 def test_parse_v2_non_dict_json_returns_empty_structure():
     # トップレベルが list の JSON → 空構造・クラッシュしない
     assert parse_profile_v2('[1, 2, 3]') == {"layers": [], "timeline": [], "tourism": []}
+
+
+def test_parse_v2_layer_confidence_label_unhashable_skipped():
+    # confidence label が list/dict（unhashable）→ `label in _CONF` の TypeError を避けてスキップ
+    txt = '{"layers":[{"key":"geography","body":"本文","confidence":[' \
+          '{"label":["certain"],"note":"x"},{"label":{"a":1},"note":"y"},' \
+          '{"label":"inferred","note":"z"}]}]}'
+    r = parse_profile_v2(txt)
+    assert [c["label"] for c in r["layers"][0]["confidence"]] == ["inferred"]
+
+
+def test_parse_v2_timeline_confidence_unhashable_falls_back_to_certain():
+    # timeline confidence が list/dict（unhashable）→ TypeError なしで "certain" フォールバック
+    txt = '{"timeline":[{"year":2000,"event":"何か","confidence":["certain"]},' \
+          '{"year":2001,"event":"別件","confidence":{"a":1}}]}'
+    r = parse_profile_v2(txt)
+    assert [t["confidence"] for t in r["timeline"]] == ["certain", "certain"]
