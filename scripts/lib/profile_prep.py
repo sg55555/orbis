@@ -176,7 +176,8 @@ def extract_sections(plaintext, *, max_chars=6000):
         key = SECTION_SYNONYMS.get(head)
         if key not in SECTION_ALLOW:
             continue
-        body_start = plaintext.find("\n", pos) + 1
+        nl = plaintext.find("\n", pos)
+        body_start = len(plaintext) if nl == -1 else nl + 1
         body_end = marks[i + 1][0] if i + 1 < len(marks) else len(plaintext)
         body = plaintext[body_start:body_end].strip()
         if body:

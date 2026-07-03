@@ -107,3 +107,27 @@ def test_extract_sections_heading_label_preserved_in_output():
     raw = "冒頭。\n\n== 歴史 ==\n歴史本文。"
     out = extract_sections(raw, max_chars=9999)
     assert "【歴史】" in out
+
+
+def test_extract_sections_trailing_heading_no_newline_drops_and_no_markup_leak():
+    # 見出しが原文末尾で改行なし → 本文空なので該当節は落ち、生マークアップ == も漏れない
+    out = extract_sections("冒頭。\n\n== 交通 ==", max_chars=9999)
+    assert out == "冒頭。"  # overview のみ・交通節は本文空で除外
+    assert "==" not in out  # 生の見出しマークアップが漏出しない
+    assert out.count("冒頭。") == 1  # overview が二重化しない
+
+
+def test_extract_sections_deep_heading_level_split():
+    # === (レベル3) の見出しも正しく節分割される
+    raw = "冒頭。\n\n=== 歴史 ===\n歴史本文。\n\n=== 脚注 ===\n脚注本文。"
+    out = extract_sections(raw, max_chars=9999)
+    assert "【歴史】" in out and "歴史本文" in out
+    assert "脚注本文" not in out  # allowlist 外は落ちる
+
+
+def test_extract_sections_inline_equals_not_treated_as_heading():
+    # 行途中の == は見出しと誤認せず本文として扱う
+    raw = "冒頭。\n\n== 歴史 ==\n本文 == 注記 == の続き。"
+    out = extract_sections(raw, max_chars=9999)
+    assert "本文 == 注記 == の続き。" in out  # 行途中の == は本文のまま残る
+    assert out.count("【") == 1  # 見出しブロックは 歴史 の1つだけ
