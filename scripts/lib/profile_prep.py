@@ -143,6 +143,48 @@ def assemble_profile(pid, level, name_ja, facts, sections, source, degraded):
     }
 
 
+# 正規化キー: geography/history/economy/politics/foreign/society/tourism/transport/overview
+SECTION_SYNONYMS = {
+    "概要": "overview", "地理": "geography", "地理・地域": "geography", "自然環境": "geography", "気候": "geography",
+    "歴史": "history", "国名": "history",
+    "経済": "economy", "産業": "economy", "経済・産業": "economy",
+    "政治": "politics",
+    "国際関係": "foreign", "対外関係": "foreign",
+    "国民": "society", "人口": "society", "都民": "society", "民族": "society", "文化": "society",
+    "観光": "tourism", "文化・スポーツ・観光": "tourism",
+    "交通": "transport",
+}
+SECTION_ALLOW = {"overview", "geography", "history", "economy", "politics", "foreign", "society", "tourism", "transport"}
+_HEAD = re.compile(r"^(={2,})\s*(.+?)\s*\1\s*$", re.M)
+
+
+def extract_sections(plaintext, *, max_chars=6000):
+    """Wikipedia extracts(explaintext) 本文 → allowlist 節のみを結合した本文。
+    見出し(== 見出し ==)で分割し SECTION_SYNONYMS で正規化・SECTION_ALLOW でフィルタ。
+    先頭(最初の見出し前)は概要相当として残す。max_chars で末尾トリム。"""
+    if not plaintext:
+        return ""
+    # 分割点（見出し位置）を集める
+    marks = [(m.start(), m.group(2).strip()) for m in _HEAD.finditer(plaintext)]
+    # 先頭（最初の見出し前）＝概要相当
+    blocks = []
+    lead_end = marks[0][0] if marks else len(plaintext)
+    lead = plaintext[:lead_end].strip()
+    if lead:
+        blocks.append(("overview", lead))
+    for i, (pos, head) in enumerate(marks):
+        key = SECTION_SYNONYMS.get(head)
+        if key not in SECTION_ALLOW:
+            continue
+        body_start = plaintext.find("\n", pos) + 1
+        body_end = marks[i + 1][0] if i + 1 < len(marks) else len(plaintext)
+        body = plaintext[body_start:body_end].strip()
+        if body:
+            blocks.append((key, f"【{head}】\n{body}"))
+    text = "\n\n".join(b for _, b in blocks)
+    return text[:max_chars]
+
+
 def generate_profile(level, pid, name_ja, qid, *, fetch_wikidata, fetch_wikipedia, ask_llm):
     """1 地域のプロフィール生成。I/O は注入（テスト可能）。
     qid 無し or ja Wikipedia 無し or セクション皆無 → degraded（事実のみ）。"""
