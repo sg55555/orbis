@@ -38,7 +38,7 @@ def _claim_coord(claims):
 
 
 def wikidata_facts(entity):
-    """Wikidata entity → 事実 dict。P1082 人口/P2046 面積/P625 座標/P2044 標高。"""
+    """Wikidata entity → 事実 dict。P1082 人口/P2046 面積/P625 座標/P2044 標高/P2132 一人当たりGDP。"""
     claims = (entity or {}).get("claims") or {}
     pop = _claim_amount(claims, "P1082")
     lat, lon = _claim_coord(claims)
@@ -47,7 +47,43 @@ def wikidata_facts(entity):
         "area_km2": _claim_amount(claims, "P2046"),
         "lat": lat, "lon": lon,
         "elevation_m": _claim_amount(claims, "P2044"),
+        "gdp_per_capita": _claim_amount(claims, "P2132"),
     }
+
+
+def _prop_qids(claims, pid):
+    """claims[pid] の各 claim から item 値の QID を抽出（壊れた claim は無視）。"""
+    out = []
+    for c in claims.get(pid) or []:
+        try:
+            v = c["mainsnak"]["datavalue"]["value"]
+            if isinstance(v, dict) and "id" in v:
+                out.append(v["id"])
+        except (KeyError, TypeError):
+            continue
+    return out
+
+
+def dedup_names(names):
+    """順序保持で重複除去・空/None を除外。"""
+    seen, out = set(), []
+    for n in names:
+        if n and n not in seen:
+            seen.add(n)
+            out.append(n)
+    return out
+
+
+def named_props(entity, *, label_resolver):
+    """Wikidata entity → 固有名（日本語ラベル）dict。P37 公用語/P47 隣接/P463 加盟機関。
+    label_resolver(qids) -> {qid: ja_label} を注入（未解決は None→dedup_names で除外）。"""
+    claims = (entity or {}).get("claims") or {}
+    langs = _prop_qids(claims, "P37")
+    borders = _prop_qids(claims, "P47")
+    members = _prop_qids(claims, "P463")
+    lut = label_resolver(langs + borders + members) if (langs or borders or members) else {}
+    name = lambda qs: dedup_names([lut.get(q) for q in qs])
+    return {"languages": name(langs), "borders": name(borders), "memberships": name(members)}
 
 
 def ja_wikipedia_title(entity):

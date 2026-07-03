@@ -44,7 +44,8 @@ def test_wikidata_facts_extracts():
 
 def test_wikidata_facts_missing_all_none():
     f = wikidata_facts({})
-    assert f == {"population": None, "area_km2": None, "lat": None, "lon": None, "elevation_m": None}
+    assert f == {"population": None, "area_km2": None, "lat": None, "lon": None, "elevation_m": None,
+                 "gdp_per_capita": None}
 
 
 from scripts.lib.profile_prep import ja_wikipedia_title

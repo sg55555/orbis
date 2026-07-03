@@ -1,0 +1,66 @@
+"""Task1: Wikidata プロパティ拡張＋固有名整形（純関数）のテスト。"""
+import sys, os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+
+from scripts.lib.profile_prep import dedup_names, named_props, wikidata_facts
+
+
+def test_dedup_names_preserves_order_and_dedups():
+    assert dedup_names(["英語", "マレー語", "英語"]) == ["英語", "マレー語"]
+
+
+def test_dedup_names_drops_empty_and_none():
+    assert dedup_names(["英語", None, "", "英語", "中国語"]) == ["英語", "中国語"]
+
+
+def test_dedup_names_empty_input():
+    assert dedup_names([]) == []
+
+
+def test_named_props_resolves_ja_labels():
+    entity = {"claims": {"P37": [{"mainsnak": {"datavalue": {"value": {"id": "Q1860"}}}}],
+                         "P47": [{"mainsnak": {"datavalue": {"value": {"id": "Q833"}}}},
+                                 {"mainsnak": {"datavalue": {"value": {"id": "Q833"}}}}]}}  # 重複
+    res = named_props(entity, label_resolver=lambda qs: {"Q1860": "英語", "Q833": "マレーシア"})
+    assert res["languages"] == ["英語"]
+    assert res["borders"] == ["マレーシア"]  # dedup
+    assert res["memberships"] == []
+
+
+def test_named_props_no_claims_skips_resolver_call():
+    called = {"n": 0}
+    def resolver(qs):
+        called["n"] += 1
+        return {}
+    res = named_props({}, label_resolver=resolver)
+    assert res == {"languages": [], "borders": [], "memberships": []}
+    assert called["n"] == 0  # claims 皆無なら resolver を呼ばない
+
+
+def test_named_props_missing_label_omitted():
+    # label_resolver が一部 QID を解決できない（lut に無い）→ None → dedup_names で除外
+    entity = {"claims": {"P463": [{"mainsnak": {"datavalue": {"value": {"id": "Q1065"}}}},
+                                   {"mainsnak": {"datavalue": {"value": {"id": "Q7825"}}}}]}}
+    res = named_props(entity, label_resolver=lambda qs: {"Q1065": "国際連合"})
+    assert res["memberships"] == ["国際連合"]
+
+
+def test_named_props_malformed_claim_ignored():
+    # mainsnak/datavalue/value 欠落・novalue 等の壊れた claim は無視される
+    entity = {"claims": {"P37": [{"mainsnak": {"snaktype": "novalue"}},
+                                  {"mainsnak": {"datavalue": {"value": {"id": "Q1860"}}}}]}}
+    res = named_props(entity, label_resolver=lambda qs: {"Q1860": "英語"})
+    assert res["languages"] == ["英語"]
+
+
+def test_wikidata_facts_includes_gdp_per_capita():
+    claims = {"P2132": [{"mainsnak": {"datavalue": {"value": {"amount": "+52000"}}}}]}
+    f = wikidata_facts({"claims": claims})
+    assert f["gdp_per_capita"] == 52000.0
+
+
+def test_wikidata_facts_gdp_per_capita_none_when_missing():
+    f = wikidata_facts({})
+    assert f["gdp_per_capita"] is None
+    # 既存キーは維持
+    assert set(f.keys()) == {"population", "area_km2", "lat", "lon", "elevation_m", "gdp_per_capita"}
