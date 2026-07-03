@@ -2,7 +2,10 @@
 import sys, os
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 
-from scripts.lib.profile_prep import dedup_names, named_props, wikidata_facts, extract_sections
+from scripts.lib.profile_prep import (
+    dedup_names, named_props, wikidata_facts, extract_sections,
+    LAYERS, PROFILE_SYSTEM_V2, build_profile_prompt_v2,
+)
 
 
 def test_dedup_names_preserves_order_and_dedups():
@@ -131,3 +134,62 @@ def test_extract_sections_inline_equals_not_treated_as_heading():
     out = extract_sections(raw, max_chars=9999)
     assert "本文 == 注記 == の続き。" in out  # 行途中の == は本文のまま残る
     assert out.count("【") == 1  # 見出しブロックは 歴史 の1つだけ
+
+
+"""Task3: プロンプト構築 v2（因果レイヤー/確度/年表/観光・レベル別縮退）のテスト。"""
+
+
+def test_layers_has_five_entries_with_diplomacy_country_only():
+    assert [layer["key"] for layer in LAYERS] == [
+        "geography", "economy", "society", "geopolitics", "diplomacy",
+    ]
+    by_key = {layer["key"]: layer for layer in LAYERS}
+    assert by_key["diplomacy"]["levels"] == {"country"}
+    for k in ("geography", "economy", "society", "geopolitics"):
+        assert by_key[k]["levels"] == {"country", "admin1", "city"}
+
+
+def test_profile_system_v2_instructs_named_enumeration_including_religion():
+    # カテゴリ要約でなく固有名列挙（宗教も本文由来で列挙させる指示を含む）
+    assert "固有名" in PROFILE_SYSTEM_V2
+    assert "宗教" in PROFILE_SYSTEM_V2
+    assert "confidence" in PROFILE_SYSTEM_V2 or "inferred" in PROFILE_SYSTEM_V2
+
+
+def test_prompt_omits_diplomacy_for_city():
+    p = build_profile_prompt_v2("大阪市", "city", {}, {}, "", belongs_to_name="日本")
+    assert "diplomacy" not in p and "所属国「日本」" in p
+
+
+def test_prompt_includes_named_props():
+    p = build_profile_prompt_v2("X", "country", {}, {"languages": ["英語", "タミル語"]}, "")
+    assert "英語, タミル語" in p and "geography" in p and "diplomacy" in p
+
+
+def test_prompt_country_has_no_belongs_to_note():
+    p = build_profile_prompt_v2("日本", "country", {}, {}, "")
+    assert "所属国" not in p
+
+
+def test_prompt_admin1_also_omits_diplomacy():
+    p = build_profile_prompt_v2("大阪府", "admin1", {}, {}, "", belongs_to_name="日本")
+    assert "diplomacy" not in p and "所属国「日本」" in p
+
+
+def test_prompt_embeds_facts_and_section_text():
+    facts = {"population": 1000, "area_km2": None}
+    p = build_profile_prompt_v2("Y", "country", facts, {}, "本文の抜粋テキスト")
+    assert "population: 1000" in p
+    assert "area_km2" not in p  # None は除外
+    assert "本文の抜粋テキスト" in p
+
+
+def test_prompt_empty_facts_named_section_render_placeholder():
+    p = build_profile_prompt_v2("Z", "country", {}, {}, "")
+    assert "(なし)" in p
+
+
+def test_prompt_output_schema_mentions_confidence_labels_and_timeline_tourism():
+    p = build_profile_prompt_v2("Z", "country", {}, {}, "")
+    assert "certain" in p and "inferred" in p and "time_sensitive" in p
+    assert "timeline" in p and "tourism" in p

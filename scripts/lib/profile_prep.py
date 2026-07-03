@@ -202,3 +202,56 @@ def generate_profile(level, pid, name_ja, qid, *, fetch_wikidata, fetch_wikipedi
     wiki_url = f"https://ja.wikipedia.org/wiki/{title}" if title else None
     return assemble_profile(pid, level, name_ja, facts, sections,
                             {"qid": qid, "wikipedia_url": wiki_url}, is_degraded(qid, sections))
+
+
+# 因果レイヤー5層（diplomacy は国のみ・県/都市はレベル別縮退で省略し所属国へ集約）
+LAYERS = [
+    {"key": "geography", "title": "地勢・立地", "levels": {"country", "admin1", "city"}},
+    {"key": "economy", "title": "産業の成り立ちと近代化", "levels": {"country", "admin1", "city"}},
+    {"key": "society", "title": "社会・人口", "levels": {"country", "admin1", "city"}},
+    {"key": "geopolitics", "title": "地政学的位置づけ", "levels": {"country", "admin1", "city"}},
+    {"key": "diplomacy", "title": "外交姿勢と国際的立場", "levels": {"country"}},  # 国のみ
+]
+
+PROFILE_SYSTEM_V2 = (
+    "あなたは地理・地政学の事典編集者兼アナリストです。与えられた事実(Wikidata)と"
+    "Wikipedia本文の抜粋のみを根拠に、地域を『因果の連鎖』で読み解く日本語の分析プロフィールを作ります。\n"
+    "規則: (1)カテゴリ要約でなく固有名を列挙(『4公用語』でなく言語名、宗教・産業・隣接国も固有名)。"
+    "(2)断定は根拠のある事実に限り、因果の解釈は confidence=inferred、時事依存は time_sensitive と明示。"
+    "(3)材料に無い情報を創作しない。書けない層は省略してよい。"
+    "(4)各層に evidence(何を見たか)と dig_deeper(次に見る指標)を付す。出力はJSONのみ。"
+)
+
+
+def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_to_name=None):
+    """因果レイヤー(地勢→産業→社会→地政→外交)＋確度ラベル＋年表＋観光の分析プロンプトを構築。
+    diplomacy はレベル別縮退（国のみフル・県/都市は省略し所属国へ集約）。"""
+    layers = [layer for layer in LAYERS if level in layer["levels"]]
+    has_diplomacy = any(layer["key"] == "diplomacy" for layer in layers)
+    layer_lines = "\n".join(f'  - {layer["key"]}: {layer["title"]}' for layer in layers)
+    facts_lines = "\n".join(f"- {k}: {v}" for k, v in (facts or {}).items() if v is not None)
+    named_lines = "\n".join(f"- {k}: {', '.join(v)}" for k, v in (named or {}).items() if v)
+    # レベル別縮退：diplomacy 層が対象外のとき（県・都市）は省略し所属国へ集約する旨を明示。
+    # 縮退時はプロンプト全体から "diplomacy" という語自体を排し、diplomacy 層が完全に不在であることを保証する。
+    dip_note = ("" if has_diplomacy else
+                f"\n※この地域は{level}のため外交層は省略（外交は所属国「{belongs_to_name}」に集約）。")
+    dip_guidance = (
+        "・外交(diplomacy)は恒常的な立場を certain/inferred で、時々刻々の動向は time_sensitive とし dig_deeper へ。"
+        if has_diplomacy else ""
+    )
+    return (
+        f"地域「{name_ja}」(種別: {level}) の因果分析プロフィールをJSONで作成。{dip_note}\n\n"
+        f"# 対象レイヤー(この順・書ける層のみ)\n{layer_lines}\n\n"
+        f"# 事実(Wikidata)\n{facts_lines or '(なし)'}\n"
+        f"# 固有名(Wikidata・そのまま使う)\n{named_lines or '(なし)'}\n\n"
+        f"# Wikipedia本文(抜粋)\n{section_text or '(なし)'}\n\n"
+        f'# 出力形式(JSONのみ)\n'
+        '{"layers":[{"key":"geography","title":"地勢・立地","body":"…因果の散文…",'
+        '"confidence":[{"label":"certain","kind":"地理","note":"…"},{"label":"inferred","kind":"解釈","note":"…"}],'
+        '"evidence":"…","dig_deeper":["…","…"]}],'
+        '"timeline":[{"year":"1819","event":"…","confidence":"certain","cause_note":"…(推定)"}],'
+        '"tourism":["…"]}\n'
+        "・body は1〜4文の散文。confidence は label∈{certain,inferred,time_sensitive}。"
+        "・timeline は近代化の経緯(economy層に対応・年号は certain)。tourism は観光の固有名(都市は厚め)。"
+        f"{dip_guidance}"
+    )
