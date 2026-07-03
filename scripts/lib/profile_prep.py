@@ -255,3 +255,54 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         "・timeline は近代化の経緯(economy層に対応・年号は certain)。tourism は観光の固有名(都市は厚め)。"
         f"{dip_guidance}"
     )
+
+
+_LAYER_KEYS = {layer["key"] for layer in LAYERS}
+_CONF = {"certain", "inferred", "time_sensitive"}
+
+
+def parse_profile_v2(text):
+    """build_profile_prompt_v2 応答テキスト → {layers,timeline,tourism}（検証済）。
+    未知 layer key・不正 confidence label・空 body はフィルタして捨てる。"""
+    if not isinstance(text, str):
+        return {"layers": [], "timeline": [], "tourism": []}
+    m = re.search(r"\{.*\}", text, re.S)
+    if not m:
+        return {"layers": [], "timeline": [], "tourism": []}
+    try:
+        data = json.loads(m.group(0))
+    except ValueError:
+        return {"layers": [], "timeline": [], "tourism": []}
+    layers, seen = [], set()
+    for s in (data.get("layers") or []):
+        k = (s or {}).get("key")
+        b = (s or {}).get("body")
+        if k in _LAYER_KEYS and k not in seen and isinstance(b, str) and b.strip():
+            conf = [c for c in (s.get("confidence") or [])
+                    if isinstance(c, dict) and c.get("label") in _CONF and c.get("note")]
+            dig = [d for d in (s.get("dig_deeper") or []) if isinstance(d, str) and d.strip()]
+            layers.append({"key": k, "title": s.get("title") or k, "body": b.strip(),
+                           "confidence": conf, "evidence": (s.get("evidence") or "").strip(),
+                           "dig_deeper": dig})
+            seen.add(k)
+    timeline = [{"year": str(t.get("year")), "event": t.get("event", "").strip(),
+                 "confidence": t.get("confidence") if t.get("confidence") in _CONF else "certain",
+                 "cause_note": (t.get("cause_note") or "").strip()}
+                for t in (data.get("timeline") or []) if isinstance(t, dict) and t.get("event")]
+    tourism = [x.strip() for x in (data.get("tourism") or []) if isinstance(x, str) and x.strip()]
+    return {"layers": layers, "timeline": timeline, "tourism": tourism}
+
+
+def is_degraded_v2(qid, parsed):
+    """QID 無し or layers 皆無 = degraded（v2）。"""
+    return (not qid) or (len(parsed.get("layers") or []) == 0)
+
+
+def assemble_profile_v2(pid, level, name_ja, facts, parsed, source, degraded, belongs_to, generated_at):
+    """出力スキーマ v2 に整形。"""
+    return {
+        "id": pid, "level": level, "name_ja": name_ja, "belongs_to": belongs_to,
+        "facts": facts, "layers": parsed["layers"], "timeline": parsed["timeline"],
+        "tourism": parsed["tourism"], "source": source, "degraded": bool(degraded),
+        "generated_at": generated_at,
+    }

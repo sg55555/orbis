@@ -5,6 +5,7 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
 from scripts.lib.profile_prep import (
     dedup_names, named_props, wikidata_facts, extract_sections,
     LAYERS, PROFILE_SYSTEM_V2, build_profile_prompt_v2,
+    parse_profile_v2, assemble_profile_v2, is_degraded_v2,
 )
 
 
@@ -193,3 +194,133 @@ def test_prompt_output_schema_mentions_confidence_labels_and_timeline_tourism():
     p = build_profile_prompt_v2("Z", "country", {}, {}, "")
     assert "certain" in p and "inferred" in p and "time_sensitive" in p
     assert "timeline" in p and "tourism" in p
+
+
+"""Task4: 応答パース＋組立 v2（純関数）のテスト。"""
+
+
+def test_parse_v2_filters_bad_confidence_and_keys():
+    txt = '{"layers":[{"key":"geography","title":"地勢","body":"本文",'\
+          '"confidence":[{"label":"bogus","note":"x"},{"label":"certain","kind":"地理","note":"y"}],'\
+          '"dig_deeper":["a"]},{"key":"nope","body":"z"}],"timeline":[{"year":1819,"event":"開港"}],"tourism":["名所"]}'
+    r = parse_profile_v2(txt)
+    assert [l["key"] for l in r["layers"]] == ["geography"]
+    assert [c["label"] for c in r["layers"][0]["confidence"]] == ["certain"]
+    assert r["timeline"][0]["year"] == "1819" and r["tourism"] == ["名所"]
+
+
+def test_degraded_v2_when_no_layers():
+    assert is_degraded_v2("Q1", {"layers": []}) is True
+
+
+def test_parse_v2_non_string_input_returns_empty_structure():
+    assert parse_profile_v2(None) == {"layers": [], "timeline": [], "tourism": []}
+    assert parse_profile_v2(123) == {"layers": [], "timeline": [], "tourism": []}
+
+
+def test_parse_v2_no_json_object_returns_empty_structure():
+    assert parse_profile_v2("前置きだけで JSON が無い応答") == {"layers": [], "timeline": [], "tourism": []}
+
+
+def test_parse_v2_invalid_json_returns_empty_structure():
+    assert parse_profile_v2("{not valid json}") == {"layers": [], "timeline": [], "tourism": []}
+
+
+def test_parse_v2_dedups_same_key_keeps_first_occurrence():
+    txt = ('{"layers":[{"key":"geography","body":"最初"},'
+           '{"key":"geography","body":"二回目"}]}')
+    r = parse_profile_v2(txt)
+    assert [layer["key"] for layer in r["layers"]] == ["geography"]
+    assert r["layers"][0]["body"] == "最初"
+
+
+def test_parse_v2_empty_or_whitespace_body_filtered():
+    txt = '{"layers":[{"key":"geography","body":"   "},{"key":"economy","body":""}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"] == []
+
+
+def test_parse_v2_confidence_missing_note_filtered():
+    txt = '{"layers":[{"key":"geography","body":"本文",' \
+          '"confidence":[{"label":"certain"},{"label":"inferred","note":"根拠あり"}]}]}'
+    r = parse_profile_v2(txt)
+    assert [c["label"] for c in r["layers"][0]["confidence"]] == ["inferred"]
+
+
+def test_parse_v2_title_defaults_to_key_when_missing():
+    txt = '{"layers":[{"key":"society","body":"本文"}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"][0]["title"] == "society"
+
+
+def test_parse_v2_evidence_and_dig_deeper_default_and_filter():
+    txt = '{"layers":[{"key":"society","body":"本文","evidence":"  出典  ",' \
+          '"dig_deeper":["指標A", "", 123, "  "]}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"][0]["evidence"] == "出典"
+    assert r["layers"][0]["dig_deeper"] == ["指標A"]
+
+
+def test_parse_v2_timeline_skips_entries_without_event():
+    txt = '{"timeline":[{"year":2000},{"year":2001,"event":"何か"}]}'
+    r = parse_profile_v2(txt)
+    assert [t["year"] for t in r["timeline"]] == ["2001"]
+
+
+def test_parse_v2_timeline_invalid_confidence_falls_back_to_certain():
+    txt = '{"timeline":[{"year":1945,"event":"終戦","confidence":"bogus"}]}'
+    r = parse_profile_v2(txt)
+    assert r["timeline"][0]["confidence"] == "certain"
+
+
+def test_parse_v2_timeline_valid_confidence_and_cause_note_preserved():
+    txt = '{"timeline":[{"year":1945,"event":"終戦","confidence":"inferred","cause_note":"  推定  "}]}'
+    r = parse_profile_v2(txt)
+    assert r["timeline"][0]["confidence"] == "inferred"
+    assert r["timeline"][0]["cause_note"] == "推定"
+
+
+def test_parse_v2_tourism_filters_non_string_and_blank():
+    txt = '{"tourism":["名所A", "", "  ", 123, "名所B"]}'
+    r = parse_profile_v2(txt)
+    assert r["tourism"] == ["名所A", "名所B"]
+
+
+def test_parse_v2_missing_keys_return_empty_lists():
+    assert parse_profile_v2("{}") == {"layers": [], "timeline": [], "tourism": []}
+
+
+def test_is_degraded_v2_false_when_qid_and_layers_present():
+    assert is_degraded_v2("Q1", {"layers": [{"key": "geography"}]}) is False
+
+
+def test_is_degraded_v2_true_when_qid_missing():
+    assert is_degraded_v2(None, {"layers": [{"key": "geography"}]}) is True
+    assert is_degraded_v2("", {"layers": [{"key": "geography"}]}) is True
+
+
+def test_is_degraded_v2_true_when_layers_key_absent():
+    assert is_degraded_v2("Q1", {}) is True
+
+
+def test_assemble_profile_v2_builds_expected_schema():
+    parsed = {"layers": [{"key": "geography", "body": "本文"}],
+              "timeline": [{"year": "1819", "event": "開港"}],
+              "tourism": ["名所"]}
+    facts = {"population": 100}
+    source = {"qid": "Q1", "wikipedia_url": "https://ja.wikipedia.org/wiki/X"}
+    out = assemble_profile_v2("Q1", "city", "横浜市", facts, parsed, source, False,
+                               {"country": "日本", "admin1": "神奈川県"}, "2026-07-04T00:00:00Z")
+    assert out == {
+        "id": "Q1", "level": "city", "name_ja": "横浜市",
+        "belongs_to": {"country": "日本", "admin1": "神奈川県"},
+        "facts": facts, "layers": parsed["layers"], "timeline": parsed["timeline"],
+        "tourism": parsed["tourism"], "source": source, "degraded": False,
+        "generated_at": "2026-07-04T00:00:00Z",
+    }
+
+
+def test_assemble_profile_v2_degraded_true_coerced_from_truthy():
+    out = assemble_profile_v2("Q1", "country", "日本", {}, {"layers": [], "timeline": [], "tourism": []},
+                               {"qid": "Q1", "wikipedia_url": None}, "truthy-string", None, "2026-01-01")
+    assert out["degraded"] is True
