@@ -324,3 +324,80 @@ def test_assemble_profile_v2_degraded_true_coerced_from_truthy():
     out = assemble_profile_v2("Q1", "country", "日本", {}, {"layers": [], "timeline": [], "tourism": []},
                                {"qid": "Q1", "wikipedia_url": None}, "truthy-string", None, "2026-01-01")
     assert out["degraded"] is True
+
+
+# --- 堅牢性: untrusted な LLM 出力の非リスト/非dict/非文字列でクラッシュしない ---
+
+
+def test_parse_v2_layers_not_a_list_returns_empty():
+    # layers が dict（list でない）→ layers 空・クラッシュしない
+    r = parse_profile_v2('{"layers":{"key":"geography","body":"本文"}}')
+    assert r["layers"] == []
+
+
+def test_parse_v2_layer_elements_non_dict_skipped():
+    # layers 要素が文字列/数値/None → スキップ・正常な dict 要素は残る
+    txt = '{"layers":["文字列", 123, null, {"key":"geography","body":"本文"}]}'
+    r = parse_profile_v2(txt)
+    assert [layer["key"] for layer in r["layers"]] == ["geography"]
+
+
+def test_parse_v2_non_string_key_skipped_no_typeerror():
+    # key が list/dict（非文字列）→ `k in _LAYER_KEYS` の TypeError を避けてスキップ
+    txt = '{"layers":[{"key":["geography"],"body":"本文A"},{"key":{"x":1},"body":"本文B"},' \
+          '{"key":"economy","body":"本文C"}]}'
+    r = parse_profile_v2(txt)
+    assert [layer["key"] for layer in r["layers"]] == ["economy"]
+
+
+def test_parse_v2_non_string_evidence_becomes_empty():
+    # evidence が数値/list → .strip() クラッシュせず "" に
+    txt = '{"layers":[{"key":"geography","body":"本文","evidence":123},' \
+          '{"key":"economy","body":"本文2","evidence":["a"]}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"][0]["evidence"] == ""
+    assert r["layers"][1]["evidence"] == ""
+
+
+def test_parse_v2_confidence_and_dig_deeper_not_list_safe():
+    # confidence/dig_deeper が非リスト → 空リスト・クラッシュしない
+    txt = '{"layers":[{"key":"geography","body":"本文","confidence":"certain","dig_deeper":"x"}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"][0]["confidence"] == []
+    assert r["layers"][0]["dig_deeper"] == []
+
+
+def test_parse_v2_title_non_string_falls_back_to_key():
+    # title が数値 → key にフォールバック
+    txt = '{"layers":[{"key":"society","body":"本文","title":123}]}'
+    r = parse_profile_v2(txt)
+    assert r["layers"][0]["title"] == "society"
+
+
+def test_parse_v2_timeline_not_a_list_returns_empty():
+    r = parse_profile_v2('{"timeline":{"year":2000,"event":"何か"}}')
+    assert r["timeline"] == []
+
+
+def test_parse_v2_timeline_non_dict_and_non_string_event_skipped():
+    # timeline 要素が非dict、または event が非文字列/空 → スキップ・正常要素は残る
+    txt = '{"timeline":["x", 123, {"year":2001,"event":999}, {"year":2002,"event":"  "},' \
+          '{"year":2003,"event":"確定"}]}'
+    r = parse_profile_v2(txt)
+    assert [t["year"] for t in r["timeline"]] == ["2003"]
+
+
+def test_parse_v2_timeline_non_string_cause_note_becomes_empty():
+    txt = '{"timeline":[{"year":2000,"event":"何か","cause_note":123}]}'
+    r = parse_profile_v2(txt)
+    assert r["timeline"][0]["cause_note"] == ""
+
+
+def test_parse_v2_tourism_not_a_list_returns_empty():
+    r = parse_profile_v2('{"tourism":"名所"}')
+    assert r["tourism"] == []
+
+
+def test_parse_v2_non_dict_json_returns_empty_structure():
+    # トップレベルが list の JSON → 空構造・クラッシュしない
+    assert parse_profile_v2('[1, 2, 3]') == {"layers": [], "timeline": [], "tourism": []}

@@ -273,23 +273,49 @@ def parse_profile_v2(text):
         data = json.loads(m.group(0))
     except ValueError:
         return {"layers": [], "timeline": [], "tourism": []}
+    if not isinstance(data, dict):
+        return {"layers": [], "timeline": [], "tourism": []}
+    raw_layers = data.get("layers")
+    raw_layers = raw_layers if isinstance(raw_layers, list) else []
     layers, seen = [], set()
-    for s in (data.get("layers") or []):
-        k = (s or {}).get("key")
-        b = (s or {}).get("body")
+    for s in raw_layers:
+        if not isinstance(s, dict):
+            continue
+        k = s.get("key")
+        b = s.get("body")
+        if not isinstance(k, str):
+            continue
         if k in _LAYER_KEYS and k not in seen and isinstance(b, str) and b.strip():
-            conf = [c for c in (s.get("confidence") or [])
+            raw_conf = s.get("confidence")
+            conf = [c for c in (raw_conf if isinstance(raw_conf, list) else [])
                     if isinstance(c, dict) and c.get("label") in _CONF and c.get("note")]
-            dig = [d for d in (s.get("dig_deeper") or []) if isinstance(d, str) and d.strip()]
-            layers.append({"key": k, "title": s.get("title") or k, "body": b.strip(),
-                           "confidence": conf, "evidence": (s.get("evidence") or "").strip(),
+            raw_dig = s.get("dig_deeper")
+            dig = [d for d in (raw_dig if isinstance(raw_dig, list) else [])
+                   if isinstance(d, str) and d.strip()]
+            ti = s.get("title")
+            ev = s.get("evidence")
+            layers.append({"key": k, "title": ti if isinstance(ti, str) and ti.strip() else k,
+                           "body": b.strip(), "confidence": conf,
+                           "evidence": ev.strip() if isinstance(ev, str) else "",
                            "dig_deeper": dig})
             seen.add(k)
-    timeline = [{"year": str(t.get("year")), "event": t.get("event", "").strip(),
-                 "confidence": t.get("confidence") if t.get("confidence") in _CONF else "certain",
-                 "cause_note": (t.get("cause_note") or "").strip()}
-                for t in (data.get("timeline") or []) if isinstance(t, dict) and t.get("event")]
-    tourism = [x.strip() for x in (data.get("tourism") or []) if isinstance(x, str) and x.strip()]
+    raw_timeline = data.get("timeline")
+    raw_timeline = raw_timeline if isinstance(raw_timeline, list) else []
+    timeline = []
+    for t in raw_timeline:
+        if not isinstance(t, dict):
+            continue
+        ev = t.get("event")
+        if not (isinstance(ev, str) and ev.strip()):
+            continue
+        conf = t.get("confidence")
+        cn = t.get("cause_note")
+        timeline.append({"year": str(t.get("year")), "event": ev.strip(),
+                         "confidence": conf if conf in _CONF else "certain",
+                         "cause_note": cn.strip() if isinstance(cn, str) else ""})
+    raw_tourism = data.get("tourism")
+    raw_tourism = raw_tourism if isinstance(raw_tourism, list) else []
+    tourism = [x.strip() for x in raw_tourism if isinstance(x, str) and x.strip()]
     return {"layers": layers, "timeline": timeline, "tourism": tourism}
 
 
