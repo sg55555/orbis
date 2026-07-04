@@ -220,18 +220,33 @@ def ask_llm_v2(prompt):
         return ""
 
 
+# level 別 max_tokens（Batch API request 構築用）。country は5層×確度×根拠×深掘り×年表×観光と
+# 最もリッチで応答が長く、一律2000だと truncate（stop_reason=="max_tokens"）しやすいため引き上げる。
+MAX_TOKENS_BY_LEVEL = {"country": 4000, "admin1": 2500, "city": 2500}
+DEFAULT_MAX_TOKENS = 2500
+
+
+def _max_tokens_for_cid(cid):
+    """custom_id (= f"{level}:{pid}"、_pass1_prepare 参照) から level を取り出し level 別 max_tokens を返す。
+    未知の level は DEFAULT_MAX_TOKENS にフォールバック。"""
+    level = cid.split(":", 1)[0]
+    return MAX_TOKENS_BY_LEVEL.get(level, DEFAULT_MAX_TOKENS)
+
+
 def run_batch(prompts):
     """prompts: list[(custom_id, prompt)] → {custom_id: response_text}。
     Anthropic Message Batches API（50%オフ）。custom_id で結果をひも付ける（順序は保証されない＝
     位置対応させない）。実行は課金を伴う（Task5では未実行・配線のみ。実行はユーザー承認後の Task8）。
-    anthropic は遅延 import（未インストールでも本モジュールの import/pytest 収集を壊さない）。"""
+    anthropic は遅延 import（未インストールでも本モジュールの import/pytest 収集を壊さない）。
+    max_tokens は level 別（_max_tokens_for_cid）。succeeded でも stop_reason=="max_tokens" は
+    truncate（課金済みだが本文欠落→parse_profile_v2 失敗→silent degraded）のサインなので warn する。"""
     import anthropic
     from anthropic.types.message_create_params import MessageCreateParamsNonStreaming
     from anthropic.types.messages.batch_create_params import Request
 
     client = anthropic.Anthropic()
     reqs = [Request(custom_id=cid, params=MessageCreateParamsNonStreaming(
-                model=MODEL, max_tokens=2000, temperature=0, system=PROFILE_SYSTEM_V2,
+                model=MODEL, max_tokens=_max_tokens_for_cid(cid), temperature=0, system=PROFILE_SYSTEM_V2,
                 messages=[{"role": "user", "content": p}]))
             for cid, p in prompts]
     batch = client.messages.batches.create(requests=reqs)
@@ -240,6 +255,10 @@ def run_batch(prompts):
     out = {}
     for r in client.messages.batches.results(batch.id):
         if r.result.type == "succeeded":
+            stop_reason = getattr(r.result.message, "stop_reason", None)
+            if stop_reason == "max_tokens":
+                print(f"[profiles] WARN: max_tokens で打ち切り ({r.custom_id}) — "
+                      f"課金済みだが応答が truncate され本文が不完全な degraded になる可能性があります")
             out[r.custom_id] = next((b.text for b in r.result.message.content if b.type == "text"), "")
     return out
 
@@ -305,11 +324,21 @@ def _pass1_prepare(items, generated_at):
     """PASS1: 全対象の Wikidata/Wikipedia 取得＋プロンプト構築（LLM未呼び出し）。
     qid 無し／本文(節抽出後)が空、のいずれかは即 degraded profile を組み立てて immediate へ
     （Batch 対象外）。それ以外は prompts へ (custom_id, prompt) を積み、pending に組立材料を保持する。
+    custom_id (= f"{level}:{pid}") は admin1 の iso_3166_2/code_hasc/adm1_code フォールバックや
+    city の qid 跨ぎ等で重複し得る。Batch API は重複 custom_id を 400 で拒否し run 全体を落とすため、
+    2件目以降は Wikidata/Wikipedia を取得する前にスキップして warn する（dedupe・run は止めない）。
     戻り値: (immediate: [(level,pid,prof)], prompts: [(custom_id,prompt)], pending: {custom_id: dict})"""
     immediate = []
     prompts = []
     pending = {}
+    seen_cids = set()
     for level, pid, name_ja, qid, belongs_to in items:
+        cid = f"{level}:{pid}"
+        if cid in seen_cids:
+            print(f"[profiles] WARN: 重複 custom_id をスキップ ({cid} / {name_ja}) — "
+                  f"Batch API は同一 custom_id を拒否するため後続の対象は無視されます")
+            continue
+        seen_cids.add(cid)
         if not qid:
             prof = assemble_profile_v2(pid, level, name_ja, wikidata_facts({}),
                                        {"layers": [], "timeline": [], "tourism": []},
@@ -333,7 +362,6 @@ def _pass1_prepare(items, generated_at):
             continue
         belongs_name = (belongs_to or {}).get("name_ja") if belongs_to else None
         prompt = build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_name)
-        cid = f"{level}:{pid}"
         prompts.append((cid, prompt))
         pending[cid] = {"level": level, "pid": pid, "name_ja": name_ja, "facts": facts,
                         "source": source, "belongs_to": belongs_to}
