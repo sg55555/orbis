@@ -222,8 +222,8 @@ def ask_llm_v2(prompt):
 
 # level 別 max_tokens（Batch API request 構築用）。country は5層×確度×根拠×深掘り×年表×観光と
 # 最もリッチで応答が長く、一律2000だと truncate（stop_reason=="max_tokens"）しやすいため引き上げる。
-MAX_TOKENS_BY_LEVEL = {"country": 4000, "admin1": 2500, "city": 2500}
-DEFAULT_MAX_TOKENS = 2500
+MAX_TOKENS_BY_LEVEL = {"country": 8000, "admin1": 6000, "city": 6000}
+DEFAULT_MAX_TOKENS = 6000
 
 
 def _max_tokens_for_cid(cid):
