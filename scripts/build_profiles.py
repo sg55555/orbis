@@ -37,6 +37,7 @@ CACHE = os.path.join(ROOT, "scripts/.cache/profiles")
 OUT = os.path.join(ROOT, "data/static/profiles")
 MODEL = os.environ.get("PROFILE_LLM_MODEL", "claude-sonnet-4-6")
 UA = {"User-Agent": "orbis-profile-collector"}
+FETCH_MAX_RETRIES = 4  # 429/例外時の指数バックオフ上限（8c 品質ゲート修正・v2 の fetch_* 系）
 PROFILE_SYSTEM = ("あなたは地理事典の編集者です。与えられた事実のみを根拠に、"
                   "字幕でなく説明文として自然で簡潔な日本語プロフィールを作ります。")
 
@@ -58,6 +59,26 @@ def _cache_get(name):
 def _cache_put(name, obj):
     os.makedirs(CACHE, exist_ok=True)
     json.dump(obj, open(os.path.join(CACHE, name), "w", encoding="utf-8"), ensure_ascii=False)
+
+
+def _get_with_retry(url, params=None, max_retries=FETCH_MAX_RETRIES):
+    """GET を 429（レート制限）や例外時に指数バックオフでリトライする（v2 の fetch_article_plaintext /
+    fetch_wikidata_props 共通）。8c 品質ゲートで発覚したバグ（レート制限で空応答→そのまま無条件キャッシュ
+    →以後ずっと空のまま）への対策。最終的に成功すれば Response を、上限まで失敗したら None を返す。
+    None は呼び出し側で「取得失敗＝キャッシュしない」の合図として扱うこと。"""
+    for attempt in range(max_retries):
+        try:
+            r = requests.get(url, params=params, timeout=30, headers=UA)
+            if r.status_code == 429:
+                raise requests.exceptions.HTTPError(f"429 rate limited: {url}")
+            r.raise_for_status()
+            return r
+        except Exception:
+            if attempt < max_retries - 1:
+                time.sleep(2 ** attempt)
+                continue
+            return None
+    return None
 
 
 def fetch_wikidata(qid):
@@ -147,7 +168,12 @@ def _gen_cached(level, pid, name_ja, qid):
 
 def fetch_wikidata_props(qids):
     """QID リスト → 日本語ラベル dict（wbgetentities batch・QID 単位キャッシュ v2_label_*）。
-    named_props の label_resolver として注入する。未解決 QID は None（呼び側の dedup_names で除外）。"""
+    named_props の label_resolver として注入する。未解決 QID は None（呼び側の dedup_names で除外）。
+    429/例外は _get_with_retry で指数バックオフ再試行。chunk の HTTP 取得そのものが最終的に失敗した
+    場合（レート制限で entities が得られなかった場合）は、その chunk の全 QID を **キャッシュしない**
+    （見かけ上は今回 None を返すが、次回実行時に再取得できるようにするため。8c 品質ゲートで発覚した
+    「レート制限の空応答を無条件キャッシュして以後ずっと degraded のまま」というバグの修正）。
+    個々の QID に ja ラベルが本当に無い（chunk 取得自体は成功）場合の None は正当な結果としてキャッシュする。"""
     qids = list(dict.fromkeys(q for q in qids if q))  # 順序保持で重複除去
     out = {}
     missing = []
@@ -159,48 +185,59 @@ def fetch_wikidata_props(qids):
             missing.append(q)
     for i in range(0, len(missing), 50):  # wbgetentities の ids 上限（通常ユーザー）
         chunk = missing[i:i + 50]
-        try:
-            r = requests.get("https://www.wikidata.org/w/api.php", params={
-                "action": "wbgetentities", "ids": "|".join(chunk),
-                "props": "labels", "languages": "ja", "format": "json",
-            }, timeout=30, headers=UA)
-            r.raise_for_status()
-            entities = r.json().get("entities") or {}
-        except Exception:
-            entities = {}
+        r = _get_with_retry("https://www.wikidata.org/w/api.php", params={
+            "action": "wbgetentities", "ids": "|".join(chunk),
+            "props": "labels", "languages": "ja", "format": "json",
+        })
+        fetched_ok = False
+        entities = {}
+        if r is not None:
+            try:
+                entities = r.json().get("entities") or {}
+                fetched_ok = True
+            except Exception:
+                entities = {}
+                fetched_ok = False
         for q in chunk:
             label = None
             v = (((entities.get(q) or {}).get("labels") or {}).get("ja") or {}).get("value")
             if isinstance(v, str) and v.strip():
                 label = v.strip()
             out[q] = label
-            _cache_put(f"v2_label_{q}.json", {"label": label})
-        time.sleep(0.2)
+            if fetched_ok:  # chunk 取得が成功した場合のみキャッシュ（レート制限の空応答は非キャッシュ）
+                _cache_put(f"v2_label_{q}.json", {"label": label})
+        time.sleep(0.4)
     return out
 
 
 def fetch_article_plaintext(title):
     """ja Wikipedia extracts(explaintext) で全文プレーンテキストを取得（v2・キャッシュ v2_wp_*）。
-    extract_sections で節抽出する前段。取得失敗/該当ページ無しは空文字。"""
+    extract_sections で節抽出する前段。取得失敗/該当ページ無しは空文字。
+    429/例外は _get_with_retry で指数バックオフ再試行。「レート制限による一時的な空」と「ページが
+    本当に存在せず extract が空の正当な空」をコードで確実に区別できないため、安全側に倒して
+    **非空テキストが取れたときだけキャッシュ**する（8c 品質ゲートで発覚した「レート制限の空応答を
+    無条件キャッシュして以後ずっと degraded のまま」というバグの修正。空/失敗は次回実行時に
+    再取得できるようキャッシュしない）。"""
     key = hashlib.md5(title.encode("utf-8")).hexdigest()
     cname = f"v2_wp_{key}.json"
     cached = _cache_get(cname)
     if cached is not None:
         return cached.get("text") or ""
-    url = "https://ja.wikipedia.org/w/api.php"
-    try:
-        r = requests.get(url, params={
-            "action": "query", "prop": "extracts", "explaintext": 1,
-            "titles": title, "format": "json",
-        }, timeout=30, headers=UA)
-        r.raise_for_status()
-        pages = ((r.json().get("query") or {}).get("pages") or {})
-        page = next(iter(pages.values()), {}) if pages else {}
-        text = page.get("extract") or ""
-    except Exception:
-        text = ""
-    _cache_put(cname, {"text": text})
-    time.sleep(0.2)
+    r = _get_with_retry("https://ja.wikipedia.org/w/api.php", params={
+        "action": "query", "prop": "extracts", "explaintext": 1,
+        "titles": title, "format": "json",
+    })
+    text = ""
+    if r is not None:
+        try:
+            pages = ((r.json().get("query") or {}).get("pages") or {})
+            page = next(iter(pages.values()), {}) if pages else {}
+            text = page.get("extract") or ""
+        except Exception:
+            text = ""
+    if text:  # 非空のときだけキャッシュ（空/失敗は再取得可能なままにする）
+        _cache_put(cname, {"text": text})
+    time.sleep(0.4)
     return text
 
 

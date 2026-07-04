@@ -1,5 +1,7 @@
-"""最終レビュー Fix2/Fix3 のユニットテスト（scripts/build_profiles.py）。
+"""最終レビュー Fix2/Fix3、および 8c 品質ゲート修正（レート制限キャッシュ汚染バグ）の
+ユニットテスト（scripts/build_profiles.py）。
 実 API/実 HTTP は一切呼ばない — anthropic は sys.modules にフェイクを差し込んで検証する。
+requests は build_profiles.requests.get を monkeypatch で差し替えてモックする。
 Fix1（js/ui/drilldown.js の belongs_to リンク配線）は JS 側 tests/profile_render.test.js を参照。
 """
 import sys
@@ -179,3 +181,133 @@ def test_run_batch_warns_on_max_tokens_stop_reason(monkeypatch, capsys):
     warn_lines = [ln for ln in printed.splitlines() if "WARN" in ln]
     assert len(warn_lines) == 1, "truncate された1件だけ warn する（end_turn 側は警告しない）"
     assert "country_US" in warn_lines[0], "どの custom_id が truncate されたか分かること"
+
+
+# ---------------------------------------------------------------------------
+# 8c 品質ゲート修正: レート制限(429)で空応答が無条件キャッシュされ以後ずっと degraded のまま
+# になるバグの回帰テスト。requests.get を monkeypatch でモックし実 HTTP は呼ばない。
+# ---------------------------------------------------------------------------
+
+class _FakeResponse:
+    """requests.Response の最小フェイク。429 は _get_with_retry が status_code を見て検出するので
+    raise_for_status() 自体は 400 以上でのみ例外を投げる（本物の requests と同じ挙動）。"""
+
+    def __init__(self, status_code=200, json_data=None):
+        self.status_code = status_code
+        self._json_data = json_data if json_data is not None else {}
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise build_profiles.requests.exceptions.HTTPError(f"status {self.status_code}")
+
+    def json(self):
+        return self._json_data
+
+
+def _no_cache(monkeypatch, put_calls=None):
+    """_cache_get を常に miss にし、_cache_put 呼び出しを put_calls（list）に記録する spy に差し替える。"""
+    if put_calls is None:
+        put_calls = []
+    monkeypatch.setattr(build_profiles, "_cache_get", lambda name: None)
+    monkeypatch.setattr(build_profiles, "_cache_put", lambda name, obj: put_calls.append((name, obj)))
+    monkeypatch.setattr(build_profiles.time, "sleep", lambda s: None)  # バックオフの実待機を排除
+    return put_calls
+
+
+def test_fetch_article_plaintext_retries_after_429_then_succeeds_and_caches(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            return _FakeResponse(status_code=429)
+        return _FakeResponse(status_code=200, json_data={
+            "query": {"pages": {"123": {"extract": "本文サンプル"}}}
+        })
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    text = build_profiles.fetch_article_plaintext("テスト記事")
+
+    assert text == "本文サンプル"
+    assert calls["n"] == 3, "429を2回リトライし3回目で成功する"
+    assert put_calls == [("v2_wp_" + build_profiles.hashlib.md5("テスト記事".encode("utf-8")).hexdigest()
+                           + ".json", {"text": "本文サンプル"})], "成功時は1回だけキャッシュされる"
+
+
+def test_fetch_article_plaintext_gives_up_after_max_retries_without_caching(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        return _FakeResponse(status_code=429)  # 常にレート制限
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    text = build_profiles.fetch_article_plaintext("テスト記事2")
+
+    assert text == ""
+    assert calls["n"] == build_profiles.FETCH_MAX_RETRIES, "上限回数までリトライして諦める"
+    assert put_calls == [], "レート制限で失敗した空文字はキャッシュしない（次回再取得できるように）"
+
+
+def test_fetch_article_plaintext_success_caches_and_second_call_hits_cache(monkeypatch, tmp_path):
+    monkeypatch.setattr(build_profiles, "CACHE", str(tmp_path))  # 実キャッシュディレクトリを汚さない
+    monkeypatch.setattr(build_profiles.time, "sleep", lambda s: None)
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        return _FakeResponse(status_code=200, json_data={
+            "query": {"pages": {"1": {"extract": "正常本文"}}}
+        })
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+
+    text1 = build_profiles.fetch_article_plaintext("正常記事")
+    assert text1 == "正常本文"
+    assert calls["n"] == 1
+
+    text2 = build_profiles.fetch_article_plaintext("正常記事")
+    assert text2 == "正常本文"
+    assert calls["n"] == 1, "2回目はキャッシュ hit で requests.get は呼ばれない"
+
+
+def test_fetch_wikidata_props_retries_after_429_then_succeeds_and_caches(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        if calls["n"] < 2:
+            return _FakeResponse(status_code=429)
+        return _FakeResponse(status_code=200, json_data={
+            "entities": {"Q1490": {"labels": {"ja": {"value": "東京都"}}}}
+        })
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    out = build_profiles.fetch_wikidata_props(["Q1490"])
+
+    assert out == {"Q1490": "東京都"}
+    assert calls["n"] == 2, "429を1回リトライし2回目で成功する"
+    assert put_calls == [("v2_label_Q1490.json", {"label": "東京都"})]
+
+
+def test_fetch_wikidata_props_gives_up_after_max_retries_without_caching(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        return _FakeResponse(status_code=429)  # 常にレート制限
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    out = build_profiles.fetch_wikidata_props(["Q1490", "Q9999"])
+
+    assert out == {"Q1490": None, "Q9999": None}, "chunk 取得失敗時は全 QID が None"
+    assert calls["n"] == build_profiles.FETCH_MAX_RETRIES, "chunk 単位で1リクエストをリトライする"
+    assert put_calls == [], "レート制限で chunk 取得に失敗した場合はどの QID もキャッシュしない"
