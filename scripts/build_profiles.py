@@ -227,9 +227,10 @@ DEFAULT_MAX_TOKENS = 2500
 
 
 def _max_tokens_for_cid(cid):
-    """custom_id (= f"{level}:{pid}"、_pass1_prepare 参照) から level を取り出し level 別 max_tokens を返す。
-    未知の level は DEFAULT_MAX_TOKENS にフォールバック。"""
-    level = cid.split(":", 1)[0]
+    """custom_id (= f"{level}_{pid}"、_pass1_prepare 参照) から level を取り出し level 別 max_tokens を返す。
+    未知の level は DEFAULT_MAX_TOKENS にフォールバック。custom_id は Batch API のパターン
+    ^[a-zA-Z0-9_-]{1,64}$ に従う（区切りはコロン不可 → アンダースコア）。"""
+    level = cid.split("_", 1)[0]
     return MAX_TOKENS_BY_LEVEL.get(level, DEFAULT_MAX_TOKENS)
 
 
@@ -324,7 +325,7 @@ def _pass1_prepare(items, generated_at):
     """PASS1: 全対象の Wikidata/Wikipedia 取得＋プロンプト構築（LLM未呼び出し）。
     qid 無し／本文(節抽出後)が空、のいずれかは即 degraded profile を組み立てて immediate へ
     （Batch 対象外）。それ以外は prompts へ (custom_id, prompt) を積み、pending に組立材料を保持する。
-    custom_id (= f"{level}:{pid}") は admin1 の iso_3166_2/code_hasc/adm1_code フォールバックや
+    custom_id (= f"{level}_{pid}") は admin1 の iso_3166_2/code_hasc/adm1_code フォールバックや
     city の qid 跨ぎ等で重複し得る。Batch API は重複 custom_id を 400 で拒否し run 全体を落とすため、
     2件目以降は Wikidata/Wikipedia を取得する前にスキップして warn する（dedupe・run は止めない）。
     戻り値: (immediate: [(level,pid,prof)], prompts: [(custom_id,prompt)], pending: {custom_id: dict})"""
@@ -333,7 +334,7 @@ def _pass1_prepare(items, generated_at):
     pending = {}
     seen_cids = set()
     for level, pid, name_ja, qid, belongs_to in items:
-        cid = f"{level}:{pid}"
+        cid = f"{level}_{pid}"
         if cid in seen_cids:
             print(f"[profiles] WARN: 重複 custom_id をスキップ ({cid} / {name_ja}) — "
                   f"Batch API は同一 custom_id を拒否するため後続の対象は無視されます")

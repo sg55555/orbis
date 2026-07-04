@@ -14,19 +14,19 @@ from scripts import build_profiles
 # ---------------------------------------------------------------------------
 
 def test_max_tokens_for_cid_country_is_raised_to_4000():
-    assert build_profiles._max_tokens_for_cid("country:US") == 4000
+    assert build_profiles._max_tokens_for_cid("country_US") == 4000
 
 
 def test_max_tokens_for_cid_admin1_is_2500():
-    assert build_profiles._max_tokens_for_cid("admin1:JP-13") == 2500
+    assert build_profiles._max_tokens_for_cid("admin1_JP-13") == 2500
 
 
 def test_max_tokens_for_cid_city_is_2500():
-    assert build_profiles._max_tokens_for_cid("city:Q1490") == 2500
+    assert build_profiles._max_tokens_for_cid("city_Q1490") == 2500
 
 
 def test_max_tokens_for_cid_unknown_level_falls_back_to_default():
-    assert build_profiles._max_tokens_for_cid("mystery:XX") == build_profiles.DEFAULT_MAX_TOKENS
+    assert build_profiles._max_tokens_for_cid("mystery_XX") == build_profiles.DEFAULT_MAX_TOKENS
 
 
 # ---------------------------------------------------------------------------
@@ -45,7 +45,7 @@ def test_pass1_prepare_skips_duplicate_custom_id_and_warns(monkeypatch, capsys):
 
     items = [
         ("admin1", "JP-13", "東京都", "Q1490", {"level": "country", "id": "JP", "name_ja": "日本"}),
-        # 同じ (level="admin1", pid="JP-13") = 同じ custom_id "admin1:JP-13" になる衝突ケース
+        # 同じ (level="admin1", pid="JP-13") = 同じ custom_id "admin1_JP-13" になる衝突ケース
         ("admin1", "JP-13", "重複ダミー県", "Q9999999", {"level": "country", "id": "JP", "name_ja": "日本"}),
     ]
 
@@ -53,14 +53,14 @@ def test_pass1_prepare_skips_duplicate_custom_id_and_warns(monkeypatch, capsys):
 
     assert immediate == [], "両方とも qid あり・section_text ありで prompts 側に進むはず"
     assert len(prompts) == 1, "重複 custom_id は2件目をスキップし1件だけ prompts に入る"
-    assert prompts[0][0] == "admin1:JP-13"
-    assert list(pending.keys()) == ["admin1:JP-13"]
+    assert prompts[0][0] == "admin1_JP-13"
+    assert list(pending.keys()) == ["admin1_JP-13"]
     # スキップされたのは2件目（重複ダミー県）で、pending には1件目（東京都）のデータが残る
-    assert pending["admin1:JP-13"]["name_ja"] == "東京都"
+    assert pending["admin1_JP-13"]["name_ja"] == "東京都"
 
     err = capsys.readouterr().out
     assert "WARN" in err
-    assert "admin1:JP-13" in err
+    assert "admin1_JP-13" in err
     assert "重複ダミー県" in err, "どの地域が衝突でスキップされたかログで分かること"
 
 
@@ -77,8 +77,8 @@ def test_pass1_prepare_distinct_custom_ids_both_kept(monkeypatch):
     ]
     immediate, prompts, pending = build_profiles._pass1_prepare(items, "2026-07-04")
     assert len(prompts) == 2
-    assert {cid for cid, _ in prompts} == {"admin1:JP-13", "admin1:JP-14"}
-    assert set(pending.keys()) == {"admin1:JP-13", "admin1:JP-14"}
+    assert {cid for cid, _ in prompts} == {"admin1_JP-13", "admin1_JP-14"}
+    assert set(pending.keys()) == {"admin1_JP-13", "admin1_JP-14"}
 
 
 # ---------------------------------------------------------------------------
@@ -145,37 +145,37 @@ def _fake_result(custom_id, *, stop_reason, text="本文テキスト"):
 
 
 def test_run_batch_sends_level_specific_max_tokens_in_requests(monkeypatch):
-    prompts = [("country:US", "prompt-us"), ("admin1:JP-13", "prompt-tokyo"), ("city:Q1490", "prompt-tokyo-city")]
+    prompts = [("country_US", "prompt-us"), ("admin1_JP-13", "prompt-tokyo"), ("city_Q1490", "prompt-tokyo-city")]
     fake_results = [
-        _fake_result("country:US", stop_reason="end_turn"),
-        _fake_result("admin1:JP-13", stop_reason="end_turn"),
-        _fake_result("city:Q1490", stop_reason="end_turn"),
+        _fake_result("country_US", stop_reason="end_turn"),
+        _fake_result("admin1_JP-13", stop_reason="end_turn"),
+        _fake_result("city_Q1490", stop_reason="end_turn"),
     ]
     captured = _install_fake_anthropic(monkeypatch, results=fake_results)
 
     build_profiles.run_batch(prompts)
 
     reqs_by_cid = {r["custom_id"]: r["params"]["max_tokens"] for r in captured["reqs"]}
-    assert reqs_by_cid["country:US"] == 4000, "country は truncate 回避のため引き上げ"
-    assert reqs_by_cid["admin1:JP-13"] == 2500
-    assert reqs_by_cid["city:Q1490"] == 2500
+    assert reqs_by_cid["country_US"] == 4000, "country は truncate 回避のため引き上げ"
+    assert reqs_by_cid["admin1_JP-13"] == 2500
+    assert reqs_by_cid["city_Q1490"] == 2500
 
 
 def test_run_batch_warns_on_max_tokens_stop_reason(monkeypatch, capsys):
-    prompts = [("country:US", "prompt-us"), ("admin1:JP-13", "prompt-tokyo")]
+    prompts = [("country_US", "prompt-us"), ("admin1_JP-13", "prompt-tokyo")]
     fake_results = [
-        _fake_result("country:US", stop_reason="max_tokens", text="途中で切れた本文"),
-        _fake_result("admin1:JP-13", stop_reason="end_turn"),
+        _fake_result("country_US", stop_reason="max_tokens", text="途中で切れた本文"),
+        _fake_result("admin1_JP-13", stop_reason="end_turn"),
     ]
     _install_fake_anthropic(monkeypatch, results=fake_results)
 
     out = build_profiles.run_batch(prompts)
 
     # truncate されても本文は out に残す（呼び出し元の parse_profile_v2/degraded 判定に委ねる）
-    assert out["country:US"] == "途中で切れた本文"
-    assert out["admin1:JP-13"] == "本文テキスト"
+    assert out["country_US"] == "途中で切れた本文"
+    assert out["admin1_JP-13"] == "本文テキスト"
 
     printed = capsys.readouterr().out
     warn_lines = [ln for ln in printed.splitlines() if "WARN" in ln]
     assert len(warn_lines) == 1, "truncate された1件だけ warn する（end_turn 側は警告しない）"
-    assert "country:US" in warn_lines[0], "どの custom_id が truncate されたか分かること"
+    assert "country_US" in warn_lines[0], "どの custom_id が truncate されたか分かること"
