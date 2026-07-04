@@ -126,7 +126,10 @@ const CONF_LABEL = {
 function confBadges(conf) {
   if (!conf || !conf.length) return '';
   const badges = conf.map((c) => {
-    const [ja, cls] = CONF_LABEL[c.label] || ['?', ''];
+    // hasOwnProperty ガード: 未検証の label（例 "__proto__"）が Object.prototype を
+    // 拾って非配列を分割代入し throw するのを防ぐ（untrusted LLM 生成データのため）
+    const known = Object.prototype.hasOwnProperty.call(CONF_LABEL, c.label) ? CONF_LABEL[c.label] : null;
+    const [ja, cls] = known || ['?', ''];
     return '<span class="pf-conf-b ' + cls + '">' + escapeHtml(ja) + '｜' + escapeHtml(c.kind || '')
       + '<i>' + escapeHtml(c.note || '') + '</i></span>';
   }).join('');

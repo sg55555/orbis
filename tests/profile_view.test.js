@@ -231,6 +231,21 @@ test('profileHtml: layers/timeline/tourism/confidence/evidence/dig_deeper の悪
   assert.ok(html.includes('&lt;script&gt;'));
 });
 
+test('profileHtml: confidence.label が想定外(__proto__等)でも throw しない', () => {
+  assert.doesNotThrow(() => profileHtml({
+    profile: {
+      id: 'JP', level: 'country', name_ja: '日本', belongs_to: null, facts: {},
+      layers: [{
+        key: 'geography', title: '地勢', body: '本文',
+        confidence: [{ label: '__proto__', kind: 'x', note: 'y' }],
+        dig_deeper: [],
+      }],
+      timeline: [], tourism: [], source: {}, degraded: false,
+    },
+    breadcrumb: [], events: [],
+  }));
+});
+
 test('profileHtml: belongs_to.name_ja の悪意ある文字列を escape する', () => {
   const evil = '<script>alert(1)</script>';
   const html = profileHtml({
