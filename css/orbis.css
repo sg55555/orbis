@@ -94,6 +94,7 @@
   --cat-amber-border: rgba(255,176,40,0.45); /* stale 縁 */
   --cat-amber-glow: rgba(255,176,40,0.22);   /* stale 発光 */
   --cat-amber-chip: rgba(245,150,60,0.55);   /* 不安定性アラートチップ --chip */
+  --cat-timewarn: color-mix(in srgb, var(--cat-conflict) 66%, var(--accent-purple)); /* 要鮮度(time_sensitive) マゼンタ寄り警告色（stark red 回避・cf-up の混色 house convention を踏襲） */
   /* 海流 line 層ランプ（冷→中→暖） */
   --cat-ocean-cold: rgb(42,127,255);
   --cat-ocean-mid: rgb(94,224,106);
@@ -1559,28 +1560,92 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
 }
 .pf-fact dd small { font-size: 10px; color: var(--muted); font-family: var(--font-display); margin-left: 2px; }
 
-/* ── 本文セクション */
-.pf-sections { display: flex; flex-direction: column; gap: 14px; }
-.pf-sec { position: relative; }
-.pf-sec-h {
-  display: flex; align-items: center; gap: 8px;
-  margin: 0 0 5px; font-family: var(--font-display); font-weight: 600;
+/* ── 本文セクション（因果レイヤー v2：見出し＋確度バッジ＋根拠/深掘り） */
+.pf-layers { display: flex; flex-direction: column; gap: 16px; }
+.pf-layer { position: relative; }
+.pf-layer-h {
+  margin: 0 0 6px; font-family: var(--font-display); font-weight: 600;
   font-size: 13.5px; letter-spacing: .05em; color: var(--text-heading);
   padding-bottom: 5px; position: relative;
 }
-/* sec-h のオーロラ下線 */
-.pf-sec-h::after {
+/* layer-h のオーロラ下線（旧 .pf-sec-h::after を踏襲） */
+.pf-layer-h::after {
   content: ''; position: absolute; left: 0; bottom: 0; width: 38px; height: 2px;
   background: linear-gradient(90deg, var(--cyan), var(--aurora-line-purple));
   border-radius: 2px;
 }
-.pf-sec-ic {
-  flex: 0 0 auto; width: 17px; height: 17px; color: var(--cyan);
-  filter: drop-shadow(0 0 4px rgba(57,208,255,0.4));
+.pf-layer p { margin: 0; color: var(--text); }
+
+/* 確度バッジ（certain=cyan縁／inferred=amber縁／time_sensitive=マゼンタ縁＋⚠感）。
+   面禁則：識別は border-color と box-shadow(glow) が主。background は既存バッジ
+   （.pf-kind 等）に倣い極薄フィル（アルファ ≤ .08）に留める。 */
+.pf-conf { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 0; }
+.pf-conf-b {
+  display: inline-flex; align-items: baseline; gap: 3px;
+  font-family: var(--font-display); font-size: 10.5px; letter-spacing: .02em;
+  padding: 2px 8px; border-radius: 999px; line-height: 1.5;
+  border: 1px solid var(--rim-cyan-35); color: var(--cyan);
+  background: var(--rim-cyan-08);
 }
-.pf-sec-ic svg { width: 100%; height: 100%; fill: none; stroke: currentColor;
-  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.pf-sec p { margin: 0; color: var(--text); }
+.pf-conf-b i { font-style: normal; color: var(--muted); font-size: 10px; margin-left: 3px; }
+.pf-conf-b.pf-conf--certain {
+  border-color: var(--rim-cyan-35); color: var(--cyan);
+  box-shadow: 0 0 6px var(--rim-cyan-22);
+}
+.pf-conf-b.pf-conf--inferred {
+  border-color: var(--cat-amber-border); color: var(--cat-stale);
+  background: rgba(255,176,40,0.06);
+  box-shadow: 0 0 6px var(--cat-amber-glow);
+}
+.pf-conf-b.pf-conf--time {
+  border-color: var(--cat-timewarn); color: var(--cat-timewarn);
+  background: color-mix(in srgb, var(--cat-timewarn) 8%, transparent);
+  box-shadow: 0 0 6px color-mix(in srgb, var(--cat-timewarn) 45%, transparent);
+}
+.pf-conf-b.pf-conf--time::before { content: '⚠'; margin-right: 1px; }
+
+/* 根拠／深掘り＝淡色脚注 */
+.pf-ev-basis, .pf-dig { margin-top: 4px; font-size: 11px; color: var(--muted); }
+
+/* 近代化タイムライン（年表）＝縦線＋節点 */
+.pf-timeline { margin-top: 12px; }
+.pf-timeline h3 {
+  margin: 0 0 8px; font-family: var(--font-display); font-weight: 600;
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.pf-timeline ol { list-style: none; margin: 0; padding: 0 0 0 16px; position: relative; }
+.pf-timeline ol::before {
+  content: ''; position: absolute; left: 4px; top: 4px; bottom: 4px; width: 1px;
+  background: linear-gradient(180deg, var(--aurora-line-cyan), var(--aurora-line-purple));
+  opacity: .6;
+}
+.pf-timeline li { position: relative; padding: 3px 0 3px 14px; font-size: 12px; color: var(--text); }
+.pf-timeline li::before {
+  content: ''; position: absolute; left: -1px; top: 9px; width: 6px; height: 6px;
+  border-radius: 50%; background: var(--cyan); box-shadow: 0 0 6px rgba(57,208,255,0.6);
+}
+.pf-timeline li b { color: var(--text-heading); font-family: var(--font-word); font-weight: 500; }
+.pf-tl-cause { color: var(--muted); }
+
+/* 観光（実用情報）＝分析レイヤーと視覚的に分離した実用枠（枠＋淡カードで区切る） */
+.pf-tourism {
+  margin-top: 14px; padding: 10px 12px;
+  border: 1px solid var(--line); border-radius: 10px; background: var(--bg-card-soft);
+}
+.pf-tourism h3 {
+  margin: 0 0 4px; font-family: var(--font-display); font-weight: 600;
+  font-size: 11px; letter-spacing: .08em; color: var(--muted);
+}
+.pf-tourism p { margin: 0; color: var(--text); }
+
+/* belongs_to（都市/県などで diplomacy 層が無い時の所属国リンク） */
+.pf-belongs { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.pf-belongs p { margin: 0; }
+.pf-belongs-link {
+  background: none; border: 0; padding: 0; font: inherit; cursor: pointer;
+  color: var(--cyan); text-decoration: underline; text-underline-offset: 2px;
+}
+.pf-belongs-link:hover { color: var(--text-heading); }
 
 /* ── 近隣の最近の動向（イベント折りたたみ・下部・小さく） */
 .pf-events {
