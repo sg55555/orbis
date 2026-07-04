@@ -311,3 +311,76 @@ def test_fetch_wikidata_props_gives_up_after_max_retries_without_caching(monkeyp
     assert out == {"Q1490": None, "Q9999": None}, "chunk 取得失敗時は全 QID が None"
     assert calls["n"] == build_profiles.FETCH_MAX_RETRIES, "chunk 単位で1リクエストをリトライする"
     assert put_calls == [], "レート制限で chunk 取得に失敗した場合はどの QID もキャッシュしない"
+
+
+def test_fetch_wikidata_props_maxlag_error_key_not_cached(monkeypatch):
+    # MediaWiki 高負荷: HTTP 200 だが body に top-level "error"（maxlag 等）→ "entities" 欠落
+    def fake_get(url, params=None, timeout=None, headers=None):
+        return _FakeResponse(status_code=200, json_data={
+            "error": {"code": "maxlag", "info": "Waiting for a database server"}
+        })
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    out = build_profiles.fetch_wikidata_props(["Q1490"])
+
+    assert out == {"Q1490": None}, "error 応答は失敗扱いで None"
+    assert put_calls == [], "maxlag error 応答はキャッシュしない（次回再取得）"
+
+
+# ---------------------------------------------------------------------------
+# Critical: fetch_wikidata（v1関数だが v2 の本番ホットパス）も同じ契約に。
+# レート制限で entity=None を永久キャッシュ→degraded 永久固定するバグの回帰テスト。
+# ---------------------------------------------------------------------------
+
+def test_fetch_wikidata_retries_after_429_then_succeeds_and_caches(monkeypatch):
+    calls = {"n": 0}
+    entity = {"claims": {}, "sitelinks": {"jawiki": {"title": "東京都"}}}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        if calls["n"] < 3:
+            return _FakeResponse(status_code=429)
+        return _FakeResponse(status_code=200, json_data={"entities": {"Q1490": entity}})
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    got = build_profiles.fetch_wikidata("Q1490")
+
+    assert got == entity
+    assert calls["n"] == 3, "429を2回リトライし3回目で成功する"
+    assert put_calls == [("wd_Q1490.json", {"entity": entity})], "成功時のみ1回キャッシュ"
+
+
+def test_fetch_wikidata_gives_up_after_max_retries_without_caching(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_get(url, params=None, timeout=None, headers=None):
+        calls["n"] += 1
+        return _FakeResponse(status_code=429)  # 常にレート制限
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    got = build_profiles.fetch_wikidata("Q1490")
+
+    assert got is None
+    assert calls["n"] == build_profiles.FETCH_MAX_RETRIES, "上限までリトライして諦める"
+    assert put_calls == [], "レート制限で得た None は永久キャッシュしない（degraded 永久固定を防ぐ）"
+
+
+def test_fetch_wikidata_maxlag_error_key_not_cached(monkeypatch):
+    def fake_get(url, params=None, timeout=None, headers=None):
+        return _FakeResponse(status_code=200, json_data={
+            "error": {"code": "maxlag", "info": "Waiting for a database server"}
+        })
+
+    monkeypatch.setattr(build_profiles.requests, "get", fake_get)
+    put_calls = _no_cache(monkeypatch)
+
+    got = build_profiles.fetch_wikidata("Q1490")
+
+    assert got is None, "error 応答は失敗扱いで None"
+    assert put_calls == [], "maxlag error 応答はキャッシュしない（次回再取得）"

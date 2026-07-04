@@ -62,10 +62,10 @@ def _cache_put(name, obj):
 
 
 def _get_with_retry(url, params=None, max_retries=FETCH_MAX_RETRIES):
-    """GET を 429（レート制限）や例外時に指数バックオフでリトライする（v2 の fetch_article_plaintext /
-    fetch_wikidata_props 共通）。8c 品質ゲートで発覚したバグ（レート制限で空応答→そのまま無条件キャッシュ
-    →以後ずっと空のまま）への対策。最終的に成功すれば Response を、上限まで失敗したら None を返す。
-    None は呼び出し側で「取得失敗＝キャッシュしない」の合図として扱うこと。"""
+    """GET を 429（レート制限）や例外時に指数バックオフでリトライする（fetch_wikidata /
+    fetch_article_plaintext / fetch_wikidata_props 共通）。8c 品質ゲートで発覚したバグ（レート制限で
+    空応答→そのまま無条件キャッシュ→以後ずっと空のまま）への対策。最終的に成功すれば Response を、
+    上限まで失敗したら None を返す。None は呼び出し側で「取得失敗＝キャッシュしない」の合図として扱うこと。"""
     for attempt in range(max_retries):
         try:
             r = requests.get(url, params=params, timeout=30, headers=UA)
@@ -76,23 +76,39 @@ def _get_with_retry(url, params=None, max_retries=FETCH_MAX_RETRIES):
         except Exception:
             if attempt < max_retries - 1:
                 time.sleep(2 ** attempt)
-                continue
-            return None
     return None
 
 
+def _json_ok(r):
+    """_get_with_retry の Response から JSON を取り出す。r が None（HTTP 失敗）、JSON パース失敗、
+    または MediaWiki が高負荷時に返す top-level "error" キー（HTTP 200 + maxlag 等で "entities"/"query"
+    が欠落する）を、すべて「取得失敗」として扱い (None, False) を返す。成功時は (data, True)。
+    False の chunk/地域は呼び出し側でキャッシュせず次回再取得させる（8c 品質ゲート修正）。"""
+    if r is None:
+        return None, False
+    try:
+        data = r.json()
+    except Exception:
+        return None, False
+    if isinstance(data, dict) and "error" in data:
+        return None, False
+    return data, True
+
+
 def fetch_wikidata(qid):
+    """QID → Wikidata entity（v1 関数だが v2 の _pass1_prepare/generate_profile_v2 で全地域に呼ばれる
+    本番ホットパス）。429/例外は _get_with_retry で指数バックオフ再試行し、maxlag 等の "error" 応答も
+    失敗扱い。**entity を取得できたときだけ `_cache_put`**（None/失敗はキャッシュせず次回再取得＝
+    fetch_article_plaintext と同じ契約。8c 品質ゲートで発覚した「レート制限の None を永久キャッシュ→
+    facts/named_props/title 全滅で degraded 永久固定」バグの修正）。"""
     cached = _cache_get(f"wd_{qid}.json")
     if cached is not None:
         return cached.get("entity")
     url = f"https://www.wikidata.org/wiki/Special:EntityData/{qid}.json"
-    try:
-        r = requests.get(url, timeout=30, headers=UA)
-        r.raise_for_status()
-        entity = (r.json().get("entities") or {}).get(qid)
-    except Exception:
-        entity = None
-    _cache_put(f"wd_{qid}.json", {"entity": entity})
+    data, ok = _json_ok(_get_with_retry(url))
+    entity = (data.get("entities") or {}).get(qid) if ok else None
+    if entity is not None:  # 取得成功時のみキャッシュ（None/失敗は再取得可能なままにする）
+        _cache_put(f"wd_{qid}.json", {"entity": entity})
     time.sleep(0.2)
     return entity
 
@@ -185,19 +201,11 @@ def fetch_wikidata_props(qids):
             missing.append(q)
     for i in range(0, len(missing), 50):  # wbgetentities の ids 上限（通常ユーザー）
         chunk = missing[i:i + 50]
-        r = _get_with_retry("https://www.wikidata.org/w/api.php", params={
+        data, fetched_ok = _json_ok(_get_with_retry("https://www.wikidata.org/w/api.php", params={
             "action": "wbgetentities", "ids": "|".join(chunk),
             "props": "labels", "languages": "ja", "format": "json",
-        })
-        fetched_ok = False
-        entities = {}
-        if r is not None:
-            try:
-                entities = r.json().get("entities") or {}
-                fetched_ok = True
-            except Exception:
-                entities = {}
-                fetched_ok = False
+        }))
+        entities = (data.get("entities") or {}) if fetched_ok else {}
         for q in chunk:
             label = None
             v = (((entities.get(q) or {}).get("labels") or {}).get("ja") or {}).get("value")
@@ -223,18 +231,15 @@ def fetch_article_plaintext(title):
     cached = _cache_get(cname)
     if cached is not None:
         return cached.get("text") or ""
-    r = _get_with_retry("https://ja.wikipedia.org/w/api.php", params={
+    data, ok = _json_ok(_get_with_retry("https://ja.wikipedia.org/w/api.php", params={
         "action": "query", "prop": "extracts", "explaintext": 1,
         "titles": title, "format": "json",
-    })
+    }))
     text = ""
-    if r is not None:
-        try:
-            pages = ((r.json().get("query") or {}).get("pages") or {})
-            page = next(iter(pages.values()), {}) if pages else {}
-            text = page.get("extract") or ""
-        except Exception:
-            text = ""
+    if ok:
+        pages = ((data.get("query") or {}).get("pages") or {})
+        page = next(iter(pages.values()), {}) if pages else {}
+        text = page.get("extract") or ""
     if text:  # 非空のときだけキャッシュ（空/失敗は再取得可能なままにする）
         _cache_put(cname, {"text": text})
     time.sleep(0.4)
