@@ -5,28 +5,12 @@
 
 import { escapeHtml } from '../selection.js';
 
-// セクション用 SVG アイコン（content.js mockup から移植）
-const ICONS = {
-  '概要': '<circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16"/><circle cx="12" cy="8" r=".6" fill="currentColor"/>',
-  '気候': '<path d="M7 17a4 4 0 0 1 .5-8 5 5 0 0 1 9.5 1.5 3.5 3.5 0 0 1-.5 6.5z"/><line x1="9" y1="20" x2="8" y2="22"/><line x1="13" y1="20" x2="12" y2="22"/><line x1="17" y1="20" x2="16" y2="22"/>',
-  '特産・名物': '<path d="M20 7h-3.2a2.5 2.5 0 1 0-4.8 0H12a2.5 2.5 0 1 0-4.8 0H4v4h1v8h14v-8h1z"/><line x1="12" y1="7" x2="12" y2="19"/>',
-  '主要産業': '<path d="M3 20V9l5 3V9l5 3V6l8 4v10z"/><line x1="7" y1="16" x2="7" y2="17"/><line x1="12" y1="16" x2="12" y2="17"/><line x1="17" y1="16" x2="17" y2="17"/>',
-  '交通・地理': '<circle cx="12" cy="12" r="9"/><polygon points="15.5 8.5 11 11 8.5 15.5 13 13"/>',
-  '観光名所': '<path d="M4 9l8-5 8 5v11H4z"/><path d="M9 20v-5h6v5"/><circle cx="12" cy="10" r="1.2"/>',
-};
-
 // 種別ラベル: [英語コード, 日本語]
 const KIND = {
   country: ['COUNTRY', '国'],
   admin1:  ['ADMIN1',  '県'],
   city:    ['CITY',    '都市'],
 };
-
-// セクションアイコン HTML を生成
-function secIcon(title) {
-  const inner = ICONS[title] || '';
-  return '<span class="pf-sec-ic"><svg viewBox="0 0 24 24" aria-hidden="true">' + inner + '</svg></span>';
-}
 
 /**
  * facts オブジェクトを整形済み配列に変換。null 値は除外。
@@ -127,6 +111,103 @@ function regionShape(shapePath) {
     + '</div>';
 }
 
+// 確度ラベル: label -> [日本語, CSSクラス]
+const CONF_LABEL = {
+  certain:        ['確実',   'pf-conf--certain'],
+  inferred:       ['推定',   'pf-conf--inferred'],
+  time_sensitive: ['要鮮度', 'pf-conf--time'],
+};
+
+/**
+ * layer.confidence 配列 → バッジ HTML（label｜kind＋note）。
+ * @param {{ label: string, kind?: string, note?: string }[]} conf
+ * @returns {string}
+ */
+function confBadges(conf) {
+  if (!conf || !conf.length) return '';
+  const badges = conf.map((c) => {
+    const [ja, cls] = CONF_LABEL[c.label] || ['?', ''];
+    return '<span class="pf-conf-b ' + cls + '">' + escapeHtml(ja) + '｜' + escapeHtml(c.kind || '')
+      + '<i>' + escapeHtml(c.note || '') + '</i></span>';
+  }).join('');
+  return '<div class="pf-conf">' + badges + '</div>';
+}
+
+/**
+ * 1つの因果レイヤーの HTML（見出し＋本文＋確度バッジ＋根拠＋深掘り）。
+ * @param {{ key, title, body, confidence, evidence, dig_deeper }} l
+ * @returns {string}
+ */
+function layerHtml(l) {
+  const dig = (l.dig_deeper && l.dig_deeper.length)
+    ? '<div class="pf-dig">深掘り: ' + l.dig_deeper.map((d) => escapeHtml(d)).join(' / ') + '</div>'
+    : '';
+  const ev = l.evidence ? '<div class="pf-ev-basis">根拠: ' + escapeHtml(l.evidence) + '</div>' : '';
+  return '<section class="pf-layer" data-key="' + escapeHtml(l.key) + '">'
+    + '<h2 class="pf-layer-h">' + escapeHtml(l.title) + '</h2>'
+    + '<p>' + escapeHtml(l.body) + '</p>'
+    + confBadges(l.confidence) + ev + dig
+    + '</section>';
+}
+
+/**
+ * layers 配列 → HTML（economy レイヤー直後に timeline を挿入）。
+ * @param {object[]} layers
+ * @param {object[]} timeline
+ * @returns {string}
+ */
+function layersHtml(layers, timeline) {
+  if (!layers || !layers.length) return '';
+  const items = layers.map((l) => {
+    const html = layerHtml(l);
+    return l.key === 'economy' ? html + timelineHtml(timeline) : html;
+  }).join('');
+  return '<div class="pf-layers">' + items + '</div>';
+}
+
+/**
+ * 近代化タイムライン（年表）の HTML。
+ * @param {{ year, event, confidence, cause_note }[]} tl
+ * @returns {string}
+ */
+function timelineHtml(tl) {
+  if (!tl || !tl.length) return '';
+  const items = tl.map((t) =>
+    '<li><b>' + escapeHtml(t.year) + '</b> ' + escapeHtml(t.event)
+    + (t.cause_note ? '<span class="pf-tl-cause"> — ' + escapeHtml(t.cause_note) + '</span>' : '')
+    + '</li>'
+  ).join('');
+  return '<section class="pf-timeline"><h3>近代化タイムライン</h3><ol>' + items + '</ol></section>';
+}
+
+/**
+ * 観光（実用情報）の独立枠。
+ * @param {string[]} t
+ * @returns {string}
+ */
+function tourismHtml(t) {
+  if (!t || !t.length) return '';
+  return '<section class="pf-tourism"><h3>観光（実用情報）</h3><p>'
+    + t.map((x) => escapeHtml(x)).join(' ／ ') + '</p></section>';
+}
+
+/**
+ * 国以外で diplomacy レイヤーが欠落している場合、所属国への外交リンクを出す。
+ * @param {string} level
+ * @param {{ level, id, name_ja }|null} belongsTo
+ * @param {object[]} layers
+ * @returns {string}
+ */
+function belongsToHtml(level, belongsTo, layers) {
+  if (level === 'country' || !belongsTo) return '';
+  const hasDiplomacy = (layers || []).some((l) => l.key === 'diplomacy');
+  if (hasDiplomacy) return '';
+  return '<section class="pf-belongs"><p>外交：所属国「'
+    + '<button type="button" class="pf-belongs-link" data-level="' + escapeHtml(belongsTo.level) + '" data-id="' + escapeHtml(belongsTo.id) + '">'
+    + escapeHtml(belongsTo.name_ja) + '</button>'
+    + '」を参照</p></section>';
+}
+
 /**
  * facts HUD の HTML を生成（dl.pf-facts）。
  * @param {{ label, value, unit }[]} items
@@ -150,7 +231,7 @@ function factsHud(items) {
  */
 export function profileHtml(model) {
   const { profile, breadcrumb, shapePath, miniDot, events } = model;
-  const { id, level, name_ja, facts, sections, source, degraded } = profile;
+  const { id, level, name_ja, belongs_to, facts, layers, timeline, tourism, source, degraded } = profile;
 
   const kindPair = KIND[level] || ['?', '?'];
   const kindEn   = escapeHtml(kindPair[0]);
@@ -199,16 +280,12 @@ export function profileHtml(model) {
     ? '<div class="pf-degraded">データが限定的です。情報が不完全な可能性があります。</div>'
     : '';
 
-  // ── セクション（degraded 時は省略） ──
-  let sectionsHtml = '';
-  if (!degraded && sections && sections.length > 0) {
-    const secItems = sections.map(({ title, body }) =>
-      '<section class="pf-sec">'
-      + '<h2 class="pf-sec-h">' + secIcon(title) + escapeHtml(title) + '</h2>'
-      + '<p>' + escapeHtml(body) + '</p>'
-      + '</section>'
-    ).join('');
-    sectionsHtml = '<div class="pf-sections">' + secItems + '</div>';
+  // ── レイヤー＋年表＋観光＋belongs_to（degraded 時は省略） ──
+  let layersBlockHtml = '';
+  if (!degraded) {
+    layersBlockHtml = layersHtml(layers, timeline)
+      + belongsToHtml(level, belongs_to, layers)
+      + tourismHtml(tourism);
   }
 
   // ── イベント（events.length > 0 の時のみ） ──
@@ -238,7 +315,7 @@ export function profileHtml(model) {
     + crumbHtml
     + heroHtml
     + degradedHtml
-    + sectionsHtml
+    + layersBlockHtml
     + eventsHtml
     + sourceHtml
     + '</article>';
