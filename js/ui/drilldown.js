@@ -76,7 +76,14 @@ export function renderProfile(rootEl, model, { onClose, onWatchToggle, onNavigat
   if (body) {
     body.innerHTML = profileHtml(model);
     if (onNavigate) {
-      for (const btn of body.querySelectorAll('.pf-crumbs button[data-level]')) {
+      // パンくず（.pf-crumbs button[data-level]）と外交セクションの所属国リンク
+      // （.pf-belongs-link[data-level][data-id]、profile_view.js belongsToHtml）は
+      // どちらも同じ意味（level/id への遷移）なので同じハンドラに配線する。
+      const navBtns = [
+        ...body.querySelectorAll('.pf-crumbs button[data-level]'),
+        ...body.querySelectorAll('.pf-belongs-link[data-level]'),
+      ];
+      for (const btn of navBtns) {
         btn.addEventListener('click', () => onNavigate(btn.dataset.level, btn.dataset.id));
       }
     }

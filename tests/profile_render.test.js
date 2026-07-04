@@ -52,11 +52,13 @@ function makeEl(tag) {
       (el._listeners.click || []).forEach((fn) => fn({ type: 'click' }));
     },
     querySelector(sel) { return el._find((c) => el._matches(c, sel)) || null; },
-    // renderProfile は body.querySelectorAll('.pf-crumbs button[data-level]') を呼ぶが、
+    // renderProfile は body.querySelectorAll('.pf-crumbs button[data-level]') と
+    // body.querySelectorAll('.pf-belongs-link[data-level]') を呼ぶが、
     // テスト用シムでは innerHTML 文字列からは DOM が生えない。
-    // 代わりに body に _crumbBtns を直接セットすることでパンくず配線テストを可能にする。
+    // 代わりに body に _crumbBtns / _belongsBtns を直接セットすることで配線テストを可能にする。
     querySelectorAll(sel) {
       if (sel.includes('pf-crumbs') && el._crumbBtns) return el._crumbBtns;
+      if (sel.includes('pf-belongs-link') && el._belongsBtns) return el._belongsBtns;
       const out = []; el._walk((c) => { if (el._matches(c, sel)) out.push(c); }); return out;
     },
     _matches(node, sel) {
@@ -141,6 +143,30 @@ test('renderProfile: パンくず button[data-level] に onNavigate が配線さ
 
   crumbBtn.click();
   assert.equal(navigated.length, 1, 'パンくずクリックで onNavigate 発火');
+  assert.equal(navigated[0].level, 'country');
+  assert.equal(navigated[0].id, 'JA');
+});
+
+test('renderProfile: 所属国リンク（.pf-belongs-link[data-level][data-id]）に onNavigate が配線される', () => {
+  // Fix 1 回帰テスト: profile_view.js の belongsToHtml が出す
+  // <button class="pf-belongs-link" data-level=… data-id=…> がクリック無反応にならないこと。
+  const root = makeRoot();
+  const navigated = [];
+
+  const body = root.querySelector('.dd-body');
+  const belongsBtn = makeEl('button');
+  belongsBtn.className = 'pf-belongs-link';
+  belongsBtn.dataset = { level: 'country', id: 'JA' };
+  body._belongsBtns = [belongsBtn];
+
+  renderProfile(root, MODEL, {
+    onClose: () => {},
+    onWatchToggle: () => {},
+    onNavigate: (level, id) => { navigated.push({ level, id }); },
+  });
+
+  belongsBtn.click();
+  assert.equal(navigated.length, 1, '所属国リンククリックで onNavigate 発火');
   assert.equal(navigated[0].level, 'country');
   assert.equal(navigated[0].id, 'JA');
 });
