@@ -16,6 +16,7 @@ ANTHROPIC_API_KEY 必須（無ければ全 degraded・事実のみ表示）。
 実行: PYTHONPATH=. python3 scripts/build_profiles.py
 """
 import gzip
+import hashlib
 import json
 import os
 import re
@@ -76,7 +77,7 @@ def fetch_wikidata(qid):
 
 
 def fetch_wikipedia(title):
-    key = re.sub(r"[^A-Za-z0-9_]", "_", title)[:80]
+    key = hashlib.md5(title.encode("utf-8")).hexdigest()
     cached = _cache_get(f"wp_{key}.json")
     if cached is not None:
         return cached.get("summary")
@@ -181,7 +182,7 @@ def fetch_wikidata_props(qids):
 def fetch_article_plaintext(title):
     """ja Wikipedia extracts(explaintext) で全文プレーンテキストを取得（v2・キャッシュ v2_wp_*）。
     extract_sections で節抽出する前段。取得失敗/該当ページ無しは空文字。"""
-    key = re.sub(r"[^A-Za-z0-9_]", "_", title)[:80]
+    key = hashlib.md5(title.encode("utf-8")).hexdigest()
     cname = f"v2_wp_{key}.json"
     cached = _cache_get(cname)
     if cached is not None:
