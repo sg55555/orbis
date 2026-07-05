@@ -509,3 +509,23 @@ def test_write_manifest_merges_existing_file(monkeypatch, tmp_path):
     import json as _json
     data = _json.loads((tmp_path / "data" / "static" / "profiles_manifest.json").read_text())
     assert set(data["country"]) == {"US", "JA"}, "日本のみ実行でも他国(US)が残る"
+
+
+# ---------------------------------------------------------------------------
+# Task 5: fetch レート緩和（_fetch_sleep env + FETCH_MAX_RETRIES 4→6）
+# ---------------------------------------------------------------------------
+
+def test_fetch_sleep_default(monkeypatch):
+    monkeypatch.delenv("PROFILE_FETCH_SLEEP", raising=False)
+    assert build_profiles._fetch_sleep() == 0.5
+    assert build_profiles._fetch_sleep(2) == 1.0  # 重い endpoint は ×2
+
+
+def test_fetch_sleep_env_override(monkeypatch):
+    monkeypatch.setenv("PROFILE_FETCH_SLEEP", "1.0")
+    assert build_profiles._fetch_sleep() == 1.0
+    assert build_profiles._fetch_sleep(2) == 2.0
+
+
+def test_fetch_max_retries_raised():
+    assert build_profiles.FETCH_MAX_RETRIES == 6

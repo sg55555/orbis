@@ -37,7 +37,7 @@ CACHE = os.path.join(ROOT, "scripts/.cache/profiles")
 OUT = os.path.join(ROOT, "data/static/profiles")
 MODEL = os.environ.get("PROFILE_LLM_MODEL", "claude-sonnet-4-6")
 UA = {"User-Agent": "orbis-profile-collector"}
-FETCH_MAX_RETRIES = 4  # 429/例外時の指数バックオフ上限（8c 品質ゲート修正・v2 の fetch_* 系）
+FETCH_MAX_RETRIES = 6  # 429/例外時の指数バックオフ上限（2^5=32s まで・連続fetchのレート制限に強く）
 PROFILE_SYSTEM = ("あなたは地理事典の編集者です。与えられた事実のみを根拠に、"
                   "字幕でなく説明文として自然で簡潔な日本語プロフィールを作ります。")
 
@@ -59,6 +59,13 @@ def _cache_get(name):
 def _cache_put(name, obj):
     os.makedirs(CACHE, exist_ok=True)
     json.dump(obj, open(os.path.join(CACHE, name), "w", encoding="utf-8"), ensure_ascii=False)
+
+
+def _fetch_sleep(mult=1.0):
+    """fetch 間の待機秒（PROFILE_FETCH_SLEEP 既定 0.5）× mult。呼び出し毎に env を読む（テスト可能）。
+    連続 fetch のレート制限で Wikipedia 本文が空→即 degraded になるのを緩和する。生成キャッシュにより
+    再実行は degraded 部分だけ fetch なので、sleep を上げても再実行は速い。"""
+    return float(os.environ.get("PROFILE_FETCH_SLEEP", "0.5")) * mult
 
 
 def _gen_cache_name(cid):
@@ -132,7 +139,7 @@ def fetch_wikidata(qid):
     entity = (data.get("entities") or {}).get(qid) if ok else None
     if entity is not None:  # 取得成功時のみキャッシュ（None/失敗は再取得可能なままにする）
         _cache_put(f"wd_{qid}.json", {"entity": entity})
-    time.sleep(0.2)
+    time.sleep(_fetch_sleep())
     return entity
 
 
@@ -237,7 +244,7 @@ def fetch_wikidata_props(qids):
             out[q] = label
             if fetched_ok:  # chunk 取得が成功した場合のみキャッシュ（レート制限の空応答は非キャッシュ）
                 _cache_put(f"v2_label_{q}.json", {"label": label})
-        time.sleep(0.4)
+        time.sleep(_fetch_sleep(2))
     return out
 
 
@@ -265,7 +272,7 @@ def fetch_article_plaintext(title):
         text = page.get("extract") or ""
     if text:  # 非空のときだけキャッシュ（空/失敗は再取得可能なままにする）
         _cache_put(cname, {"text": text})
-    time.sleep(0.4)
+    time.sleep(_fetch_sleep(2))
     return text
 
 
