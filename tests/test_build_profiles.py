@@ -470,3 +470,42 @@ def test_write_all_builds_manifest_and_caches_each(monkeypatch, tmp_path):
     assert (tmp_path / "country" / "JA.json").exists()
     assert (tmp_path / "admin1" / "JP-13.json.gz").exists()
     assert (tmp_path / "city" / "Q1490.json.gz").exists()
+
+
+def test_merge_manifest_keeps_other_regions(monkeypatch):
+    existing = {
+        "country": {"US": {"bytes": 10, "degraded": False}},
+        "admin1": {"US-CA": {"bytes": 5, "degraded": False}},
+        "city": {},
+    }
+    current = {
+        "country": {"JA": {"bytes": 20, "degraded": False}},
+        "admin1": {},
+        "city": {"Q1490": {"bytes": 7, "degraded": False}},
+    }
+    merged = build_profiles.merge_manifest(existing, current)
+    assert set(merged["country"]) == {"US", "JA"}          # 他国(US)を温存
+    assert merged["country"]["JA"]["bytes"] == 20          # 新規(JA)を追加
+    assert merged["admin1"]["US-CA"]["bytes"] == 5         # 既存 admin1 温存
+    assert merged["city"]["Q1490"]["bytes"] == 7
+
+
+def test_merge_manifest_current_overwrites_same_id():
+    existing = {"country": {"JA": {"bytes": 1, "degraded": True}}, "admin1": {}, "city": {}}
+    current = {"country": {"JA": {"bytes": 99, "degraded": False}}, "admin1": {}, "city": {}}
+    merged = build_profiles.merge_manifest(existing, current)
+    assert merged["country"]["JA"] == {"bytes": 99, "degraded": False}  # 再生成で degraded 解消を反映
+
+
+def test_write_manifest_merges_existing_file(monkeypatch, tmp_path):
+    monkeypatch.setattr(build_profiles, "ROOT", str(tmp_path))
+    (tmp_path / "data" / "static").mkdir(parents=True)
+    (tmp_path / "data" / "static" / "profiles_manifest.json").write_text(
+        '{"country":{"US":{"bytes":10,"degraded":false}},"admin1":{},"city":{}}',
+        encoding="utf-8")
+    build_profiles._write_manifest(
+        {"country": {"JA": {"bytes": 20, "degraded": False}}, "admin1": {}, "city": {}},
+        ["JA"])
+    import json as _json
+    data = _json.loads((tmp_path / "data" / "static" / "profiles_manifest.json").read_text())
+    assert set(data["country"]) == {"US", "JA"}, "日本のみ実行でも他国(US)が残る"

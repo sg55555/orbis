@@ -467,12 +467,30 @@ def _write(level, pid, prof, gz):
     return os.path.getsize(path)
 
 
+def merge_manifest(existing, current):
+    """既存 manifest に current を level 別マージ（同 id は current 優先・他 id は温存）。
+    国単位インクリメンタル生成で、日本のみ実行しても他国のエントリが消えない（純関数）。"""
+    return {level: {**(existing.get(level) or {}), **(current.get(level) or {})}
+            for level in ("country", "admin1", "city")}
+
+
+def _load_manifest():
+    """既存 profiles_manifest.json を読む（無ければ空の3レベル dict）。"""
+    p = os.path.join(ROOT, "data/static/profiles_manifest.json")
+    try:
+        return json.load(open(p, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {"country": {}, "admin1": {}, "city": {}}
+
+
 def _write_manifest(manifest, targets):
     os.makedirs(OUT, exist_ok=True)
-    json.dump(manifest, open(os.path.join(ROOT, "data/static/profiles_manifest.json"), "w", encoding="utf-8"),
+    merged = merge_manifest(_load_manifest(), manifest)
+    json.dump(merged, open(os.path.join(ROOT, "data/static/profiles_manifest.json"), "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
-    nc, na, ncity = len(manifest["country"]), len(manifest["admin1"]), len(manifest["city"])
-    print(f"[profiles] country={nc} admin1={na} city={ncity} (targets={targets[:5]}{'…' if len(targets) > 5 else ''})")
+    nc, na, ncity = len(merged["country"]), len(merged["admin1"]), len(merged["city"])
+    print(f"[profiles] manifest total: country={nc} admin1={na} city={ncity} "
+          f"(this run targets={targets[:5]}{'…' if len(targets) > 5 else ''})")
 
 
 def _write_all(finished):
