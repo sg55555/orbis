@@ -384,3 +384,44 @@ def test_fetch_wikidata_maxlag_error_key_not_cached(monkeypatch):
 
     assert got is None, "error 応答は失敗扱いで None"
     assert put_calls == [], "maxlag error 応答はキャッシュしない（次回再取得）"
+
+
+# ---------------------------------------------------------------------------
+# 2.5c: v2 生成キャッシュ ヘルパ（成功のみキャッシュ・degraded 非キャッシュ）
+# ---------------------------------------------------------------------------
+
+def test_gen_cache_name_sanitizes_cid():
+    assert build_profiles._gen_cache_name("city_Q1490") == "v2_prof_city_Q1490.json"
+    assert build_profiles._gen_cache_name("admin1_JP-13") == "v2_prof_admin1_JP-13.json"
+    # ファイル名に使えない文字は _ に潰す（防御的正規化）
+    assert build_profiles._gen_cache_name("x/y z") == "v2_prof_x_y_z.json"
+
+
+def test_gen_cache_put_writes_only_success(monkeypatch):
+    puts = []
+    monkeypatch.setattr(build_profiles, "_cache_put", lambda name, obj: puts.append((name, obj)))
+    ok = {"id": "JA", "level": "country", "degraded": False, "layers": [{"key": "geo"}]}
+    build_profiles._gen_cache_put("country_JA", ok)
+    assert puts == [("v2_prof_country_JA.json", ok)]
+
+
+def test_gen_cache_put_skips_degraded(monkeypatch):
+    puts = []
+    monkeypatch.setattr(build_profiles, "_cache_put", lambda name, obj: puts.append((name, obj)))
+    bad = {"id": "JP-99", "level": "admin1", "degraded": True, "layers": []}
+    build_profiles._gen_cache_put("admin1_JP-99", bad)
+    assert puts == [], "degraded は保存せず次回再生成させる"
+
+
+def test_gen_cache_get_returns_cached_success(monkeypatch):
+    ok = {"id": "JA", "degraded": False, "layers": [{"key": "geo"}]}
+    monkeypatch.setattr(build_profiles, "_cache_get",
+                        lambda name: ok if name == "v2_prof_country_JA.json" else None)
+    assert build_profiles._gen_cache_get("country_JA") is ok
+
+
+def test_gen_cache_get_none_on_degraded_or_miss(monkeypatch):
+    monkeypatch.setattr(build_profiles, "_cache_get", lambda name: {"degraded": True})
+    assert build_profiles._gen_cache_get("country_JA") is None  # 防御的（本来 put されない）
+    monkeypatch.setattr(build_profiles, "_cache_get", lambda name: None)
+    assert build_profiles._gen_cache_get("country_JA") is None  # miss

@@ -61,6 +61,29 @@ def _cache_put(name, obj):
     json.dump(obj, open(os.path.join(CACHE, name), "w", encoding="utf-8"), ensure_ascii=False)
 
 
+def _gen_cache_name(cid):
+    """v2 生成キャッシュのファイル名。custom_id をファイル名安全に正規化する。非 degraded の cid は
+    Batch の ^[a-zA-Z0-9_-]{1,64}$ 準拠で既に安全だが、_gen_cache_get は degrade 候補（qid 無し等）の
+    cid でも呼ばれるため防御的に正規化する（cache dir 外への脱出防止）。"""
+    return f"v2_prof_{re.sub(r'[^A-Za-z0-9_-]', '_', cid)}.json"
+
+
+def _gen_cache_get(cid):
+    """成功済み（非 degraded）の生成プロフィールがキャッシュにあれば返す（無ければ None）。
+    _gen_cache_put で非 degraded のみ書かれるが、防御的に degraded/非 dict は None 扱い。"""
+    prof = _cache_get(_gen_cache_name(cid))
+    if isinstance(prof, dict) and not prof.get("degraded"):
+        return prof
+    return None
+
+
+def _gen_cache_put(cid, prof):
+    """生成プロフィールを **非 degraded の時だけ** キャッシュに書く（degraded は保存せず次回再生成）。
+    唯一の無効化ルール。プロンプト/スキーマ変更時は scripts/.cache/profiles/v2_prof_* を手動削除する。"""
+    if prof and not prof.get("degraded"):
+        _cache_put(_gen_cache_name(cid), prof)
+
+
 def _get_with_retry(url, params=None, max_retries=FETCH_MAX_RETRIES):
     """GET を 429（レート制限）や例外時に指数バックオフでリトライする（fetch_wikidata /
     fetch_article_plaintext / fetch_wikidata_props 共通）。8c 品質ゲートで発覚したバグ（レート制限で
