@@ -44,6 +44,7 @@ def test_pass1_prepare_skips_duplicate_custom_id_and_warns(monkeypatch, capsys):
     monkeypatch.setattr(build_profiles, "fetch_article_plaintext", lambda title: "本文プレースホルダー")
     # extract_sections の節抽出ヒューリスティックはここでは対象外（他テストが担保）＝恒等関数に差し替え
     monkeypatch.setattr(build_profiles, "extract_sections", lambda text, **kw: text)
+    monkeypatch.setattr(build_profiles, "_gen_cache_get", lambda cid: None)  # cache-miss を固定
 
     items = [
         ("admin1", "JP-13", "東京都", "Q1490", {"level": "country", "id": "JP", "name_ja": "日本"}),
@@ -72,6 +73,7 @@ def test_pass1_prepare_distinct_custom_ids_both_kept(monkeypatch):
     monkeypatch.setattr(build_profiles, "fetch_wikidata", lambda qid: fake_entity)
     monkeypatch.setattr(build_profiles, "fetch_article_plaintext", lambda title: "本文プレースホルダー")
     monkeypatch.setattr(build_profiles, "extract_sections", lambda text, **kw: text)
+    monkeypatch.setattr(build_profiles, "_gen_cache_get", lambda cid: None)  # cache-miss を固定
 
     items = [
         ("admin1", "JP-13", "東京都", "Q1490", {"level": "country", "id": "JP", "name_ja": "日本"}),
@@ -81,6 +83,24 @@ def test_pass1_prepare_distinct_custom_ids_both_kept(monkeypatch):
     assert len(prompts) == 2
     assert {cid for cid, _ in prompts} == {"admin1_JP-13", "admin1_JP-14"}
     assert set(pending.keys()) == {"admin1_JP-13", "admin1_JP-14"}
+
+
+def test_pass1_prepare_gen_cache_hit_skips_fetch_and_batch(monkeypatch):
+    # キャッシュヒット地域は fetch_wikidata も呼ばれず prompts にも入らない（即 immediate）。
+    cached = {"id": "JP-13", "level": "admin1", "degraded": False, "layers": [{"key": "geo"}]}
+    monkeypatch.setattr(build_profiles, "_gen_cache_get",
+                        lambda cid: cached if cid == "admin1_JP-13" else None)
+
+    def _boom(qid):
+        raise AssertionError("cache ヒット地域で fetch_wikidata が呼ばれてはいけない")
+    monkeypatch.setattr(build_profiles, "fetch_wikidata", _boom)
+
+    items = [("admin1", "JP-13", "東京都", "Q1490",
+              {"level": "country", "id": "JP", "name_ja": "日本"})]
+    immediate, prompts, pending = build_profiles._pass1_prepare(items, "2026-07-05")
+    assert prompts == []
+    assert pending == {}
+    assert immediate == [("admin1", "JP-13", cached)]
 
 
 # ---------------------------------------------------------------------------

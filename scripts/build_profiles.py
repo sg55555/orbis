@@ -406,6 +406,10 @@ def _pass1_prepare(items, generated_at):
                   f"Batch API は同一 custom_id を拒否するため後続の対象は無視されます")
             continue
         seen_cids.add(cid)
+        cached_prof = _gen_cache_get(cid)
+        if cached_prof is not None:
+            immediate.append((level, pid, cached_prof))  # 成功済み=fetch/Batch skip（再課金なし）
+            continue
         if not qid:
             prof = assemble_profile_v2(pid, level, name_ja, wikidata_facts({}),
                                        {"layers": [], "timeline": [], "tourism": []},
