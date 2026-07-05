@@ -445,3 +445,28 @@ def test_gen_cache_get_none_on_degraded_or_miss(monkeypatch):
     assert build_profiles._gen_cache_get("country_JA") is None  # 防御的（本来 put されない）
     monkeypatch.setattr(build_profiles, "_cache_get", lambda name: None)
     assert build_profiles._gen_cache_get("country_JA") is None  # miss
+
+
+def test_write_all_builds_manifest_and_caches_each(monkeypatch, tmp_path):
+    monkeypatch.setattr(build_profiles, "OUT", str(tmp_path))
+    put_cids = []
+    monkeypatch.setattr(build_profiles, "_gen_cache_put",
+                        lambda cid, prof: put_cids.append(cid))
+    finished = [
+        ("country", "JA", {"id": "JA", "degraded": False, "layers": [{"key": "geo"}]}),
+        ("admin1", "JP-13", {"id": "JP-13", "degraded": True, "layers": []}),
+        ("city", "Q1490", {"id": "Q1490", "degraded": False, "layers": [{"key": "geo"}]}),
+    ]
+    manifest = build_profiles._write_all(finished)
+
+    # manifest は level 別に degraded フラグ付きで全件入る
+    assert manifest["country"]["JA"]["degraded"] is False
+    assert manifest["admin1"]["JP-13"]["degraded"] is True
+    assert manifest["city"]["Q1490"]["degraded"] is False
+    assert isinstance(manifest["country"]["JA"]["bytes"], int)
+    # _gen_cache_put は全 finished で呼ばれる（degraded skip は _gen_cache_put 内部＝Task1で担保）
+    assert put_cids == ["country_JA", "admin1_JP-13", "city_Q1490"]
+    # country は非 gz、admin1/city は gz で書かれる
+    assert (tmp_path / "country" / "JA.json").exists()
+    assert (tmp_path / "admin1" / "JP-13.json.gz").exists()
+    assert (tmp_path / "city" / "Q1490.json.gz").exists()

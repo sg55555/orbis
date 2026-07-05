@@ -475,6 +475,17 @@ def _write_manifest(manifest, targets):
     print(f"[profiles] country={nc} admin1={na} city={ncity} (targets={targets[:5]}{'…' if len(targets) > 5 else ''})")
 
 
+def _write_all(finished):
+    """finished=[(level,pid,prof)] を disk 書き出し＋成功のみ生成キャッシュ＋manifest を構築して返す。
+    country は非 gz・admin1/city は gz（_main_v2 のインライン処理を抽出・テスト可能化）。"""
+    manifest = {"country": {}, "admin1": {}, "city": {}}
+    for level, pid, prof in finished:
+        b = _write(level, pid, prof, gz=(level != "country"))
+        _gen_cache_put(f"{level}_{pid}", prof)  # 内部で degraded を skip（成功のみ保存）
+        manifest[level][pid] = {"bytes": b, "degraded": prof["degraded"]}
+    return manifest
+
+
 def _main_dummy(fips_ja, targets):
     """旧スキーマ v1・PROFILE_DUMMY=1 デザイン確認パイプライン（非破壊で残置）。
     実 HTTP/実 LLM を呼ばずサンプル本文を生成（_dummy_wikidata/_dummy_wikipedia/ask_llm の PROFILE_DUMMY 分岐）。"""
@@ -555,10 +566,7 @@ def _main_v2(fips_ja, targets):
         results = run_batch(prompts) if prompts and os.environ.get("ANTHROPIC_API_KEY") else {}
         finished = immediate + _pass2_finish(pending, results, generated_at)
 
-    manifest = {"country": {}, "admin1": {}, "city": {}}
-    for level, pid, prof in finished:
-        b = _write(level, pid, prof, gz=(level != "country"))
-        manifest[level][pid] = {"bytes": b, "degraded": prof["degraded"]}
+    manifest = _write_all(finished)
 
     _write_manifest(manifest, targets)
 
