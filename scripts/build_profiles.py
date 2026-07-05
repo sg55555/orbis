@@ -491,10 +491,17 @@ def _load_manifest():
 
 
 def _write_manifest(manifest, targets):
+    """profiles_manifest.json を atomic に書く（同ディレクトリの .tmp へ dump → os.replace）。
+    truncate-then-write だとクラッシュ時に破損 JSON が残り、次回 _load_manifest が JSONDecodeError で
+    空 dict にフォールバック→マージで他国のエントリが全消滅する（本機能が防ぐべきバグそのもの）。
+    os.replace は同一ファイルシステム上で atomic なので同ディレクトリの .tmp を使う。"""
     os.makedirs(OUT, exist_ok=True)
     merged = merge_manifest(_load_manifest(), manifest)
-    json.dump(merged, open(os.path.join(ROOT, "data/static/profiles_manifest.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, separators=(",", ":"))
+    path = os.path.join(ROOT, "data/static/profiles_manifest.json")
+    tmp_path = path + ".tmp"
+    with open(tmp_path, "w", encoding="utf-8") as f:
+        json.dump(merged, f, ensure_ascii=False, separators=(",", ":"))
+    os.replace(tmp_path, path)
     nc, na, ncity = len(merged["country"]), len(merged["admin1"]), len(merged["city"])
     print(f"[profiles] manifest total: country={nc} admin1={na} city={ncity} "
           f"(this run targets={targets[:5]}{'…' if len(targets) > 5 else ''})")

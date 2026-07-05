@@ -103,6 +103,30 @@ def test_pass1_prepare_gen_cache_hit_skips_fetch_and_batch(monkeypatch):
     assert immediate == [("admin1", "JP-13", cached)]
 
 
+def test_pass1_prepare_mixed_cache_bills_only_uncached(monkeypatch):
+    # 金額不変条件のロック: キャッシュヒット1件＋キャッシュミス1件が混在するとき、
+    # 課金対象の prompts/pending に入るのはミス側のみ・ヒット側は絶対に prompts に入らない
+    # （run_batch(prompts) が課金するので、ここでの選別ミスは実際の二重課金に直結する）。
+    cached = {"id": "JP-13", "level": "admin1", "degraded": False, "layers": [{"key": "geo"}]}
+    monkeypatch.setattr(build_profiles, "_gen_cache_get",
+                        lambda cid: cached if cid == "admin1_JP-13" else None)
+    fake_entity = {"sitelinks": {"jawiki": {"title": "テスト記事"}}}
+    monkeypatch.setattr(build_profiles, "fetch_wikidata", lambda qid: fake_entity)
+    monkeypatch.setattr(build_profiles, "fetch_article_plaintext", lambda title: "本文プレースホルダー")
+    monkeypatch.setattr(build_profiles, "extract_sections", lambda text, **kw: text)
+
+    items = [
+        ("admin1", "JP-13", "東京都", "Q1490", {"level": "country", "id": "JP", "name_ja": "日本"}),   # cache HIT
+        ("admin1", "JP-14", "神奈川県", "Q1491", {"level": "country", "id": "JP", "name_ja": "日本"}),  # cache MISS → billed
+    ]
+    immediate, prompts, pending = build_profiles._pass1_prepare(items, "2026-07-05")
+    billed = {cid for cid, _ in prompts}
+    assert billed == {"admin1_JP-14"}, "課金対象(prompts)は未キャッシュのみ"
+    assert "admin1_JP-14" in pending
+    assert ("admin1", "JP-13", cached) in immediate  # ヒットはimmediateへ(課金しない)
+    assert "admin1_JP-13" not in billed
+
+
 # ---------------------------------------------------------------------------
 # Fix3: run_batch — Request に level 別 max_tokens が反映される／stop_reason=="max_tokens" を warn する
 # ---------------------------------------------------------------------------

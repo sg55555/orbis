@@ -494,11 +494,17 @@ Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>"
 ## 完了後の検証（実課金なし・コード完結）
 
 1. **全 pytest 緑**（上記 Task 5 Step 5）。
-2. **ドライラン（生成キャッシュの再実行 skip を実確認・LLM 課金なし）**：
-   `PROFILE_BATCH=0` かつ `ANTHROPIC_API_KEY` 未設定で `PROFILE_FIPS` を小さい国1つに絞って2回実行し、
-   2回目が既存 `v2_prof_*` キャッシュを読んで fetch を再実行しない（＝ログ/所要時間で確認）ことを見る。
-   ※ ただし 1回目で degraded になった地域はキャッシュされないので、この確認は「成功地域が2回目で
-   fetch skip される」観点。実 LLM 成功は太田さん手元の実課金でのみ得られる。
+2. **読み出し側キャッシュ skip の検証（pytest で自動証明・実課金なし）**：
+   fetch/Batch の skip（`_gen_cache_get` ヒット→即 `immediate`・`prompts`/Batch には乗らない）は
+   **Batch 本線（`PROFILE_BATCH` 未設定時）だけ**が通る経路。`PROFILE_BATCH=0` は `generate_profile_v2`
+   を直接呼び `_write_all` 経由で生成キャッシュを**書き込む**だけで、`_pass1_prepare`/`_gen_cache_get`
+   を一切経由しない。したがって `PROFILE_BATCH=0` ＋ `ANTHROPIC_API_KEY` 未設定のドライランでは
+   この skip は確認できない（そもそも API キー無しだと全 degraded＝一度もキャッシュされない）。
+   この skip の自動証明は pytest の `test_pass1_prepare_gen_cache_hit_skips_fetch_and_batch` と
+   `test_pass1_prepare_mixed_cache_bills_only_uncached`（ヒット/ミス混在時に**ミス側のみ**が
+   `prompts`＝課金対象に入ることを検証）。実世界での確認は太田さん手元の2回目 Batch 実行：
+   1回目で成功した地域はキャッシュから即 `immediate` となり Batch に載らず、degraded/未生成の
+   地域だけが再度課金対象になる（2回目の Batch リクエスト数/費用が明確に減ることで確認できる）。
 3. **manifest マージ**：既存 `data/static/profiles_manifest.json`（日本 WIP）を退避 → 別国を小さく実行 →
    マージで日本エントリが残ることを確認（or Task 4 の pytest で担保済み）。
 
