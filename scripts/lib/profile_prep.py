@@ -303,7 +303,8 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         '"tourism":["…"]}\n'
         "・body は1〜4文の散文。confidence は label∈{certain,inferred,time_sensitive}。"
         "・timeline は近代化の経緯(economy層に対応・年号は本文/事実に明示があれば certain、記憶に頼る年は inferred)。"
-        "tourism は観光の固有名(都市は厚め)。"
+        "tourism は実際に一般訪問できる観光地の固有名(都市は厚め)。"
+        "係争地・軍事管理下・一般アクセス不可の島嶼/地形は観光として挙げない。"
         f"{dip_guidance}"
         "\n\n# 出力前の必須チェック（最優先・順に適用）\n"
         "1) 「事実(Wikidata)」「固有名(Wikidata)」に載る値(人口・面積・座標・標高・公用語・隣接国・加盟機関)は"

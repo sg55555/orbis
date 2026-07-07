@@ -163,6 +163,14 @@ def test_prompt_omits_diplomacy_for_city():
     assert "diplomacy" not in p and "所属国「日本」" in p
 
 
+def test_prompt_tourism_excludes_disputed_military_inaccessible():
+    # tourism は実際に一般訪問できる観光地に限り、係争地・軍事管理下・一般アクセス不可の地形を
+    # 観光として挙げない指示を含む（台湾の東沙諸島/太平島のような非訪問地形の誤列挙を防ぐ）。
+    p = build_profile_prompt_v2("台湾", "country", {}, {}, "")
+    assert "訪問" in p
+    assert "係争" in p and "軍事" in p
+
+
 def test_prompt_includes_named_props():
     p = build_profile_prompt_v2("X", "country", {}, {"languages": ["英語", "タミル語"]}, "")
     assert "英語, タミル語" in p and "geography" in p and "diplomacy" in p
