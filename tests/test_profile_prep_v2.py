@@ -171,6 +171,15 @@ def test_prompt_tourism_excludes_disputed_military_inaccessible():
     assert "係争" in p and "軍事" in p
 
 
+def test_prompt_timeline_year_must_be_event_year_no_double_count():
+    # timeline の year は事象自体の発生年に限り、「〜の後」の緩い言及で別事象を誤った年に
+    # 折り込まない・同一事象を複数年に二重計上しない指示を含む
+    # （タイの「国名変更」を1932と1939に二重計上した誤りの再発防止）。
+    p = build_profile_prompt_v2("タイ", "country", {}, {}, "")
+    assert "発生した年" in p
+    assert "二重計上" in p and "折り込" in p
+
+
 def test_prompt_includes_named_props():
     p = build_profile_prompt_v2("X", "country", {}, {"languages": ["英語", "タミル語"]}, "")
     assert "英語, タミル語" in p and "geography" in p and "diplomacy" in p

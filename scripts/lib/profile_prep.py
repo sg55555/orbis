@@ -303,6 +303,8 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         '"tourism":["…"]}\n'
         "・body は1〜4文の散文。confidence は label∈{certain,inferred,time_sensitive}。"
         "・timeline は近代化の経緯(economy層に対応・年号は本文/事実に明示があれば certain、記憶に頼る年は inferred)。"
+        "各エントリの year はその事象自体が発生した年に限る。"
+        "「〜の後」等の緩い言及で別事象を誤った年に折り込まない・同一事象を複数年に二重計上しない。"
         "tourism は実際に一般訪問できる観光地の固有名(都市は厚め)。"
         "係争地・軍事管理下・一般アクセス不可の島嶼/地形は観光として挙げない。"
         f"{dip_guidance}"
