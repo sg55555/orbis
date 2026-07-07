@@ -337,25 +337,46 @@ def run_batch(prompts):
     return out
 
 
+def _country_qid_by_fips(features):
+    """NE admin0 features → {FIPS: QID}。同じ FIPS に複数国が落ちる2種の衝突を優先規則で捌く:
+    ①ISO_A2 が汚れている国（台湾は "CN-TW"・ノルウェー/コソボ/フランス/係争領土は "-99" 等）は
+      clean な ISO_A2 で引けないため ISO_A2_EH でフォールバックする。
+    ②下位地域が本土と同じ FIPS を共有する（オーランド AX と本土フィンランド FI は共に FIPS "FI"）。
+    3パス構成（すべて setdefault = 先勝ち固定・後段は既取得 FIPS を上書きしない）:
+      A1: clean ISO_A2 かつ主権国（ADMIN==SOVEREIGNT）を最優先確定（Åland より Finland）。
+      A2: 残る clean ISO_A2（従属地域）を補完。
+      B : ISO_A2_EH フォールバック（ISO_A2 汚染国）。
+    これがないと台湾 country は qid=None（5層分析が永続 degraded）、FI は Åland(Q5689) 誤解決になる。"""
+    from scripts.lib.fips_of_iso import FIPS_OF_ISO
+    qid_by_fips = {}
+
+    def _claim(iterable, iso_key):
+        for f in iterable:
+            p = f["properties"]
+            fp = FIPS_OF_ISO.get((p.get(iso_key) or "").upper())
+            q = resolve_qid(p)
+            if fp and q:
+                qid_by_fips.setdefault(fp, q)
+
+    def _is_sovereign(f):
+        p = f["properties"]
+        return (p.get("ADMIN") or None) == (p.get("SOVEREIGNT") or None)
+
+    _claim((f for f in features if _is_sovereign(f)), "ISO_A2")  # A1: 主権国優先
+    _claim(features, "ISO_A2")                                    # A2: 従属地域を補完
+    _claim(features, "ISO_A2_EH")                                 # B : EH フォールバック
+    return qid_by_fips
+
+
 def _collect_targets(fips_ja, targets):
     """(level, pid, name_ja, qid, belongs_to) のリストを構築（country→admin1→city の順）。
     国/県/都市の対象発見ロジックは v1 main() を踏襲（NE admin0/admin1・cities/<FIPS>.json）。
     belongs_to は国のみ None・県/都市は所属国 {"level":"country","id":fips,"name_ja":...}（外交リンク・§spec6）。"""
     items = []
 
-    # 国: NE admin0 から QID。
+    # 国: NE admin0 から QID（ISO_A2 汚染国は ISO_A2_EH フォールバック）。
     ne0 = json.load(open(os.path.join(NE, "ne_50m_admin_0_countries.geojson"), encoding="utf-8"))
-    iso_to_qid = {}
-    for f in ne0["features"]:
-        p = f["properties"]
-        iso_to_qid[(p.get("ISO_A2") or "").upper()] = resolve_qid(p)
-
-    from scripts.lib.fips_of_iso import FIPS_OF_ISO
-    qid_by_fips = {}
-    for iso, q in iso_to_qid.items():
-        fp = FIPS_OF_ISO.get(iso)
-        if fp and q:
-            qid_by_fips.setdefault(fp, q)
+    qid_by_fips = _country_qid_by_fips(ne0["features"])
 
     for fips in targets:
         name_ja = fips_ja.get(fips, fips)
@@ -523,19 +544,9 @@ def _main_dummy(fips_ja, targets):
     実 HTTP/実 LLM を呼ばずサンプル本文を生成（_dummy_wikidata/_dummy_wikipedia/ask_llm の PROFILE_DUMMY 分岐）。"""
     manifest = {"country": {}, "admin1": {}, "city": {}}
 
-    # 国: NE admin0 から QID。
+    # 国: NE admin0 から QID（ISO_A2 汚染国は ISO_A2_EH フォールバック）。
     ne0 = json.load(open(os.path.join(NE, "ne_50m_admin_0_countries.geojson"), encoding="utf-8"))
-    iso_to_qid = {}
-    for f in ne0["features"]:
-        p = f["properties"]
-        iso_to_qid[(p.get("ISO_A2") or "").upper()] = resolve_qid(p)
-
-    from scripts.lib.fips_of_iso import FIPS_OF_ISO
-    qid_by_fips = {}
-    for iso, q in iso_to_qid.items():
-        fp = FIPS_OF_ISO.get(iso)
-        if fp and q:
-            qid_by_fips.setdefault(fp, q)
+    qid_by_fips = _country_qid_by_fips(ne0["features"])
 
     for fips in targets:
         name_ja = fips_ja.get(fips, fips)

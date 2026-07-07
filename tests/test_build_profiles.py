@@ -398,6 +398,47 @@ def test_fetch_wikidata_retries_after_429_then_succeeds_and_caches(monkeypatch):
     assert put_calls == [("wd_Q1490.json", {"entity": entity})], "成功時のみ1回キャッシュ"
 
 
+# ---------------------------------------------------------------------------
+# 国 QID 解決の ISO_A2_EH フォールバック（NE が ISO_A2 を汚す国 = 台湾/ノルウェー/
+# コソボ/フランス/係争領土 の country レベルが qid=None → 永続 degraded になるバグの回帰）。
+# NE admin0 は台湾を ISO_A2="CN-TW"（中国主張表記）とし ISO_A2_EH="TW" を持つ。
+# ---------------------------------------------------------------------------
+
+def _admin0_feat(**props):
+    return {"properties": props}
+
+
+def test_country_qid_uses_iso_a2_eh_fallback_for_taiwan():
+    # ISO_A2 が汚れている（"CN-TW"）ため FIPS_OF_ISO で引けず、EH="TW" で Q865 を TW に紐づける。
+    feats = [_admin0_feat(ISO_A2="CN-TW", ISO_A2_EH="TW", WIKIDATAID="Q865")]
+    assert build_profiles._country_qid_by_fips(feats)["TW"] == "Q865"
+
+
+def test_country_qid_clean_iso_a2_unchanged():
+    # 正常な2文字 ISO_A2 は従来どおり解決（回帰ガード）: 日本 JP→FIPS JA。
+    feats = [_admin0_feat(ISO_A2="JP", ISO_A2_EH="JP", WIKIDATAID="Q17")]
+    assert build_profiles._country_qid_by_fips(feats)["JA"] == "Q17"
+
+
+def test_country_qid_mainland_wins_over_eh_territory_regardless_of_order():
+    # 本土(clean ISO_A2="AU") と 係争領土(dirty ISO_A2="-99", EH="AU") は同じ FIPS "AS" に落ちる。
+    # 2パス（clean 先→EH 補完 setdefault）で、feature 順に関わらず本土 QID が勝つ。
+    mainland = _admin0_feat(ISO_A2="AU", ISO_A2_EH="AU", WIKIDATAID="Q408")
+    territory = _admin0_feat(ISO_A2="-99", ISO_A2_EH="AU", WIKIDATAID="Q4824275")
+    assert build_profiles._country_qid_by_fips([territory, mainland])["AS"] == "Q408"
+    assert build_profiles._country_qid_by_fips([mainland, territory])["AS"] == "Q408"
+
+
+def test_country_qid_sovereign_wins_over_subregion_sharing_same_fips():
+    # オーランド(AX)とフィンランド(FI)は FIPS_OF_ISO で共に FIPS "FI" に落ちる（AX は FI の下位地域）。
+    # 両方とも clean な2文字 ISO_A2 のため配列順では Åland(Q5689) が先勝ちし得るが、
+    # 主権国(ADMIN==SOVEREIGNT)のフィンランドを優先して FI→Q33 に解決する（Åland が先頭でも）。
+    aland = _admin0_feat(ISO_A2="AX", ISO_A2_EH="AX", WIKIDATAID="Q5689", ADMIN="Aland", SOVEREIGNT="Finland")
+    finland = _admin0_feat(ISO_A2="FI", ISO_A2_EH="FI", WIKIDATAID="Q33", ADMIN="Finland", SOVEREIGNT="Finland")
+    assert build_profiles._country_qid_by_fips([aland, finland])["FI"] == "Q33"
+    assert build_profiles._country_qid_by_fips([finland, aland])["FI"] == "Q33"
+
+
 def test_fetch_wikidata_gives_up_after_max_retries_without_caching(monkeypatch):
     calls = {"n": 0}
 
