@@ -197,6 +197,26 @@ def test_prompt_output_schema_mentions_confidence_labels_and_timeline_tourism():
     assert "timeline" in p and "tourism" in p
 
 
+def test_prompt_includes_anti_hallucination_guardrails():
+    # 観測した失敗モードを狙う「引用できねば certain にしない・具体属性は誤りなら省略」型ガードレール
+    p = build_profile_prompt_v2("水原市", "city", {"population": 1000}, {}, "本文", belongs_to_name="韓国")
+    assert "出力前の必須チェック" in p
+    assert "確実な根拠" in p                 # 正のアンカー（Wikidata 値は certain 可）
+    assert "そのまま引用" in p               # certain は本文語句を verbatim 引用（要約禁止）
+    assert "省略する" in p                   # 具体属性は明示無ければ inferred でも書かず省略
+    assert "唯一" in p                       # 全称主張の注意
+    assert "政治的立場" in p                  # 人物の政治的性格付けの注意
+    assert "自身に限定" in p and "水原市" in p  # 対象地域への接地強制
+
+
+def test_prompt_timeline_year_certain_rule_consistent_with_guardrail():
+    # 315行「年号は certain」とガードレールの矛盾を解消（年号も明示があれば certain）
+    p = build_profile_prompt_v2("Z", "country", {}, {}, "")
+    # 無条件の「年号は certain」が残っていないこと（明示条件付きへ）
+    assert "年号は certain。" not in p
+    assert "明示があれば certain" in p or "明示がある場合のみ certain" in p
+
+
 """Task4: 応答パース＋組立 v2（純関数）のテスト。"""
 
 

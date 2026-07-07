@@ -48,6 +48,76 @@ def test_wikidata_facts_missing_all_none():
                  "gdp_per_capita": None}
 
 
+def _q(entity_qid):
+    return f"http://www.wikidata.org/entity/{entity_qid}"
+
+
+def _area(amount, unit_qid=None, rank="normal"):
+    v = {"amount": amount}
+    if unit_qid is not None:
+        v["unit"] = _q(unit_qid)
+    return {"mainsnak": {"datavalue": {"value": v}}, "rank": rank}
+
+
+def _pop(amount, year=None, rank="normal"):
+    c = {"mainsnak": {"datavalue": {"value": {"amount": amount}}}, "rank": rank}
+    if year is not None:
+        c["qualifiers"] = {"P585": [{"datavalue": {"value": {"time": f"+{year}-00-00T00:00:00Z"}}}]}
+    return c
+
+
+def test_wikidata_facts_area_m2_unit_normalized_to_km2():
+    # P2046 面積が m²(Q25343) 単位なら km² に正規化する（10^6 で割る）
+    claims = {"P2046": [_area("+1324390000", "Q25343")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["area_km2"] == 1324.39
+
+
+def test_wikidata_facts_area_km2_unit_kept():
+    # 単位が km²(Q712226) ならそのまま
+    claims = {"P2046": [_area("+100295", "Q712226")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["area_km2"] == 100295.0
+
+
+def test_wikidata_facts_area_no_unit_defaults_km2():
+    # 単位欠落は km² 既定（後方互換・既存生成物と一致）
+    claims = {"P2046": [_area("+2194")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["area_km2"] == 2194.0
+
+
+def test_wikidata_facts_population_prefers_preferred_rank():
+    # 複数 P1082 統計。rank=preferred が配列順の先頭より優先される
+    claims = {"P1082": [_pop("+25012374", 1960, "normal"),
+                        _pop("+51466201", 2017, "preferred")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["population"] == 51466201
+
+
+def test_wikidata_facts_population_latest_point_in_time_when_no_preferred():
+    # preferred が無ければ P585 時点が最新の統計を選ぶ（先頭=古い値を拾わない）
+    claims = {"P1082": [_pop("+25012374", 1960, "normal"),
+                        _pop("+51628117", 2022, "normal")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["population"] == 51628117
+
+
+def test_wikidata_facts_elevation_foot_unit_normalized_to_m():
+    # P2044 標高が foot(Q3710) なら m に正規化
+    claims = {"P2044": [{"mainsnak": {"datavalue": {"value": {
+        "amount": "+100", "unit": _q("Q3710")}}}, "rank": "normal"}]}
+    f = wikidata_facts({"claims": claims})
+    assert f["elevation_m"] == 30.48
+
+
+def test_wikidata_facts_gdp_per_capita_prefers_latest_point_in_time():
+    # P2132 一人当たりGDP も配列先頭でなく最新時点を選ぶ（人口と同じ stale バグの解消）
+    claims = {"P2132": [_pop("+20000", 2005, "normal"), _pop("+35000", 2022, "normal")]}
+    f = wikidata_facts({"claims": claims})
+    assert f["gdp_per_capita"] == 35000
+
+
 from scripts.lib.profile_prep import ja_wikipedia_title
 
 def test_ja_wikipedia_title():

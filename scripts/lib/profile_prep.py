@@ -16,17 +16,6 @@ def resolve_qid(props):
     return None
 
 
-def _claim_amount(claims, pid):
-    for c in claims.get(pid) or []:
-        try:
-            v = c["mainsnak"]["datavalue"]["value"]
-            amt = v["amount"] if isinstance(v, dict) and "amount" in v else v
-            return float(amt)
-        except (KeyError, TypeError, ValueError):
-            continue
-    return None
-
-
 def _claim_coord(claims):
     for c in claims.get("P625") or []:
         try:
@@ -37,17 +26,78 @@ def _claim_coord(claims):
     return None, None
 
 
+# 面積(P2046)・標高(P2044) の Wikidata 単位 → 基準単位(km²/m) 換算係数。未知/単位なしは係数 1.0。
+_AREA_UNIT_KM2 = {
+    "Q712226": 1.0,        # 平方キロメートル
+    "Q25343": 1e-6,        # 平方メートル
+    "Q35852": 0.01,        # ヘクタール
+    "Q232291": 2.589988,   # 平方マイル
+}
+_ELEV_UNIT_M = {
+    "Q11573": 1.0,      # メートル
+    "Q3710": 0.3048,    # フート
+    "Q828224": 1000.0,  # キロメートル
+}
+
+
+def _unit_qid(value):
+    """datavalue.value の unit（"http://.../Q…"）→ "Q…"。単位なし(例 "1")/不明は None。"""
+    u = value.get("unit") if isinstance(value, dict) else None
+    if isinstance(u, str) and "/" in u:
+        return u.rsplit("/", 1)[-1]
+    return None
+
+
+def _point_in_time(claim):
+    """qualifier P585（時点）の time 文字列。無ければ ""（ISO 昇順=文字列比較で最新判定可）。"""
+    try:
+        return claim["qualifiers"]["P585"][0]["datavalue"]["value"]["time"] or ""
+    except (KeyError, TypeError, IndexError):
+        return ""
+
+
+def _select_claim(claims, pid):
+    """amount を持つ claim から rank=preferred を最優先、次に P585 時点が最新、無ければ配列順で
+    最初を返す。時系列統計（人口など）で配列先頭＝古い値を拾う不具合を解消する。"""
+    best, best_key = None, None
+    for c in claims.get(pid) or []:
+        try:
+            v = c["mainsnak"]["datavalue"]["value"]
+        except (KeyError, TypeError):
+            continue
+        if not (isinstance(v, dict) and "amount" in v):
+            continue
+        key = (1 if c.get("rank") == "preferred" else 0, _point_in_time(c))
+        if best_key is None or key > best_key:
+            best, best_key = c, key
+    return best
+
+
+def _amount_in_unit(claim, unit_map):
+    """選んだ claim の amount を unit_map で基準単位へ換算。単位なし/不明は係数 1.0。無効は None。"""
+    if not claim:
+        return None
+    try:
+        v = claim["mainsnak"]["datavalue"]["value"]
+        amt = float(v["amount"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return round(amt * unit_map.get(_unit_qid(v), 1.0), 6)
+
+
 def wikidata_facts(entity):
-    """Wikidata entity → 事実 dict。P1082 人口/P2046 面積/P625 座標/P2044 標高/P2132 一人当たりGDP。"""
+    """Wikidata entity → 事実 dict。P1082 人口/P2046 面積/P625 座標/P2044 標高/P2132 一人当たりGDP。
+    面積・標高は単位(m²/km²・foot/m 等)を正規化し、人口は preferred/最新時点の統計を選ぶ。"""
     claims = (entity or {}).get("claims") or {}
-    pop = _claim_amount(claims, "P1082")
+    pop = _amount_in_unit(_select_claim(claims, "P1082"), {})  # 人口は単位なし（係数常に 1.0）
     lat, lon = _claim_coord(claims)
     return {
         "population": int(pop) if pop is not None else None,
-        "area_km2": _claim_amount(claims, "P2046"),
+        "area_km2": _amount_in_unit(_select_claim(claims, "P2046"), _AREA_UNIT_KM2),
         "lat": lat, "lon": lon,
-        "elevation_m": _claim_amount(claims, "P2044"),
-        "gdp_per_capita": _claim_amount(claims, "P2132"),
+        "elevation_m": _amount_in_unit(_select_claim(claims, "P2044"), _ELEV_UNIT_M),
+        # P2132 も rank/最新時点で選ぶ（人口と同じ stale バグ回避）。通貨単位は正規化不能ゆえ生値。
+        "gdp_per_capita": _amount_in_unit(_select_claim(claims, "P2132"), {}),
     }
 
 
@@ -252,8 +302,21 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         '"timeline":[{"year":"1819","event":"…","confidence":"certain","cause_note":"…(推定)"}],'
         '"tourism":["…"]}\n'
         "・body は1〜4文の散文。confidence は label∈{certain,inferred,time_sensitive}。"
-        "・timeline は近代化の経緯(economy層に対応・年号は certain)。tourism は観光の固有名(都市は厚め)。"
+        "・timeline は近代化の経緯(economy層に対応・年号は本文/事実に明示があれば certain、記憶に頼る年は inferred)。"
+        "tourism は観光の固有名(都市は厚め)。"
         f"{dip_guidance}"
+        "\n\n# 出力前の必須チェック（最優先・順に適用）\n"
+        "1) 「事実(Wikidata)」「固有名(Wikidata)」に載る値(人口・面積・座標・標高・公用語・隣接国・加盟機関)は"
+        "確実な根拠。これらは certain としてよい(過度に inferred へ倒さない)。\n"
+        "2) それ以外の主張を certain にするなら、裏づけ語句を「Wikipedia本文(抜粋)」から探し、"
+        "note にその語句をそのまま引用(コピー)する。引用できなければ certain にしない"
+        "(「本文に明記」等の要約で代替しない・出典の捏造禁止)。\n"
+        "3) 人物の党派・政治的立場、歴史事象の主体(王朝・国・自治体名)、制度や資格の要件、"
+        "受賞・認定の分野などの具体属性は、上記の材料に明示が無ければ certain でも inferred でも書かず省略する"
+        "(誤りを解釈として書かない)。「唯一・最初・only」等の全称も同様。\n"
+        "4) 金額・人口・面積は桁(兆/億/万/km²)を明示し「事実」と整合させる。"
+        "訳語・産業名が対象地域の地理(内陸/沿海など)と矛盾しないか点検する。\n"
+        f"5) 記述は必ず対象地域「{name_ja}」自身に限定する。"
     )
 
 
