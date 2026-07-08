@@ -10,6 +10,18 @@ from scripts.lib.fips_of_iso import FIPS_OF_ISO
 # NE が国名を入れる代表プロパティ（admin / ADMIN は admin1/places で揺れる）。
 _NAME_KEYS = ("admin", "ADMIN", "geonunit", "GEONUNIT", "name", "NAME")
 
+# 主権国 admin1 として描画しない係争地の admin1 コード（明示 denylist・誤爆ゼロ）。
+# NE は係争地に "~" 付き合成コードを与えるが、"~" 一律除外はコソボ諸県・バージン諸島・
+# 北マリアナ等の正規 admin1 まで巻き込むため（own-fips≠group-fips でも同様）採らない。
+# CN-X01~ = パラセル諸島（西沙。中国が実効支配するがベトナム/台湾と係争）。中国の FIPS(CH) 配下に
+# 誤混入するのは本コードのみ（Spratly は group=None で CH には出ない）。日本向け中立表示のため除外。
+DISPUTED_ADMIN1_CODES = frozenset({"CN-X01~"})
+
+
+def is_excluded_admin1(code):
+    """admin1 コードが係争地 denylist に該当し、主権国 admin1 として描画すべきでないか。"""
+    return code in DISPUTED_ADMIN1_CODES
+
 
 def _ne_country_name(props):
     for k in _NAME_KEYS:

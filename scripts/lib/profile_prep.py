@@ -302,6 +302,8 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         '"timeline":[{"year":"1819","event":"…","confidence":"certain","cause_note":"…(推定)"}],'
         '"tourism":["…"]}\n'
         "・body は1〜4文の散文。confidence は label∈{certain,inferred,time_sensitive}。"
+        "確度ラベル(certain/inferred/time_sensitive)や『confidence=…』は confidence 配列にのみ記し、"
+        "body・cause_note・dig_deeper・evidence の散文中に『(inferred)』等の形で書かない(表示ノイズになる)。"
         "・timeline は近代化の経緯(economy層に対応・年号は本文/事実に明示があれば certain、記憶に頼る年は inferred)。"
         "各エントリの year はその事象自体が発生した年に限る。"
         "「〜の後」等の緩い言及で別事象を誤った年に折り込まない・同一事象を複数年に二重計上しない。"
@@ -325,6 +327,103 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
 
 _LAYER_KEYS = {layer["key"] for layer in LAYERS}
 _CONF = {"certain", "inferred", "time_sensitive"}
+
+# 本文プロースへ漏れた確度ラベル注記を除去する（確度は confidence 構造化フィールドに保持されるため
+# body/cause_note 等に「(inferred)」「(confidence=inferred)」と書かれるのは表示ノイズ）。方針:
+#  - 除去できる形（ラベルのみの括弧・na-形容詞『<label>な』・区切り記号で区切られたラベル）は削除する。
+#  - 日本語文法に融合して削除すると非文になる裸ラベル（『certainだが』『certain化』『は…寄り』等）は、
+#    日本語へ言い換える（certain→確実 / inferred→推定 / time_sensitive→時事依存）＝文法を絶対に壊さない。
+#  - ラベル語を含まない括弧（『推定』『面積』やふりがな『（らんが）』）は温存する。
+#  - ASCII 字境界で "uncertainty" 等の英単語内部を誤ヒットしない。
+_LBL = r"(?<![A-Za-z])(?:certain|inferred|time_sensitive)(?![A-Za-z])"
+_LBL_PFX = r"(?:confidence\s*[:：=]?\s*)?" + _LBL  # 任意の "confidence" 接頭辞つきラベル
+_LABEL_ONLY = re.compile(_LBL, re.I)             # ラベル語のみ（存在判定・言い換え用）
+_PAREN_GROUP = re.compile(r"[（(]([^（）()]*)[）)]")
+_SEP_CHARS = " 　・,、:：=／/"
+# na-形容詞「<label>な名詞」→「<label>な」ごと除去（後続名詞が自立する）。
+_BARE_NA = re.compile(r"[ 　]*" + _LBL_PFX + r"[ 　]*な", re.I)
+# 区切り記号（コロン・中黒・読点/）で区切られたラベル → 区切りごと除去（説明が自立する）。
+_DELIM_LABEL = re.compile(r"[：:・、,／/][ 　]*" + _LBL_PFX + r"|" + _LBL_PFX + r"[ 　]*[：:・、,／/]", re.I)
+# 言い換え用: 前後の空白と "confidence" 接頭辞ごとラベルを掴み、日本語へ置換。
+_LABEL_SPAN = re.compile(r"[ 　]*" + _LBL_PFX + r"[ 　]*", re.I)
+_LABEL_JA = {"certain": "確実", "inferred": "推定", "time_sensitive": "時事依存"}
+
+
+def _translate_labels(text):
+    """削除で文法が壊れる融合ラベルを日本語へ言い換える（前後空白と confidence 接頭辞ごと置換）。"""
+    return _LABEL_SPAN.sub(lambda m: _LABEL_JA[_LABEL_ONLY.search(m.group(0)).group(0).lower()], text)
+
+
+def _has_substance_without_labels(text):
+    """ラベル語・接続子・confidence 接頭辞を全部除いて実体（説明）が残るか。"""
+    x = re.sub(r"confidence\s*[:：=]?\s*", "", text, flags=re.I)
+    x = _LABEL_ONLY.sub("", x)
+    x = re.sub(r"([・、,／/：:])\1+", r"\1", x).strip(_SEP_CHARS)
+    return bool(x)
+
+
+def _clean_paren_inner(inner):
+    """括弧内のラベル注記を処理。除去できる形は除き、実体が残らなければ None（括弧ごと削除）、
+    実体が残るなら融合ラベルを日本語化して返す（『はな』非文や末尾ダングリングを作らない）。"""
+    x = _BARE_NA.sub("", inner)       # 埋め込み na-形容詞（『はtime_sensitiveな』→『は』）
+    x = _DELIM_LABEL.sub("", x)       # 区切り記号つきラベル（『inferred：…』→『…』）
+    if not _has_substance_without_labels(x):
+        return None                   # ラベル/接続子/接頭辞のみ → 括弧ごと削除
+    return _translate_labels(re.sub(r"([・、,／/：:])\1+", r"\1", x).strip(_SEP_CHARS))
+
+
+def strip_confidence_labels(text):
+    """文字列から漏れた確度ラベル注記を文法を壊さずに処理する純関数（除去または日本語言い換え）。"""
+    if not isinstance(text, str) or not text:
+        return text
+
+    def _repl(m):
+        inner = m.group(1)
+        if not _LABEL_ONLY.search(inner):
+            return m.group(0)  # ラベル語を含まない括弧（推定・面積・ふりがな 等）は温存
+        new_inner = _clean_paren_inner(inner)
+        return "" if new_inner is None else f"（{new_inner}）"
+
+    out = _PAREN_GROUP.sub(_repl, text)   # 括弧内（この後、残るラベルは全て括弧外＝裸）
+    out = _BARE_NA.sub("", out)           # 裸: 連体 na-形容詞
+    out = _DELIM_LABEL.sub("", out)       # 裸: 区切り記号つきラベル
+    out = _translate_labels(out)          # 裸: 融合ラベルを日本語へ言い換え（削除では非文になるもの）
+    out = re.sub(r"[ 　]+([。、．，！？」』）)])", r"\1", out)  # 句読点前の空白除去
+    out = re.sub(r"[ 　]{2,}", " ", out)
+    return out.strip()
+
+
+def strip_profile_labels(obj):
+    """{layers,timeline,tourism} を持つ dict の全テキストフィールドから確度ラベル注記を除去（破壊的）。
+    parse_profile_v2（生成時）と既存データ後処理の双方で使う単一の choke point。"""
+    for layer in obj.get("layers") or []:
+        if isinstance(layer.get("body"), str):
+            layer["body"] = strip_confidence_labels(layer["body"])
+        if isinstance(layer.get("evidence"), str):
+            layer["evidence"] = strip_confidence_labels(layer["evidence"])
+        layer["dig_deeper"] = [strip_confidence_labels(d) if isinstance(d, str) else d
+                               for d in (layer.get("dig_deeper") or [])]
+        for c in layer.get("confidence") or []:
+            if isinstance(c.get("note"), str):
+                c["note"] = strip_confidence_labels(c["note"])
+    for t in obj.get("timeline") or []:
+        if isinstance(t.get("event"), str):
+            t["event"] = strip_confidence_labels(t["event"])
+        if isinstance(t.get("cause_note"), str):
+            t["cause_note"] = strip_confidence_labels(t["cause_note"])
+    obj["tourism"] = [strip_confidence_labels(x) if isinstance(x, str) else x
+                      for x in (obj.get("tourism") or [])]
+    return obj
+
+
+# Batch API custom_id は ^[a-zA-Z0-9_-]{1,64}$ のみ許容。admin1 コードは NE の係争地マーカー
+# "~"（例 CN-X01~）を含み得るため、不正 cid を Batch へ送ると 400 で run 全体が落ちる。
+_SAFE_CUSTOM_ID = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
+
+
+def is_safe_custom_id(cid):
+    """cid が Batch API custom_id の許容文字集合・長さに収まるか。"""
+    return isinstance(cid, str) and _SAFE_CUSTOM_ID.match(cid) is not None
 
 
 def parse_profile_v2(text):
@@ -383,7 +482,9 @@ def parse_profile_v2(text):
     raw_tourism = data.get("tourism")
     raw_tourism = raw_tourism if isinstance(raw_tourism, list) else []
     tourism = [x.strip() for x in raw_tourism if isinstance(x, str) and x.strip()]
-    return {"layers": layers, "timeline": timeline, "tourism": tourism}
+    # 生成応答が body/cause_note 等に確度ラベルを書き込んでも、ここで一括除去して漏れを封じる
+    # （確度は confidence 構造化フィールドに保持済み・§プロンプトでも禁止を明示）。
+    return strip_profile_labels({"layers": layers, "timeline": timeline, "tourism": tourism})
 
 
 def is_degraded_v2(qid, parsed):

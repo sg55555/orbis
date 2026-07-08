@@ -290,3 +290,12 @@ def test_resolve_fips_kosovo_via_iso():
     props = {"ISO_A2": "XK", "admin": "Kosovo"}
     result = resolve_fips(props, BOUNDS_NAME_INDEX)  # name 突合: "Kosovo" は BOUNDS_NAME_INDEX に無い→ISO 採用
     assert result == "KV", f"XK は KV に解決されるべき、実際: {result}"
+
+
+def test_is_excluded_admin1_denylists_paracel_only():
+    from scripts.lib.ne_prep import is_excluded_admin1, DISPUTED_ADMIN1_CODES
+    assert is_excluded_admin1("CN-X01~") is True        # パラセル諸島（西沙・係争地）
+    assert is_excluded_admin1("CN-SH") is False          # 正規の省（上海）
+    assert is_excluded_admin1("XK-X01~") is False        # コソボ諸県は誤爆しない（denylist 明示のみ）
+    assert is_excluded_admin1(None) is False
+    assert DISPUTED_ADMIN1_CODES == frozenset({"CN-X01~"})

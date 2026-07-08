@@ -17,7 +17,7 @@ import re
 
 from scripts.lib.ne_prep import (
     resolve_fips, pick_name_ja, split_by_country, largest_polygon_bbox, simplify_ring,
-    union_country_bbox,
+    union_country_bbox, is_excluded_admin1,
 )
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -83,6 +83,8 @@ def main():
         feat_bboxes = []
         for f in feats:
             props = f.get("properties") or {}
+            if is_excluded_admin1(a1code_of(props)):  # 係争地（例 CN-X01~ パラセル諸島）は境界も描かない
+                continue
             geom = simplify_geometry(f.get("geometry") or {})
             bbox = largest_polygon_bbox(geom)
             if bbox is None:

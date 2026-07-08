@@ -28,7 +28,8 @@ from scripts.lib.profile_prep import (
     generate_profile, resolve_qid, SECTIONS,
     generate_profile_v2, wikidata_facts, named_props, ja_wikipedia_title,
     extract_sections, build_profile_prompt_v2, parse_profile_v2,
-    assemble_profile_v2, is_degraded_v2, PROFILE_SYSTEM_V2,
+    assemble_profile_v2, is_degraded_v2, PROFILE_SYSTEM_V2, is_safe_custom_id,
+    strip_profile_labels,
 )
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -333,7 +334,23 @@ def run_batch(prompts):
             if stop_reason == "max_tokens":
                 print(f"[profiles] WARN: max_tokens で打ち切り ({r.custom_id}) — "
                       f"課金済みだが応答が truncate され本文が不完全な degraded になる可能性があります")
-            out[r.custom_id] = next((b.text for b in r.result.message.content if b.type == "text"), "")
+            elif stop_reason == "refusal":
+                print(f"[profiles] WARN: refusal で応答拒否 ({r.custom_id}) — 本文が空で degraded になります")
+            text = next((b.text for b in r.result.message.content if b.type == "text"), "")
+            if not text.strip():
+                print(f"[profiles] WARN: 応答テキストが空 ({r.custom_id} / stop={stop_reason}) — degraded になります")
+            out[r.custom_id] = text
+        else:
+            # succeeded 以外(errored/canceled/expired)は out に入らず無言で degraded 化していた。
+            # どの custom_id がなぜ落ちたかを必ずログする（degraded の原因診断のため）。
+            err = getattr(r.result, "error", None)
+            etype = getattr(err, "type", None) or getattr(getattr(err, "error", None), "type", None)
+            emsg = getattr(err, "message", None) or getattr(getattr(err, "error", None), "message", "")
+            print(f"[profiles] WARN: batch result {r.result.type} ({r.custom_id}) — "
+                  f"degraded になります。error_type={etype} message={emsg}")
+    n_ok, n_req = len(out), len(prompts)
+    if n_ok < n_req:
+        print(f"[profiles] batch 成功 {n_ok}/{n_req}（{n_req - n_ok} 件が非成功/空応答で degraded）")
     return out
 
 
@@ -384,7 +401,7 @@ def _collect_targets(fips_ja, targets):
 
     # 県/州: NE admin1（a1code・wikidataid）。対象国のみ。
     ne1 = json.load(open(os.path.join(NE, "ne_10m_admin_1_states_provinces.geojson"), encoding="utf-8"))
-    from scripts.lib.ne_prep import resolve_fips
+    from scripts.lib.ne_prep import resolve_fips, is_excluded_admin1
     name_index = {f["properties"]["name"]: f["properties"]["code"]
                   for f in json.load(open(os.path.join(ROOT, "data/static/country_bounds.geojson"), encoding="utf-8"))["features"]}
     for f in ne1["features"]:
@@ -394,6 +411,8 @@ def _collect_targets(fips_ja, targets):
             continue
         a1 = p.get("iso_3166_2") or p.get("code_hasc") or p.get("adm1_code")
         if not a1:
+            continue
+        if is_excluded_admin1(a1):  # 係争地（例 CN-X01~ パラセル諸島）は主権国 admin1 として生成しない
             continue
         name_ja = p.get("name_ja") or p.get("name") or a1
         belongs_to = {"level": "country", "id": fips, "name_ja": fips_ja.get(fips, fips)}
@@ -429,6 +448,12 @@ def _pass1_prepare(items, generated_at):
     seen_cids = set()
     for level, pid, name_ja, qid, belongs_to in items:
         cid = f"{level}_{pid}"
+        if not is_safe_custom_id(cid):
+            # Batch API custom_id 規則違反（例 pid に "~" を含む係争地コード）は run 全体を 400 で
+            # 落とすため、Batch へ送らずスキップして warn（denylist を擦り抜けた不正 pid の最終防御）。
+            print(f"[profiles] WARN: 不正な custom_id をスキップ ({cid} / {name_ja}) — "
+                  f"Batch API は [a-zA-Z0-9_-]{{1,64}} のみ許容")
+            continue
         if cid in seen_cids:
             print(f"[profiles] WARN: 重複 custom_id をスキップ ({cid} / {name_ja}) — "
                   f"Batch API は同一 custom_id を拒否するため後続の対象は無視されます")
@@ -475,8 +500,13 @@ def _pass2_finish(pending, results, generated_at):
     for cid, meta in pending.items():
         text = results.get(cid, "")
         parsed = parse_profile_v2(text)
+        degraded = is_degraded_v2(meta["source"]["qid"], parsed)
+        if degraded and text.strip():
+            # Batch応答はあるのに layers を取れず degraded＝非JSON/想定外フォーマット。頭を出して診断可能にする。
+            print(f"[profiles] WARN: batch応答はあるが parse で layers 0件→degraded ({cid} / {meta['name_ja']}) "
+                  f"resp_len={len(text)} head={text[:140]!r}")
         prof = assemble_profile_v2(meta["pid"], meta["level"], meta["name_ja"], meta["facts"],
-                                   parsed, meta["source"], is_degraded_v2(meta["source"]["qid"], parsed),
+                                   parsed, meta["source"], degraded,
                                    meta["belongs_to"], generated_at)
         out.append((meta["level"], meta["pid"], prof))
     return out
@@ -533,6 +563,9 @@ def _write_all(finished):
     country は非 gz・admin1/city は gz（_main_v2 のインライン処理を抽出・テスト可能化）。"""
     manifest = {"country": {}, "admin1": {}, "city": {}}
     for level, pid, prof in finished:
+        # 出力チョークポイントで確度ラベル注記を除去（生成キャッシュ由来の immediate は parse を経ず
+        # strip 前のため、書き出し前にここで一括除去してキャッシュも self-heal させる）。
+        strip_profile_labels(prof)
         b = _write(level, pid, prof, gz=(level != "country"))
         _gen_cache_put(f"{level}_{pid}", prof)  # 内部で degraded を skip（成功のみ保存）
         manifest[level][pid] = {"bytes": b, "degraded": prof["degraded"]}
@@ -556,7 +589,7 @@ def _main_dummy(fips_ja, targets):
 
     # 県/州: NE admin1（a1code・wikidataid）。対象国のみ。
     ne1 = json.load(open(os.path.join(NE, "ne_10m_admin_1_states_provinces.geojson"), encoding="utf-8"))
-    from scripts.lib.ne_prep import resolve_fips
+    from scripts.lib.ne_prep import resolve_fips, is_excluded_admin1
     name_index = {f["properties"]["name"]: f["properties"]["code"]
                   for f in json.load(open(os.path.join(ROOT, "data/static/country_bounds.geojson"), encoding="utf-8"))["features"]}
     for f in ne1["features"]:
@@ -566,6 +599,8 @@ def _main_dummy(fips_ja, targets):
             continue
         a1 = p.get("iso_3166_2") or p.get("code_hasc") or p.get("adm1_code")
         if not a1:
+            continue
+        if is_excluded_admin1(a1):  # 係争地（例 CN-X01~ パラセル諸島）は主権国 admin1 として生成しない
             continue
         name_ja = p.get("name_ja") or p.get("name") or a1
         prof = _gen_cached("admin1", a1, name_ja, resolve_qid(p))
@@ -606,7 +641,15 @@ def _main_v2(fips_ja, targets):
         ]
     else:
         immediate, prompts, pending = _pass1_prepare(items, generated_at)
-        results = run_batch(prompts) if prompts and os.environ.get("ANTHROPIC_API_KEY") else {}
+        has_key = bool(os.environ.get("ANTHROPIC_API_KEY"))
+        print(f"[profiles] PASS1: immediate(degraded)={len(immediate)} / Batch対象prompts={len(prompts)} / "
+              f"ANTHROPIC_API_KEY={'set' if has_key else 'UNSET'}")
+        if prompts and not has_key:
+            print(f"[profiles] WARN: ANTHROPIC_API_KEY 未設定のため Batch をスキップ — "
+                  f"{len(prompts)}件が生成されず degraded のままになります")
+        if prompts and has_key:
+            print(f"[profiles] run_batch: {len(prompts)}件を Batch API へ送信して生成します…")
+        results = run_batch(prompts) if prompts and has_key else {}
         finished = immediate + _pass2_finish(pending, results, generated_at)
 
     manifest = _write_all(finished)

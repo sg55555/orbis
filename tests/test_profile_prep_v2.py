@@ -6,7 +6,8 @@ from scripts.lib.profile_prep import (
     dedup_names, named_props, wikidata_facts, extract_sections,
     LAYERS, PROFILE_SYSTEM_V2, build_profile_prompt_v2,
     parse_profile_v2, assemble_profile_v2, is_degraded_v2,
-    generate_profile_v2,
+    generate_profile_v2, strip_confidence_labels, strip_profile_labels,
+    is_safe_custom_id,
 )
 
 
@@ -544,3 +545,146 @@ def test_generate_v2_llm_call_receives_facts_and_named_props_grounded_prompt():
         label_resolver=lambda qs: {"Q1860": "英語"}, ask_llm=ask_llm)
     assert "population: 5000" in captured["prompt"]
     assert "英語" in captured["prompt"]
+
+
+# --- 確度ラベルの本文流出 strip（8d 検証で全生成物629層に波及と判明・後処理＋parse両方で封じる） ---
+
+def test_strip_removes_bare_label_paren():
+    # 純ラベル括弧は句読点を保って括弧ごと消す
+    assert strip_confidence_labels("要衝であった（inferred）。") == "要衝であった。"
+    assert strip_confidence_labels("動向（time_sensitive）。") == "動向。"
+    assert strip_confidence_labels("確実（certain）だ。") == "確実だ。"
+
+
+def test_strip_removes_confidence_prefixed_variants():
+    for g in ["（confidence=inferred）", "（confidence: inferred）", "（confidence=time_sensitive）",
+              "（confidence: certain）"]:
+        assert strip_confidence_labels(f"本文{g}末尾") == "本文末尾", g
+
+
+def test_strip_removes_multi_label_group():
+    assert strip_confidence_labels("成長（confidence=inferred, time_sensitive）を続ける。") == "成長を続ける。"
+    assert strip_confidence_labels("要因（inferred・time_sensitive）。") == "要因。"
+
+
+def test_strip_keeps_explanation_drops_only_label_token():
+    # ラベル＋説明の混在は説明を残し、ラベル語と孤立接続子のみ除去
+    assert strip_confidence_labels("立地（inferred：河川合流→農業特化）。") == "立地（河川合流→農業特化）。"
+    assert strip_confidence_labels("背景（推定・time_sensitive）。") == "背景（推定）。"
+
+
+def test_strip_preserves_non_label_parentheticals():
+    # ラベル語を含まない括弧（日本語の推定・面積等）は完全温存
+    assert strip_confidence_labels("面積（世界第3位）を誇る。") == "面積（世界第3位）を誇る。"
+    assert strip_confidence_labels("土壌肥沃化（推定）による。") == "土壌肥沃化（推定）による。"
+
+
+def test_strip_does_not_match_label_substring_in_word():
+    # "uncertainty" 等の英単語内 "certain" を誤って掴まない
+    s = "リスク（uncertainty が残る）。"
+    assert strip_confidence_labels(s) == s
+
+
+def test_strip_non_string_passthrough():
+    assert strip_confidence_labels(None) is None
+    assert strip_confidence_labels("") == ""
+
+
+def test_strip_profile_labels_walks_all_text_fields():
+    prof = {
+        "layers": [{
+            "key": "geography", "title": "地勢", "body": "要衝（inferred）。",
+            "confidence": [{"label": "certain", "kind": "地理", "note": "海岸線（certain）"}],
+            "evidence": "本文（inferred）", "dig_deeper": ["格差（time_sensitive）の推移"],
+        }],
+        "timeline": [{"year": "1978", "event": "改革（certain）", "confidence": "certain",
+                      "cause_note": "外資（inferred）流入"}],
+        "tourism": ["西湖（certain）"],
+    }
+    out = strip_profile_labels(prof)
+    assert out["layers"][0]["body"] == "要衝。"
+    assert out["layers"][0]["confidence"][0]["note"] == "海岸線"
+    assert out["layers"][0]["evidence"] == "本文"
+    assert out["layers"][0]["dig_deeper"] == ["格差の推移"]
+    assert out["timeline"][0]["event"] == "改革"
+    assert out["timeline"][0]["cause_note"] == "外資流入"
+    assert out["tourism"] == ["西湖"]
+
+
+def test_parse_profile_v2_strips_leaked_labels_in_body():
+    text = ('{"layers":[{"key":"geography","title":"地勢","body":"要衝である（inferred）。",'
+            '"confidence":[{"label":"inferred","kind":"解釈","note":"背景"}],"evidence":"e","dig_deeper":[]}],'
+            '"timeline":[],"tourism":[]}')
+    out = parse_profile_v2(text)
+    assert out["layers"][0]["body"] == "要衝である。"
+    # 構造化 confidence フィールドは温存（strip はラベルを消さない）
+    assert out["layers"][0]["confidence"][0]["label"] == "inferred"
+
+
+def test_prompt_forbids_confidence_label_in_prose():
+    p = build_profile_prompt_v2("上海市", "admin1", {}, {}, "本文", "中国")
+    assert "confidence 配列にのみ" in p
+
+
+def test_is_safe_custom_id():
+    assert is_safe_custom_id("admin1_CN-BJ")
+    assert is_safe_custom_id("city_Q956")
+    assert is_safe_custom_id("country_CH")
+    assert not is_safe_custom_id("admin1_CN-X01~")   # 係争地コードの "~"
+    assert not is_safe_custom_id("admin1_CN X01")     # 空白
+    assert not is_safe_custom_id("")
+    assert not is_safe_custom_id(None)
+
+
+# --- 文法安全 strip（ハードニング検証で捕捉: 日本語に膠着した裸ラベルの文法破壊を防ぐ） ---
+
+def test_strip_bare_na_adjective_no_broken_grammar():
+    # 「<label>な名詞」は連体形ごと除去し後続名詞を自立させる（「はな更新差」非文の再発防止）
+    assert strip_confidence_labels("緊張関係は time_sensitive な課題である。") == "緊張関係は課題である。"
+    assert strip_confidence_labels("乖離はtime_sensitiveな更新差と推定") == "乖離は更新差と推定"
+    assert strip_confidence_labels("予定であり time_sensitive な情報") == "予定であり情報"
+
+
+def test_strip_bare_trailing_label_translated_when_fused():
+    # 削除で非文になる融合ラベルは日本語へ言い換える（文法を壊さない）。中黒区切りは除去。
+    assert strip_confidence_labels("年は不明のため inferred。") == "年は不明のため推定。"
+    assert strip_confidence_labels("記述はないため inferred とする。") == "記述はないため推定とする。"
+    assert strip_confidence_labels("本文に明示なし・inferred") == "本文に明示なし"
+
+
+def test_strip_fused_label_translated_not_deleted():
+    # 日本語に膠着したラベルは削除せず言い換え（『はな』『だが』宙ぶらりんを作らない）
+    assert strip_confidence_labels("事象の存在はcertainだが年号は不明") == "事象の存在は確実だが年号は不明"
+    assert strip_confidence_labels("本文引用による certain 化は不可") == "本文引用による確実化は不可"
+    assert strip_confidence_labels("年号はinferred寄り") == "年号は推定寄り"
+    assert strip_confidence_labels("現在の運用状況は time_sensitive") == "現在の運用状況は時事依存"
+
+
+def test_strip_paren_dangling_meta_translated():
+    # メタ括弧はラベルを日本語化して自立させる（末尾ダングリングを作らない）
+    assert strip_confidence_labels("根拠（本文明記、背景は inferred）。") == "根拠（本文明記、背景は推定）。"
+    assert strip_confidence_labels("影響（解釈部分は inferred）。") == "影響（解釈部分は推定）。"
+    assert (strip_confidence_labels("方針（政策方向は本文に明記、成否は time_sensitive）。")
+            == "方針（政策方向は本文に明記、成否は時事依存）。")
+
+
+def test_strip_preserves_furigana_and_substantive_paren():
+    # ふりがな（例 灤河（らんが））や実体ある因果説明は温存
+    assert strip_confidence_labels("市域は灤河（らんが）水系に属する") == "市域は灤河（らんが）水系に属する"
+    assert strip_confidence_labels("立地（inferred：河川合流→農業特化）。") == "立地（河川合流→農業特化）。"
+
+
+def test_strip_idempotent():
+    for s in ["緊張関係は time_sensitive な課題である。", "根拠（本文明記、背景は inferred）。",
+              "年は不明のため inferred。", "面積（世界第3位）。"]:
+        once = strip_confidence_labels(s)
+        assert strip_confidence_labels(once) == once
+
+
+def test_strip_na_adjective_embedded_inside_paren():
+    # Q74052 実例: 実体ある括弧内に埋め込まれた「<label>な名詞」→ ラベルと連体形を除去し括弧と説明は保つ
+    s = "「人口密度は4,031/km²」（本文記載値。Wikidataとの乖離はtime_sensitiveな更新差と推定）"
+    assert strip_confidence_labels(s) == "「人口密度は4,031/km²」（本文記載値。Wikidataとの乖離は更新差と推定）"
+    assert "はな" not in strip_confidence_labels(s)
+    # 括弧内末尾のラベル(+とする)は融合するため日本語化（削除では非文）
+    assert strip_confidence_labels("根拠（記述はないため inferred とする）。") == "根拠（記述はないため推定とする）。"

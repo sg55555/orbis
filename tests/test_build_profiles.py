@@ -594,3 +594,43 @@ def test_fetch_sleep_env_override(monkeypatch):
 
 def test_fetch_max_retries_raised():
     assert build_profiles.FETCH_MAX_RETRIES == 6
+
+
+def test_pass1_prepare_skips_unsafe_custom_id_and_warns(monkeypatch, capsys):
+    # Batch custom_id 規則違反（pid に "~" を含む係争地コード）は Batch へ送らずスキップして warn する
+    # （denylist を擦り抜けた不正 pid でも run 全体を 400 で落とさない最終防御）。
+    fake_entity = {"sitelinks": {"jawiki": {"title": "テスト記事"}}}
+    monkeypatch.setattr(build_profiles, "fetch_wikidata", lambda qid: fake_entity)
+    monkeypatch.setattr(build_profiles, "fetch_article_plaintext", lambda title: "本文プレースホルダー")
+    monkeypatch.setattr(build_profiles, "extract_sections", lambda text, **kw: text)
+    monkeypatch.setattr(build_profiles, "_gen_cache_get", lambda cid: None)
+
+    items = [
+        ("admin1", "CN-X01~", "パラセル諸島", "Q1", {"level": "country", "id": "CH", "name_ja": "中国"}),
+        ("admin1", "CN-SH", "上海市", "Q2", {"level": "country", "id": "CH", "name_ja": "中国"}),
+    ]
+    immediate, prompts, pending = build_profiles._pass1_prepare(items, "2026-07-04")
+
+    assert list(pending.keys()) == ["admin1_CN-SH"], "不正 cid はスキップし正規のみ残る"
+    assert all(cid != "admin1_CN-X01~" for cid, _ in prompts)
+    err = capsys.readouterr().out
+    assert "WARN" in err and "admin1_CN-X01~" in err
+
+
+def test_write_all_strips_confidence_labels_from_output(monkeypatch, tmp_path):
+    # 出力チョークポイントで確度ラベル本文流出を除去（生成キャッシュ由来の未 strip プロフィールでも）。
+    import gzip as _gzip
+    import json as _json
+    monkeypatch.setattr(build_profiles, "OUT", str(tmp_path))
+    monkeypatch.setattr(build_profiles, "_gen_cache_put", lambda cid, prof: None)
+    finished = [
+        ("city", "Q1", {"id": "Q1", "degraded": False,
+                        "layers": [{"key": "geography", "title": "地勢",
+                                    "body": "要衝である（inferred）。", "confidence": [], "evidence": "",
+                                    "dig_deeper": []}],
+                        "timeline": [], "tourism": []}),
+    ]
+    build_profiles._write_all(finished)
+    with _gzip.open(tmp_path / "city" / "Q1.json.gz") as f:
+        written = _json.load(f)
+    assert written["layers"][0]["body"] == "要衝である。"
