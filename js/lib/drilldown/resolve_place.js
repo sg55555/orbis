@@ -22,11 +22,16 @@ export function resolvePlace(lon, lat, ctx) {
     const c = { level: 'admin1', id: admin1Hit.code, name_ja: admin1Hit.name_ja || admin1Hit.code };
     chain.push(c); target = c;
   }
-  // city（近接・qid・manifest 在り）
+  // city（近接・qid・manifest 在り・かつ解決済み admin1 の内側）
   const city = nearest ? nearest(lon, lat, cities) : null;
   if (city && city.qid && typeof city.lon === 'number' && typeof city.lat === 'number' && man.city[city.qid]) {
     const near = _dist2(lon, lat, city.lon, city.lat) <= cityRadiusDeg * cityRadiusDeg;
-    if (near) {
+    // 最寄り都市が「クリック点の admin1」の内側にある時だけ市クラムを積む。
+    // これをしないと、県内に自前の都市が無い時に隣県の大都市（例: 千葉県クリックで東京都）が
+    // 子として積まれ、パンくずが「日本›千葉県›東京都」という不整合階層になる。
+    // admin1 を特定できなかった時（admin1Hit=null）のみ従来どおり近接だけで採用する。
+    const cityInAdmin1 = !admin1Hit || (pip && pip(city.lon, city.lat, admin1Hit));
+    if (near && cityInAdmin1) {
       const c = { level: 'city', id: city.qid, name_ja: city.name_ja || city.qid };
       chain.push(c); target = c;
     }
