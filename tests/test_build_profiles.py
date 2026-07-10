@@ -4,16 +4,96 @@
 requests は build_profiles.requests.get を monkeypatch で差し替えてモックする。
 Fix1（js/ui/drilldown.js の belongs_to リンク配線）は JS 側 tests/profile_render.test.js を参照。
 """
+import importlib.util
 import sys
 import types
 from types import SimpleNamespace
 
+import pytest
+
 from scripts import build_profiles
+
+_HAS_PYPINYIN = importlib.util.find_spec("pypinyin") is not None
 
 
 # ---------------------------------------------------------------------------
 # Fix3: level 別 max_tokens
 # ---------------------------------------------------------------------------
+
+def _prof(level, pid, name_ja, belongs_id=None):
+    p = {"level": level, "id": pid, "name_ja": name_ja}
+    if belongs_id is not None:
+        p["belongs_to"] = {"level": "country", "id": belongs_id, "name_ja": belongs_id}
+    return p
+
+
+# ---------------------------------------------------------------------------
+# 2.5c: データ是正 override（TW-TXG QID / 誤ラベル都市 name_ja）
+# ---------------------------------------------------------------------------
+
+def test_admin1_qid_override_taichung():
+    assert build_profiles.ADMIN1_QID_OVERRIDE["TW-TXG"] == "Q245023"
+
+
+def test_city_name_ja_override_corrects_mislabeled():
+    ov = build_profiles.CITY_NAME_JA_OVERRIDE
+    assert ov["Q11060772"] == "平地泉鎮"   # 済寧(誤) → 内モンゴルの平地泉鎮
+    assert ov["Q10884943"] == "伊図里河鎮"  # 玉林(誤) → 内モンゴルの伊図里河鎮
+    assert ov["Q4778099"] == "安西"        # 安渓(誤) → 甘粛の安西
+
+
+# ---------------------------------------------------------------------------
+# 2.5c: reading（現地音カタカナ）付与（中国/台湾のみ・LLM 不使用）
+# ---------------------------------------------------------------------------
+
+def test_add_reading_country_of():
+    assert build_profiles._country_of(_prof("country", "CH", "中国")) == "CH"
+    assert build_profiles._country_of(_prof("city", "Q1", "北京市", "CH")) == "CH"
+    assert build_profiles._country_of(_prof("admin1", "TW-TXG", "台中市", "TW")) == "TW"
+
+
+@pytest.mark.skipif(not _HAS_PYPINYIN, reason="pypinyin 未導入")
+def test_add_reading_adds_for_ch_and_tw():
+    ch = _prof("city", "Q92277", "吉林市", "CH")
+    build_profiles._add_reading(ch)
+    assert ch.get("reading") == "ジーリンシー"
+    tw = _prof("admin1", "TW-TXG", "台中市", "TW")
+    build_profiles._add_reading(tw)
+    assert tw.get("reading")  # 非空カタカナ
+
+
+def test_add_reading_skips_non_chinese_countries():
+    # 国ゲート（pypinyin 非依存）: CH/TW 以外は name_to_reading を呼ぶ前に弾く。
+    for level, pid, name, bt in [("admin1", "JP-11", "埼玉県", "JA"),
+                                 ("admin1", "KR-27", "大邱広域市", "KS"),
+                                 ("city", "Q1", "バンコク", "TH")]:
+        p = _prof(level, pid, name, bt)
+        build_profiles._add_reading(p)
+        assert "reading" not in p
+
+
+def test_add_reading_skips_country_level():
+    # 国名（中国/台湾）自体は既知のため reading を付けない（読めない地名補助の意図）。
+    for pid in ("CH", "TW"):
+        p = {"level": "country", "id": pid, "name_ja": "中国" if pid == "CH" else "台湾"}
+        build_profiles._add_reading(p)
+        assert "reading" not in p
+
+
+@pytest.mark.skipif(not _HAS_PYPINYIN, reason="pypinyin 未導入")
+def test_add_reading_skips_katakana_or_unconvertible_name():
+    # CH でも名にカタカナ混在（部分誤読回避で None）→ reading を付けない（_is_all_han ガード）。
+    p = _prof("city", "Qx", "ジャンツー", "CH")
+    build_profiles._add_reading(p)
+    assert "reading" not in p
+
+
+def test_warn_suspicious_prints_for_mojibake(capsys):
+    build_profiles._warn_suspicious("ホ田市", "city", "Qz")
+    assert "文字化けの疑い" in capsys.readouterr().out
+    build_profiles._warn_suspicious("莆田市", "city", "Qz")
+    assert capsys.readouterr().out == ""  # 正常名は無言
+
 
 def test_max_tokens_for_cid_country_is_raised_to_4000():
     assert build_profiles._max_tokens_for_cid("country_US") == 8000

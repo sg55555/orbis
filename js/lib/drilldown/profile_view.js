@@ -234,7 +234,7 @@ function factsHud(items) {
  */
 export function profileHtml(model) {
   const { profile, breadcrumb, shapePath, miniDot, events } = model;
-  const { id, level, name_ja, belongs_to, facts, layers, timeline, tourism, source, degraded } = profile;
+  const { id, level, name_ja, reading, belongs_to, facts, layers, timeline, tourism, source, degraded } = profile;
 
   const kindPair = KIND[level] || ['?', '?'];
   const kindEn   = escapeHtml(kindPair[0]);
@@ -270,7 +270,10 @@ export function profileHtml(model) {
   const idHtml = '<div class="pf-id">'
     + '<span class="pf-kind">' + kindEn + '<span class="pf-kind-ja">' + kindJa + '</span></span>'
     + '<div class="pf-name-row">'
+    + '<div class="pf-name-block">'
     + '<h1 class="pf-name">' + escapeHtml(name_ja) + '</h1>'
+    + (reading ? '<span class="pf-reading" aria-label="読み（現地音）">' + escapeHtml(reading) + '</span>' : '')
+    + '</div>'
     + shapeHtml
     + '</div>'
     + factsHud(factsItems)

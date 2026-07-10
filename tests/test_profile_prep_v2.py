@@ -7,7 +7,7 @@ from scripts.lib.profile_prep import (
     LAYERS, PROFILE_SYSTEM_V2, build_profile_prompt_v2,
     parse_profile_v2, assemble_profile_v2, is_degraded_v2,
     generate_profile_v2, strip_confidence_labels, strip_profile_labels,
-    is_safe_custom_id,
+    is_safe_custom_id, is_suspicious_name_ja,
 )
 
 
@@ -233,6 +233,40 @@ def test_prompt_timeline_year_certain_rule_consistent_with_guardrail():
     # 無条件の「年号は certain」が残っていないこと（明示条件付きへ）
     assert "年号は certain。" not in p
     assert "明示があれば certain" in p or "明示がある場合のみ certain" in p
+
+
+def test_prompt_roughness_hardening_rules():
+    # 2.5c 実機で見つかった粗さ①-⑤⑧を狙う追加ガード（regeneration 時にプロンプトで是正）。
+    p = build_profile_prompt_v2("Z", "country", {"population": 100}, {}, "本文")
+    assert "事実値を優先" in p            # ②⑤ 数値は事実(Wikidata)値を優先（本文と食い違えば事実）
+    assert "材料に無い隣接を創作しない" in p  # ④ 隣接は固有名リストのみ
+    assert "未成立・予定" in p            # ③ 未成立/予定を現在形で断定しない
+    assert "単発の催事" in p              # ① 産業由来を単一イベントに帰さない
+    assert "地名の語源" in p              # ⑧ 語源・別称は本文明示時のみ
+
+
+def test_is_suspicious_name_ja_detects_isolated_katakana_and_replacement():
+    # 化け（漢字中の孤立単独カタカナ / 置換文字）を検知（Q68579「莆田市」→「ホ田市」型）。
+    assert is_suspicious_name_ja("ホ田市") is True
+    assert is_suspicious_name_ja("莆�市") is True
+
+
+def test_is_suspicious_name_ja_allows_legitimate_names():
+    # 正当な連続カタカナ・純カタカナ地名・純漢字名は誤検知しない。
+    assert is_suspicious_name_ja("内モンゴル自治区") is False  # 連続カタカナ（4字）は正当
+    assert is_suspicious_name_ja("ブリーラム県") is False       # 純カタカナ地名（漢字は県のみ・孤立カナ無し）
+    assert is_suspicious_name_ja("ターク県") is False           # 長音符入り純カタカナ地名
+    assert is_suspicious_name_ja("莆田市") is False
+    assert is_suspicious_name_ja("") is False
+    assert is_suspicious_name_ja(None) is False
+
+
+def test_is_suspicious_name_ja_allows_japanese_connector_kana():
+    # 和名の連結カナ（ケ/ヶ/ツ）を含む正当な日本地名は誤検知しない。
+    assert is_suspicious_name_ja("市ケ谷") is False
+    assert is_suspicious_name_ja("茅ヶ崎市") is False
+    assert is_suspicious_name_ja("駒ヶ根市") is False
+    assert is_suspicious_name_ja("一ツ橋") is False
 
 
 """Task4: 応答パース＋組立 v2（純関数）のテスト。"""

@@ -319,9 +319,16 @@ def build_profile_prompt_v2(name_ja, level, facts, named, section_text, belongs_
         "3) 人物の党派・政治的立場、歴史事象の主体(王朝・国・自治体名)、制度や資格の要件、"
         "受賞・認定の分野などの具体属性は、上記の材料に明示が無ければ certain でも inferred でも書かず省略する"
         "(誤りを解釈として書かない)。「唯一・最初・only」等の全称も同様。\n"
-        "4) 金額・人口・面積は桁(兆/億/万/km²)を明示し「事実」と整合させる。"
+        "4) 金額・人口・面積は「事実(Wikidata)」の値をそのまま用い、桁(兆/億/万/km²)を明示する。"
+        "本文中の数値が事実値と食い違う場合は事実値を優先し、事実に無い規模を推計で断定しない。"
         "訳語・産業名が対象地域の地理(内陸/沿海など)と矛盾しないか点検する。\n"
-        f"5) 記述は必ず対象地域「{name_ja}」自身に限定する。"
+        f"5) 記述は必ず対象地域「{name_ja}」自身に限定する。\n"
+        "6) 隣接・接する地域や国は「固有名(Wikidata)」に列挙された地域だけを挙げ、材料に無い隣接を創作しない。\n"
+        "7) 未成立・予定の事柄(将来の合併・改称・新設・昇格など)は現在形で断定せず、"
+        "『予定』と明記するか time_sensitive にする(まだ成立していない名称を既成事実として書かない)。\n"
+        "8) ある産業・特徴の由来を、単発の催事(会議・博覧会・式典・受賞)だけに帰結させない"
+        "(本文に明確な因果の記述がある場合を除く)。\n"
+        "9) 地名の語源・伝統的な別称は「Wikipedia本文(抜粋)」に明示がある場合のみ書き、無ければ省略する。"
     )
 
 
@@ -424,6 +431,32 @@ _SAFE_CUSTOM_ID = re.compile(r"[A-Za-z0-9_-]{1,64}\Z")
 def is_safe_custom_id(cid):
     """cid が Batch API custom_id の許容文字集合・長さに収まるか。"""
     return isinstance(cid, str) and _SAFE_CUSTOM_ID.match(cid) is not None
+
+
+# 文字化け検知: 漢字優勢の名に紛れた「孤立した単独カタカナ letter」または置換文字 U+FFFD。
+# NE 由来の name_ja 化け（例 Q68579「莆田市」→「ホ田市」）を生成時に検知して警告するためのガード。
+# 誤検知防止の3条件:
+#  ①「漢字数 > カタカナ数」の名に限定＝連続カタカナ（『内モンゴル自治区』）や純カタカナ地名
+#    （タイの『ターク県』『ブリーラム県』）はカタカナ優勢のため対象外。
+#  ② 孤立カナが和名の連結カナ（市ケ谷/茅ヶ崎市/一ツ橋 等の ケ ヶ ヵ カ ノ ツ）なら警告しない。
+#  ③ 長音符ー・中黒 は _KATA_LETTER に含めない（カタカナ letter のみ）。
+_KATA_LETTER = re.compile(r"[ァ-ヶ]")
+_KANJI = re.compile(r"[一-鿿]")
+_JA_CONNECTOR_KANA = set("ヶヵケカノツ")  # 和名の連結に使う単独カナ＝化けでなく正当
+
+
+def is_suspicious_name_ja(name):
+    """name_ja が文字化けの疑い（漢字優勢の名の中の孤立単独カタカナ / 置換文字）を含めば True。"""
+    if not isinstance(name, str) or not name:
+        return False
+    if "�" in name:
+        return True
+    n_kanji = len(_KANJI.findall(name))
+    n_kata = len(_KATA_LETTER.findall(name))
+    if n_kata == 0 or n_kata >= n_kanji:  # 純漢字 or カタカナ優勢（タイ地名/自治区名）は対象外
+        return False
+    return any(len(m.group(0)) == 1 and m.group(0) not in _JA_CONNECTOR_KANA
+               for m in _KATA_LETTER.finditer(name))
 
 
 def parse_profile_v2(text):

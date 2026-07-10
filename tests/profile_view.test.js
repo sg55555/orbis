@@ -55,6 +55,18 @@ test('profileHtml: shapePath=null（都市）は形状を出さない', () => {
   assert.doesNotMatch(h, /pf-shape/);
 });
 
+test('profileHtml: reading があれば名前の下に現地音カタカナを併記', () => {
+  const p = { ...BASE.profile, name_ja: '台中市', reading: 'タイチョンシー' };
+  const h = profileHtml({ ...BASE, profile: p });
+  assert.match(h, /pf-reading/);
+  assert.match(h, /タイチョンシー/);
+});
+
+test('profileHtml: reading 無しは pf-reading を出さない（graceful）', () => {
+  const h = profileHtml(BASE);           // BASE.profile に reading なし
+  assert.doesNotMatch(h, /pf-reading/);
+});
+
 test('profileHtml: degraded はバナー＋facts＋出典・レイヤー無し', () => {
   // layers は BASE のまま（非空）にして degraded: true だけ変える
   // → degraded フラグ単独でレイヤーが抑制されることを確認

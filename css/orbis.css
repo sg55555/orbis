@@ -1521,10 +1521,17 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
   display: flex; align-items: center; justify-content: space-between; gap: 16px;
   margin: 9px 0 2px;
 }
+.pf-name-block { min-width: 0; }
 .pf-name {
   margin: 0; font-family: var(--font-display); font-weight: 700;
   font-size: 26px; line-height: 1.1; color: var(--text-bright);
   text-shadow: 0 0 18px rgba(57,208,255,0.18);
+}
+/* 読み（現地音カタカナ・中国/台湾）＝名前の下の補助注記。
+   フォントは継承（Orbitron 等ラテン専用は指定しない＝カナが確実に描画される）。 */
+.pf-reading {
+  display: block; margin-top: 3px;
+  font-size: 12.5px; letter-spacing: .04em; color: var(--muted); text-shadow: none;
 }
 .pf-shape { flex: 0 0 auto; width: 132px; max-width: 42%; line-height: 0; }
 .pf-shape svg { width: 100%; height: auto; display: block; overflow: visible; }

@@ -29,8 +29,9 @@ from scripts.lib.profile_prep import (
     generate_profile_v2, wikidata_facts, named_props, ja_wikipedia_title,
     extract_sections, build_profile_prompt_v2, parse_profile_v2,
     assemble_profile_v2, is_degraded_v2, PROFILE_SYSTEM_V2, is_safe_custom_id,
-    strip_profile_labels,
+    strip_profile_labels, is_suspicious_name_ja,
 )
+from scripts.lib.pinyin_kana import name_to_reading
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 NE = os.path.join(ROOT, "scripts/.cache/ne")
@@ -385,6 +386,46 @@ def _country_qid_by_fips(features):
     return qid_by_fips
 
 
+# --- データ是正 override（2.5c 実機点検で確定・regeneration 時に適用） ---
+# admin1 の QID を人手で確定した curated override（NE の resolve_qid より優先＝常に上書き）。
+# TW-TXG 台中市（台湾第2都市・admin1で唯一の wikidataid 空白で永続 degraded）は都市 Q245023 と同一エンティティ。
+ADMIN1_QID_OVERRIDE = {"TW-TXG": "Q245023"}
+# cities/*.json の name_ja が QID/座標の指す実際の場所と別（大都市の同音名に誤ラベル）の是正。
+# QID/座標/en/zh は小さな町で一致し name_ja だけ誤り → name_ja を実地名へ補正する。
+CITY_NAME_JA_OVERRIDE = {
+    "Q11060772": "平地泉鎮",  # 済寧(山東)に誤ラベル→実体は内モンゴルの平地泉鎮
+    "Q10884943": "伊図里河鎮",  # 玉林(広西)に誤ラベル→実体は内モンゴルの伊図里河鎮
+    "Q4778099": "安西",       # 安渓(福建)に誤ラベル→実体は甘粛の安西
+}
+# reading（現地音カタカナ）を付与する対象＝ピンイン＝中国語発音が正しく当たる中国語圏のみ。
+READING_FIPS = {"CH", "TW"}
+
+
+def _warn_suspicious(name_ja, level, pid):
+    """name_ja が文字化けの疑い（漢字中の孤立カタカナ/置換文字）なら warn（regeneration 時の検知網）。"""
+    if is_suspicious_name_ja(name_ja):
+        print(f"[profiles] WARN: name_ja に文字化けの疑い ({level}_{pid} / {name_ja!r}) — "
+              f"CITY_NAME_JA_OVERRIDE 等での是正を検討してください")
+
+
+def _country_of(prof):
+    """プロフィールの所属国 FIPS（country は自身の id・admin1/city は belongs_to.id）。"""
+    if prof.get("level") == "country":
+        return prof.get("id")
+    return (prof.get("belongs_to") or {}).get("id")
+
+
+def _add_reading(prof):
+    """中国・台湾の県/都市の地域名に現地音カタカナ読みを付与（build 時・LLM 不使用）。
+    国名（中国/台湾）自体は日本語話者に既知のため付けない＝『読めない地名の補助』の意図に沿う。
+    他体系/変換不能は付けない。"""
+    if prof.get("level") != "country" and _country_of(prof) in READING_FIPS:
+        r = name_to_reading(prof.get("name_ja"))
+        if r:
+            prof["reading"] = r
+    return prof
+
+
 def _collect_targets(fips_ja, targets):
     """(level, pid, name_ja, qid, belongs_to) のリストを構築（country→admin1→city の順）。
     国/県/都市の対象発見ロジックは v1 main() を踏襲（NE admin0/admin1・cities/<FIPS>.json）。
@@ -415,8 +456,10 @@ def _collect_targets(fips_ja, targets):
         if is_excluded_admin1(a1):  # 係争地（例 CN-X01~ パラセル諸島）は主権国 admin1 として生成しない
             continue
         name_ja = p.get("name_ja") or p.get("name") or a1
+        _warn_suspicious(name_ja, "admin1", a1)
+        qid = ADMIN1_QID_OVERRIDE.get(a1) or resolve_qid(p)  # NE の wikidataid 欠落を補完
         belongs_to = {"level": "country", "id": fips, "name_ja": fips_ja.get(fips, fips)}
-        items.append(("admin1", a1, name_ja, resolve_qid(p), belongs_to))
+        items.append(("admin1", a1, name_ja, qid, belongs_to))
 
     # 都市: cities/<FIPS>.json（qid 付与済）。対象国のみ。
     for fips in targets:
@@ -428,7 +471,8 @@ def _collect_targets(fips_ja, targets):
             qid = c.get("qid") or None
             if not qid:
                 continue
-            name_ja = c.get("name_ja") or c.get("name") or qid
+            name_ja = CITY_NAME_JA_OVERRIDE.get(qid) or c.get("name_ja") or c.get("name") or qid
+            _warn_suspicious(name_ja, "city", qid)
             items.append(("city", qid, name_ja, qid, belongs_to))
 
     return items
@@ -566,6 +610,7 @@ def _write_all(finished):
         # 出力チョークポイントで確度ラベル注記を除去（生成キャッシュ由来の immediate は parse を経ず
         # strip 前のため、書き出し前にここで一括除去してキャッシュも self-heal させる）。
         strip_profile_labels(prof)
+        _add_reading(prof)  # 中国/台湾のみ現地音カタカナ読みを付与（キャッシュ由来も self-heal）
         b = _write(level, pid, prof, gz=(level != "country"))
         _gen_cache_put(f"{level}_{pid}", prof)  # 内部で degraded を skip（成功のみ保存）
         manifest[level][pid] = {"bytes": b, "degraded": prof["degraded"]}
