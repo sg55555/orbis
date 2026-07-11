@@ -99,12 +99,12 @@ def test_max_tokens_for_cid_country_is_raised_to_4000():
     assert build_profiles._max_tokens_for_cid("country_US") == 8000
 
 
-def test_max_tokens_for_cid_admin1_is_2500():
-    assert build_profiles._max_tokens_for_cid("admin1_JP-13") == 6000
+def test_max_tokens_for_cid_admin1_is_8000():
+    assert build_profiles._max_tokens_for_cid("admin1_JP-13") == 8000
 
 
-def test_max_tokens_for_cid_city_is_2500():
-    assert build_profiles._max_tokens_for_cid("city_Q1490") == 6000
+def test_max_tokens_for_cid_city_is_8000():
+    assert build_profiles._max_tokens_for_cid("city_Q1490") == 8000
 
 
 def test_max_tokens_for_cid_unknown_level_falls_back_to_default():
@@ -283,8 +283,8 @@ def test_run_batch_sends_level_specific_max_tokens_in_requests(monkeypatch):
 
     reqs_by_cid = {r["custom_id"]: r["params"]["max_tokens"] for r in captured["reqs"]}
     assert reqs_by_cid["country_US"] == 8000, "country は truncate 回避のため引き上げ"
-    assert reqs_by_cid["admin1_JP-13"] == 6000
-    assert reqs_by_cid["city_Q1490"] == 6000
+    assert reqs_by_cid["admin1_JP-13"] == 8000, "admin1 も US州で長文truncate→8000に統一"
+    assert reqs_by_cid["city_Q1490"] == 8000, "city も US大都市で長文truncate→8000に統一"
 
 
 def test_run_batch_warns_on_max_tokens_stop_reason(monkeypatch, capsys):

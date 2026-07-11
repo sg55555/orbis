@@ -459,16 +459,47 @@ def is_suspicious_name_ja(name):
                for m in _KATA_LETTER.finditer(name))
 
 
+def _extract_json_object(text):
+    """text 中の最初のバランスした JSON オブジェクト（{…}）文字列を返す。文字列内の波括弧・
+    エスケープは無視し、JSON の後ろに続く注記テキスト（braces を含み得る）を巻き込まない
+    （旧 `re.search(r"\\{.*\\}")` は末尾の } まで貪欲に拾い、後続注記があると不正 JSON 化していた）。
+    閉じ切らない（LLM 応答が max_tokens 等で途中打ち切り）場合は None（＝degraded に倒す）。"""
+    start = text.find("{")
+    if start < 0:
+        return None
+    depth, in_str, esc = 0, False, False
+    for i in range(start, len(text)):
+        c = text[i]
+        if in_str:
+            if esc:
+                esc = False
+            elif c == "\\":
+                esc = True
+            elif c == '"':
+                in_str = False
+        elif c == '"':
+            in_str = True
+        elif c == "{":
+            depth += 1
+        elif c == "}":
+            depth -= 1
+            if depth == 0:
+                return text[start:i + 1]
+    return None
+
+
 def parse_profile_v2(text):
     """build_profile_prompt_v2 応答テキスト → {layers,timeline,tourism}（検証済）。
-    未知 layer key・不正 confidence label・空 body はフィルタして捨てる。"""
+    未知 layer key・不正 confidence label・空 body はフィルタして捨てる。
+    コードフェンス（```json）・後続注記・文字列内の生改行に頑健（US大都市の実失敗対策）。"""
     if not isinstance(text, str):
         return {"layers": [], "timeline": [], "tourism": []}
-    m = re.search(r"\{.*\}", text, re.S)
-    if not m:
+    raw = _extract_json_object(text)
+    if raw is None:
         return {"layers": [], "timeline": [], "tourism": []}
     try:
-        data = json.loads(m.group(0))
+        # strict=False: LLM が文字列値に生の制御文字(改行/タブ)を出しても許容する。
+        data = json.loads(raw, strict=False)
     except ValueError:
         return {"layers": [], "timeline": [], "tourism": []}
     if not isinstance(data, dict):

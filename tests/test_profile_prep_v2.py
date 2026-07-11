@@ -286,6 +286,27 @@ def test_degraded_v2_when_no_layers():
     assert is_degraded_v2("Q1", {"layers": []}) is True
 
 
+def test_parse_v2_tolerates_code_fence_and_trailing_note():
+    # US大都市の実失敗(4): 完全なJSON + 後続注記(braces含む)。greedy `\{.*\}`が末尾}まで拾い不正化していた。
+    text = ('```json\n{"layers":[{"key":"geography","title":"地勢","body":"本文"}],'
+            '"timeline":[],"tourism":[]}\n```\n\n注: この地域は {参考} を含む。')
+    r = parse_profile_v2(text)
+    assert len(r["layers"]) == 1 and r["layers"][0]["key"] == "geography"
+
+
+def test_parse_v2_tolerates_raw_newline_in_string():
+    # US大都市の実失敗(5): 文字列値に生の改行(未エスケープ)。strict既定の json.loads が落ちていた。
+    text = '{"layers":[{"key":"economy","title":"産業","body":"1行目\n2行目"}],"timeline":[],"tourism":[]}'
+    r = parse_profile_v2(text)
+    assert len(r["layers"]) == 1 and "2行目" in r["layers"][0]["body"]
+
+
+def test_parse_v2_truncated_json_still_degrades():
+    # 打ち切り(外側閉じ無し)は依然 degraded=0層(データ不完全ゆえ正しくdegrade・max_tokens引上で解消)。
+    text = '```json\n{\n "layers": [\n {\n "key": "geography","body": "途中で切れ'
+    assert len(parse_profile_v2(text)["layers"]) == 0
+
+
 def test_parse_v2_non_string_input_returns_empty_structure():
     assert parse_profile_v2(None) == {"layers": [], "timeline": [], "tourism": []}
     assert parse_profile_v2(123) == {"layers": [], "timeline": [], "tourism": []}

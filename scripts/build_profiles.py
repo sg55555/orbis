@@ -295,10 +295,11 @@ def ask_llm_v2(prompt):
         return ""
 
 
-# level 別 max_tokens（Batch API request 構築用）。country は5層×確度×根拠×深掘り×年表×観光と
-# 最もリッチで応答が長く、一律2000だと truncate（stop_reason=="max_tokens"）しやすいため引き上げる。
-MAX_TOKENS_BY_LEVEL = {"country": 8000, "admin1": 6000, "city": 6000}
-DEFAULT_MAX_TOKENS = 6000
+# level 別 max_tokens（Batch API request 構築用・応答の上限＝ceiling ゆえ短い応答の課金は不変、
+# 長い応答の truncate だけ防ぐ）。US 大都市(シカゴ/ワシントンD.C.等)は本文が長く 6000 では
+# stop_reason=="max_tokens" で JSON が途中打ち切り→parse 失敗→degraded になったため 8000 に統一。
+MAX_TOKENS_BY_LEVEL = {"country": 8000, "admin1": 8000, "city": 8000}
+DEFAULT_MAX_TOKENS = 8000
 
 
 def _max_tokens_for_cid(cid):
