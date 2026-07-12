@@ -1,7 +1,8 @@
 import { initMap, setDeckLayers } from './map.js';
 import { layers, tooltipFor, feedLayers, descFor, allLayerIds, pollLayerIds, staticLayers } from './layers/registry.js';
 import { startPolling } from './snapshot.js';
-import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival, formatLatLon } from './lib/geo.js';
+import { freshnessSummary, magnitudeToRadius, magnitudeToColor, projectedArrival, shipArrival, formatLatLon, ADDITIVE_BLEND } from './lib/geo.js';
+import { frpToRadius, frpToColor } from './layers/firms.js';
 import { loadEnabled, readStored, writeStored } from './lib/state.js';
 import { mountStarfield } from './lib/starfield.js';
 import { getLook, applyLookCss } from './lib/look.js';
@@ -217,6 +218,26 @@ function quakeRippleLayer() {
   });
 }
 
+// 強い山火事（FRP>=100）に、ゆっくり明滅する光のハロー（＝火の「動き」・reduced-motion 時は描かない）。
+// 全1500点を毎フレーム動かすと重いので強火のみ（地震の quake-ripple が mag>=4.5 のみと同型）。
+function firmsPulseLayer() {
+  const snap = snapshots.firms;
+  if (REDUCED || !ENABLED.has('firms') || !snap || !snap.points) return null;
+  const data = snap.points.filter((p) => Number(p.frp) >= 100);
+  if (data.length === 0) return null;
+  const phase = motionT;
+  const breathe = 0.5 + 0.5 * Math.sin(phase * Math.PI * 2); // 0..1 ゆっくり明滅
+  return new deck.ScatterplotLayer({
+    id: 'firms-pulse', data, radiusUnits: 'pixels', filled: true, stroked: false, pickable: false,
+    radiusMinPixels: 8, radiusMaxPixels: 60,
+    getPosition: (p) => [p.lon, p.lat],
+    getRadius: (p) => frpToRadius(p.frp) * (2.4 + 1.0 * breathe),
+    getFillColor: (p) => [...frpToColor(p.frp), Math.round(22 + 26 * breathe)],
+    updateTriggers: { getRadius: phase, getFillColor: phase },
+    parameters: ADDITIVE_BLEND,
+  });
+}
+
 // 選択中イベントの着地リティクル（外周グロー＋明るいリング＋中心ドット＋拡大ピン）。
 // flyTo の着地点を大きく・動きで強調する。config 生成は js/lib/selection.js（純粋）。
 function selectedMarkerLayers(now) {
@@ -285,6 +306,7 @@ function drawAll(overlay) {
   if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
+  if (ENABLED.has('firms')) { const fp = firmsPulseLayer(); if (fp) extra.push(fp); }
   for (const id of ['conflict', 'protests']) {
     if (!ENABLED.has(id)) continue;
     const rgb = id === 'conflict' ? [255, 60, 80] : [94, 255, 166];

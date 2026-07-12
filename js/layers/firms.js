@@ -3,6 +3,15 @@
 // 純粋部（frpToRadius/frpToColor/nearestCountry/acqToMs/buildFireConfig）を分離してテスト可能にする。
 import { COUNTRY_CENTROIDS } from '../lib/country_centroids.js';
 import { FIPS_JA } from '../lib/places.js';
+import { ADDITIVE_BLEND } from '../lib/geo.js';
+
+// FRP(MW) → 火の強さの日本語バンド（色バンドと一致: <20 弱/黄, <100 中/橙, 100+ 強/赤）。
+export function frpBand(frp) {
+  const f = Number(frp) || 0;
+  if (f < 20) return '弱';
+  if (f < 100) return '中';
+  return '強';
+}
 
 // FRP(火放射パワー MW) → 半径(px)。√FRP を 3..24 にクランプ（地震の pow(mag,1.8) と別系統）。
 export function frpToRadius(frp) {
@@ -39,15 +48,31 @@ export function acqToMs(acqDate, acqTime) {
   return Date.UTC(y, (m || 1) - 1, d || 1, Number(t.slice(0, 2)), Number(t.slice(2)));
 }
 
-// deck.gl ScatterplotLayer 設定（純粋部・quakes の buildRingConfig 同型）。塗り暖色点。
+// 明るいコア（加算合成・pickable）。他層（conflict/protests）と同じ加算合成でネオン発光させる。
 export function buildFireConfig(snapshot) {
   const data = (snapshot && snapshot.points) ? snapshot.points : [];
   return {
     id: 'firms', data, radiusUnits: 'pixels', pickable: true,
     stroked: false, filled: true,
+    radiusMinPixels: 2, radiusMaxPixels: 16,
     getPosition: (p) => [p.lon, p.lat],
     getRadius: (p) => frpToRadius(p.frp),
-    getFillColor: (p) => [...frpToColor(p.frp), 210],
+    getFillColor: (p) => [...frpToColor(p.frp), 230],
+    parameters: ADDITIVE_BLEND,
+  };
+}
+
+// 薄く大きい光のハロー（加算合成・非 pickable）。コアの周りに柔らかいグロー＝グラス/ネオン感。
+export function buildFireHalo(snapshot) {
+  const data = (snapshot && snapshot.points) ? snapshot.points : [];
+  return {
+    id: 'firms-halo', data, radiusUnits: 'pixels', pickable: false,
+    stroked: false, filled: true,
+    radiusMinPixels: 6, radiusMaxPixels: 46,
+    getPosition: (p) => [p.lon, p.lat],
+    getRadius: (p) => frpToRadius(p.frp) * 2.6,
+    getFillColor: (p) => [...frpToColor(p.frp), 55],
+    parameters: ADDITIVE_BLEND,
   };
 }
 
@@ -67,18 +92,21 @@ export const firmsLayer = {
     return getSnapshot('firms');
   },
   toDeckLayer(snapshot) {
-    // deck は index.html の CDN によりグローバル提供される
-    return new deck.ScatterplotLayer(buildFireConfig(snapshot));
+    // deck は index.html の CDN によりグローバル提供される。ハロー(下)＋コア(上)を加算合成で重ねてネオン発光。
+    return [
+      new deck.ScatterplotLayer(buildFireHalo(snapshot)),
+      new deck.ScatterplotLayer(buildFireConfig(snapshot)),
+    ];
   },
   tooltip(o) {
     if (!o) return null;
-    return `山火事 ${nearestCountry(o.lon, o.lat)}付近｜FRP ${o.frp} 信頼度 ${CONF_JA[o.confidence] || o.confidence} ${o.acq_date}`;
+    return `山火事 ${nearestCountry(o.lon, o.lat)}付近｜火の強さ ${frpBand(o.frp)}（FRP ${o.frp}MW）｜信頼度 ${CONF_JA[o.confidence] || o.confidence}｜${o.acq_date}`;
   },
   toFeedItems(snapshot) {
     const pts = (snapshot && snapshot.points) ? snapshot.points : [];
     return pts.map((p) => ({
       id: p.id, time: acqToMs(p.acq_date, p.acq_time),
-      title: `🔥 ${nearestCountry(p.lon, p.lat)}付近 FRP${p.frp}`, layerId: 'firms', lon: p.lon, lat: p.lat,
+      title: `${nearestCountry(p.lon, p.lat)}付近 火の強さ:${frpBand(p.frp)}`, layerId: 'firms', lon: p.lon, lat: p.lat,
     }));
   },
 };
