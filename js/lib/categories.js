@@ -1,7 +1,7 @@
 // レイヤーのカテゴリ分類（純データ＋純関数・deck/DOM 非依存）。
 // presets.js と同じ流儀。各 layerId は registry に実在すること（categories.test.js が整合性を検証）。
 export const CATEGORIES = [
-  { id: 'events',      label: '出来事', layerIds: ['quakes', 'conflict', 'protests', 'news'] },
+  { id: 'events',      label: '出来事', layerIds: ['quakes', 'conflict', 'protests', 'news', 'firms'] },
   { id: 'mobility',    label: '移動',   layerIds: ['flights', 'ships', 'trade'] },
   { id: 'environment', label: '環境',   layerIds: ['sst', 'currents', 'airtemp'] },
 ];

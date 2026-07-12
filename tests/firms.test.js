@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
-  frpToRadius, frpToColor, nearestCountry, acqToMs, buildFireConfig,
+  frpToRadius, frpToColor, nearestCountry, acqToMs, buildFireConfig, firmsLayer,
 } from '../js/layers/firms.js';
+import { getLayer, tooltipFor, feedLayers, descFor } from '../js/layers/registry.js';
 
 test('frpToRadius: √FRP を 3..24px にクランプ', () => {
   assert.equal(frpToRadius(0), 3);
@@ -36,4 +37,23 @@ test('buildFireConfig: filled・暖色・半径∝FRP', () => {
 
 test('buildFireConfig: 空 snapshot は data=[]', () => {
   assert.deepEqual(buildFireConfig(null).data, []);
+});
+
+test('firmsLayer: 統一IF＋tooltip＋feed', () => {
+  const snap = { points: [{ id: 'x', lon: 133.4, lat: -24.9, frp: 42.5, confidence: 'high', acq_date: '2026-07-12', acq_time: '0312' }] };
+  assert.equal(firmsLayer.id, 'firms');
+  const tip = firmsLayer.tooltip(snap.points[0]);
+  assert.ok(tip.includes('山火事') && tip.includes('オーストラリア') && tip.includes('42.5'));
+  assert.equal(firmsLayer.tooltip(null), null);
+  const items = firmsLayer.toFeedItems(snap);
+  assert.equal(items[0].layerId, 'firms');
+  assert.equal(items[0].lon, 133.4);
+  assert.ok(items[0].title.includes('🔥'));
+});
+
+test('registry: firms が登録され tooltip/feed/説明 経由で引ける', () => {
+  assert.ok(getLayer('firms'));
+  assert.ok(tooltipFor('firms', { frp: 10, lon: 0, lat: 0, confidence: 'nominal', acq_date: '2026-07-12', acq_time: '0100' }));
+  assert.ok(feedLayers().some((l) => l.id === 'firms'));
+  assert.ok(descFor('firms').includes('FIRMS'));
 });

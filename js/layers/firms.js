@@ -50,3 +50,35 @@ export function buildFireConfig(snapshot) {
     getFillColor: (p) => [...frpToColor(p.frp), 210],
   };
 }
+
+const CONF_JA = { high: '高', nominal: '標準', low: '低' };
+
+export const firmsLayer = {
+  id: 'firms',
+  label: '山火事',
+  marker: 'dot',
+  swatchColor: 'rgb(255,140,32)',
+  legend: [
+    { color: 'rgb(255,214,64)', label: 'FRP<20' },
+    { color: 'rgb(255,140,32)', label: 'FRP20–100' },
+    { color: 'rgb(255,64,32)', label: 'FRP100+' },
+  ],
+  async fetch(getSnapshot) {
+    return getSnapshot('firms');
+  },
+  toDeckLayer(snapshot) {
+    // deck は index.html の CDN によりグローバル提供される
+    return new deck.ScatterplotLayer(buildFireConfig(snapshot));
+  },
+  tooltip(o) {
+    if (!o) return null;
+    return `山火事 ${nearestCountry(o.lon, o.lat)}付近｜FRP ${o.frp} 信頼度 ${CONF_JA[o.confidence] || o.confidence} ${o.acq_date}`;
+  },
+  toFeedItems(snapshot) {
+    const pts = (snapshot && snapshot.points) ? snapshot.points : [];
+    return pts.map((p) => ({
+      id: p.id, time: acqToMs(p.acq_date, p.acq_time),
+      title: `🔥 ${nearestCountry(p.lon, p.lat)}付近 FRP${p.frp}`, layerId: 'firms', lon: p.lon, lat: p.lat,
+    }));
+  },
+};

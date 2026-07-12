@@ -14,6 +14,7 @@ export const SOURCE_MAP = {
   airtemp: { source: 'Open-Meteo', url: 'https://open-meteo.com' },
   currents: { source: '静的データ（編集）', url: '' },
   trade: { source: '静的データ（編集）', url: '' },
+  firms: { source: 'NASA FIRMS', url: 'https://firms.modaps.eosdis.nasa.gov' },
   // 下フォールドの AI セクション（registry 外・main.js が合成エントリで渡す）。
   briefing: { source: 'AI合成（Claude）', url: '' },
   instability: { source: 'AI合成（Claude）＋決定論スコア', url: '' },

@@ -39,11 +39,11 @@ test('tooltipFor: ships-dot は ships のツールチップに解決', () => {
 // ALL_IDS / POLL_LAYERS の手動配列をやめ registry から自動導出する（手同期ミス防止）。
 test('allLayerIds returns every registered layer id in registry order', () => {
   assert.deepEqual(allLayerIds(),
-    ['quakes', 'flights', 'conflict', 'protests', 'trade', 'sst', 'currents', 'airtemp', 'ships', 'news']);
+    ['quakes', 'flights', 'conflict', 'protests', 'trade', 'sst', 'currents', 'airtemp', 'ships', 'news', 'firms']);
 });
 
 test('pollLayerIds excludes static layers; staticLayers covers trade/currents', () => {
   assert.deepEqual(staticLayers().map((l) => l.id), ['trade', 'currents']);
   assert.deepEqual(pollLayerIds(),
-    ['quakes', 'flights', 'conflict', 'protests', 'sst', 'airtemp', 'ships', 'news']);
+    ['quakes', 'flights', 'conflict', 'protests', 'sst', 'airtemp', 'ships', 'news', 'firms']);
 });
