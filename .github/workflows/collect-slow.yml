@@ -28,6 +28,10 @@ jobs:
         run: python -m collectors.airtemp || echo "airtemp skipped"
       - name: Collect sea surface temperature
         run: python -m collectors.sst || echo "sst skipped"
+      - name: Collect FIRMS wildfires
+        run: python -m collectors.firms || echo "firms skipped"
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots
