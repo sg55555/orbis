@@ -11,6 +11,7 @@ from collectors.lib.http import retry
 STATES_URL = "https://opensky-network.org/api/states/all"
 MAX_POINTS = 6000
 RETRY_WAIT_S = 5     # OpenSky への接続/読取の一時障害でのリトライ待機秒
+DEFAULT_RETRY_ATTEMPTS = 3
 
 
 def transform(payload):
@@ -58,10 +59,34 @@ def fetch(url=STATES_URL, timeout=(10, 30)):
     return resp.json()
 
 
-def fetch_with_retry(attempts=3, wait=RETRY_WAIT_S, sleep=time.sleep, url=STATES_URL):
+def retry_attempts():
+    """既定リトライ回数を環境変数 FLIGHTS_RETRY_ATTEMPTS から解決する（既定 3＝従来どおり）。
+
+    2026-07-17 の監査は「GHA egress の ConnectTimeout は同一IPからの再試行では解けず
+    リトライは構造的に無効」として既定1を提案したが、その根拠は**循環論法**だった：
+    標本にした「直近24hの14サンプルが全て3回試行して全滅」は**失敗 run だけの標本**であり、
+    attempt 2 で救われた run は success に分類されて標本に入らない。つまり
+    **attempt 2 以降の成功率は測られていない**。加えて attempts を削ると
+    lib/http.py の is_transient() が認める ReadTimeout / ConnectionError / 429 / 5xx の
+    回復性まで一律に失う（retry() の存在理由は元々 Read timeout 側にある）。
+    → 既定は安全側の 3 に据え置く。
+
+    次の段：retry() の attempt 単位ログ（lib/http.py）を24h回して
+    「attempt 2 以降の成功が本当にゼロか」を実測してから既定を見直すこと。
+    遮断ウィンドウ中に空振りを減らしたい場合だけ、workflow の env に
+    FLIGHTS_RETRY_ATTEMPTS=1 を明示的に差す（Python の変更は不要）。
+    """
+    try:
+        return max(1, int(os.environ.get("FLIGHTS_RETRY_ATTEMPTS", DEFAULT_RETRY_ATTEMPTS)))
+    except (TypeError, ValueError):
+        return DEFAULT_RETRY_ATTEMPTS
+
+
+def fetch_with_retry(attempts=None, wait=RETRY_WAIT_S, sleep=time.sleep, url=STATES_URL):
     """一時的エラー（接続/読取タイムアウト・接続断・5xx 等）で待機リトライ。
-    OpenSky は散発的に接続タイムアウトするため、1回の失敗で層を落とさない。sleep はテスト用に注入可。"""
-    return retry(lambda: fetch(url), attempts=attempts, wait=wait, sleep=sleep)
+    attempts 未指定なら retry_attempts()（env 既定 1）。sleep はテスト用に注入可。"""
+    n = retry_attempts() if attempts is None else attempts
+    return retry(lambda: fetch(url), attempts=n, wait=wait, sleep=sleep)
 
 
 def main():

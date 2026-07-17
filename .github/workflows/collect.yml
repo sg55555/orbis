@@ -1,12 +1,15 @@
 name: collect
 on:
   schedule:
-    # 15分間隔だが毎時オフセット（:07,:22,:37,:52）にして、:00/:15/:30/:45 の
-    # 混雑スロットを避ける。GitHub Actions schedule は高負荷時に間引かれ実測 1.9〜5.1h に
-    # なるため、オフセットで間引きを緩和する（恒久対策は外部dispatch・docs/scheduling.md 参照）。
-    # 30分毎(:07,:37)。Vercel Hobby のデプロイ日次上限(~100/日)に対し、各データ commit が Vercel
-    # デプロイを誘発するため cron 総数を抑制（collect 96→48・briefing/instability 各24→12・slow 8 ＝計 ~80/日）。
-    # クライアント補間があるので 30分スナップショットでも near-realtime 感は維持。恒久策はデータ配信の Vercel 分離。
+    # 役割＝外部dispatch（cron-job.org 15分毎＝96回/日）が停止/PAT失効した時の**唯一のフォールバック**。
+    # 外部cronの稼働もPAT期限もGitHub側からは確認できない（actorが全件オーナーとしか記録されない）ため、
+    # ここを消すと単一障害点になる。実測（2026-07-17 監査）＝実着火 11.4回/日＝定義48回/日の約24%
+    # （GitHubが高負荷時に約76%ドロップ・gap 中央値107.9分/p90 3.6h/最大4.9h）。保険としては控えめだが
+    # 「ゼロ」と「最大4.9時間」は意味が違う。加えて :07/:37 は外部dispatch（:00/:15/:30/:45）の隙間を埋め、
+    # 実効ポーリング穴を15分→7〜8分に縮めている＝現に鮮度にも寄与している。
+    # 【訂正】かつてここには「各データ commit が Vercel デプロイを誘発するため cron 総数を抑制（96→48）」と
+    # 書かれていたが、その根拠は 2026-06-21 bf40940（データ配信を別リポ orbis-data へ分離）で**消滅済**。
+    # 本cronは Vercel のデプロイ上限とは無関係＝鮮度と間引き耐性だけで決めてよい（docs/scheduling.md 参照）。
     - cron: '7,37 * * * *'
   workflow_dispatch:
     inputs:
@@ -34,23 +37,32 @@ jobs:
         with: { python-version: '3.12' }
       - run: pip install -r requirements.txt
       # 各収集は失敗してもジョブを止めない（1ソースの障害で全層のコミットを失わない＝SPOF回避）。
+      # ただし終了コードを潰すと**層が壊れても run は success**になり故障が緑に埋もれる
+      # （2026-07-17 監査＝flights が約95%サイレント失敗し3日間検知されなかった）。そのため
+      # `|| echo` を mark_error に置換し、失敗を ::warning:: 注釈＋manifest.json の last_error_at
+      # として残す。mark_error は常に終了コード0を返す＝**SPOF回避は一切変わらない**。
       - name: Collect quakes
-        run: python -m collectors.quakes || echo "quakes skipped"
+        run: python -m collectors.quakes || python -m collectors.lib.mark_error quakes
       - name: Collect flights
-        run: python -m collectors.flights || echo "flights skipped"
+        # リトライ既定は3（従来どおり）。2026-07-17 監査は「GHA egress の ConnectTimeout には
+        # リトライが無効だから既定1でよい」としたが、根拠が失敗runだけの標本に基づく循環論法
+        # だったため撤回済（collectors/flights.py の retry_attempts() 参照）。
+        # 遮断ウィンドウ中に空振りを減らしたい時だけ env: FLIGHTS_RETRY_ATTEMPTS: '1' をここに差す。
+        run: python -m collectors.flights || python -m collectors.lib.mark_error flights
       - name: Collect GDELT events
-        run: python -m collectors.gdelt_events || echo "gdelt skipped"
+        # gdelt_events は1ステップで conflict と protests の2層を書くため両方を落とす。
+        run: python -m collectors.gdelt_events || python -m collectors.lib.mark_error conflict protests
       - name: Collect ships
         env:
           AISSTREAM_API_KEY: ${{ secrets.AISSTREAM_API_KEY }}
-        run: python -m collectors.ships || echo "ships collect failed (see log above)"
+        run: python -m collectors.ships || python -m collectors.lib.mark_error ships
       - name: Collect news
         # 既定OFF=Claude APIクレジット節約(2026-06-28)。schedule/外部dispatch(cron-job.org 15分毎)では実行せず、
         # 手動実行で include_news=true の時だけAI翻訳。地震/航空/船/GDELT等の無料データは従来通り自動更新される。
         if: ${{ github.event.inputs.include_news == 'true' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m collectors.news || echo "news skipped"
+        run: python -m collectors.news || python -m collectors.lib.mark_error news
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots

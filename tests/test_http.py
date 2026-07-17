@@ -104,3 +104,43 @@ def test_is_transient_classification():
     assert is_transient(_http_error(503)) is True
     assert is_transient(_http_error(404)) is False
     assert is_transient(ValueError()) is False
+
+
+def test_retry_logs_each_failed_attempt(capsys):
+    # 2026-07-17 監査の反省: attempt 単位の痕跡が無いと「attempt2以降で成功したか」を
+    # 事後検証できず、リトライ回数の増減を根拠づけられない（=既定1化の根拠が循環した）。
+    def f():
+        raise requests.exceptions.ConnectTimeout("connect timed out")
+    with pytest.raises(requests.exceptions.ConnectTimeout):
+        retry(f, attempts=3, wait=0, sleep=lambda s: None)
+    out = capsys.readouterr().out
+    assert "[retry] attempt 1/3 failed: ConnectTimeout" in out
+    assert "[retry] attempt 2/3 failed: ConnectTimeout" in out
+
+
+def test_retry_logs_success_after_retry(capsys):
+    # 「attempt2以降の成功」が実測できる唯一の痕跡。これが出た回数を数えて既定を見直す。
+    n = {"i": 0}
+    def f():
+        n["i"] += 1
+        if n["i"] < 2:
+            raise requests.exceptions.ReadTimeout("read timed out")
+        return "ok"
+    assert retry(f, attempts=3, wait=0, sleep=lambda s: None) == "ok"
+    assert "[retry] succeeded on attempt 2/3" in capsys.readouterr().out
+
+
+def test_retry_is_silent_when_first_attempt_succeeds(capsys):
+    # 通常時（96回/日）にログを増やさない＝ノイズで警告を埋もれさせない。
+    assert retry(lambda: "ok", attempts=3, wait=0, sleep=lambda s: None) == "ok"
+    assert capsys.readouterr().out == ""
+
+
+def test_retry_log_does_not_leak_exception_text(capsys):
+    # 秘密漏洩防止: 例外文言には URL（FIRMS は MAP_KEY 付き）が載りうるため型名だけを出す。
+    def f():
+        raise requests.exceptions.ConnectTimeout(
+            "HTTPSConnectionPool(host='firms.example', port=443): url=/api?MAP_KEY=SECRET123")
+    with pytest.raises(requests.exceptions.ConnectTimeout):
+        retry(f, attempts=2, wait=0, sleep=lambda s: None)
+    assert "SECRET123" not in capsys.readouterr().out

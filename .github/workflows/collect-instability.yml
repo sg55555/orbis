@@ -28,7 +28,7 @@ jobs:
       - name: Collect instability
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m collectors.instability || echo "instability skipped"
+        run: python -m collectors.instability || python -m collectors.lib.mark_error instability
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots

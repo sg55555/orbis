@@ -28,7 +28,7 @@ jobs:
       - name: Collect forecast
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m collectors.forecast || echo "forecast skipped"
+        run: python -m collectors.forecast || python -m collectors.lib.mark_error forecast
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots

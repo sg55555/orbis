@@ -27,7 +27,7 @@ jobs:
       - name: Collect briefing
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        run: python -m collectors.briefing || echo "briefing skipped"
+        run: python -m collectors.briefing || python -m collectors.lib.mark_error briefing
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots

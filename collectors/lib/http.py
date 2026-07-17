@@ -28,13 +28,25 @@ def retry(fetcher, attempts=3, wait=2.0, sleep=time.sleep):
 
     非一時的エラーは即座に再送出。最後の試行でも失敗ならその例外を送出。
     sleep はテスト用に注入可能（既定は time.sleep）。
+
+    attempt 単位のログを出すのは、**リトライ回数の増減を根拠づけるため**。
+    2026-07-17 の監査は「ConnectTimeout にリトライは無効だから attempts=1 でよい」と
+    判断しかけたが、根拠にできたのは失敗 run の標本だけで、**attempt 2 以降の成功回数は
+    どこにも記録されていなかった**（=循環論法）。この2行があれば
+    「succeeded on attempt 2/3」を数えるだけで既定値の妥当性を実測できる。
+    初回成功時は何も出さない（96回/日のログを増やして警告を埋もれさせない）。
     """
     for k in range(attempts):
         try:
-            return fetcher()
+            value = fetcher()
+            if k > 0:
+                print(f"[retry] succeeded on attempt {k + 1}/{attempts}")
+            return value
         except Exception as e:
             if not is_transient(e) or k == attempts - 1:
                 raise
+            # 例外文言でなく型名だけを出す：文言には URL が載り、FIRMS の URL には MAP_KEY が付く。
+            print(f"[retry] attempt {k + 1}/{attempts} failed: {type(e).__name__}")
             sleep(wait)
 
 
