@@ -30,13 +30,8 @@ jobs:
         run: python -m collectors.airtemp || python -m collectors.lib.mark_error airtemp
       - name: Collect sea surface temperature
         run: python -m collectors.sst || python -m collectors.lib.mark_error sst
-      - name: Collect FIRMS wildfires
-        # firms は31秒と軽量なのに airtemp(約9分)→sst(約9分) の後段にいるため、
-        # 前段の失敗・遅延の巻き添えを受けやすい（2026-07-17 監査＝6.6h stale）。
-        # 分離（collect-firms.yml）は承認待ちの任意案。まず失敗の中身を ::warning:: で確定させる。
-        run: python -m collectors.firms || python -m collectors.lib.mark_error firms
-        env:
-          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+      # firms（FIRMS wildfires）は 2026-07-20 に collect-firms.yml へ分離。31秒と軽量なのに
+      # airtemp(約9分)→sst(約9分) の後段で巻き添え stale 化していたため（2026-07-17 監査＝6.6h stale）。
       - name: Commit snapshots to orbis-data
         run: |
           cd data/snapshots

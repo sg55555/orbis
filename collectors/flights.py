@@ -84,7 +84,7 @@ def retry_attempts():
 
 def fetch_with_retry(attempts=None, wait=RETRY_WAIT_S, sleep=time.sleep, url=STATES_URL):
     """一時的エラー（接続/読取タイムアウト・接続断・5xx 等）で待機リトライ。
-    attempts 未指定なら retry_attempts()（env 既定 1）。sleep はテスト用に注入可。"""
+    attempts 未指定なら retry_attempts()（env 既定 3＝従来どおり）。sleep はテスト用に注入可。"""
     n = retry_attempts() if attempts is None else attempts
     return retry(lambda: fetch(url), attempts=n, wait=wait, sleep=sleep)
 

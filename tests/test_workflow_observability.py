@@ -68,3 +68,16 @@ def test_mark_error_module_is_reachable_as_module():
     # workflow は `python -m collectors.lib.mark_error` で呼ぶ＝モジュールとして解決できること。
     import collectors.lib.mark_error as me
     assert callable(me.main)
+
+
+def test_no_collector_runs_in_multiple_workflows():
+    # 各 collector はちょうど1つの workflow からのみ起動されること。
+    # firms を collect-slow → collect-firms へ分離した際、移動元の削除を忘れると
+    # firms が2 workflow で二重収集され、orbis-data への冗長 push と run 浪費を生む。
+    # 既存の guard テストは「両方 guarded で層名も正しい」ため二重収集を見逃す＝この不変条件が要る。
+    from collections import defaultdict
+    by_mod = defaultdict(set)
+    for wf, mod, _layers in _collector_steps():
+        by_mod[mod].add(wf)
+    dups = {mod: sorted(wfs) for mod, wfs in by_mod.items() if len(wfs) > 1}
+    assert dups == {}, f"同一 collector が複数 workflow から起動されている（二重収集）: {dups}"

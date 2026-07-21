@@ -1,0 +1,52 @@
+name: collect-firms
+on:
+  schedule:
+    # firms（VIIRS 山火事）は31秒と軽量なのに、旧構成では collect-slow の airtemp(約9分)→sst(約9分)
+    # の後段にいたため前段の遅延・失敗の巻き添えで stale 化していた（2026-07-17 監査＝6.6h stale）。
+    # 独立 workflow に分離。cadence は VIIRS の更新頻度に合わせ3時間毎据え置き。
+    # :41 は collect-slow(:11) と collect(:07/:37・外部dispatch :00/:15/:30/:45) の両方から離すオフセット
+    # ＝共有 concurrency（下記）でもキューにほぼ並ばず、巻き添えを構造的に排除する。
+    - cron: '41 */3 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency:
+  # collect.yml / collect-slow.yml と group を共有＝orbis-data への push を直列化し競合を防ぐ。
+  # commit ステップは push リトライを持たないため、別 group にすると push 競合時に commit が
+  # 消える鮮度穴を新設してしまう（2026-07-17 監査の非推奨項目）。cron を離しているので共有しても
+  # firms が待つことはほぼ無く、「巻き添え解消」と「push 安全」を両立できる。
+  group: collect
+  cancel-in-progress: false
+jobs:
+  collect-firms:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        with:
+          repository: sg55555/orbis-data
+          path: data/snapshots
+          token: ${{ secrets.ORBIS_DATA_TOKEN }}
+          persist-credentials: true
+      - uses: actions/setup-python@v6
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements.txt
+      # 失敗はジョブを止めず ::warning:: 注釈＋manifest の last_error_at として残す
+      # （終了コードは0のまま＝SPOF回避は不変）。詳細は collect.yml の同節を参照。
+      - name: Collect FIRMS wildfires
+        env:
+          FIRMS_MAP_KEY: ${{ secrets.FIRMS_MAP_KEY }}
+        run: python -m collectors.firms || python -m collectors.lib.mark_error firms
+      - name: Commit snapshots to orbis-data
+        run: |
+          cd data/snapshots
+          git config user.name "orbis-bot"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "data: refresh [skip ci]"
+            git pull --rebase origin main
+            git push
+          fi

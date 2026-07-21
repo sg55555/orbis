@@ -44,10 +44,14 @@ jobs:
       - name: Collect quakes
         run: python -m collectors.quakes || python -m collectors.lib.mark_error quakes
       - name: Collect flights
-        # リトライ既定は3（従来どおり）。2026-07-17 監査は「GHA egress の ConnectTimeout には
-        # リトライが無効だから既定1でよい」としたが、根拠が失敗runだけの標本に基づく循環論法
-        # だったため撤回済（collectors/flights.py の retry_attempts() 参照）。
-        # 遮断ウィンドウ中に空振りを減らしたい時だけ env: FLIGHTS_RETRY_ATTEMPTS: '1' をここに差す。
+        # リトライ既定（コード側 collectors/flights.py）は3のまま＝ReadTimeout/429/5xx の回復性を保つ
+        # （retry() は airtemp/sst で実測 410回/約3日 の収集を救っており、既定を削ってはならない）。
+        # 一方 flights は 2026-07-17〜 GHA egress の ConnectTimeout で約97%失敗中。実測（07-17〜07-20 の
+        # 全366run census）で flights の retry 成功は0回・成功11回はすべて attempt1 ＝この遮断中は
+        # attempts>1 が純粋な空振り（約30秒×失敗run の runner 時間浪費）。そこで flights のみ env で 1 に絞る。
+        # ← 遮断が解けたら（OpenSky が GHA から張れるようになったら）この env 行を消して既定3へ戻す。
+        env:
+          FLIGHTS_RETRY_ATTEMPTS: '1'
         run: python -m collectors.flights || python -m collectors.lib.mark_error flights
       - name: Collect GDELT events
         # gdelt_events は1ステップで conflict と protests の2層を書くため両方を落とす。
