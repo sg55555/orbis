@@ -6,6 +6,7 @@ import time
 from datetime import datetime, timezone
 
 from collectors.lib.manifest import update_manifest
+from collectors.lib.keycheck import key_or_skip
 
 API_URL = "wss://stream.aisstream.io/v0/stream"
 MAX_POINTS = 5000
@@ -139,8 +140,8 @@ def collect(api_key, seconds=LISTEN_SECONDS):
 
 def main():
     os.makedirs(SNAPSHOT_DIR, exist_ok=True)
-    api_key = os.environ.get("AISSTREAM_API_KEY")
-    if not api_key:
+    api_key = key_or_skip("ships", "AISSTREAM_API_KEY")
+    if api_key is None:
         print("[ships] AISSTREAM_API_KEY not set; skipping")
         return 0
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")

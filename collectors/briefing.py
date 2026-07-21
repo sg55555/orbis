@@ -4,6 +4,7 @@ import os
 from datetime import datetime, timezone
 
 from collectors.lib.manifest import update_manifest
+from collectors.lib.keycheck import key_or_skip
 from collectors.lib.intel import build_context, parse_brief, briefing_prompt, BRIEFING_SYSTEM
 
 SNAPSHOT_DIR = "data/snapshots"
@@ -35,7 +36,7 @@ def _ask(prompt):
 
 
 def main():
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    if key_or_skip("briefing", "ANTHROPIC_API_KEY") is None:
         print("[briefing] ANTHROPIC_API_KEY not set; skip")
         return 0
     out_dir = os.path.abspath(SNAPSHOT_DIR)

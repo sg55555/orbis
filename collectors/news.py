@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import requests
 
 from collectors.lib.manifest import update_manifest
+from collectors.lib.keycheck import key_or_skip
 from collectors.lib.rss import parse_feed, dedup, recent, to_epoch_ms
 from collectors.lib.news_enrich import rank_prompt, parse_rank, enrich_prompt, parse_enrich, finalize_items
 
@@ -66,7 +67,7 @@ def _load_prev_cache(path):
 
 
 def main():
-    if not os.environ.get("ANTHROPIC_API_KEY"):
+    if key_or_skip("news", "ANTHROPIC_API_KEY") is None:
         print("[news] ANTHROPIC_API_KEY not set; skip")
         return 0
     out_dir = os.path.abspath(SNAPSHOT_DIR)

@@ -81,3 +81,78 @@ def test_no_collector_runs_in_multiple_workflows():
         by_mod[mod].add(wf)
     dups = {mod: sorted(wfs) for mod, wfs in by_mod.items() if len(wfs) > 1}
     assert dups == {}, f"同一 collector が複数 workflow から起動されている（二重収集）: {dups}"
+
+
+# ── key-gated exit0 規約（2026-07-21 決定・Layer1）の配線を固定する ─────────────
+# 敵対検証（5レンズ）で見つかった3つの穴の再発防止：宣言の配線・完全性・停止層除外・
+# partial-gate 誤ラップ・秘密漏洩を、機構のサイレント劣化としてテストで捕捉する。
+import re as _re
+from collectors.lib.keycheck import REQUIRED
+from collectors.lib.wf_eligibility import eligible_layers
+
+
+def test_required_layers_actually_call_key_or_skip():
+    # 「宣言（REQUIRED 登録・secret env・key リテラル）」は残したまま key_or_skip 呼び出しだけ
+    # 消す退行を捕捉する（＝Layer1 ゲートが死ぬ）。リテラル存在でなく「実際に呼んでいるか」を縛る。
+    for layer, key in REQUIRED.items():
+        src = open(os.path.join(ROOT, "collectors", f"{layer}.py"), encoding="utf-8").read()
+        pat = _re.compile(
+            r"key_or_skip\(\s*[\"']" + _re.escape(layer) + r"[\"']\s*,\s*[\"']" + _re.escape(key) + r"[\"']\s*\)"
+        )
+        assert pat.search(src), (
+            f"collectors/{layer}.py が key_or_skip(\"{layer}\", \"{key}\") を呼んでいない"
+            f"（旧 os.environ.get 分岐へ戻ると本番でキー失効を検知できない）"
+        )
+
+
+def test_required_is_subset_of_eligible():
+    # REQUIRED に載る層は必ず schedule-active ∧ 非 if-gate（本番で定期実行される）＝
+    # implement-first/停止層を premature に required 化しない。subset で fail-safe。
+    eligible = set(eligible_layers())
+    missing = set(REQUIRED) - eligible
+    assert not missing, f"REQUIRED だが eligible でない層（停止/if-gate なのに required 化）: {missing}"
+
+
+def test_required_layers_declare_secret_and_are_guarded():
+    # 三者照合：REQUIRED 層は (a) その step で `<KEY>: ${{ secrets.<KEY> }}` を供給し
+    # (b) `|| mark_error <layer>` で guard されていること。宣言と配線の整合を機械強制。
+    guarded = {mod: layers for _wf, mod, layers in _collector_steps()}
+    for layer, key in REQUIRED.items():
+        assert layer in guarded and layer in guarded[layer], (
+            f"REQUIRED 層 {layer} が || mark_error {layer} で guard されていない"
+        )
+        declared = any(
+            f"{key}: ${{{{ secrets.{key} }}}}" in line
+            for path in glob.glob(os.path.join(WORKFLOW_DIR, "*.yml"))
+            for line in open(path, encoding="utf-8")
+        )
+        assert declared, f"REQUIRED 層 {layer} の secret {key} が workflow の env に宣言されていない"
+
+
+def test_disabled_and_partial_layers_are_not_required():
+    # 停止中 Anthropic 層・partial-gate 層を REQUIRED に入れない（不変則3・中核を殺さない）。
+    for layer in ("news", "briefing", "forecast", "instability"):
+        assert layer not in REQUIRED, f"{layer} は REQUIRED に入れてはならない"
+
+
+def test_partial_gate_collectors_do_not_call_key_or_skip():
+    # forecast/instability は partial-gate＝キーは narrative のみゲートし中核は無キーでも生成する。
+    # key_or_skip でラップすると本番キー欠落時に中核ごと殺す＝誤ラップを静的禁止。
+    for layer in ("forecast", "instability"):
+        src = open(os.path.join(ROOT, "collectors", f"{layer}.py"), encoding="utf-8").read()
+        assert "key_or_skip" not in src, (
+            f"collectors/{layer}.py は partial-gate ゆえ key_or_skip を呼んではならない"
+            f"（無キーでも決定論的中核を書き続ける設計を殺す）"
+        )
+
+
+def test_annotations_interpolate_only_layer_name():
+    # ::warning/::notice/::error 注釈と keycheck の警報ログに、層名以外の f-string 補間を許さない。
+    # {e}/{url}/{key}/str(exception) 経由で PUBLIC manifest/ログへ秘密が漏れる経路を静的封鎖（不変則4）。
+    for rel in ("collectors/lib/mark_error.py", "collectors/lib/keycheck.py"):
+        for i, line in enumerate(open(os.path.join(ROOT, rel), encoding="utf-8"), 1):
+            if "::warning" in line or "::notice" in line or "::error" in line \
+                    or "alerting via mark_error" in line:
+                fields = _re.findall(r"\{([^}]*)\}", line)
+                bad = [f for f in fields if f not in ("layer",)]
+                assert not bad, f"{rel}:{i} 注釈/警報行に層名以外の補間: {bad}"

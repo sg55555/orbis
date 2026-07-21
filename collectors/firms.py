@@ -13,6 +13,7 @@ from datetime import datetime, timezone
 import requests
 
 from collectors.lib.manifest import update_manifest
+from collectors.lib.keycheck import key_or_skip
 
 SOURCE = "VIIRS_NOAA20_NRT"   # 375m・運用衛星（VIIRS_SNPP_NRT / VIIRS_NOAA21_NRT に切替可）
 DAY_RANGE = 1                 # 直近 24h（有効 1..5）
@@ -80,8 +81,8 @@ SNAPSHOT_DIR = os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"
 
 
 def main():
-    key = os.environ.get("FIRMS_MAP_KEY")
-    if not key:
+    key = key_or_skip("firms", "FIRMS_MAP_KEY")
+    if key is None:
         print("[firms] FIRMS_MAP_KEY not set; skip")
         return
     out_dir = os.path.abspath(SNAPSHOT_DIR)

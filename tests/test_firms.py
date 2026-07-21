@@ -38,6 +38,9 @@ def test_build_snapshot_shape():
 
 
 def test_main_skips_without_key(monkeypatch, capsys):
+    # ローカル（GITHUB_ACTIONS 無し）はキー欠落でも無言 skip。本番CIでの警報は
+    # test_keygate_collectors.py で別途固定（キー欠落→SystemExit(1)）。
+    monkeypatch.delenv("GITHUB_ACTIONS", raising=False)
     monkeypatch.delenv("FIRMS_MAP_KEY", raising=False)
     import collectors.firms as f
     f.main()
