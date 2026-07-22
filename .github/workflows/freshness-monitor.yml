@@ -1,0 +1,38 @@
+name: freshness-monitor
+# Layer2 鮮度モニタ（read-only backstop）。manifest.json の updated 経過時間だけを見て
+# 層ごとの MAX_AGE と比較し、Layer1（mark_error/keycheck）が盲目な「無言の stale」を可視化する：
+#   穴1＝REQUIRED 追記忘れ層のキー失効（key_or_skip が無言 None で抜ける）
+#   穴2＝flights 型（exit0 なのに no-write で updated 凍結）
+# last_error_at 有り（Layer1 が既に担当・現 ships 等）は ::warning:: へ降格＝既知障害での永続赤を避ける。
+#
+# 【新SPOF を作らない設計】
+#  - read-only：orbis-data へ push/commit しない。checkout は token 無し（orbis-data は PUBLIC）＝
+#    ORBIS_DATA_TOKEN(PAT) を渡さない＝秘密ゼロ・構造的に push 不能。permissions も contents:read のみ。
+#  - concurrency group を collect と共有しない：read-only モニタが collector のキューをブロックすると
+#    それ自体が新 SPOF になるため意図的に別扱い（push 競合も起きないので共有する理由がない）。
+#  - 葉 workflow・下流依存ゼロ・何もゲートしない＝モニタが赤/壊れても本番 collector は一切止まらない。
+#
+# ⚠ monitor-of-monitor：schedule 主導ゆえ orbis リポが60日無活動だと GitHub に自動無効化されうる
+#   （collector は外部 cron-job.org dispatch で生存するが本モニタは別）。恒久策として、既に collect.yml を
+#   叩いている cron-job.org の dispatch 対象に本 workflow を追加することを推奨（operator 判断・任意）。
+on:
+  schedule:
+    # :23 は collect(:07/:37)・collect-slow(:11)・collect-firms(:41)・外部dispatch(:00/:15/:30/:45) の
+    # 全てから離すオフセット。最短閾値 6h に対し 3h 周期＝真の stale 超えを最大 6〜9h で捕捉する。
+    - cron: '23 */3 * * *'
+  workflow_dispatch: {}
+permissions:
+  contents: read               # read-only。書込 cred を一切持たない＝構造的に orbis-data へ push 不能。
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6            # orbis 本体：コード ＋ .github/workflows（eligible_layers 用）
+      - uses: actions/checkout@v6            # orbis-data は PUBLIC → token 無し（PAT を渡さない・read-only）
+        with:
+          repository: sg55555/orbis-data
+          path: data/snapshots
+      - uses: actions/setup-python@v6
+        with: { python-version: '3.12' }
+      # stdlib のみ＝pip install なし・push なし。silent_stale が1つでもあれば exit1（赤×＋GitHub メール）。
+      - run: python -m collectors.lib.freshness_monitor

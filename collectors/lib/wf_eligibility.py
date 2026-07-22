@@ -103,3 +103,65 @@ def eligible_layers():
             if not has_if:
                 out[mod] = os.path.basename(path)
     return out
+
+
+# 例: "python -m collectors.gdelt_events || python -m collectors.lib.mark_error conflict protests"
+# collector モジュールと、その `|| mark_error <layers...>` 引数（manifest 層名）を1行から取る。
+# test_workflow_observability.py の STEP_RE と同一形＝module→layer の真実源を1箇所に集約する。
+_STEP_RE = re.compile(
+    r"python -m collectors\.(?P<mod>[a-z_]+)"
+    r"\s*(?:\|\|\s*python -m collectors\.lib\.mark_error(?P<layers>[^\n#]*))?"
+)
+
+
+def collector_steps_with_layers():
+    """全 workflow の「collector 起動 run 行」を (wf_basename, mod, [manifest層,...]) で列挙する（行ベース）。
+
+    `|| mark_error <層...>` 引数（manifest 層名）も同時に返す。module→layer の**唯一のパーサ**＝
+    wf_eligibility と tests/test_workflow_observability.py が共有し、重複正規表現の drift を防ぐ。
+    層名は collector ソースのリテラルとして test_every_marked_layer_exists_in_its_collector が
+    既に検証済＝二重に信頼できる。schedule/if の判定はしない（呼び出し側 eligible_layers が担う）。
+    """
+    steps = []
+    for path in sorted(glob.glob(os.path.join(WORKFLOW_DIR, "*.yml"))):
+        for line in open(path, encoding="utf-8"):
+            if "python -m collectors." not in line or line.lstrip().startswith("#"):
+                continue
+            m = _STEP_RE.search(line)
+            if not m or m.group("mod") == "lib":  # collectors.lib.mark_error 自体は collector でない
+                continue
+            steps.append(
+                (os.path.basename(path), m.group("mod"), (m.group("layers") or "").split())
+            )
+    return steps
+
+
+def collector_mark_error_map():
+    """{mod: [manifest層, ...]}（`|| mark_error <層...>` 引数由来・全 workflow union）。
+
+    gdelt_events → [conflict, protests] のように1モジュールが複数層を書く写像を自動で得る。
+    """
+    out = {}
+    for _wf, mod, layers in collector_steps_with_layers():
+        bucket = out.setdefault(mod, [])
+        for layer in layers:
+            if layer not in bucket:
+                bucket.append(layer)
+    return out
+
+
+def eligible_layer_names():
+    """schedule-active ∧ 非 if-gate な collector が本番で書く**manifest 層名**の集合を返す。
+
+    eligible_layers()（module 集合）を collector_mark_error_map() で層名へ展開する
+    （gdelt_events→{conflict,protests}・他は基本 identity）。停止層（schedule コメントアウト/
+    if-gate）は eligible_layers 側で除外されるため自動的に含まれない＝再有効化で自動復帰。
+    Layer2 完全性テスト set(MAX_AGE)==eligible_layer_names() の権威的な右辺。
+    """
+    mods = set(eligible_layers())
+    me = collector_mark_error_map()
+    out = set()
+    for mod in mods:
+        layers = me.get(mod)
+        out.update(layers if layers else [mod])
+    return out

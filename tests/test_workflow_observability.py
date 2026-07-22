@@ -11,29 +11,19 @@ install されるため、テスト専用の依存を足すと本番の関数が
 """
 import sys, os, re, glob
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+import collectors.lib.wf_eligibility as wfe
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 WORKFLOW_DIR = os.path.join(ROOT, ".github", "workflows")
 
-# 例: "python -m collectors.gdelt_events || python -m collectors.lib.mark_error conflict protests"
-STEP_RE = re.compile(
-    r"python -m collectors\.(?P<mod>[a-z_]+)\s*(?:\|\|\s*python -m collectors\.lib\.mark_error(?P<layers>[^\n#]*))?"
-)
-
 
 def _collector_steps():
-    """workflow 内の「collector を起動する run 行」を全て拾う。"""
-    steps = []
-    for path in sorted(glob.glob(os.path.join(WORKFLOW_DIR, "*.yml"))):
-        for line in open(path, encoding="utf-8"):
-            if "python -m collectors." not in line or line.lstrip().startswith("#"):
-                continue
-            m = STEP_RE.search(line)
-            if not m or m.group("mod") == "lib":
-                continue
-            layers = (m.group("layers") or "").split()
-            steps.append((os.path.basename(path), m.group("mod"), layers))
-    return steps
+    """workflow 内の「collector を起動する run 行」を (wf, mod, [layers]) で全て拾う。
+
+    module→layer パーサは wf_eligibility に一本化した（Layer2 完全性テストと同一ソース＝
+    正規表現の drift を防ぐ）。ここは薄い委譲。
+    """
+    return wfe.collector_steps_with_layers()
 
 
 def test_every_collector_step_is_guarded():
