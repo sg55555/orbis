@@ -29,8 +29,10 @@ def _ask(prompt):
     import anthropic
     client = anthropic.Anthropic()
     msg = client.messages.create(
-        # temperature は anthropic SDK の新版で create() から削除済（渡すと TypeError）。既定＝1 のまま使う。
-        model=MODEL, max_tokens=4000,
+        # temperature は anthropic SDK v1.0.0 で create() の引数から削除された（渡すと TypeError）。
+        # ただし sonnet-4-6 / haiku-4-5 は API 側では今も受け付けるので、決定性を保つため
+        # extra_body でボディに直接載せる（MIGRATION.md が案内する正規の経路・旧版でも同じ挙動）。
+        model=MODEL, max_tokens=4000, extra_body={"temperature": 0},
         system=BRIEFING_SYSTEM, messages=[{"role": "user", "content": prompt}],
     )
     return msg.content[0].text
