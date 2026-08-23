@@ -29,7 +29,8 @@ def _load(path, default):
 def _ask(prompt):
     import anthropic
     client = anthropic.Anthropic()
-    msg = client.messages.create(model=MODEL, max_tokens=3000, temperature=0,
+    # temperature は anthropic SDK の新版で create() から削除済（渡すと TypeError）。
+    msg = client.messages.create(model=MODEL, max_tokens=3000,
                                  system=F.FORECAST_SYSTEM,
                                  messages=[{"role": "user", "content": prompt}])
     return msg.content[0].text
