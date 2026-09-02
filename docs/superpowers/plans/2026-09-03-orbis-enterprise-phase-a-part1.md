@@ -306,67 +306,7 @@ MSG
 ```
 Expected: `2 files changed, ...` と表示され、`git log --oneline -1` の 1 行目が `feat(ci): orbis-data の月次 squash workflow を追加（B0・DATA-03）`。
 
-> **Step 6〜8 は親セッションが実行する。サブエージェント／実装者は実行しない。**
-> 初回 squash は **手元の clone から force-push しない**（本人決定 2026-09-03）。作った workflow 自身を GitHub 上で 1 回走らせて初回 squash を兼ねる＝安全装置（concurrency・confirm ゲート・tree 一致 assert）を通った経路でしかデータを触らない、という利点もある。
-> 実行前に **AskUserQuestion で日本語の再確認**を取る。文面:
-> > orbis-data の 8,552 commits を 1 コミットに畳みます。**元に戻す手段はありません**（履歴を復元する方法はない）。ファイルの中身（tree）は変わらず、raw 配信の URL も内容も変わりません。実行しますか。
-
-- [ ] **Step 6: 作業ブランチを origin へ push（親セッションが実行）**
-
-`workflow_dispatch` は「ファイルが存在する ref」を指定して起動する。squash-data.yml はまだ作業ブランチにしか無いので、まずブランチを origin へ通常 push する。
-
-Run（この 1 行で 1 コマンド）:
-```bash
-cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git push -u origin worktree-enterprise-a
-```
-安全根拠（実行時に日本語で併記する）: 「`git push -u origin worktree-enterprise-a` を実行します。理由：作成した squash-data.yml を GitHub 上で起動できる ref に載せるため。push 先は作業ブランチで、保護ブランチでも main 直 push でもありません。」
-
-Expected: `* [new branch] worktree-enterprise-a -> worktree-enterprise-a`。
-
-- [ ] **Step 7: workflow を dispatch して初回 squash を走らせる（親セッションが実行）**
-
-実行1（この 1 行で 1 コマンド・**不可逆**。AskUserQuestion の承認後だけ）:
-```bash
-gh workflow run squash-data.yml -R sg55555/orbis --ref worktree-enterprise-a -f confirm=squash
-```
-Expected: 出力なし（成功時は無言）。
-
-実行2（この 1 行で 1 コマンド・起動した run の id を取る）:
-```bash
-gh run list -R sg55555/orbis --workflow squash-data.yml --limit 1 --json databaseId --jq '.[0].databaseId'
-```
-Expected: 数字の run id が 1 行。
-
-実行3（この 1 行で 1 コマンド・`<id>` は実行2の出力に置き換える）:
-```bash
-gh run watch <id> -R sg55555/orbis --exit-status
-```
-Expected: 最後に `✓ squash-data ... completed with 'success'` と出て終了コード 0。
-
-失敗した場合の読み分け:
-- `could not find any workflows named squash-data.yml` / `Workflow does not have 'workflow_dispatch' trigger` — GitHub は `workflow_dispatch` の登録を**デフォルトブランチ上のファイル**で判定する。作業ブランチにしか無い段階では起動できないことがある。その場合は**ここで無理をせず**、初回 squash を骨格 **Task 11 Step 5**（main へ merge・push した後の dispatch）へ送る。Task 11 Step 5 のコマンドがそのまま初回 squash になる（1 commit を再 squash しても tree は一致するので、後から改めて打っても無害）。
-- job が skip された（`This run was skipped` / 実行時間 0 秒） — `if:` の confirm ゲートが効いている。`-f confirm=squash` の綴りを確認する。
-- `::error::tree mismatch` で失敗 — **push はされていない**（assert が止めた）。データは無傷。原因を調べるまで再実行しない。
-
-- [ ] **Step 8: 初回 squash の結果を検証（親セッションが実行）**
-
-実行1（この 1 行で 1 コマンド・commits が畳まれたか）:
-```bash
-gh api -i "repos/sg55555/orbis-data/commits?per_page=1" 2>&1 | grep -i "^link:"
-```
-Expected: `Link:` ヘッダーが出ない（＝1 ページで終わり＝commits 1 件）か、出ても `rel="last"` の `page=1`〜`page=3`（squash 直後に collect が 1〜2 件足した分）。**4 桁の page が残っていたら squash が効いていない。**
-
-実行2（この 1 行で 1 コマンド・中身が変わっていないか）:
-```bash
-curl -s https://raw.githubusercontent.com/sg55555/orbis-data/main/manifest.json | head -c 300
-```
-Expected: dispatch 前に同じコマンドで控えた内容と**同じ層・同じ更新時刻**が並ぶ（squash 前後で内容不変）。dispatch 前にこの 1 行を先に打って出力を控えておくこと。
-
-実行3（この 1 行で 1 コマンド・`<id>` は Step 7 実行2 の run id。workflow が記録した before/after を読む）:
-```bash
-gh run view <id> -R sg55555/orbis --log | grep -E "before=|tree=|newtree="
-```
-Expected: `before=<40 桁>` `tree=<40 桁>` が出て、`newtree` は出ないか `tree` と同値（workflow は不一致時のみ `::error::` を出して止まる）。同じ before/after は run のページの Summary 欄（`$GITHUB_STEP_SUMMARY`）にも表形式で残る。
+**初回 squash はこの Task では実行しない（骨格 Task 11 Step 5 で行う）。** GitHub Docs は `workflow_dispatch` について "This event will only trigger a workflow run **if the workflow file exists on the default branch**." と明記しており、`squash-data.yml` が main に無い段階では `--ref worktree-enterprise-a` を指定しても起動できない（`ref` はどのコードで走らせるかを選ぶだけで、トリガーの登録判定はデフォルトブランチのファイルで行われる）。したがって初回 squash は **main へ merge・push した後**＝骨格 **Task 11 Step 5** が主経路になる（`gh workflow run squash-data.yml -R sg55555/orbis -f confirm=squash` → `gh run watch` → `gh api` の commits と raw の manifest.json で検証）。親セッションはそこで **AskUserQuestion による日本語の再確認**（「orbis-data の 8,552 commits を 1 コミットに畳みます。元に戻す手段はありません。ファイルの中身（tree）は変わらず、raw 配信の URL も内容も変わりません。実行しますか。」）を取ってから叩く。**このタスクの実装者（サブエージェント）は orbis-data に対して何も実行しない。**
 
 ---
 
@@ -392,7 +332,7 @@ Expected: `before=<40 桁>` `tree=<40 桁>` が出て、`newtree` は出ない�
   - `404.html` `about.html` `terms.html` `privacy.html` `attribution.html` `robots.txt` — **Task 3 の `builds` に載り `routes` が解決する実ファイル**
   - `css/pages.css` — 上記 5 枚が `<link>` する
   - `.site-foot` / `.foot-links` / `.foot-copy`（`css/orbis.css`）— index.html と 5 ページで共有するクラス名
-  - `LICENSE`（MIT・`Copyright (c) 2026 sg55555`）
+  - `LICENSE`（MIT・`Copyright (c) 2026 sg55555`）— **Task 3 が `builds` に載せる**（spec §5 の DoD「LICENSE が本番で見える」＝拡張子が無いので明示しないと catch-all 404 に落ちる）
   - `tests/test_pages.py` — **xfail 3 件**を含む。`test_pages_are_declared_in_vercel_builds` は Task 3 Step 10 が、`test_no_youtube_com_embed_in_served_code` と `test_external_links_are_noopener_noreferrer` は **Task 8（part3）が** マーカーを外す。
 
 設計言語（監修ノート厳守）: ORBIS は**宇宙的/天体的**、主アクセントは**地球の縁の大気ハロ（線と光）**。**サイバーパンク HUD を反射的に足さない**。装飾は **線・グロー・縁**だけで作り、**面（不透明ベタ・radial-gradient）を新設しない**。ページは既存トークンと余白で構成する。
@@ -672,7 +612,7 @@ Run:
 ```bash
 cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && python3 -m pytest -q tests/test_pages.py
 ```
-Expected（失敗）: `404.html が無い` / `about.html が無い` / `LICENSE が無い` / `robots.txt が無い` / `css/pages.css が無い` などで **多数 FAILED**（要約はおおむね `36 failed, 3 xfailed`）。`index.html` を読む 2 件（フッター・著作権）は「共通フッターが無い」で FAILED。xfail 3 件は **xfailed**（＝まだ直っていない、が期待どおり）。
+Expected（失敗）: `404.html が無い` / `about.html が無い` / `LICENSE が無い` / `robots.txt が無い` / `css/pages.css が無い` などで **多数 FAILED**（`test_pages.py` は parametrize 込みで 58 テスト＋xfail 3。全ページ欠落の時点では **50 件超が failed・3 xfailed**＝数は目安）。`index.html` を読む 2 件（フッター・著作権）は「共通フッターが無い」で FAILED。xfail 3 件は **xfailed**（＝まだ直っていない、が期待どおり）。
 
 - [ ] **Step 3: 最小実装 A — `css/pages.css`**
 
@@ -1271,7 +1211,7 @@ Disallow: /
 
 - [ ] **Step 11: 最小実装 H — `index.html` にフッター＋`css/orbis.css` に `.site-foot`**
 
-`index.html` の 178 行 `      </section>`（`#sources` の閉じ）の **直後・179 行 `  </div>` の直前** に、次の 10 行を挿入する（他の行は変更しない）:
+`index.html` の 178 行 `      </section>`（`#sources` の閉じ）の **直後・179 行 `  </div>` の直前** に、次の 9 行を挿入する（他の行は変更しない）:
 
 ```html
       <footer class="site-foot">
@@ -1388,7 +1328,7 @@ Expected: `12 files changed, ...`。`git log --oneline -1` の 1 行目が `feat
     - `evaluate(cfg: dict, path: str, served: set[str]) -> RouteResult`
     - `@dataclass RouteResult: status: int; dest: str | None; headers: dict[str, str]; matched: list[int]`（**デフォルト値は付けない**＝常に 4 引数で構築する）
     - → **Task 10 の `tests/harness/serve.py` がこの 3 関数をそのまま import して e2e を配信する**（テストとハーネスで評価器を二重実装しないための一本化）。
-  - `vercel.json`（builds 18 件・routes 12 件）— Task 4（vendor）・Task 9（sw の SHELL ⊆ 配信物）・Task 10（e2e ハーネス）が参照する。
+  - `vercel.json`（builds 19 件・routes 12 件）— Task 4（vendor）・Task 9（sw の SHELL ⊆ 配信物）・Task 10（e2e ハーネス）が参照する。
   - `.vercelignore`
 
 - [ ] **Step 1: 失敗するテストを書く（routing sim）**
@@ -1627,6 +1567,14 @@ def test_robots_txt_is_served(cfg, served):
     assert res.headers["Cache-Control"] == DOC_CACHE
 
 
+def test_license_is_served(cfg, served):
+    # spec §5 の DoD が「LICENSE が本番で見える」と書いている。拡張子が無いので
+    # builds に明示しないと catch-all 404 に落ちる（README.md と違って落としたくない）。
+    res = evaluate(cfg, "/LICENSE", served)
+    assert res.status == 200 and res.dest == "/LICENSE", f"/LICENSE が配信されない: {res}"
+    assert res.headers["Cache-Control"] == DOC_CACHE
+
+
 @pytest.mark.parametrize("path,expected", [
     ("/vendor/deck.gl-core-9.3.4.min.js", IMMUTABLE),
     ("/icons/icon-192.png", ICON_CACHE),
@@ -1642,6 +1590,7 @@ def test_robots_txt_is_served(cfg, served):
     ("/sw.js", DOC_CACHE),
     ("/manifest.webmanifest", DOC_CACHE),
     ("/robots.txt", DOC_CACHE),
+    ("/LICENSE", DOC_CACHE),
 ])
 def test_cache_control_tier(cfg, served, path, expected):
     res = evaluate(cfg, path, served)
@@ -1905,7 +1854,7 @@ EXPECTED_DIRECTIVES = {
 }
 EXPECTED_BUILDS = {
     "index.html", "404.html", "about.html", "terms.html", "privacy.html", "attribution.html",
-    "sw.js", "manifest.webmanifest", "robots.txt", "favicon.svg", "favicon-32.png",
+    "sw.js", "manifest.webmanifest", "robots.txt", "LICENSE", "favicon.svg", "favicon-32.png",
     "icons/**", "js/**", "css/**", "vendor/**", "data/static/**",
     "config/live_channels.json", "config/live_cameras.json",
 }
@@ -1913,9 +1862,17 @@ CACHE_TIERS = [
     ("/vendor/(.*)", "public, max-age=31536000, immutable"),
     (r"/(icons/.*|favicon\.svg|favicon-32\.png)", "public, max-age=86400"),
     ("/data/static/(.*)", "public, max-age=3600, stale-while-revalidate=86400"),
-    (r"/(|index\.html|about|terms|privacy|attribution|sw\.js|manifest\.webmanifest|robots\.txt|js/.*|css/.*|config/.*)",
+    (r"/(|index\.html|about|terms|privacy|attribution|sw\.js|manifest\.webmanifest|robots\.txt|LICENSE|js/.*|css/.*|config/.*)",
      "public, max-age=0, must-revalidate"),
 ]
+# .vercelignore は builds allowlist の二重化（CLI から手動デプロイした事故で丸ごと上がる経路を塞ぐ）。
+# 消えても本番が壊れないので誰も気づかない＝ここで集合として固定する。
+VERCELIGNORE_REQUIRED = {
+    "collectors/", "scripts/", "tests/", ".github/", "requirements.txt",
+    "playwright.config.js", "package.json", "docs/", "node_modules/", ".superpowers/",
+    ".claude/", ".claire/", ".venv/", ".pytest_cache/", "data/snapshots/", "tools/",
+    "*.md", ".closure-ok",
+}
 
 
 @pytest.fixture(scope="module")
@@ -2063,6 +2020,22 @@ def test_direct_404_route_precedes_filesystem(cfg):
 def test_version_and_framework(cfg):
     assert cfg["version"] == 2
     assert cfg["framework"] is None
+
+
+# ── .vercelignore（builds allowlist の二重化） ──────────────────
+def test_vercelignore_covers_required_paths():
+    lines = {ln.strip() for ln in (ROOT / ".vercelignore").read_text(encoding="utf-8").splitlines()
+             if ln.strip() and not ln.strip().startswith("#")}
+    missing = sorted(VERCELIGNORE_REQUIRED - lines)
+    assert missing == [], f".vercelignore から消えている行: {missing}"
+
+
+def test_license_is_served_but_readme_is_not(cfg):
+    # spec §5 の DoD は「LICENSE が本番で見える」。LICENSE は builds に載せ、README.md は載せない
+    # （*.md は .vercelignore でも落ちる）。LICENSE に拡張子は無いので *.md には当たらない。
+    built = {b["src"] for b in cfg.get("builds", [])}
+    assert "LICENSE" in built, "LICENSE が builds に無い（本番 /LICENSE が catch-all 404 になる）"
+    assert "README.md" not in built
 ```
 
 - [ ] **Step 6: 失敗を確認**
@@ -2074,8 +2047,9 @@ cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && python3 -m pytest -q
 Expected（失敗）: `test_top_level_exclusive_keys_absent` が
 `AssertionError: top-level cleanUrls は builds/routes と排他（cleanUrls は routes で再現する）`、
 `test_header_route_is_first_and_continues` ほかヘッダー系が `AssertionError: vercel.json に routes が無い`、
-`test_builds_expected_set` が `AssertionError: builds の集合が違う: 余分=set() 不足={'index.html', ...}`。
-`test_version_and_framework` だけ PASS。要約はおおむね `30 failed, 1 passed`。
+`test_builds_expected_set` が `AssertionError: builds の集合が違う: 余分=set() 不足={'index.html', ...}`、
+`test_vercelignore_covers_required_paths` が `AssertionError: .vercelignore から消えている行: [...]`（Step 9 で足す 8 行）。
+`test_version_and_framework` だけ PASS。要約は `30 件超が failed・1 passed`（数は目安）。
 
 - [ ] **Step 7: 最小実装 — `vercel.json`**
 
@@ -2095,6 +2069,7 @@ Expected（失敗）: `test_top_level_exclusive_keys_absent` が
     { "src": "sw.js", "use": "@vercel/static" },
     { "src": "manifest.webmanifest", "use": "@vercel/static" },
     { "src": "robots.txt", "use": "@vercel/static" },
+    { "src": "LICENSE", "use": "@vercel/static" },
     { "src": "favicon.svg", "use": "@vercel/static" },
     { "src": "favicon-32.png", "use": "@vercel/static" },
     { "src": "icons/**", "use": "@vercel/static" },
@@ -2121,7 +2096,7 @@ Expected（失敗）: `test_top_level_exclusive_keys_absent` が
     { "src": "/vendor/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
     { "src": "/(icons/.*|favicon\\.svg|favicon-32\\.png)", "continue": true, "headers": { "Cache-Control": "public, max-age=86400" } },
     { "src": "/data/static/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" } },
-    { "src": "/(|index\\.html|about|terms|privacy|attribution|sw\\.js|manifest\\.webmanifest|robots\\.txt|js/.*|css/.*|config/.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
+    { "src": "/(|index\\.html|about|terms|privacy|attribution|sw\\.js|manifest\\.webmanifest|robots\\.txt|LICENSE|js/.*|css/.*|config/.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
     { "src": "/index\\.html", "status": 308, "headers": { "Location": "/" } },
     { "src": "/(about|terms|privacy|attribution)\\.html", "status": 308, "headers": { "Location": "/$1" } },
     { "src": "/(about|terms|privacy|attribution)", "dest": "/$1.html" },
@@ -2141,18 +2116,20 @@ Expected（失敗）: `test_top_level_exclusive_keys_absent` が
 - routes[9] が `/404.html` 直アクセスの 404 化（ソフト 404 を作らない）。**`handle: filesystem` の前**に置くのが要点で、後ろに置くと実ファイルが 200 で配られる。
 - routes[10] が filesystem 境界、routes[11] が catch-all 404。
 
-- [ ] **Step 8: 通ることを確認（Task 3 の 2 ファイル）**
+- [ ] **Step 8: 中間確認（vercel.json 系は緑・`.vercelignore` だけ赤）**
 
 Run:
 ```bash
 cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && python3 -m pytest -q tests/test_vercel_routing_sim.py tests/test_security_headers.py
 ```
-Expected（PASS）: 両ファイルとも failed 0（要約が `NN passed in 0.Xs`）。1 件でも赤が残る場合は
-`AssertionError: /<path> が catch-all に食われている` のように**どのパスがどう解決したか**が出るので、routes の順序を見直す（vercel.json だけを直し、テストの期待値は変えない）。
+Expected: `tests/test_vercel_routing_sim.py` は failed 0。`tests/test_security_headers.py` も
+`test_vercelignore_covers_required_paths` **1 件だけ** FAILED で
+`AssertionError: .vercelignore から消えている行: ['*.md', '.claire/', '.claude/', '.closure-ok', '.pytest_cache/', '.venv/', 'data/snapshots/', 'tools/']`（Step 9 で足す 8 行）。要約はおおむね `NN passed, 1 failed`。
+ほかに赤が残る場合は `AssertionError: /<path> が catch-all に食われている` のように**どのパスがどう解決したか**が出るので、routes の順序を見直す（vercel.json だけを直し、テストの期待値は変えない）。
 
 - [ ] **Step 9: `.vercelignore` に 8 行追記**
 
-`.vercelignore` の末尾（10 行目 `.superpowers/` の後）に次を追記する。builds が allowlist なので本来は不要だが、`vercel` CLI から手動デプロイした事故（builds を無視して丸ごと上がる経路）への二重化:
+`.vercelignore` の末尾（10 行目 `.superpowers/` の後）に次を追記する。builds が allowlist なので本来は不要だが、`vercel` CLI から手動デプロイした事故（builds を無視して丸ごと上がる経路）への二重化。**GitHub 連携の通常デプロイでは builds allowlist が勝つ**ので、`*.md` と `vendor/**` が食い違って見えても実害はない（`vendor/README.md` は builds に載るので配信される。ライセンス全文 `vendor/LICENSE-*.txt`・`vendor/fonts/OFL-*.txt` を配信したい要件と両立させるため、この矛盾は意図的に残す）:
 
 ```
 .claude/
@@ -2238,8 +2215,9 @@ feat(security): vercel.json を builds+routes に書き換えヘッダー 6 種�
 - Cache-Control 4 段（vendor=1年 immutable / icons=1日 / data/static=1h+SWR / それ以外=must-revalidate）
 - cleanUrls を廃し routes で再現（/about → about.html・/index.html と /*.html は 308）
 - builds を allowlist 化＝収集専用 config 5 件・README.md・vercel.json は catch-all 404 へ
+- LICENSE は builds に載せて本番 /LICENSE で見えるようにする（spec §5 の DoD）
 - tests/vercel_routes.py に routes 評価器を切り出し（Task 10 の e2e ハーネスと共有）
-- .vercelignore に CLI デプロイ事故用の二重化 8 行
+- .vercelignore に CLI デプロイ事故用の二重化 8 行＋その集合を固定するテスト
 
 Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
@@ -2253,9 +2231,9 @@ Expected: `6 files changed, ...`。`git log --oneline -1` の 1 行目が `feat(
 
 - [ ] `python3 -m pytest -q` が failed 0・error 0（`tests/test_pages.py` の xfail は **2 件のみ**＝Task 8 が外す分）
 - [ ] `node --test tests/*.test.js` が `# fail 0`
-- [ ] コミットが 3 本（Task 1・Task 2・Task 3）。**main への push はしていない**（骨格どおり main への push は Task 11 のみ）
+- [ ] コミットが 3 本（Task 1・Task 2・Task 3）。`git push` は **1 回もしていない**（骨格どおり push は Task 11 のみ）
 - [ ] `vercel.json` の `builds` に `vendor/**` が入っている（実体は Task 4 が作る。`expand_builds` は無いディレクトリを黙って飛ばすのでテストは緑のまま）
-- [ ] 実装者（サブエージェント）は Task 1 Step 6〜8 を **1 つも実行していない**（作業ブランチの push・workflow dispatch・orbis-data への書き込みはすべて親セッションの担当）
+- [ ] orbis-data に対して **何も実行していない**（初回 squash は骨格 Task 11 Step 5・親セッションの担当）
 
-**骨格からの逸脱 1 点（明示）**: 骨格 Global Constraints は「`git push` は Task 11 のみ」と書いているが、Task 1 Step 6 で **作業ブランチ `worktree-enterprise-a` を origin へ通常 push** する（親セッションが実行）。`workflow_dispatch` はファイルが存在する ref を指定して起動するため、squash-data.yml を GitHub 上で走らせるにはブランチが origin に無ければならない。push 先は作業ブランチであって main ではなく、骨格が禁じている「main への push を Task 11 より前に行う」には当たらない。初回 squash を手元の clone からの `git push --force` で行わない（本人決定 2026-09-03）ための代替経路。Step 7 が GitHub 側の `workflow_dispatch` 登録の制約で起動できない場合は、初回 squash は骨格 Task 11 Step 5 に送る（このブランチ push は無駄にならず、Task 11 の merge 元としてそのまま使える）。
+**骨格の Interfaces・Global Constraints からの逸脱**: なし。
 

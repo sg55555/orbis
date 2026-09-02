@@ -9,11 +9,18 @@
 > - 依存は増やさない（Python は標準ライブラリのみ・npm 追加なし）。
 > - ベースライン（Task 4 着手前の実測・2026-09-03）＝`node --test tests/*.test.js` **643 pass / 0 fail**、`python3 -m pytest -q` **417 passed / 10 skipped**。各 Task の「緑」はこの数から**増えるだけ**で、既存が赤にならないこと。
 
-## 骨格からの読み替え（3 点・実物に合わせた必須の差分）
+## 骨格との差分（読み替えは 1 点も残っていない・注記は spec 本文向け）
 
-1. **`window.__orbis` は「?e2e=1 の時だけ定義」にできない。** `js/main.js` の `window.__orbis` は e2e 用の窓ではなく **module 内の状態バス**で、`rebuild()`（143 行 `const map = window.__orbis.map;`）・`drawAll()`（303）・`refreshFeed()`（160）・`refreshSources()`（725-729）など **約 30 箇所が無条件に参照**する。ゲートすると起動時に落ちる。よって Task 4 のフックは **加算式**にする＝`window.__orbis = { map, overlay, counts: {} }` は従来どおり常に置き、`?e2e=1` の時だけ `window.__orbis.e2e = { map, overlay }` を**追加**する。骨格の e2e 能力アサート `window.__orbis?.map?.getProjection?.().type === 'globe'` はそのまま通る（part4 の e2e は `?e2e=1` で開き `window.__orbis.e2e.map` を使ってもよい）。
-2. **`style="` の置換は 19 箇所ではなく 21 箇所。** 骨格・spec §2 の本文は「19 箇所」と書くが、同じ括弧内に列挙された行番号は 21 行あり、実測 grep（2026-09-03）も **21 箇所・7 ファイル**（selection.js 8／feed.js 4／forecast.js 3／instability.js 2／legend.js 2／panel.js 1／drilldown_view.js 1）。**列挙が正・数字が誤**なので 21 箇所すべてを Task 6 で置換する。
-3. **`selPopup` の置換は 6 箇所ではなく 7 箇所。** 骨格は「6 箇所」と書くが列挙（158-159/369/377/387/397/501-502/574）も実測 grep も **7 箇所**（main.js 159・369・377・387・397・502・574）。7 箇所すべてを `showPopup(lngLat, html)` に置換する。
+**本分冊は骨格の Interfaces をそのまま使う＝骨格からの逸脱はゼロ。** 骨格は 2026-09-03 の更新で
+`style="` **21 箇所**（骨格:90）・`selPopup` **7 箇所**（骨格:77）・`window.__orbis` の**加算式**（骨格:77）まで
+書き込み済みで、下の 1〜3 はいずれも骨格と一致している。以下は **spec 本文の古い記述**への注記なので、
+実装時は骨格と本分冊の数字に従う（レビュー所見 C-3／A-5／C-4）。
+
+1. **`style="` は 21 箇所**（骨格:90 と一致）。spec §2 本文だけが「19 箇所」と書くが、同じ括弧内に列挙された行番号は 21 行あり、実測 grep（2026-09-03）も **21 箇所・7 ファイル**（selection.js 8／feed.js 4／forecast.js 3／instability.js 2／legend.js 2／panel.js 1／drilldown_view.js 1）＝**列挙が正・数字が誤**。
+2. **`selPopup` は 7 箇所**（骨格:77 と一致＝159/369/377/387/397/502/574）。spec §3.5 本文だけが「6 箇所」と書くが、列挙も実測 grep も 7。
+3. **`window.__orbis` は常に置き、`?e2e=1` の時だけ `window.__orbis.e2e` を足す**（骨格:77 と一致）。理由＝`window.__orbis` は e2e 用の窓ではなく **module 内の状態バス**で、`rebuild()`（143 行 `const map = window.__orbis.map;`）・`drawAll()`（303）・`refreshFeed()`（160）・`refreshSources()`（725-729）など **約 30 箇所が無条件に参照**する。ゲートすると起動時に落ちる。e2e 能力アサート `window.__orbis.map.getProjection().type === 'globe'` はそのまま通る（part4 は `?e2e=1` で開いて `window.__orbis.e2e.map` / `.appliedStatic` を使ってもよい）。
+4. **spec §3.2 の「index.html の外部 `<link href>` が 0」は「外部 `<link>` は preconnect 2 本のみ」と読む**（A-5）。実データ取得先（`tiles.openfreemap.org` / `raw.githubusercontent.com`）への `rel="preconnect"` は**サブリソースを 1 つも取得しない**＝「外部スクリプト/スタイル依存ゼロ」という §3.2 の趣旨を壊さないので残す。テストは外部 `<script src>` を 0 に固定（`test_index_html_has_no_external_script`）した上で、外部 `<link>` は preconnect のみ・宛先はこの 2 本ちょうど（`test_index_html_external_links_are_preconnect_only`）に固定する。
+5. **`ensureTripsLayer` のシグネチャは骨格の `({ doc = document, root = globalThis } = {})`**（C-4）。spec §3.2 の `ensureTripsLayer(doc = document)` は古い。
 
 ---
 
@@ -159,6 +166,11 @@ def test_index_html_has_no_external_script():
 
 
 def test_index_html_external_links_are_preconnect_only():
+    """外部 <link> は preconnect の 2 本だけ（spec §3.2「外部 <link href> が 0」の読み替え・A-5）。
+
+    preconnect はサブリソースを 1 つも取得しない＝自前配信の趣旨（外部スクリプト/スタイル依存ゼロ）を
+    壊さない。外部 <script src> が 0 であることは test_index_html_has_no_external_script が別に固定する。
+    """
     html = (ROOT / "index.html").read_text(encoding="utf-8")
     seen = set()
     for m in re.finditer(r"<link\b([^>]*)>", html, re.I):
@@ -1170,6 +1182,10 @@ APPLY_SITES = {
     "js/ui/drilldown.js": 3,    # mkRowButton / ヘッダ / ウォッチリスト行
     "js/main.js": 2,            # showPopup / boot 先頭の applyDataStyles(document)
 }
+# 件数だけだと「片方を消してもう片方を 2 回呼ぶ」で緑のまま擦り抜けるので、呼び出しの逐語も個別に固定する（F-7）。
+APPLY_LITERALS = {
+    "js/main.js": ["applyDataStyles(document);", "applyDataStyles(selPopup.getElement());"],
+}
 
 
 def read(rel: str) -> str:
@@ -1260,6 +1276,9 @@ def test_apply_sites_are_pinned(js, count):
     assert IMPORT_APPLY.search(src), f"{js}: applyDataStyles を import していない"
     assert src.count("applyDataStyles(") == count, \
         f"{js}: applyDataStyles の呼び出しが {src.count('applyDataStyles(')} 箇所（期待 {count}）"
+    for literal in APPLY_LITERALS.get(js, []):
+        assert src.count(literal) == 1, \
+            f"{js}: `{literal}` がちょうど 1 回でない（件数固定だけでは擦り抜ける・F-7）"
 
 
 def test_main_js_popup_goes_through_helper():
@@ -1271,6 +1290,13 @@ def test_main_js_popup_goes_through_helper():
         "selPopup.setLngLat(lngLat).setHTML(html).addTo(map);", ""
     ), "showPopup を通さない setHTML が残っている"
     assert src.count("showPopup(") == 8, "showPopup の定義 1＋呼び出し 7 箇所"
+
+
+def test_main_js_publishes_applied_static_for_e2e():
+    """?e2e=1 のときだけ「起動時に当てた静的 data-style の件数」を公開する（e2e の正の確認用）。"""
+    src = read("js/main.js")
+    assert "const appliedStatic = applyDataStyles(document);" in src
+    assert "window.__orbis.e2e = { map, overlay, appliedStatic };" in src
 
 
 def test_flicker_guard_css_exists():
@@ -1307,6 +1333,7 @@ Expected: 失敗。主な赤＝
 `test_index_static_data_styles_are_pinned` → `assert [] == ['display:none', 'display:none']`、
 `test_apply_sites_are_pinned[...]` 7 件 → `applyDataStyles を import していない`、
 `test_main_js_popup_goes_through_helper` → `assert 'function showPopup(lngLat, html)' in src`、
+`test_main_js_publishes_applied_static_for_e2e` → `assert 'const appliedStatic = applyDataStyles(document);' in src`、
 `test_flicker_guard_css_exists` → `ちらつき防止の … が無い`。
 `test_no_tracked_agent_workdirs` は **xfail（`x`）** で赤にならない（Task 9 で解消したら XPASS＝失敗になるのでマーカーを外す）。
 
@@ -1765,9 +1792,9 @@ Expected: `setHTML` は `showPopup` の定義内の 1 行だけ。`selPopup` は
 `showPopup` 内 3＝`if (!selPopup || !map) return;`・`selPopup.setLngLat(...)`・`applyDataStyles(selPopup.getElement());`／
 生成 1＝`selPopup = new maplibregl.Popup({...})`）。7 箇所の `if (selPopup) selPopup.setLngLat(...)` は消えている。
 
-- [ ] **Step 11: `index.html` の静的 2 件と `css/orbis.css` のちらつき防止**
+- [ ] **Step 11-a: `index.html` の静的 2 件と `css/orbis.css` のちらつき防止**
 
-**11-a. `index.html:94`**
+**11-a-1. `index.html:94`**
 置換前:
 ```html
       <section id="alerts" class="alerts-section" aria-label="急変アラート" style="display:none">
@@ -1777,7 +1804,7 @@ Expected: `setHTML` は `showPopup` の定義内の 1 行だけ。`selPopup` は
       <section id="alerts" class="alerts-section" aria-label="急変アラート" data-style="display:none">
 ```
 
-**11-b. `index.html:133`**
+**11-a-2. `index.html:133`**
 置換前:
 ```html
           <div class="cams-one-tabs" id="cams-one-tabs" style="display:none"></div>
@@ -1787,7 +1814,7 @@ Expected: `setHTML` は `showPopup` の定義内の 1 行だけ。`selPopup` は
           <div class="cams-one-tabs" id="cams-one-tabs" data-style="display:none"></div>
 ```
 
-**11-c. `css/orbis.css` 末尾に追記**（アンカー＝ファイル最終行の `}` 手前・`background-image: none; -webkit-mask: none; mask: none; padding: 0;` はファイル内で 1 回だけ出現）
+**11-a-3. `css/orbis.css` 末尾に追記**（アンカー＝ファイル最終行の `}` 手前・`background-image: none; -webkit-mask: none; mask: none; padding: 0;` はファイル内で 1 回だけ出現）
 
 置換前（全文・1725〜1731 行）:
 ```css
@@ -1813,6 +1840,45 @@ Expected: `setHTML` は `showPopup` の定義内の 1 行だけ。`selPopup` は
 #alerts[data-style], #cams-one-tabs[data-style] { display: none; }
 ```
 
+- [ ] **Step 11-b: `?e2e=1` のときだけ「起動時に当てた静的 data-style の件数」を公開する**
+
+e2e（Task 10）は `#alerts` の computed display だけでは「CSS の `#alerts[data-style]` セレクタで隠れている」のか
+「`applyDataStyles` が当てた inline style で隠れている」のかを区別できない（前者は属性が残ったまま＝失敗状態）。
+適用件数そのものを出して `appliedStatic === 2` を assert できるようにする。**node:test での検証は不要**＝
+唯一の消費者は e2e（Task 10）で、退行は Task 6 の `test_main_js_publishes_applied_static_for_e2e` が静的に押さえる。
+
+**11-b-1. `boot()` 先頭（Step 10-j で入れた行）の戻り値を保持する**
+
+置換前（全文）:
+```javascript
+  applyDataStyles(document);
+```
+置換後（全文）:
+```javascript
+  const appliedStatic = applyDataStyles(document);
+```
+
+**11-b-2. Task 4 Step 6 で入れた `?e2e=1` フックに件数を足す**
+
+置換前（全文）:
+```javascript
+  if (new URLSearchParams(location.search).get('e2e') === '1') {
+    window.__orbis.e2e = { map, overlay };
+  }
+```
+置換後（全文）:
+```javascript
+  if (new URLSearchParams(location.search).get('e2e') === '1') {
+    // appliedStatic＝boot 先頭の applyDataStyles(document) が当てた件数（index.html の静的 2 件）。
+    // e2e はこれで data-style の「正の適用」を直接見る（computed display だけでは CSS 由来と区別できない）。
+    window.__orbis.e2e = { map, overlay, appliedStatic };
+  }
+```
+
+注: `appliedStatic` は `boot()` 内の `const` で、この `if` ブロックと同じスコープにある（`window.__orbis` の
+生成は同じ `boot()` の中＝407 行付近）。`?e2e=1` でない導線では読まれないだけで、宣言は常に評価される。
+`applyDataStyles(` の出現数は 2 のまま＝`test_apply_sites_are_pinned[js/main.js]` は緑を保つ。
+
 - [ ] **Step 12: 通ることを確認**
 
 Run（実行1）:
@@ -1825,9 +1891,9 @@ Run（実行2・この Task で足したガードだけ）:
 ```
 python3 -m pytest tests/test_static_guards.py -q
 ```
-Expected: PASS（参考＝`247 passed, 1 xfailed`。内訳＝ページ 6×4＋index 1＋`js/**/*.js` 71 本×3＋
-APPLY_SITES 7＋単発 2＋xfail 1。`js/**/*.js` の本数が変われば数も動くので、見るのは
-**`failed` 0 と `xpassed` 0**）。`test_no_tracked_agent_workdirs` は `x`（Task 9 で `git rm --cached`
+Expected: PASS（参考＝`248 passed, 1 xfailed`。内訳＝ページ 6×4＋index 1＋`js/**/*.js` **71 本**×3＋
+APPLY_SITES 7＋単発 3＋xfail 1。**71 本＝着手前 69 本＋Task 5 の `js/lib/vendor-loader.js`＋Task 6 の
+`js/lib/data-style.js`**（D-4）。本数が変われば数も動くので、見るのは **`failed` 0 と `xpassed` 0**）。`test_no_tracked_agent_workdirs` は `x`（Task 9 で `git rm --cached`
 したら XPASS＝失敗になるので、その時に xfail マーカーを外す）。
 
 Run（実行3・全体が赤くなっていないこと）:
@@ -1863,6 +1929,8 @@ refactor(csp): style= を data-style＋CSSOM 適用に置換し静的ガード�
   maplibre Popup は main.js の showPopup(lngLat, html) に集約（7 箇所を置換）
 - index.html の静的 2 件（#alerts / #cams-one-tabs）を data-style 化し、boot 先頭で
   applyDataStyles(document)。css/orbis.css に属性が残る間だけのちらつき防止を追加
+- ?e2e=1 のときだけ window.__orbis.e2e.appliedStatic に起動時の適用件数を出す
+  （e2e が data-style の「正の適用」を computed display と区別して見るため）
 - tests/test_static_guards.py: HTML 6 枚と js/** の style= / on*= / javascript: /
   setAttribute('style') / CDN 参照を禁止し、applyDataStyles の呼び出し点を件数まで固定。
   .superpowers 等の追跡チェックは Task 9 まで xfail(strict=True)
@@ -1879,7 +1947,7 @@ EOF
 ## Self-Review（分冊 part2・2026-09-03）
 
 - **骨格 Interfaces との突合**：`LAZY_VENDOR` / `ensureTripsLayer({ doc, root })` / `_resetVendorLoaderForTests` / `applyDataStyles(root)` / `showPopup(lngLat, html)` は名前・引数・戻り値とも骨格どおり。ファイル名（`vendor/**` の 14 個）・CSP・Cache-Control・SW 版は本分冊では触らない。
-- **骨格から読み替えた 3 点**（冒頭に明記）：`window.__orbis` の e2e ゲート（加算式に変更・理由＝状態バス）／`style=` は 19 ではなく 21 箇所（列挙どおり）／`selPopup` は 6 ではなく 7 箇所（列挙どおり）。ほかに逸脱なし。
-- **spec §3.2 / §3.5 の項目 → Step**：vendor 配置＝T4 S3-4／index.html 差し替え＝T4 S5／`?e2e=1`＝T4 S6／integrity テスト＝T4 S1／遅延ロード＝T5 全体／`applyDataStyles`＝T6 S3／19（＝21）箇所置換＝T6 S7-8／呼び出し点＝T6 S9／Popup ヘルパ＝T6 S10／`getTooltip` の判定＝Task 6 見出し直下（不要と結論）／index.html 静的 2 件＋ちらつき防止 CSS＋`applyDataStyles(document)`＝T6 S11・S10-j／静的ガード＝T6 S5。ギャップなし。
+- **骨格からの逸脱はゼロ**（冒頭「骨格との差分」節）。`style="` 21 箇所・`selPopup` 7 箇所・`window.__orbis` の加算式は骨格:90／骨格:77 と一致し、残るのは spec 本文の古い記述への注記 5 点（C-3／A-5／C-4）だけ。
+- **spec §3.2 / §3.5 の項目 → Step**：vendor 配置＝T4 S3-4／index.html 差し替え＝T4 S5／`?e2e=1`＝T4 S6／integrity テスト＝T4 S1／遅延ロード＝T5 全体／`applyDataStyles`＝T6 S3／19（＝21）箇所置換＝T6 S7-8／呼び出し点＝T6 S9／Popup ヘルパ＝T6 S10／`getTooltip` の判定＝Task 6 見出し直下（不要と結論）／index.html 静的 2 件＋ちらつき防止 CSS＋`applyDataStyles(document)`＝T6 S11-a・S10-j／e2e 用の適用件数公開（`window.__orbis.e2e.appliedStatic`）＝T6 S11-b／静的ガード＝T6 S5。ギャップなし。
 - **既存テストへの影響**：`style="` の出力を期待する node テストは 0 件（実測 grep）。`design-tokens.test.js` の `var()` 健全性チェックに追加 CSS は変数を持ち込まない。`drilldown_css.test.js` / `secfit.test.js` の面禁則は対象セレクタが別。よって既存 643 テストは緑のまま。
 - **未着手の依存**：Task 4 は Task 3（`vercel.json` の `builds` に `vendor/**`）と Task 2（静的ページ 5 枚）が先。Task 6 の `test_static_guards.py` は Task 2 の 5 ページが存在しないと `FileNotFoundError` になるので、実行順は骨格どおり 2 → 3 → 4 → 5 → 6。

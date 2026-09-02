@@ -5,6 +5,8 @@
 ## 分冊間の前提（part1／part2 との接続・この 4 点を契約として扱う）
 
 1. **Task 6 適用後のコードを前提にする**：`js/ui/instability.js` 61/64・`js/ui/forecast.js` 51/59/63・`js/ui/feed.js` 15/20/21/47・`js/lib/selection.js` 43/61/154/170/174/194/197/212 のテンプレート内 `style="…"` は **`data-style="…"` に置換済み**（値は不変）。本分冊の「置換前」はすべて `data-style=` 表記で書く。
+   **さらに Task 6 Step 9 が `import { applyDataStyles } from '../lib/data-style.js';` と `applyDataStyles(…)` の呼び出しを差し込む**。part3 が触るファイルでの位置は `js/ui/forecast.js`＝1 行目コメントの直後に import・`      el.innerHTML=cardHtml(c);` の直後に `      applyDataStyles(el); // 厳格 CSP: --dom / --lvl / fc-fill の width を CSSOM へ`／`js/ui/instability.js`＝1 行目コメントの直後に import・86 行 `    el.innerHTML = rowHtml(c);`（`mkRow` 内）の直後に呼び出し／`js/ui/feed.js`＝import と `.join('')` 行の直後に呼び出し。
+   **part3 の「置換前」がその挿入行を含むのは `renderForecasts` 全文置換（Task 7 Step 24-7）だけ**なので、そこは置換前・置換後の両方に `applyDataStyles(el);` 行を入れる。`instability.js`（86 行）・`feed.js`（`.join('')` の次行）・`legend.js`／`panel.js`／`drilldown.js`／`main.js` は part3 の置換範囲の外＝影響しない（実測で確認）。import を足す 3 箇所（Task 7 Step 8-1・24-1・24-6）は 1 行目のコメントだけを置換前にしているので、Task 6 の import 行の前に自分の import が入るだけで衝突しない。
 2. **`window.__orbis` は従来どおり無条件に生える**（part2 が骨格から読み替えた点）。Task 4 の `?e2e=1` フックは加算式＝`window.__orbis.e2e = { map, overlay }` を足すだけで、`window.__orbis = { map, overlay, counts: {} }` は消えない。よって Task 7 の `_aiSnaps` 導入は「壊れるから」ではなく **`updateFreshness()` が boot 前のスコープに居て AI スナップショットを持てないから**（既存の `_insCountries` と同じ理由）。ついでにデータ経路を 1 本にする。
 3. **Task 2 が `tests/test_pages.py` に置く xfail 2 件**（Task 8 で解除する・逐語）：
    - `@pytest.mark.xfail(strict=True, reason="Task 8（part3）が youtube-nocookie 化したら緑（Task 8 でこの行を削除する）")` ＋ `def test_no_youtube_com_embed_in_served_code():`
@@ -21,7 +23,7 @@
    ```
    - `import pytest` は `@pytest.mark.parametrize` があるので**残す**。
 
-関数名や reason 文字列が実際に違っていた場合の手当ては 1 つだけ：`grep -n "xfail" tests/test_pages.py`（または `tests/test_static_guards.py`）で該当行を特定し、**`@pytest.mark.xfail(...)` のデコレータだけを削除する**（関数本体は触らない）。
+上の関数名・デコレータ文字列は **part1／part2 の確定版と逐語一致することを 2026-09-03 に突合済み**。万一ずれていたら `grep -n "xfail" tests/test_pages.py`（または `tests/test_static_guards.py`）で該当行を特定し、**`@pytest.mark.xfail(...)` のデコレータだけを削除する**（関数本体は触らない）。
 
 ## 実データで確認したキー名（2026-09-03・`raw.githubusercontent.com/sg55555/orbis-data/main/`）
 
@@ -38,7 +40,7 @@
 
 **Files:**
 - Create: `js/ui/ai-meta.js`、`tests/ai-meta.test.js`
-- Modify: `index.html`（142・150・161 行）／`js/ui/briefing.js`（1-2・14-18・36-39 行）／`js/ui/instability.js`（1・14-16・55-60・74-81・94 行）／`js/ui/forecast.js`（1・24-45 行）／`js/ui/alerts.js`（4・17-21・28-31・41-50・65-71・75-85 行）／`js/ui/feed.js`（8-25 行）／`js/lib/selection.js`（169-176 行）／`js/main.js`（22・90・94-107・646・670・691・700-711・733 行）／`css/orbis.css`（末尾に追記）
+- Modify: `index.html`（142・150・161 行）／`js/ui/briefing.js`（1-2・14-18・36-39 行）／`js/ui/instability.js`（1・14-16・55-60・74-81・94 行）／`js/ui/forecast.js`（1・24-45 行）／`js/ui/alerts.js`（4・17-21・28-31・41-50・65-71・75-85 行）／`js/ui/feed.js`（8-25 行）／`js/lib/selection.js`（169-176 行）／`js/main.js`（22・90・94-107・646・670・691・700-711・724-729・733 行）／`css/orbis.css`（末尾に追記）
 - Test: `tests/ai-meta.test.js`（新規）／`tests/freshness.test.js`／`tests/alerts.test.js`／`tests/instability.test.js`／`tests/briefing.test.js`
 
 **Interfaces:**
@@ -238,16 +240,19 @@ export function isPlaceholderNarrative(s) {
   - Expected: PASS（`# fail 0`・15 テスト）。
 
 - [ ] **Step 5: コミット**
-  - `git add js/ui/ai-meta.js tests/ai-meta.test.js`
-  - ```
-    git commit -m "feat(ui): AI 生成物の鮮度チップ・免責・定型 narrative 判定を純関数化
 
-    停止中の AI 3 層を「毎時更新」と偽らないための表示部品。閾値は 24h
-    （AI 3 層と news は同じ hourly-ai schedule）。updated 不正は stale 扱い。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/ai-meta.js tests/ai-meta.test.js && git commit -F - <<'MSG'
+feat(ui): AI 生成物の鮮度チップ・免責・定型 narrative 判定を純関数化
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+停止中の AI 3 層を「毎時更新」と偽らないための表示部品。閾値は 24h
+（AI 3 層と news は同じ hourly-ai schedule）。updated 不正は stale 扱い。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -315,16 +320,19 @@ test('rowHtml: 実際の分析文はそのまま（escape 済み）出す', () =
   - Expected: PASS（`# fail 0`）。既存 6 テストも緑のまま（`narrative_ja: '紛争が集中'` と `'"><img src=x onerror=alert(1)>'` はどちらも非定型なので escape 経路を通る）。
 
 - [ ] **Step 10: コミット**
-  - `git add js/ui/instability.js tests/instability.test.js`
-  - ```
-    git commit -m "fix(instability): 定型 narrative を「AI 分析文なし（入力データ不足）」に置換
 
-    本番 25 件中 22 件（定型 5・欠落 17）が実質「分析していない」。
-    そのまま出すと AI が判断したように読めるので明示に替える。score/level は不変。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/instability.js tests/instability.test.js && git commit -F - <<'MSG'
+fix(instability): 定型 narrative を「AI 分析文なし（入力データ不足）」に置換
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+本番 25 件中 22 件（定型 5・欠落 17）が実質「分析していない」。
+そのまま出すと AI が判断したように読めるので明示に替える。score/level は不変。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -489,17 +497,20 @@ test('alertChipHtml: when が無ければ alert-when を出さない（1 引数�
   - Expected: PASS（`# fail 0`・13 テスト）。既存 9 テストも緑（`when` を持たない fixture は `alert-when` を出さない）。
 
 - [ ] **Step 15: コミット**
-  - `git add js/ui/alerts.js tests/alerts.test.js`
-  - ```
-    git commit -m "feat(alerts): アラートチップに元スナップショットの相対時刻を表示
 
-    instability.updated / forecast.generated_at を selectAlerts が when として
-    載せ、alertChipHtml が relTime で描く。停止中（11日前）の急変を「今」と
-    読ませないため。when 無しの呼び出しは従来どおり。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/alerts.js tests/alerts.test.js && git commit -F - <<'MSG'
+feat(alerts): アラートチップに元スナップショットの相対時刻を表示
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+instability.updated / forecast.generated_at を selectAlerts が when として
+載せ、alertChipHtml が relTime で描く。停止中（11日前）の急変を「今」と
+読ませないため。when 無しの呼び出しは従来どおり。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -585,7 +596,7 @@ test('newsPopupHtml: AI 要約であることを明示するタグを含む', ()
         </div>`;
       }).join('') || '<div class="feed-empty">イベントなし</div>';
     ```
-  - 置換後（21 行）:
+  - 置換後（23 行）:
     ```js
     export function renderFeed(root, items, onPick, maxCount = 0) {
       root.innerHTML = items.map((it, i) => {
@@ -629,24 +640,42 @@ test('newsPopupHtml: AI 要約であることを明示するタグを含む', ()
   - Expected: PASS（`# fail 0`）。
 
 - [ ] **Step 20: コミット**
-  - `git add js/ui/feed.js js/lib/selection.js tests/ai-meta.test.js`
-  - ```
-    git commit -m "feat(news): 見出し/要約が AI 日本語化である旨をフィードとポップアップに表示
 
-    news の title_ja/summary_ja は英語見出しからの AI 生成。原文の引用に見える
-    表示をやめ .ai-tag で明示する（LEGAL-07）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/feed.js js/lib/selection.js tests/ai-meta.test.js && git commit -F - <<'MSG'
+feat(news): 見出し/要約が AI 日本語化である旨をフィードとポップアップに表示
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+news の title_ja/summary_ja は英語見出しからの AI 生成。原文の引用に見える
+表示をやめ .ai-tag で明示する（LEGAL-07）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
 #### サイクル E — index.html の文言撤去＋チップ/免責の差し込み＋`#freshness` の AI 集計
 
-- [ ] **Step 21: 失敗するテストを書く**
+- [ ] **Step 21: 失敗するテストを書く**（差し込みは**挙動**で測る＝ソース文字列 grep は補助に留める）
 
-  21-1. `tests/ai-meta.test.js` の末尾に配線の突合を追記。
+  21-1. `tests/ai-meta.test.js` の import 節に 3 renderer を足す。
+  - 置換前（11-12 行目）:
+    ```js
+    import { newsPopupHtml } from '../js/lib/selection.js';
+    import { renderFeed } from '../js/ui/feed.js';
+    ```
+  - 置換後（5 行）:
+    ```js
+    import { newsPopupHtml } from '../js/lib/selection.js';
+    import { renderFeed } from '../js/ui/feed.js';
+    import { renderBriefing } from '../js/ui/briefing.js';
+    import { renderInstability } from '../js/ui/instability.js';
+    import { renderForecasts } from '../js/ui/forecast.js';
+    ```
+
+  21-2. `tests/ai-meta.test.js` の末尾に、差し込みの**挙動**と最小限の突合を追記。
 
 ```js
 
@@ -661,24 +690,120 @@ test('index.html: 『毎時更新』の虚偽文言が無く、鮮度チップ�
   }
 });
 
-test('briefing.js / instability.js / forecast.js が ai-meta を使って差し込む', () => {
-  const b = read('../js/ui/briefing.js');
-  assert.match(b, /from '\.\/ai-meta\.js'/);
-  assert.ok(b.includes('#brief-fresh') && b.includes('freshnessChipHtml(') && b.includes('aiDisclaimerHtml('));
+// 補助: モジュール結線の静的確認（差し込みの中身は下の 5 本が挙動で測る）。
+test('briefing / instability / forecast が ai-meta を import している', () => {
+  for (const p of ['../js/ui/briefing.js', '../js/ui/instability.js', '../js/ui/forecast.js']) {
+    assert.match(read(p), /from '\.\/ai-meta\.js'/, p);
+  }
+});
 
-  const i = read('../js/ui/instability.js');
-  assert.match(i, /from '\.\/ai-meta\.js'/);
-  assert.ok(i.includes('#ins-fresh') && i.includes('freshnessChipHtml(') && i.includes('aiDisclaimerHtml('));
+// --- 差し込みの挙動（最小 DOM シムで実際に描かせる） ---
+// repo 既存の DOM スタブ idiom（tests/drilldown_render.test.js・tests/data-style.test.js）に倣う。
+// querySelector は「同じセレクタなら同じ要素」を返す遅延生成なので、描画後に同じ呼び出しで読み戻せる。
+// getAttribute が常に null なので Task 6 の applyDataStyles(el) は 0 件適用で素通りする。
+function makeEl(tag = 'div') {
+  const kids = new Map();
+  const el = {
+    tagName: String(tag).toUpperCase(),
+    type: '', className: '', textContent: '', innerHTML: '', disabled: false,
+    dataset: {}, children: [], _parent: null,
+    style: { display: '', setProperty() {} },
+    classList: { add() {}, remove() {}, toggle() {}, contains: () => false },
+    get parentElement() { if (!el._parent) el._parent = makeEl('div'); return el._parent; },
+    appendChild(c) { el.children.push(c); return c; },
+    insertAdjacentHTML(_pos, html) { el.innerHTML += html; },
+    addEventListener() {},
+    querySelector(sel) { if (!kids.has(sel)) kids.set(sel, makeEl('div')); return kids.get(sel); },
+    querySelectorAll: () => [],
+    getAttribute: () => null,
+    removeAttribute() {},
+  };
+  return el;
+}
 
-  const f = read('../js/ui/forecast.js');
-  assert.match(f, /from '\.\/ai-meta\.js'/);
-  assert.ok(f.includes('#fc-fresh') && f.includes('freshnessChipHtml(') && f.includes('aiDisclaimerHtml('));
-  // forecast だけ時刻キーが generated_at（本番実データで確認・updated は持たない）。
-  assert.ok(f.includes('d.generated_at || d.updated'), 'forecast は generated_at 優先');
+// 3 renderer は document.createElement を使うので、その間だけ global に生やす。
+function withFakeDocument(fn) {
+  const prev = globalThis.document;
+  globalThis.document = { createElement: (t) => makeEl(t) };
+  try { return fn(); } finally {
+    if (prev === undefined) delete globalThis.document; else globalThis.document = prev;
+  }
+}
+
+test('renderBriefing: 停止中なら #brief-fresh に is-stale チップ・カード末尾に免責 1 個', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderBriefing(root, {
+    updated: '2026-08-23T08:14:18Z', model: 'claude-sonnet-4-6', lead: 'リード',
+    cards: [{ title_ja: 'A', summary_ja: 'B', category: 'conflict', severity: 2 }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#brief-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  assert.equal(root.querySelector('.brief-lead').textContent, 'リード');
+  const cards = root.querySelector('.brief-cards');
+  assert.equal(cards.children.length, 1, 'カードは 1 枚');
+  assert.match(cards.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-sonnet-4-6・2026-08-23 08:14 UTC）/);
+  assert.equal((cards.innerHTML.match(/ai-disclaimer/g) || []).length, 1, '免責は 1 個だけ');
+});
+
+test('renderBriefing: 1 時間前なら is-stale を付けない', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderBriefing(root,
+    { updated: new Date(NOW - 3600e3).toISOString(), lead: '', cards: [] }, { now: NOW }));
+  const chip = root.querySelector('#brief-fresh').innerHTML;
+  assert.match(chip, /最終更新 1時間前/);
+  assert.ok(!chip.includes('is-stale'), chip);
+});
+
+test('renderInstability: #ins-fresh のチップ・定型 narrative の置換・末尾の免責', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderInstability(root, {
+    updated: '2026-08-23T08:16:24Z', model: 'claude-haiku-4-5',
+    countries: [{ code: 'IZ', name_ja: 'イラク', score: 87, lat: 33, lon: 44,
+      counts: { conflict: 1, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+      narrative_ja: '与えたデータには不安定性を示す具体的な事象が記載されていない' }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#ins-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  const rank = root.querySelector('.ins-rank-list');
+  assert.equal(rank.children.length, 1, 'ランキング行は 1 件');
+  assert.match(rank.children[0].innerHTML, /ins-narr--none/);
+  assert.match(rank.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-haiku-4-5・2026-08-23 08:16 UTC）/);
+});
+
+test('renderForecasts: #fc-fresh のチップとリスト末尾の免責', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderForecasts(root, {
+    generated_at: '2026-08-23T08:16:56Z', model: 'claude-haiku-4-5',
+    cards: [{ domain: 'conflict', place_ja: 'X', attention_score: 70, trend: 'up',
+      status: 'active', confidence: 'high', horizon: '1週間', signals: [],
+      outlook_ja: 'o', rationale_ja: 'r' }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#fc-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  const list = root.querySelector('.fc-list');
+  assert.equal(list.children.length, 1, 'カードは 1 枚');
+  assert.match(list.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-haiku-4-5・2026-08-23 08:16 UTC）/);
+});
+
+test('renderForecasts: 時刻キーは generated_at を優先する（updated と取り違えない）', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderForecasts(root, {
+    generated_at: new Date(NOW - 3600e3).toISOString(),
+    updated: '2026-08-23T00:00:00Z', cards: [],
+  }, { now: NOW }));
+  const chip = root.querySelector('#fc-fresh').innerHTML;
+  assert.match(chip, /最終更新 1時間前/, 'updated（11日前）を使うと is-stale になってしまう');
+  assert.ok(!chip.includes('is-stale'), chip);
 });
 ```
 
-  21-2. `tests/freshness.test.js` の 1-3 行目に `readFileSync` の import を足し、末尾に 2 テストを追記。
+  21-3. `tests/freshness.test.js` の 1-3 行目に `readFileSync` の import を足し、末尾に 2 テストを追記。
   - 置換前（1-3 行目）:
     ```js
     import { test } from 'node:test';
@@ -696,7 +821,9 @@ test('briefing.js / instability.js / forecast.js が ai-meta を使って差し�
 
 ```js
 
-test('freshnessSummary: staleSec=24h で AI 3 層＋news の停止を名指しする', () => {
+// 既存 js/lib/geo.js の性質を固定するだけ（実装前から緑）。updateFreshness の 2 群分割そのものは
+// 下の静的ガード＋Task 10 の e2e（#freshness の textContent）が測る。
+test('freshnessSummary: staleSec=24h で AI 3 層＋news の停止を名指しする（既存 geo.js の性質）', () => {
   const now = Date.parse('2026-09-03T00:00:00Z');
   const items = [
     { label: 'ニュース', updated: '2026-08-23T08:08:43Z' },
@@ -709,19 +836,29 @@ test('freshnessSummary: staleSec=24h で AI 3 層＋news の停止を名指し�
   assert.match(r.text, /ブリーフィング 10日前/);
 });
 
+// updateFreshness は main.js の module 内関数で、maplibre/deck を読む main.js は node:test から
+// import できない。ここは 2 群分割の式を**丸ごと**固定する静的ガード（部分文字列だけだと引数の
+// 取り違えを見逃すため）。実挙動は Task 10 の e2e（#freshness の textContent に `／ AI `）が測る。
 test('main.js: #freshness は AI 3 層＋news を FRESH_AI_MS（24h）で別集計する', () => {
   const src = readFileSync(new URL('../js/main.js', import.meta.url), 'utf8');
   assert.match(src, /import \{ FRESH_AI_MS \} from '\.\/ui\/ai-meta\.js';/);
-  assert.ok(src.includes("l.id === 'news' ? aiItems : items"), 'news は 24h 側で集計する');
-  assert.ok(src.includes('freshnessSummary(aiItems, Date.now(), FRESH_AI_MS / 1000)'),
-    'AI 群は FRESH_AI_MS 基準');
+  assert.ok(src.includes(
+    "(l.id === 'news' ? aiItems : items).push({ label: l.label, updated: snap.updated });"),
+  'news だけ 24h 群へ振り分ける');
+  assert.ok(src.includes(
+    'const ai = aiItems.length\n    ? freshnessSummary(aiItems, Date.now(), FRESH_AI_MS / 1000)\n    : null;'),
+  'AI 群は FRESH_AI_MS 基準で別集計する');
+  assert.ok(src.includes('el.textContent = ai ? `${text} ／ AI ${ai.text}` : text;'),
+    'レイヤー群と AI 群のテキストを連結する');
+  assert.ok(src.includes("el.classList.toggle('stale', stale || !!(ai && ai.stale));"),
+    'stale は OR で合成する');
   assert.ok(src.includes('const _aiSnaps ='), 'AI スナップショットは module-local に持つ');
   assert.ok(!src.includes('window.__orbis.instability, window.__orbis.forecasts'),
     'AI 3 層のデータ経路は _aiSnaps 一本（window.__orbis はデバッグ用ミラー）');
 });
 ```
 
-  21-3. `tests/briefing.test.js` の import に `readFileSync` を足し、末尾に 1 テストを追記。
+  21-4. `tests/briefing.test.js` の import に `readFileSync` を足し、末尾に 1 テストを追記（挙動は `tests/ai-meta.test.js` の DOM スタブ 2 本が測るので、ここは結線の**補助**確認）。
   - 置換前（1-3 行目）:
     ```js
     import { test } from 'node:test';
@@ -739,7 +876,8 @@ test('main.js: #freshness は AI 3 層＋news を FRESH_AI_MS（24h）で別集�
 
 ```js
 
-test('renderBriefing: updated からチップを描き、カード末尾に免責を足す', () => {
+// 補助（結線の確認）。実挙動＝チップ/免責の中身は tests/ai-meta.test.js の DOM スタブ 2 本が測る。
+test('renderBriefing: updated からチップを描き、カード末尾に免責を足す（結線）', () => {
   const src = readFileSync(new URL('../js/ui/briefing.js', import.meta.url), 'utf8');
   assert.ok(src.includes("rootEl.querySelector('#brief-fresh')"));
   assert.ok(src.includes('freshnessChipHtml({ updated: b.updated, now })'));
@@ -750,7 +888,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
 
 - [ ] **Step 22: 失敗を確認**
   - Run: `node --test tests/ai-meta.test.js tests/freshness.test.js tests/briefing.test.js`
-  - Expected: 5 件失敗。`index.html` は `毎時更新` を含むため 1 件目が `AssertionError: AI 3 層は 2026-08-23 で停止中＝毎時更新ではない`、残りは `ai-meta.js` の import 文が無い／`_aiSnaps` が無い、で落ちる。`freshnessSummary` の 24h テストのみ PASS。
+  - Expected: 9 件失敗。内訳＝`index.html` の `毎時更新` 撤去（`AssertionError: AI 3 層は 2026-08-23 で停止中＝毎時更新ではない`）／`ai-meta` の import が無い（`from './ai-meta.js'` 不一致）／DOM スタブ 5 本は `#brief-fresh` 等の innerHTML が空のまま（`The input did not match the regular expression /class="fresh-chip is-stale"/`。`renderForecasts` の generated_at 優先は `最終更新 1時間前` 不一致）／`main.js` の静的ガード（`FRESH_AI_MS` の import が無い）。`freshnessSummary` の 24h テストと補助 grep の一部だけ PASS。
 
 - [ ] **Step 23: 最小実装（1）— index.html の 3 箇所**
 
@@ -811,7 +949,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
       if (leadEl) leadEl.textContent = (brief && brief.lead) || '';
       cardsEl.innerHTML = '';
     ```
-  - 置換後（10 行）:
+  - 置換後（11 行）:
     ```js
     // rootEl=#ai-brief（.brief-lead と .brief-cards を内包）。onSelect(card) は座標ありカードのクリック。
     // now は鮮度チップの基準時刻（既定は現在時刻）。
@@ -895,7 +1033,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
     import { freshnessChipHtml, aiDisclaimerHtml } from './ai-meta.js';
     ```
 
-  24-7. `js/ui/forecast.js` の `renderForecasts`（24-45 行目）。
+  24-7. `js/ui/forecast.js` の `renderForecasts`（Task 6 適用後は 26-47 行目）。**Task 6 Step 9-e が入れた `applyDataStyles(el);` 行を置換前・置換後の両方に含める**（落とすと Edit が文字列不一致で失敗し、辻褄合わせで消すと `test_apply_sites_are_pinned[js/ui/forecast.js]` が赤・e2e で `.fc-card` の `--dom`/`--lvl` が `style-src-attr` 違反になる）。
   - 置換前:
     ```js
     export function renderForecasts(rootEl, data, { onSelect } = {}){
@@ -911,6 +1049,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
         filterByDomain(cards, active).forEach((c)=>{
           const el=document.createElement('button'); el.type='button'; el.className='fc-cardbtn';
           el.innerHTML=cardHtml(c);
+          applyDataStyles(el); // 厳格 CSP: --dom / --lvl / fc-fill の width を CSSOM へ
           if(typeof c.lat==='number'&&typeof c.lon==='number'&&(c.lat||c.lon)&&onSelect){
             el.addEventListener('click',()=>onSelect(c));
           } else { el.disabled=true; }
@@ -921,7 +1060,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
       draw();
     }
     ```
-  - 置換後（27 行）:
+  - 置換後（30 行）:
     ```js
     export function renderForecasts(rootEl, data, { onSelect, now = Date.now() } = {}){
       if(!rootEl) return;
@@ -941,6 +1080,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
         filterByDomain(cards, active).forEach((c)=>{
           const el=document.createElement('button'); el.type='button'; el.className='fc-cardbtn';
           el.innerHTML=cardHtml(c);
+          applyDataStyles(el); // 厳格 CSP: --dom / --lvl / fc-fill の width を CSSOM へ
           if(typeof c.lat==='number'&&typeof c.lon==='number'&&(c.lat||c.lon)&&onSelect){
             el.addEventListener('click',()=>onSelect(c));
           } else { el.disabled=true; }
@@ -972,7 +1112,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
     ```js
     let _insCountries = null;           // instability.countries（joinWatchCountries で参照）
     ```
-  - 置換後（4 行）:
+  - 置換後（6 行）:
     ```js
     let _insCountries = null;           // instability.countries（joinWatchCountries で参照）
     // AI 3 層の生スナップショット。updateFreshness() は boot より前のスコープに居て
@@ -1070,34 +1210,34 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
   25-7. アラート帯の入力を `_aiSnaps` に切り替え、`now` を渡す（700-711 行目）。
   - 置換前:
     ```js
-          const alertsRoot = document.getElementById('alerts');
-          if (alertsRoot) {
-            const alertItems = selectAlerts(window.__orbis.instability, window.__orbis.forecasts);
-            renderAlerts(alertsRoot, alertItems, {
-              onSelect: (a) => {
-                map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
-                selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
-                if (window.__orbis) window.__orbis.selected = selected;
-                drawAll(overlay);
-              },
-            });
-          }
+        const alertsRoot = document.getElementById('alerts');
+        if (alertsRoot) {
+          const alertItems = selectAlerts(window.__orbis.instability, window.__orbis.forecasts);
+          renderAlerts(alertsRoot, alertItems, {
+            onSelect: (a) => {
+              map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
+              selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
+              if (window.__orbis) window.__orbis.selected = selected;
+              drawAll(overlay);
+            },
+          });
+        }
     ```
   - 置換後（13 行）:
     ```js
-          const alertsRoot = document.getElementById('alerts');
-          if (alertsRoot) {
-            const alertItems = selectAlerts(_aiSnaps.instability, _aiSnaps.forecast);
-            renderAlerts(alertsRoot, alertItems, {
-              now: Date.now(),
-              onSelect: (a) => {
-                map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
-                selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
-                if (window.__orbis) window.__orbis.selected = selected;
-                drawAll(overlay);
-              },
-            });
-          }
+        const alertsRoot = document.getElementById('alerts');
+        if (alertsRoot) {
+          const alertItems = selectAlerts(_aiSnaps.instability, _aiSnaps.forecast);
+          renderAlerts(alertsRoot, alertItems, {
+            now: Date.now(),
+            onSelect: (a) => {
+              map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
+              selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
+              if (window.__orbis) window.__orbis.selected = selected;
+              drawAll(overlay);
+            },
+          });
+        }
     ```
 
   25-8. ソースパネルの入力も `_aiSnaps` に切り替える（724-729 行目）。
@@ -1110,7 +1250,7 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
             instability: window.__orbis.instability?.countries?.length || 0,
             forecast: window.__orbis.forecasts?.cards?.length || 0 };
     ```
-  - 置換後（7 行）:
+  - 置換後（6 行）:
     ```js
           const srcSnapshots = { ...snapshots,
             briefing: _aiSnaps.briefing, instability: _aiSnaps.instability, forecast: _aiSnaps.forecast };
@@ -1120,36 +1260,43 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
             forecast: _aiSnaps.forecast?.cards?.length || 0 };
     ```
 
-  25-9. AI 取得後にピルを更新する（733 行目）。
+  25-9. AI 取得後にピルを更新する（733 行目）。`    refreshSources();`（4 スペース）単体だと
+  738 行目の `      refreshSources();`（6 スペース）にも部分一致して **実測 2 箇所ヒット**するため、
+  直前の `};` を含めて一意にする（この 2 行での `count()` = 1 を実測確認済み）。
   - 置換前:
     ```js
+        };
         refreshSources();
     ```
-  - 置換後（3 行）:
+  - 置換後（4 行）:
     ```js
+        };
         // AI 3 層が出そろってから鮮度ピルを引き直す（rebuild は AI 取得より前に走る）。
         updateFreshness();
         refreshSources();
     ```
-  - 注: 置換対象は 733 行目の **インデント 4 スペースの単独呼び出し**（`refreshSources` 定義の直後・`startPolling` の直前）。738 行目の `startPolling` コールバック内（インデント 6）の `refreshSources();` は変更しない。
+  - 注: `};` は `refreshSources` の関数定義（717-732 行）を閉じる行。738 行目の `startPolling` コールバック内（インデント 6）の `refreshSources();` は変更しない。
 
 - [ ] **Step 26: 通ることを確認**
   - Run: `node --test tests/*.test.js`
   - Expected: PASS（`# fail 0`）。特に `tests/ai-meta.test.js`・`tests/freshness.test.js`・`tests/briefing.test.js` の新規テストが緑。
 
 - [ ] **Step 27: コミット**
-  - `git add index.html js/main.js js/ui/briefing.js js/ui/instability.js js/ui/forecast.js tests/ai-meta.test.js tests/freshness.test.js tests/briefing.test.js`
-  - ```
-    git commit -m "fix(ui): 『毎時更新』を撤去し AI 3 層に鮮度チップと免責を差し込む
 
-    briefing/instability/forecast の見出しへ最終更新（停止中は更新停止中）を出し、
-    各リスト末尾に AI 生成の免責。#freshness ピルは AI 3 層＋news を 24h 基準で
-    別集計。updateFreshness は boot 前のスコープに居るので AI スナップショットを
-    module-local _aiSnaps に持ち、読み口を 1 本に揃える。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add index.html js/main.js js/ui/briefing.js js/ui/instability.js js/ui/forecast.js tests/ai-meta.test.js tests/freshness.test.js tests/briefing.test.js && git commit -F - <<'MSG'
+fix(ui): 『毎時更新』を撤去し AI 3 層に鮮度チップと免責を差し込む
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+briefing/instability/forecast の見出しへ最終更新（停止中は更新停止中）を出し、
+各リスト末尾に AI 生成の免責。#freshness ピルは AI 3 層＋news を 24h 基準で
+別集計。updateFreshness は boot 前のスコープに居るので AI スナップショットを
+module-local _aiSnaps に持ち、読み口を 1 本に揃える。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -1161,16 +1308,21 @@ test('renderBriefing: updated からチップを描き、カード末尾に免�
 
 test('css/orbis.css: A3 で追加したクラスが定義されている', () => {
   const css = read('../css/orbis.css');
-  for (const sel of ['.fresh-chip-slot', '.fresh-chip {', '.fresh-chip.is-stale',
+  for (const sel of ['/* ===== A3 表示の正直さ', '/* ===== /A3 表示の正直さ',
+    '.fresh-chip-slot', '.fresh-chip {', '.fresh-chip.is-stale',
     '.ai-disclaimer', '.ai-tag', '.alert-chip .alert-when', '.ins-narr--none']) {
     assert.ok(css.includes(sel), `${sel} が css/orbis.css に無い`);
   }
 });
 
-test('css/orbis.css: 新規クラスは既存トークンだけを使う（生の 16 進色を足さない）', () => {
+// 走査は開始マーカー〜終了マーカーの区間に限る（EOF までにすると Task 8 の .lc-note 以降、
+// css 末尾に何を足しても A3 のテストが落ちる。tests/secfit.test.js と同じ区間指定の型）。
+test('css/orbis.css: A3 ブロックは既存トークンだけを使う（生の 16 進色を足さない）', () => {
   const css = read('../css/orbis.css');
-  const block = css.slice(css.indexOf('/* ===== A3 表示の正直さ'));
-  assert.ok(block.length > 0, 'A3 のブロックが見つからない');
+  const start = css.indexOf('/* ===== A3 表示の正直さ');
+  const end = css.indexOf('/* ===== /A3 表示の正直さ');
+  assert.ok(start >= 0 && end > start, 'A3 の開始/終了マーカーが揃っていない');
+  const block = css.slice(start, end);
   assert.ok(!/#[0-9a-fA-F]{3,8}\b/.test(block), `生の 16 進色が混ざっている:\n${block}`);
 });
 ```
@@ -1217,6 +1369,7 @@ test('css/orbis.css: 新規クラスは既存トークンだけを使う（生�
   font-variant-numeric: tabular-nums;
 }
 .ins-narr.ins-narr--none { color: var(--text-muted-3); font-style: italic; opacity: .85; }
+/* ===== /A3 表示の正直さ ===== */
 ```
 
 - [ ] **Step 31: 通ることを確認**
@@ -1224,16 +1377,19 @@ test('css/orbis.css: 新規クラスは既存トークンだけを使う（生�
   - Expected: PASS（`# fail 0`）。`tests/design-tokens.test.js`（`:root` トークンの回帰）も緑のまま＝新規トークンは足していない。
 
 - [ ] **Step 32: コミット**
-  - `git add css/orbis.css tests/ai-meta.test.js`
-  - ```
-    git commit -m "style(css): 鮮度チップ・AI 免責・AI タグ・アラート時刻のスタイルを追加
 
-    停止中はアンバー＋減光（.is-stale）で静かに沈める。色はすべて既存トークン
-    （--cat-stale-2 / --cat-amber-border / --text-muted-3 等）から取る。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add css/orbis.css tests/ai-meta.test.js && git commit -F - <<'MSG'
+style(css): 鮮度チップ・AI 免責・AI タグ・アラート時刻のスタイルを追加
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+停止中はアンバー＋減光（.is-stale）で静かに沈める。色はすべて既存トークン
+（--cat-stale-2 / --cat-amber-border / --text-muted-3 等）から取る。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -1242,7 +1398,7 @@ test('css/orbis.css: 新規クラスは既存トークンだけを使う（生�
 **Files:**
 - Modify: `js/ui/media.js`（13-23 行）／`index.html`（109・117 行）／`js/ui/cams-pane.js`（76-79 行）／`js/lib/drilldown/profile_view.js`（1-6・312-318 行）／`js/lib/selection.js`（174-175・197-198 行）／`js/ui/sources.js`（70-76 行）／`css/orbis.css`（末尾に追記）
 - Test: `tests/media.test.js`／`tests/e2e/media.spec.js`（33・77 行）／`tests/profile_view.test.js`／`tests/sources.test.js`／`tests/test_pages.py`（xfail 2 件の解除）
-- Create（**リポには置かない**・scratchpad `/tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-legal/` に作り、親セッションが orbis-data へ push）: `LICENSE`・`DATA-SOURCES.md`
+- Create（**リポには置かない**・scratchpad `~/scratch/orbis-data-legal/` に作り、親セッションが orbis-data へ push）: `LICENSE`・`DATA-SOURCES.md`
 
 **Interfaces:**
 - Consumes: `buildEmbedUrl(item, { captions }) -> string`（`js/ui/media.js`・news-pane/cams-pane が呼ぶ）／`escapeHtml`（`js/lib/selection.js`）
@@ -1340,7 +1496,7 @@ test('index.html: AI 字幕トグルの脇に送信先の注記がある', () =>
       return `${base}${sep}autoplay=1&mute=1&playsinline=1${cc}`;
     }
     ```
-  - 置換後（14 行）:
+  - 置換後（13 行）:
     ```js
     // キー不要のライブ埋め込みURL。video_id 優先（固定ライブ動画）、無ければ channel_id（チャンネルlive）。
     // captions=true（既定）で日本語字幕＋日本語UIを要求（cc_load_policy/cc_lang_pref/hl）。
@@ -1415,17 +1571,20 @@ test('index.html: AI 字幕トグルの脇に送信先の注記がある', () =>
   - Expected: PASS（`# fail 0`）。
 
 - [ ] **Step 7: コミット**
-  - `git add js/ui/media.js js/ui/cams-pane.js index.html css/orbis.css tests/media.test.js`
-  - ```
-    git commit -m "fix(media): 埋め込みを youtube-nocookie 化し referrerpolicy と字幕注記を追加
 
-    ID は encodeURIComponent で閉じる。#news-frame とカメラの動的 iframe に
-    strict-origin-when-cross-origin。AI 字幕は音声の送信先（localhost:8900）を
-    トグル脇に明示（LEGAL-08 ①）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/media.js js/ui/cams-pane.js index.html css/orbis.css tests/media.test.js && git commit -F - <<'MSG'
+fix(media): 埋め込みを youtube-nocookie 化し referrerpolicy と字幕注記を追加
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+ID は encodeURIComponent で閉じる。#news-frame とカメラの動的 iframe に
+strict-origin-when-cross-origin。AI 字幕は音声の送信先（localhost:8900）を
+トグル脇に明示（LEGAL-08 ①）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -1475,7 +1634,7 @@ test('profileHtml: 出典 URL が http(s) でなければリンクにしない',
     import { escapeHtml } from '../selection.js';
 
     ```
-  - 置換後（10 行）:
+  - 置換後（11 行）:
     ```js
     import { escapeHtml } from '../selection.js';
 
@@ -1501,7 +1660,7 @@ test('profileHtml: 出典 URL が http(s) でなければリンクにしない',
           + '</footer>'
         : '';
     ```
-  - 置換後（19 行）:
+  - 置換後（18 行）:
     ```js
       // ── 出典フッタ（Wikipedia 由来を明示して CC BY-SA 4.0 の帰属を果たす） ──
       // href は http/https のみ許可（不正データの javascript: 等を無効化＝selection.js と同方針）。
@@ -1540,16 +1699,19 @@ test('profileHtml: 出典 URL が http(s) でなければリンクにしない',
   - Expected: PASS（`# fail 0`）。既存の `assert.match(h, /ja\.wikipedia\.org/)`（49 行目）も緑。
 
 - [ ] **Step 12: コミット**
-  - `git add js/lib/drilldown/profile_view.js css/orbis.css tests/profile_view.test.js`
-  - ```
-    git commit -m "fix(profile): 出典フッタに記事名と CC BY-SA 4.0・AI 再構成の明示を追加
 
-    Wikipedia(ja) 由来の要約を再配布する以上、記事名＋ライセンスリンク＋
-    AI 再構成の明示が要る（LEGAL-06）。href は http/https のみ許可。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/lib/drilldown/profile_view.js css/orbis.css tests/profile_view.test.js && git commit -F - <<'MSG'
+fix(profile): 出典フッタに記事名と CC BY-SA 4.0・AI 再構成の明示を追加
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+Wikipedia(ja) 由来の要約を再配布する以上、記事名＋ライセンスリンク＋
+AI 再構成の明示が要る（LEGAL-06）。href は http/https のみ許可。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -1657,16 +1819,19 @@ test('外部リンクは rel="noopener noreferrer"（Referer とタブ乗っ取�
   - Expected: PASS（`# fail 0`）。`grep -rn 'rel="noopener"' js/` の出力が **0 行**。
 
 - [ ] **Step 17: コミット**
-  - `git add js/ui/sources.js js/lib/selection.js tests/sources.test.js tests/selection.test.js`
-  - ```
-    git commit -m "fix(links): 外部リンクを rel=noopener noreferrer に統一（4 箇所）
 
-    sources.js:75 / selection.js:175,198 / profile_view.js。Referer 送出も
-    window.opener 経由の乗っ取りも閉じる（SECURITY-15）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/sources.js js/lib/selection.js tests/sources.test.js tests/selection.test.js && git commit -F - <<'MSG'
+fix(links): 外部リンクを rel=noopener noreferrer に統一（4 箇所）
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+sources.js:75 / selection.js:175,198 / profile_view.js。Referer 送出も
+window.opener 経由の乗っ取りも閉じる（SECURITY-15）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -1714,30 +1879,33 @@ test('外部リンクは rel="noopener noreferrer"（Referer とタブ乗っ取�
     ```python
     def test_external_links_are_noopener_noreferrer():
     ```
-  - 実際の関数名／reason が上と違う場合は `grep -n "xfail" tests/test_pages.py` の該当 2 件について、**`@pytest.mark.xfail(...)` のデコレータだけを削除**する（本文は触らない）。Task 3 が外した `test_pages_are_declared_in_vercel_builds` の分はここには残っていない。
+  - 上の 2 件は part1 Task 2 Step 1 の逐語（2026-09-03 突合済み）。Task 3 が外した `test_pages_are_declared_in_vercel_builds` の分はここには残っていない。ずれていた場合のみ `grep -n "xfail" tests/test_pages.py` で該当 2 件を特定し、デコレータだけを削除する。
 
 - [ ] **Step 21: 通ることを確認**
   - Run: `node --test tests/*.test.js` → `python3 -m pytest -q`
   - Expected: どちらも PASS（`# fail 0` ／ `N passed`・`xfailed` は Task 6 由来の 1 件のみ）。
 
 - [ ] **Step 22: コミット**
-  - `git add tests/e2e/media.spec.js tests/test_pages.py`
-  - ```
-    git commit -m "test: e2e の埋め込み URL 期待を nocookie に更新し test_pages の xfail を解除
 
-    Task 2 で先置きした 2 件（nocookie・rel）が実装されたので strict xfail を外す。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add tests/e2e/media.spec.js tests/test_pages.py && git commit -F - <<'MSG'
+test: e2e の埋め込み URL 期待を nocookie に更新し test_pages の xfail を解除
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+Task 2 で先置きした 2 件（nocookie・rel）が実装されたので strict xfail を外す。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
 #### サイクル E — orbis-data 用の `LICENSE` と `DATA-SOURCES.md`（作成のみ・push は親セッション）
 
 - [ ] **Step 23: 置き場を作る**
-  - Run: `mkdir -p /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-legal`
-  - Expected: エラー無し。**この 2 ファイルは orbis リポには追加しない**（`git status` に出ない場所に作る）。
+  - Run: `mkdir -p ~/scratch/orbis-data-legal`
+  - Expected: エラー無し。**この 2 ファイルは orbis リポには追加しない**（`git status` に出ない場所に作る）。置き場をセッション ID 付きの scratchpad ではなく `~/scratch/` にするのは、Step 26 の push を**別セッションの親**が実行するため（セッションが変わってもパスが生き残る）。
 
 - [ ] **Step 24: `LICENSE` を書く** — `…/orbis-data-legal/LICENSE`
 
@@ -1803,26 +1971,26 @@ JSON の構造は MIT（同梱 `LICENSE`）。**各データの権利は下表�
 ```
 
 - [ ] **Step 26: 親セッションへの引き渡し（サブエージェントは push しない）**
-  - この 2 ファイルの本文をそのまま親セッションに渡し、**親セッションが本人確認のうえ**手元の shallow clone から orbis-data へ通常 push する。手順は次の 4 実行（**それぞれ 1 コマンド起動**・B0 の初回 squash の後に行う）。
+  - この 2 ファイルの本文をそのまま親セッションに渡し、**親セッションが本人確認のうえ**手元の shallow clone から orbis-data へ通常 push する。手順は次の 4 実行（**それぞれ 1 コマンド起動**）。**実行の時点は Task 11 Step 5 の初回 squash（force-push）より後**にする（squash は orphan コミットで履歴を畳むので、先に足したファイルは tree ごと引き継がれるが、順序を固定しておけば「消えた/消えていない」の確認が 1 回で済む）。
 
   実行1（1 回だけ・作業ディレクトリを掃除して shallow clone）
   ```
-  rm -rf /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push && git clone --depth 1 https://github.com/sg55555/orbis-data.git /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push
+  rm -rf ~/scratch/orbis-data-push && git clone --depth 1 https://github.com/sg55555/orbis-data.git ~/scratch/orbis-data-push
   ```
 
   実行2（この 1 行で 1 コマンド・2 ファイルをコピー）
   ```
-  cp /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-legal/LICENSE /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-legal/DATA-SOURCES.md /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push/
+  cp ~/scratch/orbis-data-legal/LICENSE ~/scratch/orbis-data-legal/DATA-SOURCES.md ~/scratch/orbis-data-push/
   ```
 
   実行3（この 1 行で 1 コマンド・コミット）
   ```
-  git -C /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push add LICENSE DATA-SOURCES.md && git -C /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push commit -m "docs: LICENSE（MIT・構造に適用）と DATA-SOURCES.md を追加"
+  git -C ~/scratch/orbis-data-push add LICENSE DATA-SOURCES.md && git -C ~/scratch/orbis-data-push commit -m "docs: LICENSE（MIT・構造に適用）と DATA-SOURCES.md を追加"
   ```
 
   実行4（この 1 行で 1 コマンド・通常 push。collect と衝突したら `git -C … pull --rebase` 後に再実行）
   ```
-  git -C /tmp/claude-1000/-home-shugo/025c3611-418a-45a3-99b0-a1a7040c6a8d/scratchpad/orbis-data-push push origin HEAD:main
+  git -C ~/scratch/orbis-data-push push origin HEAD:main
   ```
 
   - 実行4 の確認メッセージ（日本語・骨格の破壊系フォーマット）: 「`git push` を実行します。理由：orbis-data に LICENSE と DATA-SOURCES.md を追加するため。push 先は保護ブランチではなく、**追加のみ（既存ファイルを変更しない）通常 push** で force ではありません。」
@@ -2006,7 +2174,7 @@ self.addEventListener('fetch', (e) => {
       assert.match(sw, /cartocdn/);
     });
     ```
-  - 置換後（23 行）:
+  - 置換後（22 行）:
     ```js
     // tests/drilldown_sw.test.js
     // SW の CACHE 版番号と bypass 方針。Phase A（Task 9）で v52・同一オリジン判定に変更。
@@ -2037,17 +2205,20 @@ self.addEventListener('fetch', (e) => {
   - Expected: どちらも PASS（`9 passed` ／ `# fail 0`）。
 
 - [ ] **Step 6: コミット**
-  - `git add sw.js tests/test_sw.py tests/drilldown_sw.test.js`
-  - ```
-    git commit -m "fix(sw): v52＝同一オリジンのみ・成功応答のみキャッシュ・SHELL から index.html を除去
 
-    別オリジンを中継すると SW 応答の CSP で外部画像/タイルが消える。404/500 と
-    opaque 応答の put をやめ壊れた応答の固定化を防ぐ。'/index.html' は routes で
-    308 になるため addAll から外す。死んだ cartocdn 条件を削除。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add sw.js tests/test_sw.py tests/drilldown_sw.test.js && git commit -F - <<'MSG'
+fix(sw): v52＝同一オリジンのみ・成功応答のみキャッシュ・SHELL から index.html を除去
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+別オリジンを中継すると SW 応答の CSP で外部画像/タイルが消える。404/500 と
+opaque 応答の put をやめ壊れた応答の固定化を防ぐ。'/index.html' は routes で
+308 になるため addAll から外す。死んだ cartocdn 条件を削除。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -2176,7 +2347,7 @@ def test_fetch_latest_rows_raises_on_md5_mismatch(monkeypatch):
 
     LASTUPDATE_URL = "http://data.gdeltproject.org/gdeltv2/lastupdate.txt"
     ```
-  - 置換後（11 行）:
+  - 置換後（12 行）:
     ```python
     """GDELT 2.0 Events CSV を取得し、抗議/紛争イベントを地理点として書き出す。"""
     import csv
@@ -2201,7 +2372,7 @@ def test_fetch_latest_rows_raises_on_md5_mismatch(monkeypatch):
     def fetch_latest_rows(timeout=40):
         """lastupdate.txt → 最新 export.CSV.zip を取得し TSV 行配列を返す。"""
     ```
-  - 置換後（32 行）:
+  - 置換後（37 行）:
     ```python
     SNAPSHOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"))
 
@@ -2284,20 +2455,23 @@ def test_fetch_latest_rows_raises_on_md5_mismatch(monkeypatch):
 
 - [ ] **Step 10: 通ることを確認**
   - Run: `python3 -m pytest -q tests/test_gdelt.py`
-  - Expected: PASS（既存 5＋新規 6 の `11 passed`）。ネットワークアクセスは行われない（`requests` を差し替えている）。
+  - Expected: PASS（既存 6＋新規 6 の `12 passed`）。ネットワークアクセスは行われない（`requests` を差し替えている）。
 
 - [ ] **Step 11: コミット**
-  - `git add collectors/gdelt_events.py tests/test_gdelt.py`
-  - ```
-    git commit -m "fix(collectors): GDELT を HTTPS 化し lastupdate の MD5 を照合する
 
-    lastupdate.txt と export URL の両方を https に昇格（平文だと zip と MD5 を
-    同時に差し替えられる）。2 列目の MD5 と実バイトを突合し不一致は ValueError
-    （既存の mark_error 経路で可視化）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add collectors/gdelt_events.py tests/test_gdelt.py && git commit -F - <<'MSG'
+fix(collectors): GDELT を HTTPS 化し lastupdate の MD5 を照合する
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+lastupdate.txt と export URL の両方を https に昇格（平文だと zip と MD5 を
+同時に差し替えられる）。2 列目の MD5 と実バイトを突合し不一致は ValueError
+（既存の mark_error 経路で可視化）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -2366,7 +2540,7 @@ test('rowHtml: trend の delta/deltaPct に HTML を入れても出力に生タ�
       return dod + normal;
     }
     ```
-  - 置換後（15 行）:
+  - 置換後（14 行）:
     ```js
     function _trendBadges(tr) {
       if (!tr || tr.isNew) return '<span class="ins-new">新規</span>';
@@ -2389,16 +2563,19 @@ test('rowHtml: trend の delta/deltaPct に HTML を入れても出力に生タ�
   - Expected: PASS（`# fail 0`）。`alerts.js` は `Number(t.normal.deltaPct)` を既に通しているので影響なし。
 
 - [ ] **Step 16: コミット**
-  - `git add js/ui/instability.js tests/instability.test.js`
-  - ```
-    git commit -m "fix(instability): trend の delta/deltaPct を Number で数値に固定する
 
-    この 2 スロットは esc を通さない数値表示なので、上流 JSON に文字列や HTML が
-    混ざると素通りする。Number(...) || 0 で型を閉じる（SECURITY-10）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add js/ui/instability.js tests/instability.test.js && git commit -F - <<'MSG'
+fix(instability): trend の delta/deltaPct を Number で数値に固定する
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+この 2 スロットは esc を通さない数値表示なので、上流 JSON に文字列や HTML が
+混ざると素通りする。Number(...) || 0 で型を閉じる（SECURITY-10）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
 
 ---
 
@@ -2457,7 +2634,7 @@ def test_gitignore_still_lists_the_agent_workdirs():
     ```python
     def test_no_tracked_agent_workdirs():
     ```
-  - 実際の関数名／reason が違う場合は `grep -n "xfail" tests/test_static_guards.py` の該当 1 件について `@pytest.mark.xfail(...)` のデコレータだけを削除する。
+  - 上のデコレータは part2 Task 6 Step 5 の逐語（2026-09-03 突合済み）。ずれていた場合のみ `grep -n "xfail" tests/test_static_guards.py` で該当 1 件を特定し、デコレータだけを削除する。
   - 注: `tests/test_tracked_files.py` と `test_no_tracked_agent_workdirs` は意図的に重複させる。前者が**恒久ガード**（追跡ゼロ＋`.gitignore` の両輪・骨格 File Structure が要求）、後者は part2 の**時系列マーカー**（Task 9 まで赤を許す）で役割が違う。
 
 - [ ] **Step 21: 通ることを確認**
@@ -2465,16 +2642,20 @@ def test_gitignore_still_lists_the_agent_workdirs():
   - Expected: どちらも PASS。pytest の要約に `xfailed` が 0（part1/part2 の xfail はすべて解除済み）。
 
 - [ ] **Step 22: コミット**
-  - `git add tests/test_tracked_files.py tests/test_static_guards.py`（`.superpowers` の削除は Step 19 の `git rm --cached` で既にステージ済み。`.gitignore` に載っているので `git add .superpowers` は打たない＝打つと ignored path のエラーになる）
-  - ```
-    git commit -m "chore(git): .superpowers の追跡 2 件を解除し追跡ガードのテストを追加
 
-    .gitignore に載っていても既追跡ファイルは無視されない。公開リポに作業メモが
-    残る事故を git ls-files のテストで恒久的に止める（Task 6 の xfail を解除）。
+Run（この 1 ブロックで 1 コミット）:
+```bash
+cd /home/shugo/apps/orbis/.claude/worktrees/enterprise-a && git add tests/test_tracked_files.py tests/test_static_guards.py && git commit -F - <<'MSG'
+chore(git): .superpowers の追跡 2 件を解除し追跡ガードのテストを追加
 
-    Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
-    Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR"
-    ```
+.gitignore に載っていても既追跡ファイルは無視されない。公開リポに作業メモが
+残る事故を git ls-files のテストで恒久的に止める（Task 6 の xfail を解除）。
+
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_012CCrsHhfbbn3LrzaMoZ1MR
+MSG
+```
+  - 注: `.superpowers` の削除は Step 19 の `git rm --cached` で既にステージ済み。`.gitignore` に載っているので `git add .superpowers` は打たない＝打つと ignored path のエラーになる
 
 ---
 
@@ -2488,6 +2669,7 @@ def test_gitignore_still_lists_the_agent_workdirs():
   - `tests/test_pages.py` の xfail は part1 逐語の 2 件（`test_no_youtube_com_embed_in_served_code`・`test_external_links_are_noopener_noreferrer`）＝Task 8 Step 20 に反映済み。`test_pages_are_declared_in_vercel_builds` は Task 3 が外すので part3 は触らない。
   - `tests/test_static_guards.py` の xfail は part2 逐語の `test_no_tracked_agent_workdirs`（5 行デコレータ）＝Task 9 Step 20 に反映済み。
   - part2 は骨格の「`window.__orbis` を `?e2e=1` 限定」を**加算式に読み替えた**（状態バスなので消せない）。part3 はこれに合わせ、`_aiSnaps` の理由を「boot 前スコープで AI スナップショットを持てないから」に置き直した（`window.__orbis` はデバッグ用ミラーとして残す）。
-  - part2 適用後の `js/ui/feed.js` `renderFeed` は `.join('')` 行の**次に** `applyDataStyles(root);` が入る。Task 7 Step 18-1 の置換範囲はその手前で閉じているので競合しない。`renderFeed` のスタブは `querySelectorAll: () => []` を持たせて `applyDataStyles` を素通しさせる。
+  - **Task 6 が差し込む `applyDataStyles(…)` との衝突を全 5 ファイルで再点検した**（レビュー C-1）。衝突するのは `js/ui/forecast.js` の `renderForecasts` 全文置換（Task 7 Step 24-7）だけで、置換前・置換後の両方に `      applyDataStyles(el); // 厳格 CSP: --dom / --lvl / fc-fill の width を CSSOM へ` を含めた。`js/ui/feed.js` は `.join('')` 行の**次に**入るので Step 18-1 の置換範囲の外／`js/ui/instability.js` は 86 行（`mkRow` 内）で Step 24-4・24-5 の範囲外／`js/lib/selection.js`・`js/ui/alerts.js` には Task 6 が何も足さない（前者は main.js の `showPopup` 経由・後者はテンプレートに `style=` が無い）。DOM スタブは `querySelectorAll: () => []` と `getAttribute: () => null` を持たせて `applyDataStyles` を 0 件適用で素通しさせる。
   - part2 適用後の `js/lib/selection.js` は 174/197 行（`data-style="color:#7fd8ff"`）を書き換えるが、Task 8 が触る 175/198 行（`rel=`）とは別行＝競合しない。
 - **ネットワーク**：Task 8 Step 26 の orbis-data への通常 push だけが書き込みで、**親セッションが本人確認のうえ実行**する（サブエージェントは実行しない）。それ以外は読み取りのみ。
+- **レビュー（2026-09-03 `plan-review.md`）の part3 該当所見の反映**：C-1（forecast.js の `applyDataStyles` 衝突＝Blocker）／C-2（`refreshSources();` が 2 箇所ヒット）／E-1（コミット 14 本を `git commit -F - <<'MSG'` へ・trailer が認識されるように）／F-1（3 renderer の DOM スタブ挙動テスト 5 本を追加し、ソース grep は補助へ格下げ）／F-5（`freshnessSummary` 24h テストの位置づけを明記し、`updateFreshness` の静的ガードは式ごと固定）／F-6（A3 CSS ブロックに終端マーカーを入れ区間走査に）／A-6（Files 一覧に 724-729）／B-2（xfail 逐語の突合済みを断定形に）／D-2（`test_gdelt.py` は既存 6＋新規 6 で 12 passed）／E-6（orbis-data の作業パスを `~/scratch/` に固定）をすべて反映済み。
