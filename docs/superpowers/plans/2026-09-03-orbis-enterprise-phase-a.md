@@ -82,7 +82,7 @@
 ## Task 一覧（分冊と実行順）
 | # | タスク | 分冊 | 依存 |
 |---|---|---|---|
-| 1 | B0 squash workflow＋構造テスト（＋初回 squash は Task 1 完了後にブランチを origin へ push → `gh workflow run squash-data.yml --ref worktree-enterprise-a -f confirm=squash` で親セッションが実行。手元からの force-push は auto モードの分類器がブロックするため使わない・2026-09-03 本人決定） | part1 | なし |
+| 1 | B0 squash workflow＋構造テスト（初回 squash は **Task 11 Step 5**＝main 統合後に `gh workflow run squash-data.yml -R sg55555/orbis -f confirm=squash` で親セッションが実行。理由＝`workflow_dispatch` は既定ブランチに無い workflow を起動できない（GitHub Docs「This event will only trigger a workflow run if the workflow file exists on the default branch.」）／手元からの force-push は auto モードの分類器がブロック・2026-09-03 本人決定） | part1 | なし |
 | 2 | A4 静的ページ 5 枚＋`css/pages.css`＋LICENSE＋robots＋README ライセンス節＋index.html フッター＋`test_pages.py` | part1 | なし |
 | 3 | A1 `tests/vercel_routes.py`＋routing sim＋security headers テスト＋`vercel.json`＋`.vercelignore` | part1 | 2（ページが builds に載る） |
 | 4 | A2 `scripts/fetch_vendor.py`＋`vendor/**`＋`vendor.sha256`＋integrity テスト＋index.html head 差し替え＋`?e2e=1` フック | part2 | 3 |
@@ -102,9 +102,9 @@
 
 - [ ] **Step 1: 受入一括を HEAD で実行** — `bash tools/closure.sh` → ログ末尾 `== closure OK`。`.closure-ok` の中身が `git rev-parse HEAD` と一致。
 - [ ] **Step 2: main へ統合** — `ExitWorktree`（keep）→ `/home/shugo/apps/orbis` で `git merge --ff-only worktree-enterprise-a`（ff できなければ `git merge --no-ff`）。push ゲート（sw CACHE 版・builds・closure）を通して `git push origin main`（理由と安全根拠を日本語で併記）。
-- [ ] **Step 3: 本番 curl（反映確認）** — `curl -sI https://orbis-beta.vercel.app/sw.js` の本文に `orbis-v52`（`curl -s … | grep -c "orbis-v52"`）が出るまで待つ（GitHub 連携デプロイ）。その後 `/`・`/about`・`/nope`・`/index.html`・`/about.html`・`/vendor/maplibre-gl-5.24.0.js`・`/data/static/admin1_bbox.json`・`/data/static/admin1/JA.geojson.gz`・`/config/news_feeds.json`・`/README.md`・`/robots.txt` を `curl -sI` し、spec §5 の期待（ヘッダー 6 種完全一致・Cache-Control 4 段・308/404・`.gz` に `content-encoding` 無し）を突合して表にする。
+- [ ] **Step 3: 本番 curl（反映確認）** — `curl -sI https://orbis-beta.vercel.app/sw.js` の本文に `orbis-v52`（`curl -s … | grep -c "orbis-v52"`）が出るまで待つ（GitHub 連携デプロイ）。その後 `/`・`/about`・`/terms`・`/privacy`・`/attribution`・`/LICENSE`・`/nope`・`/404.html`（`HTTP/2 404` かつ本文が 404 ページ＝`status`＋`dest` 併記の実配信確認）・`/index.html`・`/about.html`・`/vendor/maplibre-gl-5.24.0.js`・`/data/static/admin1_bbox.json`・`/data/static/admin1/JA.geojson.gz`・`/config/news_feeds.json`・`/README.md`・`/robots.txt` を `curl -sI` し、spec §5 の期待（ヘッダー 6 種完全一致・Cache-Control 4 段・308/404・`.gz` に `content-encoding` 無し）を突合して表にする。
 - [ ] **Step 4: 本人実機（AskUserQuestion で依頼）** — PC＋iPhone PWA で globe・加算合成・『交通』貿易フロー・カメラ・ドリルダウン・検索・共有・AI 3 層の「更新停止中」チップ・DevTools の CSP 違反 0。NG があれば systematic-debugging。
-- [ ] **Step 5: squash workflow の main からの再確認** — Task 1 末尾でブランチから dispatch 済み（初回 squash）。統合後に `gh workflow run squash-data.yml -R sg55555/orbis -f confirm=squash`（main の ref）を 1 回打ち `gh run watch <id> --exit-status` で success（1〜数 commit を再 squash しても無害）→ `gh api -i "repos/sg55555/orbis-data/commits?per_page=1"` の Link で commits が 1〜数件。
+- [ ] **Step 5: 初回 squash（B0）を workflow dispatch で実行** — 統合後（main に `squash-data.yml` が載ってから）`gh workflow run squash-data.yml -R sg55555/orbis -f confirm=squash` → `gh run list -R sg55555/orbis --workflow squash-data.yml --limit 1 --json databaseId --jq '.[0].databaseId'` → `gh run watch <id> -R sg55555/orbis --exit-status` で success → 検証＝`gh api -i "repos/sg55555/orbis-data/commits?per_page=1"` の `Link` の `rel="last"` が page=1〜3（直後の collect 分を含む）／`curl -s https://raw.githubusercontent.com/sg55555/orbis-data/main/manifest.json | head -c 300` が dispatch 前と同じ層・更新時刻／`gh run view <id> -R sg55555/orbis --log | grep -A2 squashed` で before/after SHA。実行前に AskUserQuestion で本人に再確認（不可逆・約 8,500 commits が消える・本人は 2026-09-03 に一度承認済み）。
 - [ ] **Step 6: 記憶整理** — Obsidian `Projects/orbis-enterprise-quality.md`（状態ログ・次の起点＝Phase B）と `Projects/orbis.md`・MEMORY.md 索引行・`Ledger/predictions.md` P-0066 の結果欄・Artifact 所見の「済」（`_adjudication.json` に status→`gen_board.py`→同 URL 再公開）・Knowledge に「deck.gl 分割 UMD は mesh→geo の順」「Vercel routes と cleanUrls は排他」の 2 件。区切りハンドオフ（起点＋合図文言＋`/usage` リマインド）。
 
 ## Self-Review（骨格レベル・2026-09-03）

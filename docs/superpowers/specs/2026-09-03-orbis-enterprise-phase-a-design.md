@@ -38,7 +38,7 @@
   - `concurrency: { group: collect, cancel-in-progress: false }`＝収集ジョブと直列化（force-push と通常 push の競合をゼロにする）。`permissions: { contents: read }`（orbis-data への push は PAT）。
   - steps: `actions/checkout@v6`（`repository: sg55555/orbis-data`・`path: data-repo`・`token: ${{ secrets.ORBIS_DATA_TOKEN }}`・`fetch-depth: 1`・`persist-credentials: true`）→ シェル:
     `before=$(git rev-parse HEAD)`・`tree=$(git rev-parse HEAD^{tree})` → `git checkout -q --orphan squash` → `git add -A` → `git commit -q -m "data: monthly squash YYYY-MM-DD (was <before>) [skip ci]"`（user.name `orbis-bot`・email は collect.yml と同じ noreply）→ **`[ "$(git rev-parse HEAD^{tree})" = "$tree" ]` を assert（不一致なら `::error::` で exit 1・push しない）** → `git push --force origin HEAD:main` → `$GITHUB_STEP_SUMMARY` に before/after。
-- 初回＝**workflow の dispatch で行う**（2026-09-03 変更：手元からの `git push --force` は auto モードの分類器がブロックしたため。本人の再確認は取得済み＝不可逆・8,552 commits が消える）。手順＝Task 1 完了後にブランチ `worktree-enterprise-a` を origin へ通常 push → `gh workflow run squash-data.yml --ref worktree-enterprise-a -f confirm=squash` → `gh run watch` → commits 数と raw の manifest.json 不変を確認。workflow は最新 main を checkout してから tree 一致 assert → force-push を concurrency group `collect` の中で行うので、収集 push との競合や古い tree の push が構造的に起きない。main 統合後にも 1 回 dispatch して main の ref からの動作を確認（1〜数 commit を再 squash しても無害）。
+- 初回＝**workflow の dispatch で行う**（2026-09-03 変更：手元からの `git push --force` は auto モードの分類器がブロックしたため。本人の再確認は取得済み＝不可逆・8,552 commits が消える）。手順＝**main 統合後**（`workflow_dispatch` は既定ブランチに無い workflow を起動できない＝GitHub Docs「This event will only trigger a workflow run if the workflow file exists on the default branch.」）に `gh workflow run squash-data.yml -R sg55555/orbis -f confirm=squash` → `gh run watch` → commits 数と raw の manifest.json 不変を確認（計画 Task 11 Step 5・実行直前に本人へ再確認）。workflow は最新 main を checkout してから tree 一致 assert → force-push を concurrency group `collect` の中で行うので、収集 push との競合や古い tree の push が構造的に起きない。
 - 既知の性質: GitHub の表示サイズは到達不能オブジェクトの GC まで減らない（raw 配信は影響なし）。collect 系は毎 run 新規 checkout なので新 root に自然追従（`git pull --rebase` は同一祖先）。orbis-data の `README.md` はそのまま tree に残る。
 - テスト: `tests/test_workflow_squash.py`＝YAML を読み、cron が `23 3 1 * *`・concurrency group が `collect`・`confirm == 'squash'` の if があること・`--force` push の前に tree assert 行があること・`fetch-depth: 1`。
 
@@ -59,6 +59,7 @@
     { "src": "sw.js", "use": "@vercel/static" },
     { "src": "manifest.webmanifest", "use": "@vercel/static" },
     { "src": "robots.txt", "use": "@vercel/static" },
+    { "src": "LICENSE", "use": "@vercel/static" },
     { "src": "favicon.svg", "use": "@vercel/static" },
     { "src": "favicon-32.png", "use": "@vercel/static" },
     { "src": "icons/**", "use": "@vercel/static" },
@@ -74,7 +75,7 @@
     { "src": "/vendor/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
     { "src": "/(icons/.*|favicon\\.svg|favicon-32\\.png)", "continue": true, "headers": { "Cache-Control": "public, max-age=86400" } },
     { "src": "/data/static/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" } },
-    { "src": "/(|index\\.html|about|terms|privacy|attribution|sw\\.js|manifest\\.webmanifest|robots\\.txt|js/.*|css/.*|config/.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
+    { "src": "/(|index\\.html|about|terms|privacy|attribution|sw\\.js|manifest\\.webmanifest|robots\\.txt|LICENSE|js/.*|css/.*|config/.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
     { "src": "/index\\.html", "status": 308, "headers": { "Location": "/" } },
     { "src": "/(about|terms|privacy|attribution)\\.html", "status": 308, "headers": { "Location": "/$1" } },
     { "src": "/(about|terms|privacy|attribution)", "dest": "/$1.html" },
@@ -103,7 +104,7 @@
   `vendor/maplibre-gl-5.24.0.js`・`vendor/maplibre-gl-5.24.0.css`・`vendor/deck.gl-core-9.3.4.min.js`・`vendor/deck.gl-layers-9.3.4.min.js`・`vendor/deck.gl-mapbox-9.3.4.min.js`（以上 head で `<script defer>`／`<link>`）・`vendor/deck.gl-mesh-layers-9.3.4.min.js`・`vendor/deck.gl-geo-layers-9.3.4.min.js`（遅延・この順）・`vendor/fonts/orbitron-latin.woff2`・`vendor/fonts/saira-latin.woff2`・`vendor/fonts/fonts.css`（`@font-face`×2・`font-weight: 600 800` / `400 700` の範囲指定・`font-display: swap`・`unicode-range` は Google の latin と同値）・`vendor/fonts/OFL-Orbitron.txt`・`vendor/fonts/OFL-Saira.txt`・`vendor/LICENSE-maplibre-gl.txt`（BSD-3）・`vendor/LICENSE-deck.gl.txt`（MIT）・`vendor/README.md`（上流 URL・取得日・再取得手順）。
 - 取得は `scripts/fetch_vendor.py`（unpkg の同一 URL と Google css2 API（Chrome UA・latin ブロックの woff2）から取得・**CDN と同一バイト**・`tests/vendor.sha256` を生成）。手で編集しない。
 - index.html: unpkg 2 本＋Google Fonts 3 行を撤去し、`<link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin>`・`<link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin>`・`vendor/maplibre-gl-5.24.0.css`・`vendor/fonts/fonts.css`・`<script defer>`×3（core→layers→mapbox の順・module script は仕様上 defer 相当で文書順に後で実行されるため `deck`/`maplibregl` は main.js 実行時に必ず存在する）。
-- **TripsLayer の遅延ロード**: `js/lib/vendor-loader.js` に `ensureTripsLayer(doc = document)`＝`globalThis.deck?.TripsLayer` があれば resolved／無ければ mesh-layers→geo-layers の順に `<script>` を 1 回だけ注入（Promise をモジュール内でキャッシュ・失敗時は reject して再試行可）。main.js の貿易フロー builder（176 行付近）は `deck.TripsLayer` が未定義なら `ensureTripsLayer().then(() => rebuild(overlay))` を起動して `null` を返す（ロード完了で再描画）。初期状態で `trade` が ON（permalink/保存/『交通』プリセット）でも同じ経路で自然に解決。
+- **TripsLayer の遅延ロード**: `js/lib/vendor-loader.js` に `ensureTripsLayer({ doc = document, root = globalThis } = {})`＝`globalThis.deck?.TripsLayer` があれば resolved／無ければ mesh-layers→geo-layers の順に `<script>` を 1 回だけ注入（Promise をモジュール内でキャッシュ・失敗時は reject して再試行可）。main.js の貿易フロー builder（176 行付近）は `deck.TripsLayer` が未定義なら `ensureTripsLayer().then(() => rebuild(overlay))` を起動して `null` を返す（ロード完了で再描画）。初期状態で `trade` が ON（permalink/保存/『交通』プリセット）でも同じ経路で自然に解決。
 - テスト: `tests/test_vendor_integrity.py`＝`tests/vendor.sha256` の全ファイル一致・vendor 一覧が過不足なし・HTML/CSS/JS（vendor 除く）に `unpkg.com`・`googleapis.com`・`gstatic.com` の文字列が無い・index.html の外部 `<script src>`/`<link href>` が 0／`tests/vendor_loader.test.js`（node:test・fake document で「2 本を順に注入」「二重呼び出しで 1 回」「既にある時は注入しない」）／e2e（§4-4）で『交通』ON→`deck.TripsLayer` が定義され pageerror 0。
 - e2e 用フック: main.js は `location.search` に `e2e=1` がある時だけ `window.__orbis = { map }` を公開（§4-4 の能力アサート用・通常導線では未定義）。
 - 実機確認（headless の画素は信用しない）: globe 投影・加算合成（quakes/conflict の発光）・貿易フローの軌跡アニメ・カメラのペイン。
