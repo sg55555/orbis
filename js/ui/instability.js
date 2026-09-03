@@ -1,4 +1,5 @@
 // 国家不安定性インデックス UI（純粋ヘルパ＋描画）。globe レイヤーは作らず DOM セクション＋flyTo。
+import { freshnessChipHtml, aiDisclaimerHtml, isPlaceholderNarrative } from './ai-meta.js';
 import { applyDataStyles } from '../lib/data-style.js';
 const LEVEL_RGB = { 1: [90, 200, 160], 2: [150, 210, 90], 3: [240, 200, 70], 4: [245, 150, 60], 5: [240, 80, 70] };
 
@@ -57,7 +58,10 @@ export function rowHtml(country) {
   const c = country || {};
   const ct = c.counts || { conflict: 0, protests: 0, news: 0, quakes: 0 };
   const col = scoreColor(c.score || 0);
-  const narr = c.narrative_ja ? `<p class="ins-narr">${esc(c.narrative_ja)}</p>` : '';
+  // 「分析できるデータが無かった」だけの定型文をそのまま出すと AI が何か言ったように見える。
+  const narr = isPlaceholderNarrative(c.narrative_ja)
+    ? '<p class="ins-narr ins-narr--none">AI 分析文なし（入力データ不足）</p>'
+    : `<p class="ins-narr">${esc(c.narrative_ja)}</p>`;
   return (
     `<div class="ins-row" data-style="--lvl:${col}">`
     + `<span class="ins-rank">${esc(c.rank || '')}</span>`

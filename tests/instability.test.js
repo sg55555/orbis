@@ -52,3 +52,25 @@ test('rowHtml: XSS エスケープ（name_ja/narrative_ja）', () => {
   assert.doesNotMatch(html, /<img src=x/);         // 生の img が出ない
   assert.match(html, /&quot;|&gt;/);               // 引用符/不等号がエスケープ
 });
+
+test('rowHtml: 定型 narrative は「AI 分析文なし（入力データ不足）」に置き換える', () => {
+  const html = rowHtml({ code: 'XX', name_ja: 'テスト国', score: 10,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+    narrative_ja: '与えたデータには不安定性を示す具体的な事象が記載されていない' });
+  assert.match(html, /<p class="ins-narr ins-narr--none">AI 分析文なし（入力データ不足）<\/p>/);
+  assert.ok(!html.includes('与えたデータには'), html);
+});
+
+test('rowHtml: narrative 欠落も「AI 分析文なし」を出す（無言の空欄にしない）', () => {
+  const html = rowHtml({ code: 'YY', name_ja: '別国', score: 5,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true } });
+  assert.match(html, /ins-narr--none/);
+});
+
+test('rowHtml: 実際の分析文はそのまま（escape 済み）出す', () => {
+  const html = rowHtml({ code: 'UP', name_ja: 'ウクライナ', score: 90,
+    counts: { conflict: 1, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+    narrative_ja: 'ロシアとの軍事紛争が継続している' });
+  assert.match(html, /<p class="ins-narr">ロシアとの軍事紛争が継続している<\/p>/);
+  assert.ok(!html.includes('ins-narr--none'), html);
+});
