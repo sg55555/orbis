@@ -2,6 +2,7 @@
 // instability（平常比 normal.deltaPct）と forecast（attention_score＋trend）から
 // 「平常比で今日突出した国/ドメイン」を抽出して横並びチップで表示。クリック→flyTo。
 import { DOMAIN_LABEL } from './forecast.js';
+import { relTime } from './sources.js';
 
 function esc(s) {
   return String(s == null ? '' : s).replace(/[&<>"']/g, (m) =>
@@ -16,6 +17,9 @@ function esc(s) {
 // 正規化重大度の降順で統合し limit 件（両種が混在する）。
 export function selectAlerts(instability, forecast, opts = {}) {
   const { limit = 6, insMinDeltaPct = 15, insMinScore = 12, fcMinScore = 60 } = opts;
+  // アラートは「いつのスナップショットの話か」を持って回る（AI 3 層は停止中で最大 11 日古い）。
+  const insUpdated = (instability && instability.updated) || '';
+  const fcUpdated = (forecast && forecast.generated_at) || '';
   const out = [];
 
   const insAlerts = [];
@@ -27,7 +31,7 @@ export function selectAlerts(instability, forecast, opts = {}) {
     if (!(Number(c.score) >= insMinScore)) continue;
     insAlerts.push({
       kind: 'instability', label: c.name_ja || c.code || '', detail: `平常比 +${d}%`,
-      severity: Math.min(100, d / 3), lon: c.lon, lat: c.lat, code: c.code,
+      severity: Math.min(100, d / 3), lon: c.lon, lat: c.lat, code: c.code, when: insUpdated,
     });
   }
   insAlerts.sort((a, b) => b.severity - a.severity);
@@ -46,7 +50,7 @@ export function selectAlerts(instability, forecast, opts = {}) {
     fcAlerts.push({
       kind: 'forecast',
       label: `${DOMAIN_LABEL[c.domain] || c.domain || ''} ${c.place_ja || ''}`.trim(),
-      detail: `注視度 ${s}`, severity: s, lon: c.lon, lat: c.lat, domain: c.domain,
+      detail: `注視度 ${s}`, severity: s, lon: c.lon, lat: c.lat, domain: c.domain, when: fcUpdated,
     });
   }
   fcAlerts.sort((a, b) => b.severity - a.severity);
@@ -61,18 +65,21 @@ export function selectAlerts(instability, forecast, opts = {}) {
   return out.slice(0, limit);
 }
 
-// アラートチップ1個の内側 HTML（escape 済み）。
-export function alertChipHtml(a) {
+// アラートチップ1個の内側 HTML（escape 済み）。opts.now は when の相対時刻の基準。
+// when が無い（＝時刻キーの無い snapshot）ときは何も出さない＝「今の話」に見せない。
+export function alertChipHtml(a, opts = {}) {
   const o = a || {};
+  const { now = Date.now() } = opts;
+  const when = o.when ? `<span class="alert-when">${esc(relTime(o.when, now))}</span>` : '';
   return `<span class="alert-chip alert-${esc(o.kind)}">`
     + '<span class="alert-ic">⚠</span>'
     + `<span class="alert-label">${esc(o.label)}</span>`
-    + `<em class="alert-detail">${esc(o.detail)}</em></span>`;
+    + `<em class="alert-detail">${esc(o.detail)}</em>${when}</span>`;
 }
 
 // rootEl=#alerts。alerts=selectAlerts の戻り。onSelect(alert) は座標ありでクリック時。
-// 0件ならバンドごと非表示。
-export function renderAlerts(rootEl, alerts, { onSelect } = {}) {
+// 0件ならバンドごと非表示。now は各チップの相対時刻の基準（既定は現在時刻）。
+export function renderAlerts(rootEl, alerts, { onSelect, now = Date.now() } = {}) {
   if (!rootEl) return;
   const items = alerts || [];
   rootEl.style.display = items.length ? '' : 'none';
@@ -82,7 +89,7 @@ export function renderAlerts(rootEl, alerts, { onSelect } = {}) {
     const el = document.createElement('button');
     el.type = 'button';
     el.className = 'alert-btn';
-    el.innerHTML = alertChipHtml(a);
+    el.innerHTML = alertChipHtml(a, { now });
     if (typeof a.lat === 'number' && typeof a.lon === 'number' && (a.lat || a.lon) && onSelect) {
       el.addEventListener('click', () => onSelect(a));
     } else {

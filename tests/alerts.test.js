@@ -102,3 +102,35 @@ test('alertChipHtml: label/detail を HTML エスケープしつつ kind クラ�
   assert.match(html, /&lt;x&gt;/);
   assert.match(html, /a&lt;b/);
 });
+
+test('selectAlerts: instability は updated・forecast は generated_at を when に載せる', () => {
+  const ins = { updated: '2026-08-23T08:16:24Z', countries: [
+    insCountry({ code: 'A', name_ja: 'A国', trend: { isNew: false, normal: { dir: 'up', deltaPct: 60 } } }),
+  ] };
+  const fc = { generated_at: '2026-08-23T08:16:56Z', cards: [
+    fcCard({ place_ja: 'P1', attention_score: 80, trend: 'up' }),
+  ] };
+  const out = selectAlerts(ins, fc, { insMinDeltaPct: 15, fcMinScore: 60 });
+  assert.equal(out.find((a) => a.kind === 'instability').when, '2026-08-23T08:16:24Z');
+  assert.equal(out.find((a) => a.kind === 'forecast').when, '2026-08-23T08:16:56Z');
+});
+
+test('selectAlerts: 時刻キーが無ければ when は空文字', () => {
+  const out = selectAlerts({ countries: [insCountry()] }, null, { insMinDeltaPct: 15, fcMinScore: 999 });
+  assert.equal(out[0].when, '');
+});
+
+test('alertChipHtml: 元 snapshot の相対時刻を alert-when に出す', () => {
+  const now = Date.parse('2026-09-03T00:00:00Z');
+  const html = alertChipHtml(
+    { kind: 'instability', label: 'A国', detail: '平常比 +60%', when: '2026-09-02T21:00:00Z' },
+    { now },
+  );
+  assert.match(html, /<span class="alert-when">3時間前<\/span>/);
+});
+
+test('alertChipHtml: when が無ければ alert-when を出さない（1 引数呼び出しも壊さない）', () => {
+  const html = alertChipHtml({ kind: 'forecast', label: 'P1', detail: '注視度 80' });
+  assert.ok(!html.includes('alert-when'), html);
+  assert.match(html, /alert-forecast/);
+});
