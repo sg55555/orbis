@@ -8,3 +8,11 @@ package.json
 docs/
 node_modules/
 .superpowers/
+.claude/
+.claire/
+.venv/
+.pytest_cache/
+data/snapshots/
+tools/
+*.md
+.closure-ok

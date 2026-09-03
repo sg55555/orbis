@@ -233,7 +233,6 @@ def test_site_foot_style_lives_in_orbis_css():
 
 
 # ── 時系列の整合（後続タスクで緑になる） ───────────────────────────
-@pytest.mark.xfail(strict=True, reason="Task 3 が vercel.json に builds を書いたら緑（Task 3 Step 10 でこの行を削除する）")
 def test_pages_are_declared_in_vercel_builds():
     cfg = json.loads(read("vercel.json"))
     built = {b["src"] for b in cfg.get("builds", [])}

@@ -1,5 +1,50 @@
 {
   "version": 2,
   "framework": null,
-  "cleanUrls": true
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" },
+    { "src": "404.html", "use": "@vercel/static" },
+    { "src": "about.html", "use": "@vercel/static" },
+    { "src": "terms.html", "use": "@vercel/static" },
+    { "src": "privacy.html", "use": "@vercel/static" },
+    { "src": "attribution.html", "use": "@vercel/static" },
+    { "src": "sw.js", "use": "@vercel/static" },
+    { "src": "manifest.webmanifest", "use": "@vercel/static" },
+    { "src": "robots.txt", "use": "@vercel/static" },
+    { "src": "LICENSE", "use": "@vercel/static" },
+    { "src": "favicon.svg", "use": "@vercel/static" },
+    { "src": "favicon-32.png", "use": "@vercel/static" },
+    { "src": "icons/**", "use": "@vercel/static" },
+    { "src": "js/**", "use": "@vercel/static" },
+    { "src": "css/**", "use": "@vercel/static" },
+    { "src": "vendor/**", "use": "@vercel/static" },
+    { "src": "data/static/**", "use": "@vercel/static" },
+    { "src": "config/live_channels.json", "use": "@vercel/static" },
+    { "src": "config/live_cameras.json", "use": "@vercel/static" }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "continue": true,
+      "headers": {
+        "Content-Security-Policy": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' https://raw.githubusercontent.com https://tiles.openfreemap.org wss://localhost:8900; frame-src https://www.youtube-nocookie.com; worker-src 'self' blob:; child-src 'self' blob:; manifest-src 'self'; media-src 'self'; upgrade-insecure-requests",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Permissions-Policy": "accelerometer=(), browsing-topics=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), midi=(), payment=(), publickey-credentials-get=(), screen-wake-lock=(), usb=(), xr-spatial-tracking=(), display-capture=(self)",
+        "Cross-Origin-Opener-Policy": "same-origin"
+      }
+    },
+    { "src": "/vendor/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { "src": "/(icons/.*|favicon\\.svg|favicon-32\\.png)", "continue": true, "headers": { "Cache-Control": "public, max-age=86400" } },
+    { "src": "/data/static/(.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=3600, stale-while-revalidate=86400" } },
+    { "src": "/(|index\\.html|about|terms|privacy|attribution|sw\\.js|manifest\\.webmanifest|robots\\.txt|LICENSE|js/.*|css/.*|config/.*)", "continue": true, "headers": { "Cache-Control": "public, max-age=0, must-revalidate" } },
+    { "src": "/index\\.html", "status": 308, "headers": { "Location": "/" } },
+    { "src": "/(about|terms|privacy|attribution)\\.html", "status": 308, "headers": { "Location": "/$1" } },
+    { "src": "/(about|terms|privacy|attribution)", "dest": "/$1.html" },
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/404\\.html", "status": 404, "dest": "/404.html" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "status": 404, "dest": "/404.html" }
+  ]
 }
