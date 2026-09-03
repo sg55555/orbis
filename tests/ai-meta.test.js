@@ -110,6 +110,12 @@ test('isPlaceholderNarrative: 実際の分析文 2 例では false', () => {
   assert.equal(isPlaceholderNarrative('司法と行政の対立および自然災害の脅威が存在する'), false);
 });
 
+// narrative_ja は LLM の自由文なので「具体的な事象」は肯定文にも出る。
+// 否定の言い回し（記載/確認/該当されていない・データ不足）だけを定型とみなす。
+test('isPlaceholderNarrative: 「具体的な事象」を含む肯定的な分析文を潰さない', () => {
+  assert.equal(isPlaceholderNarrative('紛争3件・抗議5件など具体的な事象が集中している'), false);
+});
+
 // --- ニュースが AI 翻訳/要約であることの明示（LEGAL-07） ---
 // renderFeed が触る DOM サーフェスは innerHTML / __wired / querySelectorAll（Task 6 が足した
 // applyDataStyles(root) 用）だけなので最小スタブで足りる

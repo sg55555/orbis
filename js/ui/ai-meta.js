@@ -47,7 +47,10 @@ export function aiDisclaimerHtml({ model, generatedAt } = {}) {
 
 // 「分析できるデータが無い」ことしか述べていない定型 narrative か（空/欠落も含む）。
 // 本番 instability.json（2026-09-03）は 25 件中、定型 5・narrative_ja 欠落 17。
-const PLACEHOLDER_RE = /記載されていない|データ(が|は|には)?不足|具体的な事象/;
+// narrative_ja は LLM の自由文（collectors/lib/instability.py）なので「具体的な事象」単独では
+// 判定しない＝「…具体的な事象が集中している」のような実分析文を覆い隠さないため、
+// 否定の言い回し（記載/確認/該当されていない・データ不足）だけを定型とみなす。
+const PLACEHOLDER_RE = /(記載|確認|該当)されていない|データ(が|は|には)?不足/;
 export function isPlaceholderNarrative(s) {
   const v = String(s == null ? '' : s).trim();
   if (!v) return true;
