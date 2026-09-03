@@ -40,6 +40,7 @@ import { regionShapePath } from './lib/drilldown/region_shape.js';
 import { nearestCity } from './lib/drilldown/nearest.js';
 import { zoomForBbox } from './lib/zoom_for_bbox.js';
 import { makeWatchlistStore, addCode, removeCode, joinWatchCountries } from './lib/drilldown/watchlist.js';
+import { ensureTripsLayer } from './lib/vendor-loader.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
   && (/[?&]cmap=(sst|twin|aqua)/i.exec(location.search) || [])[1] || 'sst').toLowerCase();
@@ -164,7 +165,8 @@ function refreshFeed() {
 // trade 航路上を流れる発光トレイル（TripsLayer）。粒子のちらつきを避け滑らかに流す。
 // trips は静的データなので一度だけ構築してキャッシュ。
 let tradeTrips = null;
-function tradeFlowLayer() {
+let tripsLoading = false; // geo-layers 遅延ロードの二重起動ガード（drawAll は rAF から毎フレーム走る）
+function tradeFlowLayer(overlay) {
   const geo = snapshots.trade;
   if (!geo || !geo.features || REDUCED) return null;
   if (!tradeTrips) {
@@ -173,6 +175,16 @@ function tradeFlowLayer() {
       .map((f) => ({ path: f.geometry.coordinates, timestamps: normalizedTimestamps(f.geometry.coordinates) }));
   }
   if (tradeTrips.length === 0) return null;
+  // TripsLayer は @deck.gl/geo-layers（mesh-layers 依存）＝『交通』を開いた時だけ遅延ロードする（A2）。
+  // 未ロードなら 1 回だけ注入を起動し、この回は null（trade-flow 抜き）で描く。完了後の rebuild で出る。
+  // 失敗しても再試行しない（drawAll は rAF から毎フレーム走るので再試行の嵐になる）。
+  if (typeof deck.TripsLayer !== 'function') {
+    if (!tripsLoading) {
+      tripsLoading = true;
+      ensureTripsLayer().then(() => rebuild(overlay)).catch(() => {});
+    }
+    return null;
+  }
   return new deck.TripsLayer({
     id: 'trade-flow', data: tradeTrips,
     getPath: (d) => d.path, getTimestamps: (d) => d.timestamps,
@@ -303,7 +315,7 @@ function drawAll(overlay) {
   const zoom = (window.__orbis && window.__orbis.map) ? window.__orbis.map.getZoom() : 3;
   const base = buildBaseLayers(zoom);
   const extra = [];
-  if (ENABLED.has('trade')) { const fp = tradeFlowLayer(); if (fp) extra.push(fp); }
+  if (ENABLED.has('trade')) { const fp = tradeFlowLayer(overlay); if (fp) extra.push(fp); }
   const pl = pulseLayer(now); if (pl) extra.push(pl);
   if (ENABLED.has('quakes')) { const rp = quakeRippleLayer(); if (rp) extra.push(rp); }
   if (ENABLED.has('firms')) { const fp = firmsPulseLayer(); if (fp) extra.push(fp); }
