@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml, projLabel, gdeltEventPopupHtml, gdeltCountryPopupHtml } from '../js/lib/selection.js';
+import { selectionPopupHtml, buildReticleConfigs, escapeHtml, flightPopupHtml, buildProjectionConfigs, shipPopupHtml, projLabel, newsPopupHtml, gdeltEventPopupHtml, gdeltCountryPopupHtml } from '../js/lib/selection.js';
 
 test('escapeHtml: HTMLメタ文字を実体参照に / null→空', () => {
   assert.equal(escapeHtml('<b>"&"</b>'), '&lt;b&gt;&quot;&amp;&quot;&lt;/b&gt;');
@@ -138,4 +138,13 @@ test('gdeltCountryPopupHtml: 国サマリ（件数・最多種類・出典）・
 test('gdelt popups: null 安全', () => {
   assert.equal(typeof gdeltEventPopupHtml(null, 'conflict'), 'string');
   assert.equal(typeof gdeltCountryPopupHtml(null), 'string');
+});
+
+test('外部リンクは rel="noopener noreferrer"（Referer とタブ乗っ取りの両方を閉じる）', () => {
+  const news = newsPopupHtml({ title_ja: 'T', category: 'conflict', url: 'https://example.com/a' });
+  const ev = gdeltEventPopupHtml({ url: 'https://example.com/b', mentions: 3, place: 'JA' }, 'conflict');
+  for (const h of [news, ev]) {
+    assert.match(h, /rel="noopener noreferrer"/);
+    assert.ok(!h.includes('rel="noopener"'), h);
+  }
 });

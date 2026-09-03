@@ -68,11 +68,12 @@ export function buildSourceRows(layers, snapshots, counts, sourceMap, now, opts 
 }
 
 // 1行の HTML（escape 済み・URL は http/https のみリンク化）。
+// rel は noopener noreferrer（新規タブからの window.opener 乗っ取りと Referer 送出の両方を閉じる）。
 export function sourceRowHtml(row) {
   const r = row || {};
   const safe = /^https?:\/\//i.test(r.url || '');
   const srcHtml = safe
-    ? `<a class="src-link" href="${esc(r.url)}" target="_blank" rel="noopener">${esc(r.source)} ↗</a>`
+    ? `<a class="src-link" href="${esc(r.url)}" target="_blank" rel="noopener noreferrer">${esc(r.source)} ↗</a>`
     : `<span class="src-src">${esc(r.source)}</span>`;
   return `<div class="src-row${r.stale ? ' src-stale' : ''}">`
     + `<span class="src-name">${esc(r.label)}</span>`

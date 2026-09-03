@@ -67,3 +67,9 @@ test('SOURCE_MAP: 主要レイヤーの出典定義を持つ', () => {
     assert.ok(SOURCE_MAP[id] && SOURCE_MAP[id].source, `${id} の出典定義`);
   }
 });
+
+test('sourceRowHtml: 外部リンクは rel="noopener noreferrer"', () => {
+  const h = sourceRowHtml({ label: 'USGS', rel: '1分前', count: 3, source: 'USGS', url: 'https://earthquake.usgs.gov' });
+  assert.match(h, /rel="noopener noreferrer"/);
+  assert.ok(!h.includes('rel="noopener"'), h);
+});

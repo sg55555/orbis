@@ -174,7 +174,7 @@ export function newsPopupHtml(p) {
     + '<span class="ai-tag">見出しからのAI要約</span></div>'
     + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
     + `<div class="sel-hint"><a class="sel-link" data-style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
-    + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
+    + ` target="_blank" rel="noopener noreferrer">${escapeHtml(host)} ↗</a></div>`
     + '</div>';
 }
 
@@ -197,7 +197,7 @@ export function gdeltEventPopupHtml(event, layerId) {
     + `<span class="sel-title">${escapeHtml(label + sub)}</span></div>`
     + `<div class="sel-meta">${escapeHtml(placeName)}｜報道 ${m}件</div>`
     + `<div class="sel-hint"><a class="sel-link" data-style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
-    + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
+    + ` target="_blank" rel="noopener noreferrer">${escapeHtml(host)} ↗</a></div>`
     + '<div class="sel-hint">📍 この地点へ移動しました</div>'
     + '</div>';
 }
