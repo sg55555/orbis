@@ -9,6 +9,9 @@ import {
 } from '../js/ui/ai-meta.js';
 import { newsPopupHtml } from '../js/lib/selection.js';
 import { renderFeed } from '../js/ui/feed.js';
+import { renderBriefing } from '../js/ui/briefing.js';
+import { renderInstability } from '../js/ui/instability.js';
+import { renderForecasts } from '../js/ui/forecast.js';
 
 const NOW = Date.parse('2026-09-03T00:00:00Z');
 const ago = (ms) => new Date(NOW - ms).toISOString();
@@ -133,4 +136,127 @@ test('newsPopupHtml: AI 要約であることを明示するタグを含む', ()
     category: 'conflict', url: 'https://example.com/a',
   });
   assert.match(h, /<span class="ai-tag">見出しからのAI要約<\/span>/);
+});
+
+// --- 差し込みの配線（ソース突合）。ブラウザ実挙動は Task 10 の e2e が担保する ---
+const read = (p) => readFileSync(new URL(p, import.meta.url), 'utf8');
+
+test('index.html: 『毎時更新』の虚偽文言が無く、鮮度チップの置き場が 3 つある', () => {
+  const html = read('../index.html');
+  assert.ok(!html.includes('毎時更新'), 'AI 3 層は 2026-08-23 で停止中＝毎時更新ではない');
+  for (const id of ['brief-fresh', 'ins-fresh', 'fc-fresh']) {
+    assert.ok(html.includes(`<span class="fresh-chip-slot" id="${id}"></span>`), id);
+  }
+});
+
+// 補助: モジュール結線の静的確認（差し込みの中身は下の 5 本が挙動で測る）。
+test('briefing / instability / forecast が ai-meta を import している', () => {
+  for (const p of ['../js/ui/briefing.js', '../js/ui/instability.js', '../js/ui/forecast.js']) {
+    assert.match(read(p), /from '\.\/ai-meta\.js'/, p);
+  }
+});
+
+// --- 差し込みの挙動（最小 DOM シムで実際に描かせる） ---
+// repo 既存の DOM スタブ idiom（tests/drilldown_render.test.js・tests/data-style.test.js）に倣う。
+// querySelector は「同じセレクタなら同じ要素」を返す遅延生成なので、描画後に同じ呼び出しで読み戻せる。
+// getAttribute が常に null なので Task 6 の applyDataStyles(el) は 0 件適用で素通りする。
+function makeEl(tag = 'div') {
+  const kids = new Map();
+  const el = {
+    tagName: String(tag).toUpperCase(),
+    type: '', className: '', textContent: '', innerHTML: '', disabled: false,
+    dataset: {}, children: [], _parent: null,
+    style: { display: '', setProperty() {} },
+    classList: { add() {}, remove() {}, toggle() {}, contains: () => false },
+    get parentElement() { if (!el._parent) el._parent = makeEl('div'); return el._parent; },
+    appendChild(c) { el.children.push(c); return c; },
+    insertAdjacentHTML(_pos, html) { el.innerHTML += html; },
+    addEventListener() {},
+    querySelector(sel) { if (!kids.has(sel)) kids.set(sel, makeEl('div')); return kids.get(sel); },
+    querySelectorAll: () => [],
+    getAttribute: () => null,
+    removeAttribute() {},
+  };
+  return el;
+}
+
+// 3 renderer は document.createElement を使うので、その間だけ global に生やす。
+function withFakeDocument(fn) {
+  const prev = globalThis.document;
+  globalThis.document = { createElement: (t) => makeEl(t) };
+  try { return fn(); } finally {
+    if (prev === undefined) delete globalThis.document; else globalThis.document = prev;
+  }
+}
+
+test('renderBriefing: 停止中なら #brief-fresh に is-stale チップ・カード末尾に免責 1 個', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderBriefing(root, {
+    updated: '2026-08-23T08:14:18Z', model: 'claude-sonnet-4-6', lead: 'リード',
+    cards: [{ title_ja: 'A', summary_ja: 'B', category: 'conflict', severity: 2 }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#brief-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  assert.equal(root.querySelector('.brief-lead').textContent, 'リード');
+  const cards = root.querySelector('.brief-cards');
+  assert.equal(cards.children.length, 1, 'カードは 1 枚');
+  assert.match(cards.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-sonnet-4-6・2026-08-23 08:14 UTC）/);
+  assert.equal((cards.innerHTML.match(/ai-disclaimer/g) || []).length, 1, '免責は 1 個だけ');
+});
+
+test('renderBriefing: 1 時間前なら is-stale を付けない', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderBriefing(root,
+    { updated: new Date(NOW - 3600e3).toISOString(), lead: '', cards: [] }, { now: NOW }));
+  const chip = root.querySelector('#brief-fresh').innerHTML;
+  assert.match(chip, /最終更新 1時間前/);
+  assert.ok(!chip.includes('is-stale'), chip);
+});
+
+test('renderInstability: #ins-fresh のチップ・定型 narrative の置換・末尾の免責', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderInstability(root, {
+    updated: '2026-08-23T08:16:24Z', model: 'claude-haiku-4-5',
+    countries: [{ code: 'IZ', name_ja: 'イラク', score: 87, lat: 33, lon: 44,
+      counts: { conflict: 1, protests: 0, news: 0, quakes: 0 }, trend: { isNew: true },
+      narrative_ja: '与えたデータには不安定性を示す具体的な事象が記載されていない' }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#ins-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  const rank = root.querySelector('.ins-rank-list');
+  assert.equal(rank.children.length, 1, 'ランキング行は 1 件');
+  assert.match(rank.children[0].innerHTML, /ins-narr--none/);
+  assert.match(rank.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-haiku-4-5・2026-08-23 08:16 UTC）/);
+});
+
+test('renderForecasts: #fc-fresh のチップとリスト末尾の免責', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderForecasts(root, {
+    generated_at: '2026-08-23T08:16:56Z', model: 'claude-haiku-4-5',
+    cards: [{ domain: 'conflict', place_ja: 'X', attention_score: 70, trend: 'up',
+      status: 'active', confidence: 'high', horizon: '1週間', signals: [],
+      outlook_ja: 'o', rationale_ja: 'r' }],
+  }, { now: NOW }));
+  const chip = root.querySelector('#fc-fresh').innerHTML;
+  assert.match(chip, /class="fresh-chip is-stale"/);
+  assert.match(chip, /更新停止中 · 最終 10日前/);
+  const list = root.querySelector('.fc-list');
+  assert.equal(list.children.length, 1, 'カードは 1 枚');
+  assert.match(list.innerHTML,
+    /^<p class="ai-disclaimer">AI 生成（claude-haiku-4-5・2026-08-23 08:16 UTC）/);
+});
+
+test('renderForecasts: 時刻キーは generated_at を優先する（updated と取り違えない）', () => {
+  const root = makeEl();
+  withFakeDocument(() => renderForecasts(root, {
+    generated_at: new Date(NOW - 3600e3).toISOString(),
+    updated: '2026-08-23T00:00:00Z', cards: [],
+  }, { now: NOW }));
+  const chip = root.querySelector('#fc-fresh').innerHTML;
+  assert.match(chip, /最終更新 1時間前/, 'updated（11日前）を使うと is-stale になってしまう');
+  assert.ok(!chip.includes('is-stale'), chip);
 });

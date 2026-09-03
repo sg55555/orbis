@@ -20,6 +20,7 @@ import { renderInstability } from './ui/instability.js';
 import { renderForecasts } from './ui/forecast.js';
 import { selectAlerts, renderAlerts } from './ui/alerts.js';
 import { buildSourceRows, renderSources, SOURCE_MAP } from './ui/sources.js';
+import { FRESH_AI_MS } from './ui/ai-meta.js';
 import { initBoot } from './ui/boot.js';
 import { snapshotUrl } from './lib/data-source.js';
 import { initLiveCaptions } from './ui/live-captions.js';
@@ -90,6 +91,11 @@ let cc = null;             // 国ドリルダウン: initCountryClick の戻り�
 const _wlStore = makeWatchlistStore({ storage: typeof localStorage !== 'undefined' ? localStorage : null });
 let _watchCodes = _wlStore.load();  // string[]（FIPS コード配列）
 let _insCountries = null;           // instability.countries（joinWatchCountries で参照）
+// AI 3 層の生スナップショット。updateFreshness() は boot より前のスコープに居て
+// window.__orbis（boot 内で代入）をまだ持てないので、_insCountries と同じく module-local に
+// 置く。鮮度ピル・アラート・ソースパネルのデータ経路はこれを正とし、window.__orbis 側は
+// デバッグ/e2e 用のミラーに徹する（読み口を 2 つに割らない）。
+const _aiSnaps = { briefing: null, instability: null, forecast: null };
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
 const SHIP_PROJECT_MIN = 600; // 船は低速なので約10時間の長延長（12knで約222km先）。引きで到達ポインタが船首に重ならないように。
 
@@ -104,17 +110,33 @@ function showPopup(lngLat, html) {
 
 // 全有効レイヤーの鮮度を各 snapshot の updated から直読して可視化する。
 // manifest 非依存なので、収集失敗でレイヤーが manifest から消えても古さが見える（沈黙の陳腐化を防ぐ）。
+// AI 3 層（briefing/instability/forecast）と news は同じ hourly-ai schedule で動くため、
+// 通常レイヤーの 6h ではなく FRESH_AI_MS（24h）で別集計する。freshnessSummary は
+// staleSec を 1 つしか取らないので 2 群に分けて呼び、テキストを連結し stale は OR で合成する。
+const AI_FRESH_LABEL = {
+  briefing: 'ブリーフィング', instability: '不安定性', forecast: '予測',
+};
 function updateFreshness() {
   const items = [];
+  const aiItems = [];
   for (const l of layers) {
     if (!ENABLED.has(l.id)) continue;
     const snap = snapshots[l.id];
-    if (snap && snap.updated) items.push({ label: l.label, updated: snap.updated });
+    if (!snap || !snap.updated) continue;
+    (l.id === 'news' ? aiItems : items).push({ label: l.label, updated: snap.updated });
+  }
+  for (const id of Object.keys(AI_FRESH_LABEL)) {
+    const s = _aiSnaps[id];
+    const updated = s && (s.updated || s.generated_at);
+    if (updated) aiItems.push({ label: AI_FRESH_LABEL[id], updated });
   }
   const { text, stale } = freshnessSummary(items);
+  const ai = aiItems.length
+    ? freshnessSummary(aiItems, Date.now(), FRESH_AI_MS / 1000)
+    : null;
   const el = document.getElementById('freshness');
-  el.textContent = text;
-  el.classList.toggle('stale', stale);
+  el.textContent = ai ? `${text} ／ AI ${ai.text}` : text;
+  el.classList.toggle('stale', stale || !!(ai && ai.stale));
 }
 
 function rebuild(overlay) {
@@ -678,7 +700,8 @@ function boot() {
             drawAll(overlay);
           },
         });
-        if (window.__orbis) window.__orbis.brief = brief;
+        _aiSnaps.briefing = brief;
+        if (window.__orbis) window.__orbis.brief = brief; // ?e2e=1 のデバッグ用ミラー
       } else if (briefRoot) {
         briefRoot.style.display = 'none';
       }
@@ -702,7 +725,8 @@ function boot() {
         // patch #7: instability.countries をキャッシュし、ウォッチリストの join に使う。
         _insCountries = ins.countries;
         refreshWatchlist();
-        if (window.__orbis) window.__orbis.instability = ins;
+        _aiSnaps.instability = ins;
+        if (window.__orbis) window.__orbis.instability = ins; // ?e2e=1 のデバッグ用ミラー
       } else if (insRoot) {
         insRoot.style.display = 'none';
       }
@@ -723,7 +747,8 @@ function boot() {
             drawAll(overlay);
           },
         });
-        if (window.__orbis) window.__orbis.forecasts = fc;
+        _aiSnaps.forecast = fc;
+        if (window.__orbis) window.__orbis.forecasts = fc; // ?e2e=1 のデバッグ用ミラー
       } else if (fcRoot) {
         fcRoot.style.display = 'none';
       }
@@ -734,8 +759,9 @@ function boot() {
     // 異常スパイク・アラート帯（globe 直下の全幅バンド）。instability/forecast の急変を集約。
     const alertsRoot = document.getElementById('alerts');
     if (alertsRoot) {
-      const alertItems = selectAlerts(window.__orbis.instability, window.__orbis.forecasts);
+      const alertItems = selectAlerts(_aiSnaps.instability, _aiSnaps.forecast);
       renderAlerts(alertsRoot, alertItems, {
+        now: Date.now(),
         onSelect: (a) => {
           map.flyTo({ center: [a.lon, a.lat], zoom: 4, duration: 1500, essential: true });
           selected = { lon: a.lon, lat: a.lat, title: a.label, layerId: a.kind === 'forecast' ? 'forecast' : 'instability', at: performance.now() };
@@ -757,14 +783,16 @@ function boot() {
         { id: 'forecast', label: 'AI FORECASTS' },
       ];
       const srcSnapshots = { ...snapshots,
-        briefing: window.__orbis.brief, instability: window.__orbis.instability, forecast: window.__orbis.forecasts };
+        briefing: _aiSnaps.briefing, instability: _aiSnaps.instability, forecast: _aiSnaps.forecast };
       const srcCounts = { ...(window.__orbis.counts || {}),
-        briefing: window.__orbis.brief?.cards?.length || 0,
-        instability: window.__orbis.instability?.countries?.length || 0,
-        forecast: window.__orbis.forecasts?.cards?.length || 0 };
+        briefing: _aiSnaps.briefing?.cards?.length || 0,
+        instability: _aiSnaps.instability?.countries?.length || 0,
+        forecast: _aiSnaps.forecast?.cards?.length || 0 };
       const rows = buildSourceRows([...layers, ...aiEntries], srcSnapshots, srcCounts, SOURCE_MAP, Date.now());
       renderSources(sourcesRoot, rows);
     };
+    // AI 3 層が出そろってから鮮度ピルを引き直す（rebuild は AI 取得より前に走る）。
+    updateFreshness();
     refreshSources();
 
     startPolling(POLL_LAYERS, POLL_MS, (polled) => {

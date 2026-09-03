@@ -75,12 +75,16 @@ export function rowHtml(country) {
   );
 }
 
-// rootEl=#instability。data={updated, countries:[...]}。onSelect(country) は座標ありでクリック時。
-export function renderInstability(rootEl, data, { onSelect } = {}) {
+// rootEl=#instability。data={updated, model, countries:[...]}。onSelect(country) は座標ありでクリック時。
+// now は鮮度チップの基準時刻（既定は現在時刻）。
+export function renderInstability(rootEl, data, { onSelect, now = Date.now() } = {}) {
   if (!rootEl) return;
-  const countries = (data && data.countries) || [];
+  const d = data || {};
+  const countries = d.countries || [];
   const rankWrap = rootEl.querySelector('.ins-rank-list');
   const moveWrap = rootEl.querySelector('.ins-mover-list');
+  const freshEl = rootEl.querySelector('#ins-fresh');
+  if (freshEl) freshEl.innerHTML = freshnessChipHtml({ updated: d.updated, now });
   if (!rankWrap || !moveWrap) return;
   rankWrap.innerHTML = '';
   moveWrap.innerHTML = '';
@@ -98,6 +102,8 @@ export function renderInstability(rootEl, data, { onSelect } = {}) {
     return el;
   };
   rankTop(countries, 15).forEach((c) => rankWrap.appendChild(mkRow(c)));
+  // 決定論スコアは自前だが narrative は AI 生成なのでリスト末尾に免責を 1 つ置く。
+  rankWrap.insertAdjacentHTML('beforeend', aiDisclaimerHtml({ model: d.model, generatedAt: d.updated }));
   const movers = topMovers(countries, 5);
   moveWrap.parentElement.style.display = movers.length ? '' : 'none';
   movers.forEach((c) => moveWrap.appendChild(mkRow(c)));

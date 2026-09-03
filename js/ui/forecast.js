@@ -1,4 +1,5 @@
 // AI FORECASTS UI（純粋ヘルパ＋描画）。globe レイヤーは作らず DOM＋flyTo。
+import { freshnessChipHtml, aiDisclaimerHtml } from './ai-meta.js';
 import { applyDataStyles } from '../lib/data-style.js';
 export const DOMAIN_LABEL = { all:'ALL', conflict:'紛争', market:'市場', supply_chain:'供給網',
   political:'政治', military:'軍事', cyber:'サイバー', infra:'インフラ/災害' };
@@ -22,12 +23,17 @@ export function tabsHtml(active){
   return TAB_ORDER.map((d)=>`<button type="button" data-dom="${d}" class="fc-tab${d===active?' fc-tab-active':''}">`
     +`${esc(DOMAIN_LABEL[d]||d)}</button>`).join('');
 }
-export function renderForecasts(rootEl, data, { onSelect } = {}){
+export function renderForecasts(rootEl, data, { onSelect, now = Date.now() } = {}){
   if(!rootEl) return;
-  const cards=(data&&data.cards)||[];
+  const d=data||{};
+  const cards=d.cards||[];
   const tabs=rootEl.querySelector('.fc-tabs');
   const list=rootEl.querySelector('.fc-list');
+  const freshEl=rootEl.querySelector('#fc-fresh');
   if(!tabs||!list) return;
+  // forecast.json の時刻キーは generated_at（本番実データで確認・updated は持たない）。
+  const updated=d.generated_at || d.updated;
+  if(freshEl) freshEl.innerHTML=freshnessChipHtml({ updated, now });
   let active='all';
   const draw=()=>{
     tabs.innerHTML=tabsHtml(active);
@@ -41,6 +47,8 @@ export function renderForecasts(rootEl, data, { onSelect } = {}){
       } else { el.disabled=true; }
       list.appendChild(el);
     });
+    // タブを切り替えても免責は残す（毎回リスト末尾に 1 つ）。
+    list.insertAdjacentHTML('beforeend', aiDisclaimerHtml({ model: d.model, generatedAt: updated }));
     tabs.querySelectorAll('.fc-tab').forEach((b)=>b.addEventListener('click',()=>{active=b.dataset.dom;draw();}));
   };
   draw();
