@@ -13,8 +13,11 @@ export function scoreColor(score) {
 export function trendArrow(dir) {
   return dir === 'up' ? '▲' : dir === 'down' ? '▼' : '─';
 }
+// 上流 JSON 由来の値をそのまま文字列連結すると HTML が素通りする（この位置は esc を通さない）。
+// 数値でなければ 0 に潰す＝型で閉じる。
 export function fmtSignedPct(n) {
-  return (n > 0 ? '+' : '') + n + '%';
+  const v = Number(n) || 0;
+  return (v > 0 ? '+' : '') + v + '%';
 }
 export function rankTop(countries, n) {
   return (countries || []).slice(0, n);
@@ -46,8 +49,10 @@ function _trendBadges(tr) {
   if (!tr || tr.isNew) return '<span class="ins-new">新規</span>';
   // 昨日比(dod)・平常比(normal) を常に同順の2スロットで出力。欠落側は空プレースホルダ＝
   // デザイン監修の固定2カラム整列（body.secfit-on .ins-trend）で縦ラインが片方欠落行でも崩れないため。
+  // delta/deltaPct は上流 JSON 由来なので Number で数値に固定する（数値化できない値は 0）。
+  const dodDelta = tr.dod ? (Number(tr.dod.delta) || 0) : 0;
   const dod = tr.dod
-    ? `<span class="ins-tr ins-dod ins-${esc(tr.dod.dir)}">${trendArrow(tr.dod.dir)}昨日比${tr.dod.delta > 0 ? '+' : ''}${tr.dod.delta}</span>`
+    ? `<span class="ins-tr ins-dod ins-${esc(tr.dod.dir)}">${trendArrow(tr.dod.dir)}昨日比${dodDelta > 0 ? '+' : ''}${dodDelta}</span>`
     : '<span class="ins-tr ins-dod ins-none" aria-hidden="true"></span>';
   const normal = tr.normal
     ? `<span class="ins-tr ins-normal ins-${esc(tr.normal.dir)}">${trendArrow(tr.normal.dir)}平常比${fmtSignedPct(tr.normal.deltaPct)}</span>`

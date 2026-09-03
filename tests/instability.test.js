@@ -74,3 +74,22 @@ test('rowHtml: 実際の分析文はそのまま（escape 済み）出す', () =
   assert.match(html, /<p class="ins-narr">ロシアとの軍事紛争が継続している<\/p>/);
   assert.ok(!html.includes('ins-narr--none'), html);
 });
+
+test('fmtSignedPct: 数値化できない値は 0%（HTML を素通ししない）', () => {
+  assert.equal(fmtSignedPct('12'), '+12%');
+  assert.equal(fmtSignedPct(-3), '-3%');
+  assert.equal(fmtSignedPct('<img src=x onerror=alert(1)>'), '0%');
+  assert.equal(fmtSignedPct(undefined), '0%');
+  assert.equal(fmtSignedPct(null), '0%');
+});
+
+test('rowHtml: trend の delta/deltaPct に HTML を入れても出力に生タグが出ない', () => {
+  const html = rowHtml({ code: 'XX', name_ja: 'X国', score: 30,
+    counts: { conflict: 0, protests: 0, news: 0, quakes: 0 },
+    trend: { isNew: false,
+      dod: { dir: 'up', delta: '<img src=x onerror=alert(1)>' },
+      normal: { dir: 'up', deltaPct: '<img src=y>' } } });
+  assert.ok(!html.includes('<img'), html);
+  assert.match(html, /昨日比0/);
+  assert.match(html, /平常比0%/);
+});
