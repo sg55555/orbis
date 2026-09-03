@@ -8,11 +8,9 @@
   正としてページ側を追従させる。文章を後から足したり層を増やしたりした時、ページが
   黙って嘘になるのを防ぐ。
 
-この時点で **意図的に赤いテスト（xfail strict）が 3 件**ある（時系列の整合）:
-- test_pages_are_declared_in_vercel_builds … Task 3 が vercel.json を書いたら緑。Task 3 Step 10 が xfail を外す。
-- test_no_youtube_com_embed_in_served_code … Task 8（part3）が youtube-nocookie 化したら緑。Task 8 が xfail を外す。
-- test_external_links_are_noopener_noreferrer … Task 8（part3）が rel を直したら緑。Task 8 が xfail を外す。
-strict=True なので「まだ直っていないのに緑」も「直したのに xfail のまま」も検出される。
+当初は時系列の整合のため **意図的に赤いテスト（xfail strict）を 3 件**置いていたが、
+すべて実装が入って解除済み（vercel.json＝Task 3／youtube-nocookie・rel＝Task 8）。
+本ファイルに xfail は残っていない＝全件が無条件で緑であることを期待する。
 """
 import json
 import pathlib
@@ -240,7 +238,6 @@ def test_pages_are_declared_in_vercel_builds():
     assert missing == [], f"vercel.json の builds に無い＝配信されない: {missing}"
 
 
-@pytest.mark.xfail(strict=True, reason="Task 8（part3）が youtube-nocookie 化したら緑（Task 8 でこの行を削除する）")
 def test_no_youtube_com_embed_in_served_code():
     hits = []
     for p in [ROOT / "index.html"] + sorted((ROOT / "js").rglob("*.js")):
@@ -249,7 +246,6 @@ def test_no_youtube_com_embed_in_served_code():
     assert hits == [], f"youtube.com/embed が残っている（youtube-nocookie.com にする）: {hits}"
 
 
-@pytest.mark.xfail(strict=True, reason="Task 8（part3）が rel を noopener noreferrer にしたら緑（Task 8 でこの行を削除する）")
 def test_external_links_are_noopener_noreferrer():
     hits = []
     for p in [ROOT / "index.html"] + sorted((ROOT / "js").rglob("*.js")):

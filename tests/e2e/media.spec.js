@@ -30,7 +30,7 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
     const srcs = await page.locator('#cams-grid .cam-cell:not(.empty) iframe').evaluateAll(
       (fs) => fs.map((f) => f.getAttribute('src') || ''),
     );
-    return srcs.length > 0 && srcs.every((s) => s.includes('youtube.com/embed/'));
+    return srcs.length > 0 && srcs.every((s) => s.includes('youtube-nocookie.com/embed/'));
   }, { timeout: 3000 }).toBe(true);
 
   // 字幕トグル：既定ON → src に cc_lang_pref=ja。OFFにすると消える。再ONで復活。
@@ -74,7 +74,7 @@ test('media dual-pane: news + cameras structure', async ({ page }) => {
     const srcs = await page.locator('#cams-grid .cam-cell:not(.empty) iframe').evaluateAll(
       (frames) => frames.map((f) => f.getAttribute('src')),
     );
-    return srcs.length > 1 && srcs.every((s) => s && s.includes('youtube.com/embed/'));
+    return srcs.length > 1 && srcs.every((s) => s && s.includes('youtube-nocookie.com/embed/'));
   }, { timeout: 3000 }).toBe(true);
 
   // カメラクリックで flyTo（地図中心が変化・地上カメラ）
