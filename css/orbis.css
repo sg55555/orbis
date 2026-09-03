@@ -1794,3 +1794,8 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
 }
 .ins-narr.ins-narr--none { color: var(--text-muted-3); font-style: italic; opacity: .85; }
 /* ===== /A3 表示の正直さ ===== */
+
+/* ===== A4 公開の体裁 — AI 字幕の送信先注記 ===== */
+/* 画面キャプチャの音声をどこへ送るのかを、トグルの隣で必ず読める位置に置く。 */
+.lc-note { flex: 1 1 100%; font-size: 11px; line-height: 1.6; color: var(--muted); }
+@media (min-width: 900px) { .lc-note { flex: 0 1 auto; } }

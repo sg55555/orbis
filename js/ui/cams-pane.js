@@ -75,6 +75,7 @@ export function renderCamsPane(paneEl, cams, { onSelect } = {}) {
     if (t) { img.src = t; img.alt = ''; cell.appendChild(img); }
     const f = document.createElement('iframe');
     f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+    f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
     f.setAttribute('allowfullscreen', '');
     cell.appendChild(f);
     const label = document.createElement('span');

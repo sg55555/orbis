@@ -114,6 +114,7 @@
           <label class="cc-toggle"><input type="checkbox" id="media-cc-toggle" checked> 字幕</label>
           <span class="cc-note">※ 配信に字幕がある場合のみ表示（多くは英語・YouTube）</span>
           <label class="cc-toggle"><input type="checkbox" id="lc-toggle"> AI字幕(日本語)</label>
+          <small class="lc-note">タブの音声をこの端末の変換サーバー（localhost:8900）へ送ります。外部には送信しません。</small>
         </div>
         <div id="media-news" class="media-pane">
           <div class="pane-head">
@@ -121,7 +122,7 @@
             <div class="news-tabs" id="news-tabs"></div>
           </div>
           <div class="media-player">
-            <iframe id="news-frame" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>
+            <iframe id="news-frame" allow="autoplay; encrypted-media; picture-in-picture" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
           </div>
           <div class="pane-now news-now">—</div>
         </div>

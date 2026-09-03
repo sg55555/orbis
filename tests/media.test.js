@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   buildEmbedUrl, thumbUrl, defaultItem, itemById,
   areasPresent, camsByArea, gridCount, gridSlots, AREA_LABEL,
@@ -15,16 +16,18 @@ const CAMS = [
   { id: 'paris', name: 'Paris', region: 'パリ', area: 'europe', video_id: 'OzYp4NRZlwQ', lat: 48.86, lon: 2.29 },
 ];
 
-test('buildEmbedUrl: channel_id 形式', () => {
+test('buildEmbedUrl: channel_id 形式（youtube-nocookie）', () => {
   const u = buildEmbedUrl(NEWS[0]);
-  assert.ok(u.startsWith('https://www.youtube.com/embed/live_stream?channel=UCNye-wNBqNL5ZzHSJj3l8Bg'));
+  assert.ok(u.startsWith('https://www.youtube-nocookie.com/embed/live_stream?channel=UCNye-wNBqNL5ZzHSJj3l8Bg'), u);
   assert.ok(u.includes('autoplay=1') && u.includes('mute=1'));
+  assert.ok(!u.includes('www.youtube.com/'), '通常ドメインを使わない');
 });
 
-test('buildEmbedUrl: video_id 形式', () => {
+test('buildEmbedUrl: video_id 形式（youtube-nocookie）', () => {
   const u = buildEmbedUrl(CAMS[0]);
-  assert.ok(u.startsWith('https://www.youtube.com/embed/8H3nRCFVR6Y?'));
+  assert.ok(u.startsWith('https://www.youtube-nocookie.com/embed/8H3nRCFVR6Y?'), u);
   assert.ok(u.includes('playsinline=1') && !u.includes('live_stream'));
+  assert.ok(!u.includes('www.youtube.com/'), '通常ドメインを使わない');
 });
 
 test('buildEmbedUrl: 既定で日本語字幕パラメータ付き（channel/video 両形式）', () => {
@@ -88,4 +91,25 @@ test('AREA_LABEL: 主要キーが日本語', () => {
   assert.equal(AREA_LABEL.all, 'すべて');
   assert.equal(AREA_LABEL.space, '宇宙');
   assert.equal(AREA_LABEL.middle_east, '中東');
+});
+
+test('buildEmbedUrl: video_id / channel_id を URL エンコードする（設定値の混入を止める）', () => {
+  const v = buildEmbedUrl({ id: 'x', video_id: 'a b&autoplay=0' });
+  assert.ok(v.startsWith('https://www.youtube-nocookie.com/embed/a%20b%26autoplay%3D0?'), v);
+  const c = buildEmbedUrl({ id: 'y', channel_id: 'C?x=1' });
+  assert.ok(c.includes('channel=C%3Fx%3D1'), c);
+});
+
+test('index.html / cams-pane.js: 埋め込み iframe に referrerpolicy が付く', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.match(html, /<iframe id="news-frame"[^>]*referrerpolicy="strict-origin-when-cross-origin"/);
+  const cams = readFileSync(new URL('../js/ui/cams-pane.js', import.meta.url), 'utf8');
+  assert.ok(cams.includes("f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');"), cams);
+});
+
+test('index.html: AI 字幕トグルの脇に送信先の注記がある', () => {
+  const html = readFileSync(new URL('../index.html', import.meta.url), 'utf8');
+  assert.ok(html.includes(
+    '<small class="lc-note">タブの音声をこの端末の変換サーバー（localhost:8900）へ送ります。外部には送信しません。</small>'
+  ), html);
 });
