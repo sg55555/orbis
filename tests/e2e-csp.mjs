@@ -72,17 +72,44 @@ const serverLog = [];
 server.stdout.on('data', (b) => serverLog.push(String(b)));
 server.stderr.on('data', (b) => serverLog.push(String(b)));
 server.on('error', (e) => serverLog.push(`spawn error: ${String(e && e.message)}\n`));
+let harnessExited = null;
+server.on('exit', (code, sig) => {
+  harnessExited = `harness が起動直後に終了した (code=${code} sig=${sig})`;
+});
+
+// 「その port が 200 を返すか」だけを見てはいけない。PORT に先客がいると serve.py は
+// bind に失敗して即死するのに、先客が 200 を返すので待機ループは抜けてしまい、e2e は
+// **別のツリー**（別 worktree の vercel.json・別の --csp-override）に対して緑になる。
+// closure.sh はその緑で .closure-ok に HEAD を書く＝受入ゲートの false-green。
+// 並行 worktree 運用が既定なので現実に起こりうる。
+// そこで「自分が spawn したプロセスが bind に成功した」ことを起動バナーで確かめてから
+// 応答を待つ（バナーは make_server() の後＝bind 成功後にしか出ない）。
+// exit の検知だけでは足りない: 先客は即座に 200 を返すので、python の終了イベントが
+// 届く前に待機ループを抜けてしまう競合がある。
+const HARNESS_BANNER = 'orbis harness: http://';
 
 async function waitForHarness(ms = 20000) {
   const t0 = Date.now();
+  const fail = (why) => new Error(`${why}:\n${serverLog.join('')}`);
+
+  // ① 自分の子プロセスが listen したことの確認
   for (;;) {
+    if (serverLog.join('').includes(HARNESS_BANNER)) break;
+    if (harnessExited) throw fail(harnessExited);
+    if (Date.now() - t0 > ms) throw fail(`ハーネスが ${ms}ms で起動バナーを出さなかった`);
+    await new Promise((r) => setTimeout(r, 100));
+  }
+
+  // ② 実際に応答を返すまで待つ
+  for (;;) {
+    if (harnessExited) throw fail(harnessExited);
     try {
       const r = await fetch(`${BASE}/`, { redirect: 'manual' });
       await r.arrayBuffer();                       // undici の接続を確実に解放する
       if (r.status === 200) return;
     } catch { /* 起動待ち */ }
     if (Date.now() - t0 > ms) {
-      throw new Error(`ハーネスが ${ms}ms で起動しなかった:\n${serverLog.join('')}`);
+      throw fail(`ハーネスが ${ms}ms で起動しなかった`);
     }
     await new Promise((r) => setTimeout(r, 200));
   }
