@@ -173,11 +173,6 @@ def test_flicker_guard_css_exists():
     ), "ちらつき防止の #alerts[data-style],#cams-one-tabs[data-style]{display:none} が無い"
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="Task 9 の `git rm --cached` まで .superpowers/sdd/cluster-C{4,7}-report.md が追跡されている。"
-           "解消したらこの xfail マーカーを外す（strict=True なので XPASS は失敗になる）",
-)
 def test_no_tracked_agent_workdirs():
     out = subprocess.run(
         ["git", "ls-files", ".superpowers", ".claude", ".claire"],
