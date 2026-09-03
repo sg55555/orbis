@@ -7,6 +7,8 @@ import { readFileSync } from 'node:fs';
 import {
   FRESH_AI_MS, freshnessChip, freshnessChipHtml, aiDisclaimerHtml, isPlaceholderNarrative,
 } from '../js/ui/ai-meta.js';
+import { newsPopupHtml } from '../js/lib/selection.js';
+import { renderFeed } from '../js/ui/feed.js';
 
 const NOW = Date.parse('2026-09-03T00:00:00Z');
 const ago = (ms) => new Date(NOW - ms).toISOString();
@@ -103,4 +105,32 @@ test('isPlaceholderNarrative: 空/欠落/空白も「分析文なし」扱い（
 test('isPlaceholderNarrative: 実際の分析文 2 例では false', () => {
   assert.equal(isPlaceholderNarrative('ウクライナとの軍事紛争が継続している'), false);
   assert.equal(isPlaceholderNarrative('司法と行政の対立および自然災害の脅威が存在する'), false);
+});
+
+// --- ニュースが AI 翻訳/要約であることの明示（LEGAL-07） ---
+// renderFeed が触る DOM サーフェスは innerHTML / __wired / querySelectorAll（Task 6 が足した
+// applyDataStyles(root) 用）だけなので最小スタブで足りる
+// （repo 既存の DOM スタブ idiom＝tests/drilldown_render.test.js・tests/data-style.test.js と同方針）。
+function fakeFeedRoot() {
+  return { __wired: true, innerHTML: '', addEventListener() {}, querySelectorAll: () => [] };
+}
+
+test('renderFeed: news 行にだけ「見出しからのAI要約」タグを出す', () => {
+  const root = fakeFeedRoot();
+  renderFeed(root, [
+    { layerId: 'news', kind: 'item', title: '見出し', time: Date.parse('2026-09-02T00:00:00Z') },
+    { layerId: 'quakes', kind: 'item', title: 'M5.0', time: Date.parse('2026-09-02T00:00:00Z') },
+  ], () => {});
+  const rows = root.innerHTML.split('<div class="feed-row"');
+  assert.equal(rows.length, 3, `feed-row が 2 行出る: ${root.innerHTML}`);
+  assert.match(rows[1], /<span class="ai-tag">見出しからのAI要約<\/span>/);
+  assert.ok(!rows[2].includes('ai-tag'), '地震行には AI タグを出さない');
+});
+
+test('newsPopupHtml: AI 要約であることを明示するタグを含む', () => {
+  const h = newsPopupHtml({
+    title_ja: 'タイトル', summary_ja: '要約', place: '東京',
+    category: 'conflict', url: 'https://example.com/a',
+  });
+  assert.match(h, /<span class="ai-tag">見出しからのAI要約<\/span>/);
 });

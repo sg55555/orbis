@@ -169,7 +169,9 @@ export function newsPopupHtml(p) {
   return '<div class="sel-popup">'
     + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(o.title_ja || '')}</span></div>`
-    + `<div class="sel-meta">${escapeHtml(c.label)}${o.place ? '｜' + escapeHtml(o.place) : ''}</div>`
+    + `<div class="sel-meta">${escapeHtml(c.label)}${o.place ? '｜' + escapeHtml(o.place) : ''}`
+    // 見出し・要約はどちらも AI の日本語化＝原文ではない（summary_ja が無い記事でも出す）。
+    + '<span class="ai-tag">見出しからのAI要約</span></div>'
     + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
     + `<div class="sel-hint"><a class="sel-link" data-style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
     + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`

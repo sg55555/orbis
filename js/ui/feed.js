@@ -12,6 +12,10 @@ export function renderFeed(root, items, onPick, maxCount = 0) {
     const title = it.kind === 'group'
       ? `${LABEL[it.layerId] || ''} ${escapeHtml(it.country_ja || '')}`
       : escapeHtml(it.title);
+    // news の見出し/要約は英語原文の AI 日本語訳＝原文そのものではないことを明示する。
+    const aiTag = it.layerId === 'news'
+      ? '<span class="ai-tag">見出しからのAI要約</span>'
+      : '';
     const badge = it.kind === 'group'
       ? `<span class="feed-count" data-style="--barw:${countBarPct(it.count, maxCount)}%">${Number(it.count) || 0}件</span>`
       : '';
@@ -21,7 +25,7 @@ export function renderFeed(root, items, onPick, maxCount = 0) {
       : `<span class="feed-dot" data-style="color:${c};background:${c}"></span>`;
     return `<div class="feed-row" data-i="${i}" data-style="--rowcat:${c}">
       ${marker}
-      <span class="feed-title">${title}</span>${badge}
+      <span class="feed-title">${title}</span>${aiTag}${badge}
       <span class="feed-time">${it.time ? formatFreshness(new Date(it.time).toISOString()) : ''}</span>
     </div>`;
   }).join('') || '<div class="feed-empty">イベントなし</div>';
