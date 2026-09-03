@@ -1758,3 +1758,39 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
    クラスで隠さない理由＝ui/alerts.js:78 と ui/cams-pane.js:103-104 が
    `el.style.display = ''` のリセット型で開閉するため（クラスだと二度と開かない）。 */
 #alerts[data-style], #cams-one-tabs[data-style] { display: none; }
+
+/* ===== A3 表示の正直さ — 鮮度チップ / AI 免責 / AI タグ / アラート時刻 ===== */
+/* 方針：停止中を赤で警告しない。アンバー＋減光で「古い情報」として静かに沈める
+   （デザイン監修＝宇宙的・サイバーパンク HUD を足さない）。色は既存トークンのみ。 */
+.fresh-chip-slot { display: inline-flex; margin-left: 8px; vertical-align: middle; }
+.fresh-chip {
+  display: inline-block; padding: 2px 8px; border-radius: 999px;
+  font-size: .68rem; line-height: 1.5; white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted-3); background: var(--bg-chip);
+  border: 1px solid var(--rim-cyan-16);
+}
+.fresh-chip.is-stale {
+  color: var(--cat-stale-2); border-color: var(--cat-amber-border);
+  background: transparent; opacity: .72;
+}
+.ai-disclaimer {
+  margin: 10px 0 0; padding-top: 8px;
+  border-top: 1px solid var(--rim-cyan-16);
+  font-size: .68rem; line-height: 1.6; color: var(--text-muted-3);
+}
+/* 免責は grid/flex のリストで 1 行を占める（.brief-cards は auto-fill grid）。 */
+.brief-cards .ai-disclaimer { grid-column: 1 / -1; }
+.ins-rank-list .ai-disclaimer, .fc-list .ai-disclaimer { width: 100%; }
+.ai-tag {
+  display: inline-block; margin-left: 6px; padding: 0 5px;
+  border-radius: 4px; font-size: .64rem; line-height: 1.6;
+  color: var(--text-muted-2); background: var(--bg-chip-white);
+  border: 1px solid var(--rim-cyan-16); white-space: nowrap;
+}
+.alert-chip .alert-when {
+  margin-left: 6px; font-size: .68rem; color: var(--text-muted-3);
+  font-variant-numeric: tabular-nums;
+}
+.ins-narr.ins-narr--none { color: var(--text-muted-3); font-style: italic; opacity: .85; }
+/* ===== /A3 表示の正直さ ===== */

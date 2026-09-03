@@ -260,3 +260,23 @@ test('renderForecasts: 時刻キーは generated_at を優先する（updated �
   assert.match(chip, /最終更新 1時間前/, 'updated（11日前）を使うと is-stale になってしまう');
   assert.ok(!chip.includes('is-stale'), chip);
 });
+
+test('css/orbis.css: A3 で追加したクラスが定義されている', () => {
+  const css = read('../css/orbis.css');
+  for (const sel of ['/* ===== A3 表示の正直さ', '/* ===== /A3 表示の正直さ',
+    '.fresh-chip-slot', '.fresh-chip {', '.fresh-chip.is-stale',
+    '.ai-disclaimer', '.ai-tag', '.alert-chip .alert-when', '.ins-narr--none']) {
+    assert.ok(css.includes(sel), `${sel} が css/orbis.css に無い`);
+  }
+});
+
+// 走査は開始マーカー〜終了マーカーの区間に限る（EOF までにすると Task 8 の .lc-note 以降、
+// css 末尾に何を足しても A3 のテストが落ちる。tests/secfit.test.js と同じ区間指定の型）。
+test('css/orbis.css: A3 ブロックは既存トークンだけを使う（生の 16 進色を足さない）', () => {
+  const css = read('../css/orbis.css');
+  const start = css.indexOf('/* ===== A3 表示の正直さ');
+  const end = css.indexOf('/* ===== /A3 表示の正直さ');
+  assert.ok(start >= 0 && end > start, 'A3 の開始/終了マーカーが揃っていない');
+  const block = css.slice(start, end);
+  assert.ok(!/#[0-9a-fA-F]{3,8}\b/.test(block), `生の 16 進色が混ざっている:\n${block}`);
+});
