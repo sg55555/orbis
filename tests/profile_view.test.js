@@ -272,3 +272,30 @@ test('profileHtml: belongs_to.name_ja の悪意ある文字列を escape する'
   assert.doesNotMatch(html, /<script>/);
   assert.ok(html.includes('&lt;script&gt;'));
 });
+
+test('profileHtml: 出典フッタが記事名・CC BY-SA 4.0・AI 要約を明示する', () => {
+  const h = profileHtml(BASE);
+  assert.match(h, /出典: /);
+  assert.match(h, /Wikipedia \(ja\) 東京都 ↗/);
+  assert.match(h, /href="https:\/\/creativecommons\.org\/licenses\/by-sa\/4\.0\/deed\.ja"/);
+  assert.match(h, /CC BY-SA 4\.0<\/a>・AI により要約\/再構成/);
+  assert.match(h, /rel="noopener noreferrer"/);
+  assert.ok(!h.includes('rel="noopener"'), '古い rel="noopener" が残っている');
+});
+
+test('profileHtml: 記事名は URL 末尾から取り、アンダースコアは空白に戻す', () => {
+  const p = { ...BASE.profile,
+    source: { qid: 'Q1', wikipedia_url: 'https://ja.wikipedia.org/wiki/%E5%A4%A7%E9%98%AA_(%E5%B8%82)' } };
+  const h = profileHtml({ ...BASE, profile: p });
+  assert.match(h, /Wikipedia \(ja\) 大阪 \(市\) ↗/);
+});
+
+test('profileHtml: 出典 URL が http(s) でなければリンクにしない', () => {
+  const p = { ...BASE.profile, source: { qid: 'Q1', wikipedia_url: 'javascript:alert(1)' } };
+  const h = profileHtml({ ...BASE, profile: p });
+  assert.ok(!h.includes('javascript:alert(1)'), h);
+  assert.doesNotMatch(h, /<a href="javascript/);
+  // リンクにできなくても帰属表示（記事名は名称にフォールバック）と CC BY-SA は残す。
+  assert.match(h, /Wikipedia \(ja\) 東京都/);
+  assert.match(h, /CC BY-SA 4\.0/);
+});

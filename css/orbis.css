@@ -1699,6 +1699,8 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
 }
 .pf-source a:hover { text-decoration: underline; }
 .pf-source .pf-qid { font-family: var(--font-word); letter-spacing: .04em; opacity: .8; }
+.pf-source .pf-src-label { color: var(--text-muted-3); }
+.pf-source .pf-license { color: var(--text-muted-3); }
 
 /* degraded（QID 無し/本文皆無）バナー */
 .pf-degraded {

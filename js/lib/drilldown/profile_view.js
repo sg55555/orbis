@@ -5,6 +5,15 @@
 
 import { escapeHtml } from '../selection.js';
 
+// Wikipedia URL 末尾のセグメント → 記事名（%xx をデコードし _ を空白へ）。
+// 記事名は帰属（CC BY-SA 4.0）の必須要素。取り出せなければ表示名にフォールバックする。
+function wikiArticleTitle(url, fallback) {
+  const m = /\/wiki\/([^/?#]+)/.exec(String(url || ''));
+  if (!m) return String(fallback || '');
+  try { return decodeURIComponent(m[1]).replace(/_/g, ' '); }
+  catch { return m[1].replace(/_/g, ' '); }
+}
+
 // 種別ラベル: [英語コード, 日本語]
 const KIND = {
   country: ['COUNTRY', '国'],
@@ -309,10 +318,21 @@ export function profileHtml(model) {
       + '</details>';
   }
 
-  // ── 出典フッタ ──
+  // ── 出典フッタ（Wikipedia 由来を明示して CC BY-SA 4.0 の帰属を果たす） ──
+  // href は http/https のみ許可（不正データの javascript: 等を無効化＝selection.js と同方針）。
+  // リンクにできない場合も記事名とライセンス表示は残す（帰属は URL の有無に依らない）。
+  const wikiRaw = (source && source.wikipedia_url) || '';
+  const wikiUrl = /^https?:\/\//i.test(wikiRaw) ? wikiRaw : '';
+  const wikiTitle = wikiArticleTitle(wikiRaw, name_ja);
+  const wikiLink = wikiUrl
+    ? '<a href="' + escapeHtml(wikiUrl) + '" target="_blank" rel="noopener noreferrer">'
+      + 'Wikipedia (ja) ' + escapeHtml(wikiTitle) + ' ↗</a>'
+    : '<span>Wikipedia (ja) ' + escapeHtml(wikiTitle) + '</span>';
   const sourceHtml = source
     ? '<footer class="pf-source">'
-      + '<a href="' + escapeHtml(source.wikipedia_url || '#') + '" target="_blank" rel="noopener">Wikipedia (ja) ↗</a>'
+      + '<span class="pf-src-label">出典: </span>' + wikiLink
+      + '<span class="pf-license">（<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja"'
+      + ' target="_blank" rel="noopener noreferrer">CC BY-SA 4.0</a>・AI により要約/再構成）</span>'
       + (source.qid ? '<span class="pf-qid">QID ' + escapeHtml(source.qid) + '</span>' : '')
       + '</footer>'
     : '';
