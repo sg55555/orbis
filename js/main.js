@@ -405,6 +405,12 @@ function boot() {
   );
   mountStarfield(document.getElementById('starfield'), { reduced: REDUCED });
   window.__orbis = { map, overlay, counts: {} };
+  // e2e 能力アサート用フック（設計 §3.2・§4-4）。`window.__orbis` 自体は module 内の状態バスで
+  // rebuild/refreshFeed/refreshSources が無条件に参照する＝「?e2e=1 の時だけ生やす」ことはできない。
+  // 代わりに ?e2e=1 の時だけ e2e 専用の面を開く（通常導線では undefined＝外から掴む口を増やさない）。
+  if (new URLSearchParams(location.search).get('e2e') === '1') {
+    window.__orbis.e2e = { map, overlay };
+  }
 
   // 国ドリルダウン（別系統 map.on('click')）: deck onClick の early return より前で拾えないため独立配線。
   // snapshots は module-local（window.__orbis に載らない）ゆえ getSnapshots DI クロージャで渡す。

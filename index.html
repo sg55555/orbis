@@ -9,14 +9,21 @@
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
-  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.css" />
-  <!-- display フォント（タイトル/見出し/ワードマーク・body.font-on で適用）。?font=off で system-ui。 -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Saira:wght@400;500;600;700&display=swap" />
+  <!-- 実データの取得先だけ先に握る（タイル＝OpenFreeMap／スナップショット＝GitHub raw）。 -->
+  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin />
+  <link rel="preconnect" href="https://raw.githubusercontent.com" crossorigin />
+  <link rel="stylesheet" href="vendor/maplibre-gl-5.24.0.css" />
+  <!-- display フォント（タイトル/見出し/ワードマーク・body.font-on で適用）。?font=off で system-ui。
+       自前配信＝vendor/fonts（厳格 CSP の font-src 'self' / style-src 'self' を満たす）。 -->
+  <link rel="stylesheet" href="vendor/fonts/fonts.css" />
   <link rel="stylesheet" href="css/orbis.css" />
-  <script src="https://unpkg.com/maplibre-gl@5.24.0/dist/maplibre-gl.js"></script>
-  <script src="https://unpkg.com/deck.gl@9.3.4/dist.min.js"></script>
+  <!-- deck.gl 9.x の分割 UMD は window.deck にマージされる。core→layers→mapbox の順が必須。
+       mesh-layers / geo-layers（TripsLayer）は js/lib/vendor-loader.js が『交通』で遅延ロードする。
+       defer なので末尾の module script より先に、文書順で実行される。 -->
+  <script defer src="vendor/maplibre-gl-5.24.0.js"></script>
+  <script defer src="vendor/deck.gl-core-9.3.4.min.js"></script>
+  <script defer src="vendor/deck.gl-layers-9.3.4.min.js"></script>
+  <script defer src="vendor/deck.gl-mapbox-9.3.4.min.js"></script>
 </head>
 <body>
   <div id="app">
