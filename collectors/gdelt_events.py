@@ -1,5 +1,6 @@
 """GDELT 2.0 Events CSV を取得し、抗議/紛争イベントを地理点として書き出す。"""
 import csv
+import hashlib
 import io
 import json
 import os
@@ -8,7 +9,7 @@ from datetime import datetime, timezone
 import requests
 from collectors.lib.manifest import update_manifest
 
-LASTUPDATE_URL = "http://data.gdeltproject.org/gdeltv2/lastupdate.txt"
+LASTUPDATE_URL = "https://data.gdeltproject.org/gdeltv2/lastupdate.txt"
 PROTEST_CODES = {"14"}
 CONFLICT_CODES = {"18", "19", "20"}
 MAX_PER_LAYER = 2000
@@ -101,20 +102,54 @@ def merge_rolling(prev, new, now=None, window_hours=WINDOW_HOURS, cap=MAX_PER_LA
 SNAPSHOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"))
 
 
+def parse_lastupdate_line(line):
+    """lastupdate.txt の 1 行 `<size> <md5> <url>` → (size, md5, https URL)（純粋）。
+
+    列が 3 つ未満なら ValueError。GDELT は URL を http:// で配るが同一ホストで
+    https が有効なので昇格する（平文だと中間者が zip と MD5 を同時に差し替えられる）。
+    """
+    parts = line.split()
+    if len(parts) < 3:
+        raise ValueError(f"gdelt lastupdate line has {len(parts)} columns: {line!r}")
+    size_s, md5, url = parts[0], parts[1], parts[2]
+    try:
+        size = int(size_s)
+    except ValueError as e:
+        raise ValueError(f"gdelt lastupdate size is not an int: {size_s!r}") from e
+    if url.startswith("http://"):
+        url = "https://" + url[len("http://"):]
+    return size, md5, url
+
+
+def verify_md5(data, expected):
+    """ダウンロードした zip を lastupdate.txt 申告の MD5 と照合（不一致は ValueError）。
+
+    途中切れ・改竄の検知が目的（暗号学的強度は求めていない＝上流が MD5 しか配らない）。
+    """
+    actual = hashlib.md5(data).hexdigest()
+    if actual.lower() != str(expected).lower():
+        raise ValueError("gdelt md5 mismatch")
+
+
 def fetch_latest_rows(timeout=40):
-    """lastupdate.txt → 最新 export.CSV.zip を取得し TSV 行配列を返す。"""
+    """lastupdate.txt → 最新 export.CSV.zip を取得し TSV 行配列を返す。
+
+    2 列目の MD5 を照合してから展開する（失敗は既存の mark_error 経路で可視化される）。
+    """
     lu = requests.get(LASTUPDATE_URL, timeout=timeout, headers={"User-Agent": "orbis-collector"})
     lu.raise_for_status()
     export_url = None
+    expected_md5 = None
     for line in lu.text.splitlines():
-        parts = line.split()
-        if parts and parts[-1].endswith("export.CSV.zip"):
-            export_url = parts[-1]
-            break
+        if not line.strip().endswith("export.CSV.zip"):
+            continue
+        _size, expected_md5, export_url = parse_lastupdate_line(line)
+        break
     if not export_url:
         raise RuntimeError("no export.CSV.zip in lastupdate")
     z = requests.get(export_url, timeout=timeout, headers={"User-Agent": "orbis-collector"})
     z.raise_for_status()
+    verify_md5(z.content, expected_md5)
     zf = zipfile.ZipFile(io.BytesIO(z.content))
     raw = zf.read(zf.namelist()[0]).decode("latin-1")
     return list(csv.reader(io.StringIO(raw), delimiter="\t"))

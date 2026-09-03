@@ -1,6 +1,11 @@
+import hashlib
+import io
 import sys, os
+import zipfile
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
-from collectors.gdelt_events import parse_rows, split_events, merge_rolling
+import pytest
+from collectors import gdelt_events
+from collectors.gdelt_events import parse_rows, split_events, merge_rolling, parse_lastupdate_line, verify_md5
 from datetime import datetime
 
 def make_row(eid, root, lat, lon, mentions="3", url="http://x", sources="3", tone="-5.0"):
@@ -75,3 +80,80 @@ def test_merge_rolling_caps_to_newest():
     merged = merge_rolling([], new, now=now, window_hours=24, cap=3)
     assert len(merged) == 3
     assert merged[0]["id"] == "4"
+
+
+# --- lastupdate.txt の 3 列（size / md5 / url）を使った改竄・途中切れ検知 ---
+
+LU_URL = "http://data.gdeltproject.org/gdeltv2/20260903000000.export.CSV.zip"
+
+
+def test_parse_lastupdate_line_returns_size_md5_and_https_url():
+    size, md5, url = parse_lastupdate_line(f"246254 4d0c1f2f7e2b1d3a9c8e0f1a2b3c4d5e {LU_URL}")
+    assert size == 246254
+    assert md5 == "4d0c1f2f7e2b1d3a9c8e0f1a2b3c4d5e"
+    assert url == "https://data.gdeltproject.org/gdeltv2/20260903000000.export.CSV.zip"
+
+
+def test_parse_lastupdate_line_keeps_https_url_as_is():
+    _size, _md5, url = parse_lastupdate_line(f"1 abc {LU_URL.replace('http://', 'https://')}")
+    assert url.startswith("https://")
+
+
+def test_parse_lastupdate_line_rejects_missing_columns():
+    with pytest.raises(ValueError):
+        parse_lastupdate_line("246254 4d0c1f2f7e2b1d3a9c8e0f1a2b3c4d5e")
+    with pytest.raises(ValueError):
+        parse_lastupdate_line("")
+
+
+def test_verify_md5_accepts_matching_digest_and_rejects_mismatch():
+    verify_md5(b"hello", hashlib.md5(b"hello").hexdigest())
+    verify_md5(b"hello", hashlib.md5(b"hello").hexdigest().upper())  # 大小文字は問わない
+    with pytest.raises(ValueError, match="gdelt md5 mismatch"):
+        verify_md5(b"hello", hashlib.md5(b"world").hexdigest())
+
+
+class _Resp:
+    def __init__(self, text=None, content=None):
+        self.text = text
+        self.content = content
+
+    def raise_for_status(self):
+        return None
+
+
+def _fake_requests(seen, lastupdate, payload):
+    class _Fake:
+        @staticmethod
+        def get(url, **_kw):
+            seen.append(url)
+            if url.endswith("lastupdate.txt"):
+                return _Resp(text=lastupdate)
+            return _Resp(content=payload)
+    return _Fake
+
+
+def _zip_payload():
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as z:
+        z.writestr("20260903000000.export.CSV", "a\tb\tc\n")
+    return buf.getvalue()
+
+
+def test_fetch_latest_rows_uses_https_and_verifies_md5(monkeypatch):
+    payload = _zip_payload()
+    lastupdate = f"{len(payload)} {hashlib.md5(payload).hexdigest()} {LU_URL}\n"
+    seen = []
+    monkeypatch.setattr(gdelt_events, "requests", _fake_requests(seen, lastupdate, payload))
+    rows = gdelt_events.fetch_latest_rows()
+    assert rows == [["a", "b", "c"]]
+    assert seen[0] == "https://data.gdeltproject.org/gdeltv2/lastupdate.txt"
+    assert seen[1].startswith("https://"), "export URL も https に昇格する"
+
+
+def test_fetch_latest_rows_raises_on_md5_mismatch(monkeypatch):
+    payload = _zip_payload()
+    lastupdate = f"{len(payload)} {hashlib.md5(b'tampered').hexdigest()} {LU_URL}\n"
+    monkeypatch.setattr(gdelt_events, "requests", _fake_requests([], lastupdate, payload))
+    with pytest.raises(ValueError, match="gdelt md5 mismatch"):
+        gdelt_events.fetch_latest_rows()
