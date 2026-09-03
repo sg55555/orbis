@@ -1,0 +1,132 @@
+/* 静的ページ（404 / about / terms / privacy / attribution）の共通スタイル。
+ *
+ * トークン（--bg / --text / --rim-cyan-18 …）は css/orbis.css のルート変数定義を共有する。
+ * 各ページが orbis.css と pages.css の **両方**を <link> する前提で、ここでは
+ * ルート変数を再定義しない（他 CSS の取り込みもしない＝1 ファイル 1 責務・二重定義の drift を作らない）。
+ * ※ この 3 つ（ルート変数の再定義・取り込み・面の新設）は tests/test_pages.py が
+ *   文字列の不在で守っているので、コメントにもその綴りを書かない。
+ *
+ * 設計言語（監修ノート）: 宇宙的/天体的・主アクセントは地球の縁の大気ハロ＝線と光。
+ * サイバーパンク HUD を足さない。面（不透明ベタの円形グラデーション）を新設しない。
+ * ここで使う装飾は「1px の線」「淡い text-shadow」「余白」だけ。
+ */
+
+body.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, "Segoe UI", sans-serif;
+  line-height: 1.9;
+}
+
+.page-wrap {
+  flex: 1;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 44px var(--edge-pad) 72px;
+}
+
+/* ワードマーク行＝地平線の 1 本線で本文と分ける */
+.page-top {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rim-cyan-18);
+}
+.page-word {
+  font-family: var(--font-word);
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: .34em;
+  color: var(--text-bright);
+  text-decoration: none;
+  text-shadow: 0 0 18px var(--glow-cyan-text);
+}
+.page-back {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--cat-link);
+  text-decoration: none;
+}
+.page-back:hover { text-decoration: underline; }
+
+.page-h {
+  margin: 40px 0 6px;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: .03em;
+  color: var(--text-heading);
+}
+.page-sub {
+  margin: 0 0 36px;
+  font-size: 12px;
+  color: var(--text-muted-3);
+}
+
+/* 見出しの前に短い光の線を引く（HUD の枠や記号は使わない） */
+.page-wrap h2 {
+  margin: 38px 0 10px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: .05em;
+  color: var(--text-heading);
+}
+.page-wrap h2::before {
+  content: "";
+  display: block;
+  width: 34px;
+  height: 1px;
+  margin-bottom: 12px;
+  background: linear-gradient(90deg, var(--aurora-line-cyan), transparent);
+}
+
+.page-wrap p { margin: 10px 0; font-size: 13.5px; color: var(--text-2); }
+.page-wrap ul { margin: 10px 0; padding-left: 1.2em; }
+.page-wrap li { margin: 5px 0; font-size: 13.5px; color: var(--text-2); }
+.page-wrap a { color: var(--cat-link); }
+.page-wrap code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12.5px;
+  color: var(--text-chip);
+}
+
+/* 出典の定義リスト（attribution） */
+.attrib { margin: 12px 0 0; }
+.attrib dt {
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+.attrib dd {
+  margin: 3px 0 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  color: var(--text-muted-2);
+}
+
+.page-note { margin-top: 10px; font-size: 12px; color: var(--muted); }
+.page-updated { margin-top: 44px; font-size: 11.5px; color: var(--muted); }
+
+/* 404 は本文が短いので視線の高さに置く（装飾は足さない） */
+.page-wrap.is-404 { display: flex; flex-direction: column; justify-content: center; min-height: 66vh; }
+.page-404-code {
+  margin: 24px 0 2px;
+  font-family: var(--font-word);
+  font-size: 46px;
+  letter-spacing: .18em;
+  color: var(--text-bright);
+  text-shadow: 0 0 26px var(--glow-cyan-text);
+}
+
+@media (max-width: 768px) {
+  .page-wrap { padding: 32px 16px 56px; }
+  .page-h { font-size: 22px; }
+  .page-404-code { font-size: 36px; }
+}

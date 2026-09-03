@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>このサイトについて — ORBIS</title>
+  <meta name="theme-color" content="#05080f" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="stylesheet" href="/css/orbis.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+</head>
+<body class="page">
+  <main class="page-wrap">
+    <div class="page-top">
+      <a class="page-word" href="/">ORBIS</a>
+      <a class="page-back" href="/">← ダッシュボードへ戻る</a>
+    </div>
+    <h1 class="page-h">このサイトについて</h1>
+    <p class="page-sub">ORBIS — 世界リアルタイム監視ダッシュボード</p>
+
+    <h2>ORBIS とは</h2>
+    <p>ORBIS は、無料で公開されている OSINT（公開情報）を 1 枚の地球儀にまとめて眺めるための個人プロジェクトです。地震・航空機・船舶・紛争と抗議・火災・海面水温・気温・ニュースなどを、それぞれの公開データ源から定期的に取得し、日本語のインターフェースで表示します。</p>
+    <p>誰でもアクセスでき、ログインもアカウント登録も必要ありません。閲覧専用で、書き込みや投稿の機能はありません。</p>
+
+    <h2>何を表示しているか</h2>
+    <ul>
+      <li>地図上のレイヤー（地震・航空・船舶・紛争・抗議・火災・海流・貿易ルート・海面水温・気温・ニュース）</li>
+      <li>下部のライブメディア（ニュース配信とライブカメラの埋め込み）</li>
+      <li>AI が合成する 3 つのセクション（ワールド・ブリーフィング／国家不安定性インデックス／AI 予測）</li>
+      <li>国を選んだときのドリルダウン（国別の集計と、Wikipedia 由来のプロフィール）</li>
+    </ul>
+    <p>各レイヤーの出典とライセンスは <a href="/attribution">出典・ライセンス</a> に一覧があります。</p>
+
+    <h2>更新の仕組み</h2>
+    <p>データの取得は GitHub Actions のスケジュール実行で行い、取得した JSON は公開リポジトリ <code>sg55555/orbis-data</code> に保存されます。ブラウザはそのリポジトリの生ファイルを直接読みます。層ごとの最終更新時刻は、画面右上の鮮度表示と最下部の「データソース &amp; 鮮度」で確認できます。</p>
+    <p>取得の間隔は層ごとに異なり、上流の障害や制限で更新が止まることもあります。<strong>表示されている時刻が、最後に更新できた時刻</strong>です。古いままの層は「更新停止中」と表示します。</p>
+
+    <h2>AI 分析について（現在は停止中）</h2>
+    <p>ワールド・ブリーフィング／国家不安定性インデックス／AI 予測の 3 つは、収集済みのデータを入力に生成 AI（Anthropic Claude）が文章を書いています。<strong>現在この 3 層の自動更新は費用の都合で停止しており、表示されているのは停止時点の内容です。</strong>そのため各セクションには最終更新時刻と、AI 生成である旨の注記を表示しています。</p>
+    <p>AI が書いた文章は要約・推定であり、誤りを含むことがあります。詳しくは <a href="/terms">利用条件・免責</a> をご覧ください。</p>
+
+    <h2>運営者と連絡先</h2>
+    <p>運営者は <strong>sg55555</strong>（個人）です。個人が趣味で運営している非商用のサイトで、広告も課金もありません。法人・団体とは関係ありません。</p>
+    <p>不具合の報告・データの誤りの指摘・削除の依頼などは GitHub Issues でお願いします。<br />
+      <a href="https://github.com/sg55555/orbis/issues" target="_blank" rel="noopener noreferrer">https://github.com/sg55555/orbis/issues ↗</a></p>
+
+    <h2>ソースコード</h2>
+    <p>ソースコードは MIT ライセンスで公開しています（<a href="https://github.com/sg55555/orbis" target="_blank" rel="noopener noreferrer">github.com/sg55555/orbis ↗</a>）。データそのものの権利は各上流に帰属します。</p>
+  </main>
+  <footer class="site-foot">
+    <nav class="foot-links" aria-label="サイト情報">
+      <a href="/about">このサイトについて</a>
+      <a href="/terms">利用条件・免責</a>
+      <a href="/privacy">プライバシー</a>
+      <a href="/attribution">出典・ライセンス</a>
+    </nav>
+    <p class="foot-copy">© 2026 sg55555 · 非商用・個人運営</p>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,31 @@
+# ORBIS — https://orbis-beta.vercel.app
+# 検索エンジンのクロールは許可する（公開サイトなので noindex は付けない）。
+User-agent: *
+Allow: /
+
+# 生成 AI の学習用クローラは拒否する。
+# 表示しているのは上流の公開データと、その AI 要約であり、
+# 学習コーパスとして再収集される前提で集めたものではないため。
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: PerplexityBot
+Disallow: /

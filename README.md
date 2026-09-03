@@ -24,3 +24,10 @@
 
 ## アーキテクチャ / 設計
 `docs/superpowers/specs/2026-06-13-orbis-design.md` と `docs/superpowers/plans/2026-06-13-orbis-phase1.md` 参照。
+
+## ライセンス
+- **コード**: MIT License（[LICENSE](LICENSE) ・ Copyright (c) 2026 sg55555）
+- **データ**: 各上流の条件に従います（USGS / OpenSky Network / GDELT Project / AISStream / NASA FIRMS / Open-Meteo=CC BY 4.0 / OpenStreetMap・OpenMapTiles・OpenFreeMap=ODbL / Wikipedia 日本語版=CC BY-SA 4.0 / Wikidata=CC0）。層ごとの出典と条件は [attribution.html](attribution.html)（本番: https://orbis-beta.vercel.app/attribution ）に一覧があります。
+- **フォント/ライブラリ**: Orbitron・Saira=OFL 1.1 / MapLibre GL JS=BSD 3-Clause / deck.gl=MIT。
+- 運営: sg55555（個人・非商用）／連絡先: https://github.com/sg55555/orbis/issues
+- 公開ページ: [about](about.html) ・ [terms](terms.html) ・ [privacy](privacy.html) ・ [attribution](attribution.html)

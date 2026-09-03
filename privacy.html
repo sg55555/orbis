@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>プライバシー — ORBIS</title>
+  <meta name="theme-color" content="#05080f" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="stylesheet" href="/css/orbis.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+</head>
+<body class="page">
+  <main class="page-wrap">
+    <div class="page-top">
+      <a class="page-word" href="/">ORBIS</a>
+      <a class="page-back" href="/">← ダッシュボードへ戻る</a>
+    </div>
+    <h1 class="page-h">プライバシー</h1>
+    <p class="page-sub">ORBIS が何を保存し、どこへ通信するかの説明です。</p>
+
+    <h2>収集しない情報</h2>
+    <p>本サイトは、アカウント登録・ログインを行いません。<strong>Cookie を発行せず、アクセス解析ツール・広告タグ・トラッキングピクセルの類も一切設置していません。</strong>氏名・メールアドレス・電話番号などの個人情報を、フォーム等で収集する機能はありません。</p>
+
+    <h2>ブラウザに保存される情報</h2>
+    <p>表示設定を次の画面でも保つため、<strong>お使いのブラウザの localStorage</strong> に以下の 3 項目を保存します。いずれも運営者のサーバーへは送信されず、この端末のブラウザの中だけに残ります。</p>
+    <ul>
+      <li><code>orbis.enabled.v1</code> — 表示中のレイヤーの ON/OFF（プリセット「概観・紛争・気象・交通」を選んだ結果もこの項目に入ります）</li>
+      <li><code>orbis.feedFilter.v1</code> — 右側のイベントフィードで非表示にしているカテゴリ</li>
+      <li><code>orbis.watchlist</code> — 国ドリルダウンのウォッチリスト（国コードの配列）</li>
+    </ul>
+    <p>また、オフラインでも画面が開けるように Service Worker が<strong>同一オリジンの静的ファイル（HTML・CSS・JavaScript）を Cache Storage に保存</strong>します。閲覧内容や操作の記録は含みません。</p>
+    <p>これらを消すには、ブラウザの設定で本サイトのサイトデータ（localStorage・キャッシュ）を削除してください。ホーム画面に追加したアプリ（PWA）として使っている場合は、そのアプリを削除しても消えます。</p>
+
+    <h2>外部への通信</h2>
+    <p>本サイトを開くと、ブラウザは次の外部サービスへ直接リクエストを送ります。いずれの送信先にも、本サイトから利用者を識別する情報を渡していません（各サービス側でアクセス元の IP アドレスや User-Agent が記録される可能性はあります）。</p>
+    <ul>
+      <li><code>raw.githubusercontent.com</code>（GitHub） — 監視データ（JSON / GeoJSON）の取得。ページを開いている間、定期的に取得します。</li>
+      <li><code>tiles.openfreemap.org</code>（OpenFreeMap） — 地図のタイル・フォントグリフ・スプライトの取得。地図を表示・操作したときに送られます。</li>
+      <li><code>www.youtube-nocookie.com</code>（YouTube / Google） — ニュース配信とライブカメラの埋め込み再生。該当パネルを開いたときにだけ読み込まれます。Cookie を使わない埋め込みドメインを使用していますが、再生後の扱いは <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google のプライバシーポリシー ↗</a> に従います。</li>
+      <li><code>i.ytimg.com</code>（YouTube） — ライブカメラ一覧のサムネイル画像。</li>
+      <li><code>localhost:8900</code>（この端末の中） — 「AI 字幕（日本語）」を ON にしたときだけ、タブの音声をこの端末で動く変換サーバーへ送ります。<strong>外部には送信しません。</strong>変換サーバーを起動していない場合、この機能は動作しません。</li>
+    </ul>
+
+    <h2>サーバー側のログ</h2>
+    <p>本サイトは <strong>Vercel</strong> のホスティングで配信しています。Vercel には、配信基盤の標準的なアクセスログ（アクセス日時・IP アドレス・User-Agent・リクエスト URL など）が記録されます。運営者はこれを障害調査の目的でのみ参照し、他の情報と突き合わせて個人を特定することはしません。</p>
+
+    <h2>子どもの利用</h2>
+    <p>本サイトは個人情報を収集しないため、年齢による制限は設けていません。表示内容には紛争・災害に関する情報が含まれます。</p>
+
+    <h2>変更と連絡先</h2>
+    <p>本ページの内容は必要に応じて変更し、変更後の内容は本ページの掲載をもって告知とします。お問い合わせは <a href="https://github.com/sg55555/orbis/issues" target="_blank" rel="noopener noreferrer">https://github.com/sg55555/orbis/issues ↗</a> へお願いします。</p>
+  </main>
+  <footer class="site-foot">
+    <nav class="foot-links" aria-label="サイト情報">
+      <a href="/about">このサイトについて</a>
+      <a href="/terms">利用条件・免責</a>
+      <a href="/privacy">プライバシー</a>
+      <a href="/attribution">出典・ライセンス</a>
+    </nav>
+    <p class="foot-copy">© 2026 sg55555 · 非商用・個人運営</p>
+  </footer>
+</body>
+</html>

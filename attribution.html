@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>出典・ライセンス — ORBIS</title>
+  <meta name="theme-color" content="#05080f" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+  <link rel="stylesheet" href="/css/orbis.css" />
+  <link rel="stylesheet" href="/css/pages.css" />
+</head>
+<body class="page">
+  <main class="page-wrap">
+    <div class="page-top">
+      <a class="page-word" href="/">ORBIS</a>
+      <a class="page-back" href="/">← ダッシュボードへ戻る</a>
+    </div>
+    <h1 class="page-h">出典・ライセンス</h1>
+    <p class="page-sub">ORBIS が表示するデータの出典と、その利用条件の一覧です。</p>
+
+    <h2>監視データ（地図レイヤー）</h2>
+    <dl class="attrib">
+      <dt>地震 — USGS</dt>
+      <dd>U.S. Geological Survey / Earthquake Hazards Program。米国政府の著作物としてパブリックドメインで提供されています。
+        <a href="https://earthquake.usgs.gov" target="_blank" rel="noopener noreferrer">earthquake.usgs.gov ↗</a></dd>
+
+      <dt>航空 — OpenSky Network</dt>
+      <dd>OpenSky Network の公開 API。同ネットワークの利用条件に従い、非商用の研究・教育目的で利用しています。
+        <a href="https://opensky-network.org" target="_blank" rel="noopener noreferrer">opensky-network.org ↗</a></dd>
+
+      <dt>紛争・抗議 — GDELT Project</dt>
+      <dd>The GDELT Project（GDELT 2.0 Event Database）。同プロジェクトの利用条件に従います。表示しているのはイベントの位置・件数・トーンの集計であり、報道本文は含みません。
+        <a href="https://www.gdeltproject.org" target="_blank" rel="noopener noreferrer">gdeltproject.org ↗</a></dd>
+
+      <dt>船舶 — AISStream</dt>
+      <dd>AISStream.io が中継する AIS 電文。同サービスの利用条件に従います。表示位置は概略で、航行の用途には使えません。
+        <a href="https://aisstream.io" target="_blank" rel="noopener noreferrer">aisstream.io ↗</a></dd>
+
+      <dt>火災 — NASA FIRMS</dt>
+      <dd>NASA FIRMS（Fire Information for Resource Management System）／MODIS・VIIRS 熱異常検知。NASA のデータ利用方針に従います。
+        <a href="https://firms.modaps.eosdis.nasa.gov" target="_blank" rel="noopener noreferrer">firms.modaps.eosdis.nasa.gov ↗</a></dd>
+
+      <dt>海面水温 — Open-Meteo Marine</dt>
+      <dd>Open-Meteo Marine Weather API。<strong>CC BY 4.0</strong> で提供されています。
+        <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">open-meteo.com ↗</a></dd>
+
+      <dt>気温 — Open-Meteo</dt>
+      <dd>Open-Meteo Weather API。<strong>CC BY 4.0</strong> で提供されています。
+        <a href="https://open-meteo.com" target="_blank" rel="noopener noreferrer">open-meteo.com ↗</a></dd>
+
+      <dt>ニュース — 厳選RSS → AI日本語訳</dt>
+      <dd>各報道機関が公開する RSS フィードから見出しと要旨のみを取得し、生成 AI で日本語に要約しています。<strong>本文は転載していません。</strong>見出し・記事の著作権は各媒体に帰属します。表示から必ず出典媒体へリンクします。</dd>
+
+      <dt>海流・貿易ルート — 静的データ（編集）</dt>
+      <dd>公開情報をもとに本サイトで作成した静的な GeoJSON です。主要な流れ・航路の<strong>概略</strong>を示すもので、実測値ではなく、航行・運航の判断には使えません。</dd>
+    </dl>
+
+    <h2>AI が合成するセクション</h2>
+    <dl class="attrib">
+      <dt>ワールド・ブリーフィング — AI合成（Claude）</dt>
+      <dd>上記の各データを入力に、Anthropic Claude が生成した日本語の要約です。要約・推定であり誤りを含むことがあります。生成時刻は各セクションに表示します。</dd>
+
+      <dt>国家不安定性インデックス／AI 予測 — AI合成（Claude）＋決定論スコア</dt>
+      <dd>スコアと順位は収集済みデータから決定論的に計算した数値で、AI は説明文だけを書いています。説明文は要約・推定であり、スコアの妥当性を保証するものではありません。</dd>
+    </dl>
+
+    <h2>地図</h2>
+    <ul>
+      <li>タイル配信: <a href="https://openfreemap.org" target="_blank" rel="noopener noreferrer">OpenFreeMap ↗</a></li>
+      <li>タイルスキーマ: <a href="https://openmaptiles.org" target="_blank" rel="noopener noreferrer">OpenMapTiles ↗</a></li>
+      <li>地図データ: © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap contributors ↗</a> — <strong>ODbL</strong>（Open Database License）</li>
+    </ul>
+
+    <h2>国プロフィール（ドリルダウン）</h2>
+    <ul>
+      <li>説明文: <a href="https://ja.wikipedia.org" target="_blank" rel="noopener noreferrer">Wikipedia 日本語版 ↗</a> — <strong>CC BY-SA 4.0</strong>。本サイトの説明文は、Wikipedia の記事を<strong>AI により要約/再構成</strong>したもの（＝改変あり）です。したがって本サイトのプロフィール本文も同じ <strong>CC BY-SA 4.0</strong> で提供します。
+        <a href="https://creativecommons.org/licenses/by-sa/4.0/deed.ja" target="_blank" rel="noopener noreferrer">ライセンス全文 ↗</a></li>
+      <li>構造化データ（人口・面積・元首など）: <a href="https://www.wikidata.org" target="_blank" rel="noopener noreferrer">Wikidata ↗</a> — <strong>CC0 1.0</strong>（パブリックドメイン）</li>
+    </ul>
+
+    <h2>埋め込み</h2>
+    <ul>
+      <li>ニュース配信・ライブカメラ: YouTube（<code>www.youtube-nocookie.com</code> の埋め込みプレーヤー）。各配信の権利は配信者に帰属します。</li>
+    </ul>
+
+    <h2>フォント・ライブラリ</h2>
+    <ul>
+      <li><strong>Orbitron</strong> — <strong>SIL Open Font License</strong> 1.1（OFL）</li>
+      <li><strong>Saira</strong> — <strong>SIL Open Font License</strong> 1.1（OFL）</li>
+      <li><strong>MapLibre</strong> GL JS 5.24.0 — <strong>BSD 3-Clause</strong> License</li>
+      <li><strong>deck.gl</strong> 9.3.4 — <strong>MIT</strong> License</li>
+    </ul>
+    <p class="page-note">各ライセンスの全文は、配信しているライブラリ／フォントと同じ場所（<code>/vendor/</code>）に同梱しています。</p>
+
+    <h2>ORBIS 自身</h2>
+    <p>ソースコードは <strong>MIT</strong> ライセンスで公開しています（<a href="https://github.com/sg55555/orbis" target="_blank" rel="noopener noreferrer">github.com/sg55555/orbis ↗</a>）。表示されるデータそのものの権利は上記の各上流に帰属します。</p>
+    <p class="page-note">出典の記載に誤り・漏れを見つけた場合は <a href="https://github.com/sg55555/orbis/issues" target="_blank" rel="noopener noreferrer">GitHub Issues ↗</a> でお知らせください。</p>
+  </main>
+  <footer class="site-foot">
+    <nav class="foot-links" aria-label="サイト情報">
+      <a href="/about">このサイトについて</a>
+      <a href="/terms">利用条件・免責</a>
+      <a href="/privacy">プライバシー</a>
+      <a href="/attribution">出典・ライセンス</a>
+    </nav>
+    <p class="foot-copy">© 2026 sg55555 · 非商用・個人運営</p>
+  </footer>
+</body>
+</html>
