@@ -1,0 +1,89 @@
+# orbis-data（公開データリポ）の履歴を月次で 1 コミットへ畳む（設計 §3.0・監査所見 DATA-03）。
+#
+# なぜ必要か: collect 系 workflow は毎 run 新規 checkout で orbis-data に push するため、
+# 履歴は単調増加する（2026-09-03 時点 8,552 commits / 968MB）。ダッシュボードが読むのは
+# 常に最新の JSON だけで、履歴は誰も使わない。中身（tree）は保ったまま履歴だけ捨てる＝
+# 親を持たない orphan コミット 1 本に置き換える。
+#
+# 安全装置（この 4 つが揃って初めて --force を撃つ）:
+#   1. concurrency group を collect と共有 → 収集ジョブと直列化（force-push と通常 push が交差しない）
+#   2. workflow_dispatch は confirm に "squash" と入力した時だけ job を実行（Run workflow の誤爆ガード）
+#   3. orphan コミットの tree が squash 前の tree と一致することを assert
+#      （不一致なら ::error:: を出して exit 1・push しない＝公開データが壊れる経路を塞ぐ）
+#   4. permissions: contents: read（この workflow は orbis 側に何も書かない。
+#      orbis-data への push 権は PAT secrets.ORBIS_DATA_TOKEN だけが持つ）
+#
+# 既知の性質: GitHub の表示サイズは到達不能オブジェクトの GC まで減らない（raw 配信は影響なし）。
+# collect 系は毎 run 新規 checkout なので新しい root に自然追従する。
+name: squash-data
+
+on:
+  schedule:
+    # 毎月 1 日 03:23 UTC（＝12:23 JST）。外部 dispatch（cron-job.org の :00/:15/:30/:45）と
+    # collect cron（:07/:37）を避けた分に置く＝収集と鉢合わせしにくい時刻。
+    - cron: '23 3 1 * *'
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: '不可逆です（orbis-data の全履歴が消えます）。実行するなら squash と入力してください。'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: collect            # collect.yml / collect-slow.yml と共有＝リポジトリ全体で直列化
+  cancel-in-progress: false
+
+jobs:
+  squash:
+    # schedule は無条件。手動実行は confirm == 'squash' の時だけ（打ち間違いでは動かない）。
+    # schedule イベントでは inputs コンテキストが null になり、null.confirm は null を返すので
+    # 右辺は false に落ちる（式エラーにはならない）。
+    if: github.event_name == 'schedule' || inputs.confirm == 'squash'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout orbis-data (shallow)
+        uses: actions/checkout@v6
+        with:
+          repository: sg55555/orbis-data
+          path: data-repo
+          token: ${{ secrets.ORBIS_DATA_TOKEN }}
+          fetch-depth: 1
+          persist-credentials: true
+
+      - name: Squash history into a single orphan commit
+        working-directory: data-repo
+        run: |
+          set -euo pipefail
+          git config user.name "orbis-bot"
+          git config user.email "210495115+sg55555@users.noreply.github.com"
+
+          before="$(git rev-parse HEAD)"
+          tree="$(git rev-parse 'HEAD^{tree}')"
+          echo "before=$before"
+          echo "tree=$tree"
+
+          # --orphan は index と作業ツリーをそのまま残して親だけ切る。
+          # よって add -A → commit で「中身は同じ・履歴だけ無い」1 コミットができる。
+          git checkout -q --orphan squash
+          git add -A
+          git commit -q -m "data: monthly squash $(date -u +%Y-%m-%d) (was $before) [skip ci]"
+
+          after="$(git rev-parse HEAD)"
+          newtree="$(git rev-parse 'HEAD^{tree}')"
+          if [ "$newtree" != "$tree" ]; then
+            echo "::error::tree mismatch: $newtree != $tree — push を中止しました（データが変わっています）"
+            exit 1
+          fi
+
+          git push --force origin HEAD:main
+
+          {
+            echo "### orbis-data monthly squash"
+            echo ""
+            echo "- before: \`$before\`"
+            echo "- after:  \`$after\`"
+            echo "- tree:   \`$tree\`（squash 前後で一致）"
+          } >> "$GITHUB_STEP_SUMMARY"
