@@ -1751,3 +1751,10 @@ body.drill-open #drilldown.drill-panel { visibility: visible; opacity: 1; }
   .site-foot { padding: 20px 14px 28px; }
   .site-foot .foot-copy { margin-left: 0; }
 }
+
+/* ===== 厳格 CSP（A5）: 静的 style 属性（display:none）の data-style 化に伴うちらつき防止 =====
+   applyDataStyles(document) は boot() で走る＝それまでの 1 フレームだけ属性が残る。
+   属性がある間だけ隠し、適用後（属性が外れた後）は CSSOM の inline style が引き継ぐ。
+   クラスで隠さない理由＝ui/alerts.js:78 と ui/cams-pane.js:103-104 が
+   `el.style.display = ''` のリセット型で開閉するため（クラスだと二度と開かない）。 */
+#alerts[data-style], #cams-one-tabs[data-style] { display: none; }

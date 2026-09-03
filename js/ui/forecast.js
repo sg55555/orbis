@@ -1,4 +1,5 @@
 // AI FORECASTS UI（純粋ヘルパ＋描画）。globe レイヤーは作らず DOM＋flyTo。
+import { applyDataStyles } from '../lib/data-style.js';
 export const DOMAIN_LABEL = { all:'ALL', conflict:'紛争', market:'市場', supply_chain:'供給網',
   political:'政治', military:'軍事', cyber:'サイバー', infra:'インフラ/災害' };
 const DOMAIN_RGB = { conflict:[240,90,80], market:[120,200,120], supply_chain:[200,170,90],
@@ -34,6 +35,7 @@ export function renderForecasts(rootEl, data, { onSelect } = {}){
     filterByDomain(cards, active).forEach((c)=>{
       const el=document.createElement('button'); el.type='button'; el.className='fc-cardbtn';
       el.innerHTML=cardHtml(c);
+      applyDataStyles(el); // 厳格 CSP: --dom / --lvl / fc-fill の width を CSSOM へ
       if(typeof c.lat==='number'&&typeof c.lon==='number'&&(c.lat||c.lon)&&onSelect){
         el.addEventListener('click',()=>onSelect(c));
       } else { el.disabled=true; }
@@ -48,7 +50,7 @@ export function cardHtml(card){
   const c=card||{}; const col=domainColor(c.domain);
   const sig=(c.signals||[]).map((s)=>`<span class="fc-sig">${esc(s.label)}</span>`).join('');
   if(c.status==='watch'){
-    return `<div class="fc-card fc-watch" style="--dom:${col}">`
+    return `<div class="fc-card fc-watch" data-style="--dom:${col}">`
       +`<div class="fc-head"><span class="fc-dom">${esc(DOMAIN_LABEL[c.domain]||c.domain)}</span>`
       +`<span class="fc-place">${esc(c.place_ja||'')}</span></div>`
       +`<p class="fc-watchmsg">十分な信号なし・監視中</p></div>`;
@@ -56,11 +58,11 @@ export function cardHtml(card){
   const ai=c.ai_generated?'<span class="fc-ai">🤖 AI生成・推測</span>':'';
   const out=c.outlook_ja?`<p class="fc-out">${esc(c.outlook_ja)}</p>`:'';
   const rat=c.rationale_ja?`<p class="fc-rat">根拠: ${esc(c.rationale_ja)}</p>`:'';
-  return `<div class="fc-card" style="--dom:${col};--lvl:${levelColor(c.attention_score)}">`
+  return `<div class="fc-card" data-style="--dom:${col};--lvl:${levelColor(c.attention_score)}">`
     +`<div class="fc-head"><span class="fc-dom">${esc(DOMAIN_LABEL[c.domain]||c.domain)}</span>`
     +`<span class="fc-place">${esc(c.place_ja||'')}</span>`
     +`<span class="fc-tr fc-${esc(c.trend)}">${trendArrow(c.trend)}</span></div>`
-    +`<div class="fc-bar"><span class="fc-fill" style="width:${Math.max(0,Math.min(100,c.attention_score||0))}%"></span></div>`
+    +`<div class="fc-bar"><span class="fc-fill" data-style="width:${Math.max(0,Math.min(100,c.attention_score||0))}%"></span></div>`
     +`<div class="fc-meta"><span class="fc-score">注視度 ${esc(c.attention_score||0)}</span>`
     +confBadge(c.confidence)+`<span class="fc-hz">${esc(c.horizon||'')}</span>${ai}</div>`
     +`<div class="fc-sigs">${sig}</div>`+out+rat+`</div>`;

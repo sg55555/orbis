@@ -79,7 +79,7 @@ export function drilldownHeaderHtml(header) {
   const col = scoreColor(h.score || 0);
   const arrow = h.trend ? trendArrow((h.trend.normal && h.trend.normal.dir) || (h.trend.dod && h.trend.dod.dir)) : '';
   const body = rowHtml(h);
-  return `<div class="dd-header" data-lvl="${escapeHtml(lvl)}" data-arrow="${escapeHtml(arrow)}" style="--dd-lvl:${col}">`
+  return `<div class="dd-header" data-lvl="${escapeHtml(lvl)}" data-arrow="${escapeHtml(arrow)}" data-style="--dd-lvl:${col}">`
     + body
     + _forecastHtml(h.forecast)
     + `</div>`;

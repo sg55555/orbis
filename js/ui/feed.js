@@ -1,6 +1,7 @@
 // 右イベントフィード描画。クリックで地図 flyTo。集約は js/lib/feed.js。
 import { formatFreshness } from '../lib/geo.js';
 import { countBarPct } from '../lib/feed.js';
+import { applyDataStyles } from '../lib/data-style.js';
 
 const COLOR = { quakes: 'rgb(255,176,40)', conflict: 'rgb(255,60,80)', protests: 'rgb(94,255,166)', news: 'var(--cyan)', firms: 'rgb(255,140,32)' };
 const LABEL = { quakes: '地震', conflict: '紛争', protests: '抗議', news: 'ニュース', firms: '山火事' };
@@ -12,18 +13,19 @@ export function renderFeed(root, items, onPick, maxCount = 0) {
       ? `${LABEL[it.layerId] || ''} ${escapeHtml(it.country_ja || '')}`
       : escapeHtml(it.title);
     const badge = it.kind === 'group'
-      ? `<span class="feed-count" style="--barw:${countBarPct(it.count, maxCount)}%">${Number(it.count) || 0}件</span>`
+      ? `<span class="feed-count" data-style="--barw:${countBarPct(it.count, maxCount)}%">${Number(it.count) || 0}件</span>`
       : '';
     // 山火事は単一のネオン炎マーカー（他層は色ドット）。
     const marker = it.layerId === 'firms'
       ? '<span class="feed-flame">🔥</span>'
-      : `<span class="feed-dot" style="color:${c};background:${c}"></span>`;
-    return `<div class="feed-row" data-i="${i}" style="--rowcat:${c}">
+      : `<span class="feed-dot" data-style="color:${c};background:${c}"></span>`;
+    return `<div class="feed-row" data-i="${i}" data-style="--rowcat:${c}">
       ${marker}
       <span class="feed-title">${title}</span>${badge}
       <span class="feed-time">${it.time ? formatFreshness(new Date(it.time).toISOString()) : ''}</span>
     </div>`;
   }).join('') || '<div class="feed-empty">イベントなし</div>';
+  applyDataStyles(root); // 厳格 CSP: data-style を CSSOM へ（--rowcat / --barw / feed-dot の色）
 
   if (!root.__wired) {
     root.addEventListener('click', (e) => {
@@ -44,9 +46,10 @@ export function renderChips(root, chipIds, hidden, onToggle, onAll) {
     .concat(chipIds.map((id) => {
       const on = !hidden.has(id);
       const c = COLOR[id] || 'var(--cyan)';
-      return `<button class="feed-chip${on ? ' active' : ''}" data-chip="${id}" style="--chip:${c}">${LABEL[id] || id}</button>`;
+      return `<button class="feed-chip${on ? ' active' : ''}" data-chip="${id}" data-style="--chip:${c}">${LABEL[id] || id}</button>`;
     })).join('');
   root.innerHTML = html;
+  applyDataStyles(root); // 厳格 CSP: チップの --chip を CSSOM へ
   if (!root.__wired) {
     root.addEventListener('click', (e) => {
       const b = e.target.closest('.feed-chip');

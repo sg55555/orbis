@@ -1,4 +1,5 @@
 // 国家不安定性インデックス UI（純粋ヘルパ＋描画）。globe レイヤーは作らず DOM セクション＋flyTo。
+import { applyDataStyles } from '../lib/data-style.js';
 const LEVEL_RGB = { 1: [90, 200, 160], 2: [150, 210, 90], 3: [240, 200, 70], 4: [245, 150, 60], 5: [240, 80, 70] };
 
 export function levelOf(score) {
@@ -58,10 +59,10 @@ export function rowHtml(country) {
   const col = scoreColor(c.score || 0);
   const narr = c.narrative_ja ? `<p class="ins-narr">${esc(c.narrative_ja)}</p>` : '';
   return (
-    `<div class="ins-row" style="--lvl:${col}">`
+    `<div class="ins-row" data-style="--lvl:${col}">`
     + `<span class="ins-rank">${esc(c.rank || '')}</span>`
     + `<span class="ins-name">${esc(c.name_ja || c.code || '')}</span>`
-    + `<span class="ins-bar"><span class="ins-fill" style="width:${Math.max(0, Math.min(100, c.score || 0))}%"></span></span>`
+    + `<span class="ins-bar"><span class="ins-fill" data-style="width:${Math.max(0, Math.min(100, c.score || 0))}%"></span></span>`
     + `<span class="ins-score">${esc(c.score || 0)}</span>`
     + `<span class="ins-trend">${_trendBadges(c.trend)}</span>`
     + `<span class="ins-counts">⚔${esc(ct.conflict)} 📢${esc(ct.protests)} 📰${esc(ct.news)} 🌐${esc(ct.quakes)}</span>`
@@ -84,6 +85,7 @@ export function renderInstability(rootEl, data, { onSelect } = {}) {
     el.type = 'button';
     el.className = 'ins-rowbtn';
     el.innerHTML = rowHtml(c);
+    applyDataStyles(el); // 厳格 CSP: --lvl / ins-fill の width を CSSOM へ
     if (typeof c.lat === 'number' && typeof c.lon === 'number' && (c.lat || c.lon) && onSelect) {
       el.addEventListener('click', () => onSelect(c));
     } else {

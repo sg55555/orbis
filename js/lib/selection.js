@@ -40,7 +40,7 @@ export function selectionPopupHtml(item) {
     ? `<div class="sel-meta">座標 ${Number(it.lat).toFixed(2)}, ${Number(it.lon).toFixed(2)}</div>` : '';
   const when = it.time ? `<div class="sel-meta">${new Date(it.time).toLocaleString('ja-JP')}</div>` : '';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(it.title)}</span></div>`
     + coord + when
     + '<div class="sel-hint">📍 この地点へ移動しました</div>'
@@ -58,7 +58,7 @@ export function flightPopupHtml(p, arrival, minutes = 20) {
   const dot = 'rgb(80,220,255)';
   const arr = arrival ? `${Number(arrival[1]).toFixed(2)}, ${Number(arrival[0]).toFixed(2)}` : '—';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">✈ ${escapeHtml(cs)}</span></div>`
     + `<div class="sel-meta">高度 ${alt}｜速度 ${spd}m/s｜方位 ${hd}°</div>`
     + `<div class="sel-hint">📍 推定進路 ${projLabel(minutes)} ${arr}<br><span class="sel-note">※目的地データ無し・heading の延長による推定</span></div>`
@@ -151,7 +151,7 @@ export function shipPopupHtml(p, arrival, minutes = 60) {
     ? `📍 推定進路 ${projLabel(minutes)} ${arr}<br><span class="sel-note">※AIS の COG/SOG 延長による推定（針路・速度一定と仮定）</span>`
     : '<span class="sel-note">速度0/針路不明で進路推定不可</span>';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">🚢 ${head}</span></div>`
     + `<div class="sel-meta">船種 ${escapeHtml(o.type || '不明')}｜速度 ${spd}｜航路 ${cog}</div>`
     + `<div class="sel-hint">${hint}</div>`
@@ -167,11 +167,11 @@ export function newsPopupHtml(p) {
   // href は http/https のみ許可（不正フィードの javascript: 等を無効化）。
   const safeUrl = /^https?:\/\//i.test(o.url || '') ? o.url : '#';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(o.title_ja || '')}</span></div>`
     + `<div class="sel-meta">${escapeHtml(c.label)}${o.place ? '｜' + escapeHtml(o.place) : ''}</div>`
     + (o.summary_ja ? `<div class="sel-hint">${escapeHtml(o.summary_ja)}</div>` : '')
-    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
+    + `<div class="sel-hint"><a class="sel-link" data-style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
     + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
     + '</div>';
 }
@@ -191,10 +191,10 @@ export function gdeltEventPopupHtml(event, layerId) {
   // 紛争は fipsToJa（コード付き）、抗議は日本語名のみ（括弧なし）
   const placeName = o.place ? fipsToJa(o.place).split('（')[0] : '';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(label + sub)}</span></div>`
     + `<div class="sel-meta">${escapeHtml(placeName)}｜報道 ${m}件</div>`
-    + `<div class="sel-hint"><a class="sel-link" style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
+    + `<div class="sel-hint"><a class="sel-link" data-style="color:#7fd8ff" href="${escapeHtml(safeUrl)}"`
     + ` target="_blank" rel="noopener">${escapeHtml(host)} ↗</a></div>`
     + '<div class="sel-hint">📍 この地点へ移動しました</div>'
     + '</div>';
@@ -209,7 +209,7 @@ export function gdeltCountryPopupHtml(group) {
   const dom = (g.layerId === 'conflict' && g.dominantRootJa) ? `・最多は${g.dominantRootJa}` : '';
   const srcs = (Array.isArray(g.topSources) && g.topSources.length) ? g.topSources.join('、') : '—';
   return '<div class="sel-popup">'
-    + `<div class="sel-top"><span class="sel-dot" style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
+    + `<div class="sel-top"><span class="sel-dot" data-style="background:${dot};box-shadow:0 0 8px ${dot}"></span>`
     + `<span class="sel-title">${escapeHtml(label + ' ' + (g.country_ja || ''))}</span></div>`
     + `<div class="sel-meta">24h ${Number(g.count) || 0}件${escapeHtml(dom)}</div>`
     + `<div class="sel-meta">主な出典 ${escapeHtml(srcs)}</div>`

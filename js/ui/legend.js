@@ -14,12 +14,12 @@ const HELP_ITEMS = [
 export function layerBlockHtml(lm) {
   const tierMarker = (lm.marker === 'line' || lm.marker === 'gradient') ? 'chip' : lm.marker;
   const rows = (lm.tiers || []).map((t) =>
-    `<div class="legend-tier"><span class="swatch swatch-${tierMarker}" style="color:${t.color}"></span>`
+    `<div class="legend-tier"><span class="swatch swatch-${tierMarker}" data-style="color:${t.color}"></span>`
     + `<span class="legend-tier-label">${t.label}</span></div>`
   ).join('');
   return `<div class="legend-layer">`
     + `<div class="legend-layer-head">`
-    + `<span class="swatch swatch-${lm.marker}" style="color:${lm.swatchColor}"></span>`
+    + `<span class="swatch swatch-${lm.marker}" data-style="color:${lm.swatchColor}"></span>`
     + `<span class="legend-layer-name">${lm.label}</span></div>`
     + rows
     + (lm.desc ? `<div class="legend-desc">${lm.desc}</div>` : '')
@@ -43,6 +43,7 @@ export function helpHtml() {
 
 import { buildLegendModel } from '../lib/legend-data.js';
 import { layers, descFor } from '../layers/registry.js';
+import { applyDataStyles } from '../lib/data-style.js';
 
 // #legend を描画し、タブ切替・折りたたみを配線する。状態は DOM クラスだけで持つ。
 export function renderLegend(rootEl, layersArg = layers, descForArg = descFor) {
@@ -57,6 +58,7 @@ export function renderLegend(rootEl, layersArg = layers, descForArg = descFor) {
     </div>
     <div class="legend-body" data-body="legend">${legendHtml(model)}</div>
     <div class="legend-body" data-body="help" hidden>${helpHtml()}</div>`);
+  applyDataStyles(rootEl); // 厳格 CSP: スウォッチの color を CSSOM へ
 
   function setOpen(open) {
     rootEl.classList.toggle('open', open);

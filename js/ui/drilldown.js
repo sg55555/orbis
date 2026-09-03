@@ -3,6 +3,7 @@
 import { drilldownHeaderHtml, regionRowHtml, eventLineHtml, degradedNoticeHtml } from '../lib/drilldown/drilldown_view.js';
 import { rowHtml } from './instability.js';
 import { profileHtml } from '../lib/drilldown/profile_view.js';
+import { applyDataStyles } from '../lib/data-style.js';
 
 const STATE_CLASSES = { loading: 'dd-loading', error: 'dd-error', ready: 'dd-ready' };
 
@@ -20,6 +21,7 @@ function mkRowButton(html, payload, onSelect) {
   el.type = 'button';
   el.className = 'dd-rowbtn';
   el.innerHTML = html;
+  applyDataStyles(el); // 厳格 CSP: drilldown_view / instability の data-style を CSSOM へ
   if (payload && typeof payload.lon === 'number' && typeof payload.lat === 'number'
       && (payload.lon || payload.lat) && onSelect) {
     el.addEventListener('click', () => onSelect(payload));
@@ -39,7 +41,7 @@ export function renderDrilldown(rootEl, model, { onSelect, onClose, onWatchToggl
   const watchBtn = rootEl.querySelector('.dd-watch');
   const header = model.header || {};
 
-  if (titleEl) titleEl.innerHTML = drilldownHeaderHtml(header);
+  if (titleEl) { titleEl.innerHTML = drilldownHeaderHtml(header); applyDataStyles(titleEl); }
   if (closeBtn && onClose) { closeBtn.innerHTML = '×'; closeBtn.onclick = () => onClose(); }
   if (watchBtn && onWatchToggle) { watchBtn.innerHTML = '★'; watchBtn.onclick = () => onWatchToggle(header.code); }
 
@@ -106,6 +108,7 @@ export function renderWatchlist(rootEl, countries, { onSelect, onRemove } = {}) 
     btn.type = 'button';
     btn.className = 'dd-wl-name';
     btn.innerHTML = rowHtml(c);
+    applyDataStyles(btn); // 厳格 CSP: instability rowHtml の --lvl / width を CSSOM へ
     if (typeof c.lon === 'number' && typeof c.lat === 'number' && (c.lon || c.lat) && onSelect) {
       btn.addEventListener('click', () => onSelect(c));
     } else {

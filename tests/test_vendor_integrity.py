@@ -174,4 +174,5 @@ def test_main_js_has_e2e_hook():
     """e2e 能力アサート用フック（§3.2）。window.__orbis 自体は状態バスなので加算式で開く。"""
     src = (ROOT / "js" / "main.js").read_text(encoding="utf-8")
     assert "new URLSearchParams(location.search).get('e2e') === '1'" in src
-    assert "window.__orbis.e2e = { map, overlay };" in src
+    # Task 6（A5）で appliedStatic＝起動時に当てた静的 data-style の件数を追加した。
+    assert "window.__orbis.e2e = { map, overlay, appliedStatic };" in src

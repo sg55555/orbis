@@ -3,6 +3,7 @@
 import { toggleEnabled, writeStored } from '../lib/state.js';
 import { PRESETS, applyPreset, activePresetId } from '../lib/presets.js';
 import { groupLayers } from '../lib/categories.js';
+import { applyDataStyles } from '../lib/data-style.js';
 
 // layers: レイヤー配列, getEnabled: ()=>Set, getCounts: ()=>{id:number}, onChange(nextSet): トグル時コールバック。
 // descFor: (id)=>string — 非専門家向け一行説明（省略可）。
@@ -13,6 +14,7 @@ export function renderPanel(root, layers, getEnabled, getCounts, onChange, descF
       <div class="layer-cat-head">${g.label}</div>
       ${g.layers.map((l) => rowHtml(l, descFor)).join('')}
     </div>`).join('');
+  applyDataStyles(root); // 厳格 CSP: スウォッチの color を CSSOM へ
 
   syncChecks(root, getEnabled());
 
@@ -56,7 +58,7 @@ function rowHtml(l, descFor) {
   return `<div class="layer-item">
       <label class="layer-row" data-id="${l.id}">
         <input type="checkbox" class="layer-toggle" />
-        <span class="swatch swatch-${marker}" style="color:${sw}"></span>
+        <span class="swatch swatch-${marker}" data-style="color:${sw}"></span>
         <span class="layer-label">${l.label}</span>
         <span class="layer-count" data-count="${l.id}">–</span>
         ${desc ? `<button type="button" class="layer-info" aria-label="説明" aria-expanded="false">ⓘ</button>` : ''}

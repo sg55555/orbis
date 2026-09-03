@@ -40,6 +40,7 @@ import { regionShapePath } from './lib/drilldown/region_shape.js';
 import { nearestCity } from './lib/drilldown/nearest.js';
 import { zoomForBbox } from './lib/zoom_for_bbox.js';
 import { makeWatchlistStore, addCode, removeCode, joinWatchCountries } from './lib/drilldown/watchlist.js';
+import { applyDataStyles } from './lib/data-style.js';
 import { ensureTripsLayer } from './lib/vendor-loader.js';
 // 水温カラーマップ。?cmap=sst|twin|aqua で実物比較（既定 sst）。
 const CMAP = (typeof location !== 'undefined'
@@ -91,6 +92,15 @@ let _watchCodes = _wlStore.load();  // string[]（FIPS コード配列）
 let _insCountries = null;           // instability.countries（joinWatchCountries で参照）
 const FLIGHT_PROJECT_MIN = 20; // 推定進路の延長時間（分）。目的地は不明なので heading の延長。
 const SHIP_PROJECT_MIN = 600; // 船は低速なので約10時間の長延長（12knで約222km先）。引きで到達ポインタが船首に重ならないように。
+
+// 着地点ポップアップの唯一の口（設計 §3.5 / A5）。selection.js のテンプレートは data-style を
+// 吐くだけなので、setHTML で DOM になった直後に CSSOM へ流す。map は boot 後に必ず載る状態バスから取る。
+function showPopup(lngLat, html) {
+  const map = window.__orbis && window.__orbis.map;
+  if (!selPopup || !map) return;
+  selPopup.setLngLat(lngLat).setHTML(html).addTo(map);
+  applyDataStyles(selPopup.getElement());
+}
 
 // 全有効レイヤーの鮮度を各 snapshot の updated から直読して可視化する。
 // manifest 非依存なので、収集失敗でレイヤーが manifest から消えても古さが見える（沈黙の陳腐化を防ぐ）。
@@ -157,7 +167,7 @@ function refreshFeed() {
     if (window.__orbis) window.__orbis.selected = selected;
     map.flyTo({ center: [it.lon, it.lat], zoom: 5, duration: 1500, essential: true });
     const html = (it.kind === 'group') ? gdeltCountryPopupHtml(it) : selectionPopupHtml(it);
-    if (selPopup) selPopup.setLngLat([it.lon, it.lat]).setHTML(html).addTo(map);
+    showPopup([it.lon, it.lat], html);
     drawAll(window.__orbis.overlay);
   }, maxCount);
 }
@@ -339,6 +349,9 @@ function motionLoop() {
 }
 
 function boot() {
+  // index.html の静的 data-style（#alerts / #cams-one-tabs）を CSSOM へ流す（設計 §3.5 / A5）。
+  // 以後の動的描画は各 innerHTML / insertAdjacentHTML 直後の applyDataStyles が受け持つ。
+  const appliedStatic = applyDataStyles(document);
   const bootCtl = initBoot({ reduced: REDUCED });
   const look = getLook();
   applyLookCss(look); // 星雲・グラスの CSS 変数を :root に適用
@@ -378,7 +391,7 @@ function boot() {
         const arrival = projectedArrival(p, FLIGHT_PROJECT_MIN);
         selectedFlight = { point: p, arrival };
         selectedShip = null;
-        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN)).addTo(map);
+        showPopup([p.lon, p.lat], flightPopupHtml(p, arrival, FLIGHT_PROJECT_MIN));
         drawAll(overlay);
       }
       if (info.layer.id === 'ships' || info.layer.id === 'ships-dot') {
@@ -386,7 +399,7 @@ function boot() {
         const arrival = shipArrival(p, SHIP_PROJECT_MIN);
         selectedShip = { point: p, arrival };
         selectedFlight = null;
-        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(shipPopupHtml(p, arrival, SHIP_PROJECT_MIN)).addTo(map);
+        showPopup([p.lon, p.lat], shipPopupHtml(p, arrival, SHIP_PROJECT_MIN));
         drawAll(overlay);
       }
       if (info.layer.id === 'news') {
@@ -396,7 +409,7 @@ function boot() {
         selected = { lon: p.lon, lat: p.lat, title: p.title_ja, layerId: 'news', at: performance.now() };
         if (window.__orbis) window.__orbis.selected = selected;
         map.flyTo({ center: [p.lon, p.lat], zoom: 4, duration: 1500, essential: true });
-        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(newsPopupHtml(p)).addTo(map);
+        showPopup([p.lon, p.lat], newsPopupHtml(p));
         drawAll(overlay);
       }
       if (info.layer.id === 'conflict' || info.layer.id === 'protests') {
@@ -406,7 +419,7 @@ function boot() {
         selected = { lon: p.lon, lat: p.lat, title: '', layerId: info.layer.id, at: performance.now() };
         if (window.__orbis) window.__orbis.selected = selected;
         map.flyTo({ center: [p.lon, p.lat], zoom: 5, duration: 1500, essential: true });
-        if (selPopup) selPopup.setLngLat([p.lon, p.lat]).setHTML(gdeltEventPopupHtml(p, info.layer.id)).addTo(map);
+        showPopup([p.lon, p.lat], gdeltEventPopupHtml(p, info.layer.id));
         drawAll(overlay);
       }
     },
@@ -421,7 +434,11 @@ function boot() {
   // rebuild/refreshFeed/refreshSources が無条件に参照する＝「?e2e=1 の時だけ生やす」ことはできない。
   // 代わりに ?e2e=1 の時だけ e2e 専用の面を開く（通常導線では undefined＝外から掴む口を増やさない）。
   if (new URLSearchParams(location.search).get('e2e') === '1') {
-    window.__orbis.e2e = { map, overlay };
+    // appliedStatic＝boot 先頭で document 全体に当てた件数（index.html の静的 2 件）。
+    // e2e はこれで data-style の「正の適用」を直接見る（computed display だけでは CSS 由来と区別できない）。
+    // ※ 適用の呼び出し点は件数で固定されている（test_apply_sites_are_pinned）ので、
+    //    コメントに呼び出しの形（識別子＋丸括弧）は書かない。
+    window.__orbis.e2e = { map, overlay, appliedStatic };
   }
 
   // 国ドリルダウン（別系統 map.on('click')）: deck onClick の early return より前で拾えないため独立配線。
@@ -517,7 +534,7 @@ function boot() {
           if (window.__orbis) window.__orbis.selected = selected;
           map.flyTo({ center: [ev.lon, ev.lat], zoom: 5, duration: 1500, essential: true });
           const html = selectionPopupHtml({ lon: ev.lon, lat: ev.lat, title: ev.title || '', layerId: ev.layerId || 'country' });
-          if (selPopup) selPopup.setLngLat([ev.lon, ev.lat]).setHTML(html).addTo(map);
+          showPopup([ev.lon, ev.lat], html);
           drawAll(overlay);
         }
       },
@@ -589,7 +606,7 @@ function boot() {
     selected = { lon: country.lng, lat: country.lat, title: country.ja, layerId: 'search', at: performance.now() };
     if (window.__orbis) window.__orbis.selected = selected;
     map.flyTo({ center: [country.lng, country.lat], zoom: 4, duration: 1500, essential: true });
-    if (selPopup) selPopup.setLngLat([country.lng, country.lat]).setHTML(`<div class="sel-title">${country.ja}</div>`).addTo(map);
+    showPopup([country.lng, country.lat], `<div class="sel-title">${country.ja}</div>`);
     drawAll(overlay);
   });
 
