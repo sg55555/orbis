@@ -197,6 +197,26 @@ def test_direct_404_html_returns_404_status(cfg, served):
     assert res.status == 404 and res.dest == "/404.html"
 
 
+@pytest.mark.parametrize("path", [
+    "/vendor/deck.gl-core-9.9.9.min.js",   # tier 1（1 年 immutable）を通って 404 に落ちる
+    "/data/static/nope.json",              # tier 3（3600 + SWR）
+    "/icons/nope.png",                     # tier 2（86400）
+    "/nope",                               # どの tier にも当たらない catch-all
+    "/404.html",                           # 直アクセスの明示 404 route
+])
+def test_404_responses_are_never_cached(cfg, served, path):
+    """404 に Cache-Control の tier が乗り残ると「1 年 immutable な 404」を配ってしまう。
+
+    tier route は continue:true でヘッダーを積むだけなので、資産が消えた/名前を間違えた
+    パスでも /vendor/(.*) に当たれば max-age=31536000, immutable が付く。終端の 404 route
+    （明示 /404.html と catch-all）で no-store に上書きし、全 404 を再取得可能にする。
+    """
+    res = evaluate(cfg, path, served)
+    assert res.status == 404, f"{path} が 404 で返らない: {res}"
+    assert res.headers.get("Cache-Control") == "no-store", \
+        f"{path} の 404 に tier の Cache-Control が残っている: {res.headers.get('Cache-Control')}"
+
+
 @pytest.mark.parametrize("name", [
     "briefing_sources.json", "instability.json", "forecast.json",
     "fips_countries.json", "news_feeds.json",

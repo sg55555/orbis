@@ -201,8 +201,19 @@ def test_cache_control_routes_are_continue_only(cfg, src, value):
 def test_catch_all_is_last_and_is_404(cfg):
     routes = cfg.get("routes", [])
     assert routes, "vercel.json に routes が無い"
-    assert routes[-1] == {"src": "/(.*)", "status": 404, "dest": "/404.html"}, \
+    assert routes[-1] == {"src": "/(.*)", "status": 404, "dest": "/404.html",
+                          "headers": {"Cache-Control": "no-store"}}, \
         f"末尾が catch-all 404 でない: {routes[-1]}"
+
+
+@pytest.mark.parametrize("src", [r"/404\.html", "/(.*)"])
+def test_terminal_404_routes_are_no_store(cfg, src):
+    # tier route（continue:true）は 404 にも Cache-Control を積む。終端で no-store に
+    # 上書きしないと /vendor/<消えたファイル> の 404 が 1 年 immutable で焼き付く。
+    hits = [r for r in cfg.get("routes", []) if r.get("src") == src and r.get("status") == 404]
+    assert len(hits) == 1, f"404 route {src} が 1 件でない: {len(hits)}"
+    assert hits[0].get("headers") == {"Cache-Control": "no-store"}, \
+        f"{src} の 404 が no-store でない: {hits[0].get('headers')}"
 
 
 def test_filesystem_handle_is_second_to_last(cfg):
