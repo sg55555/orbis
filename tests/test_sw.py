@@ -24,9 +24,16 @@ def _shell():
 
 
 def _fetch_handler():
+    """fetch ハンドラ本文から `//` コメント行を落として返す。
+
+    sw.js は「なぜその条件が要るか」をコメントで説明しており、条件式がそのまま
+    コメントにも現れる（例: `// … res.ok && res.type === 'basic' の時だけ保存する。`）。
+    コメント込みで grep すると **コード行を消してもテストが緑のまま**になる（実装を
+    守らない）。ここで削ぎ落として、以降の assert が必ずコード行だけを見るようにする。
+    """
     m = re.search(r"self\.addEventListener\('fetch'.*?\n\}\);", SW, re.S)
     assert m, "sw.js: fetch ハンドラが見つからない"
-    return m.group(0)
+    return "\n".join(ln for ln in m.group(0).split("\n") if not ln.strip().startswith("//"))
 
 
 def test_cache_version_is_v52():
@@ -56,15 +63,16 @@ def test_cross_origin_requests_bypass_the_service_worker():
     素通しならブラウザがページ側の img-src/connect-src で判定する。
     """
     body = _fetch_handler()
-    assert "url.origin !== self.location.origin" in body, \
-        "sw.js: 別オリジンを素通しにする early return が無い"
-    assert body.index("url.origin !== self.location.origin") < body.index("e.respondWith("), \
+    stmt = "if (url.origin !== self.location.origin) return;"
+    assert stmt in body, "sw.js: 別オリジンを素通しにする early return が無い"
+    assert body.index(stmt) < body.index("e.respondWith("), \
         "sw.js: 素通しの判定は最初の e.respondWith( より前に置く"
 
 
 def test_only_successful_basic_responses_are_cached():
     """404/500 や opaque 応答を put すると壊れた応答がキャッシュに固定化する。"""
-    assert "res.ok && res.type === 'basic'" in _fetch_handler()
+    assert "if (res.ok && res.type === 'basic') {" in _fetch_handler(), \
+        "sw.js: 成功かつ same-origin の応答だけを put するガードが無い"
 
 
 def test_dead_cartocdn_bypass_is_gone():
