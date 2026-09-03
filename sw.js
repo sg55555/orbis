@@ -1,6 +1,8 @@
 // ORBIS Service Worker — シェルはネットワーク優先（更新を常に即反映）。データJSONも常にネット。
-const CACHE = 'orbis-v51';
-const SHELL = ['/', '/index.html', '/css/orbis.css', '/js/main.js', '/js/lib/presets.js'];
+const CACHE = 'orbis-v52';
+// '/index.html' は vercel.json routes が 308 → '/' に飛ばすので入れない
+// （addAll は redirect 応答で失敗し、install ごと落ちる）。
+const SHELL = ['/', '/css/orbis.css', '/js/main.js', '/js/lib/presets.js'];
 
 self.addEventListener('install', (e) => {
   e.waitUntil(caches.open(CACHE).then((c) => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -13,17 +15,24 @@ self.addEventListener('activate', (e) => {
 });
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
-  // データ・タイルは常にネットワーク（鮮度優先）。
-  // e.respondWith() を呼ばず return すると、ブラウザが既定のネットワーク取得を行う（キャッシュしない）。
-  if (url.hostname === 'raw.githubusercontent.com' || url.pathname.includes('/data/snapshots/') || url.hostname.includes('cartocdn')) return;
+  // 別オリジン（タイル・raw データ・YouTube・サムネ）は SW が中継しない。
+  // 中継すると SW 自身の応答に載る CSP（connect-src 'self' …）で判定されてしまい、
+  // ページ側の緩い img-src が届かない。素通しならブラウザが HTTP キャッシュで扱う。
+  // respondWith() を呼ばず return すると、ブラウザが既定のネットワーク取得を行う。
+  if (url.origin !== self.location.origin) return;
+  // ローカル開発の生スナップショットは常にネットワーク（鮮度優先）。
+  if (url.pathname.startsWith('/data/snapshots/')) return;
   // シェル/コードはネットワーク優先：常に最新を取得し成功時にキャッシュ更新、
   // ネット失敗（オフライン）時のみキャッシュへフォールバック（PWA のオフライン起動を維持）。
-  // これにより index.html/main.js/css の更新が「古い SW が居座って反映されない」問題を根絶する。
+  // 失敗応答（404/500）や opaque 応答まで put すると壊れた応答が固定化するので、
+  // res.ok && res.type === 'basic' の時だけ保存する。
   e.respondWith(
     fetch(e.request)
       .then((res) => {
-        const copy = res.clone();
-        caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+        if (res.ok && res.type === 'basic') {
+          const copy = res.clone();
+          caches.open(CACHE).then((c) => c.put(e.request, copy)).catch(() => {});
+        }
         return res;
       })
       .catch(() => caches.match(e.request))
