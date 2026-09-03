@@ -7,6 +7,9 @@ scripts/.cache/
 test-results/
 playwright-report/
 .vercel/
+
+# 受入一括 tools/closure.sh が HEAD で通った印（push ゲートが HEAD と照合する）。
+.closure-ok
 # データは public な orbis-data repo へ分離(cron が CI で data/snapshots に checkout して push)。
 # main はコードのみ追跡し data/snapshots は追跡しない(Vercel デプロイ枠を食わないため)。
 data/snapshots/
