@@ -36,8 +36,8 @@ def _fetch_handler():
     return "\n".join(ln for ln in m.group(0).split("\n") if not ln.strip().startswith("//"))
 
 
-def test_cache_version_is_v52():
-    assert re.search(r"const CACHE = 'orbis-v52';", SW), "sw.js を触ったら CACHE を +1 する"
+def test_cache_version_is_v53():
+    assert re.search(r"const CACHE = 'orbis-v53';", SW), "sw.js を触ったら CACHE を +1 する"
 
 
 def test_shell_is_the_four_expected_paths():

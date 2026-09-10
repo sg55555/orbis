@@ -5,7 +5,8 @@
 // 層ID → 出典（表示名＋上流URL）。AI合成系は派生なので url 無し。
 export const SOURCE_MAP = {
   quakes: { source: 'USGS', url: 'https://earthquake.usgs.gov' },
-  flights: { source: 'OpenSky Network', url: 'https://opensky-network.org' },
+  // adsb.fi は「cite adsb.fi and include a link to our home page」を条件にしている＝この行が cite の実体。
+  flights: { source: 'adsb.fi', url: 'https://adsb.fi/' },
   conflict: { source: 'GDELT Project', url: 'https://www.gdeltproject.org' },
   protests: { source: 'GDELT Project', url: 'https://www.gdeltproject.org' },
   ships: { source: 'AISStream', url: 'https://aisstream.io' },

@@ -1,5 +1,5 @@
 // ORBIS Service Worker — シェルはネットワーク優先（更新を常に即反映）。データJSONも常にネット。
-const CACHE = 'orbis-v52';
+const CACHE = 'orbis-v53';
 // '/index.html' は vercel.json routes が 308 → '/' に飛ばすので入れない
 // （addAll は redirect 応答で失敗し、install ごと落ちる）。
 const SHELL = ['/', '/css/orbis.css', '/js/main.js', '/js/lib/presets.js'];

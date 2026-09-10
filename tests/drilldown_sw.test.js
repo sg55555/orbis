@@ -1,5 +1,5 @@
 // tests/drilldown_sw.test.js
-// SW の CACHE 版番号と bypass 方針。Phase A（Task 9）で v52・同一オリジン判定に変更。
+// SW の CACHE 版番号と bypass 方針。Phase A（Task 9）で同一オリジン判定に変更。版は sw.js を触るたびに +1（現行 v53）。
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -9,8 +9,8 @@ import { dirname, join } from 'node:path';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const sw = readFileSync(join(__dirname, '..', 'sw.js'), 'utf8');
 
-test('sw.js: CACHE は orbis-v52', () => {
-  assert.match(sw, /const\s+CACHE\s*=\s*['"]orbis-v52['"]/);
+test('sw.js: CACHE は orbis-v53', () => {
+  assert.match(sw, /const\s+CACHE\s*=\s*['"]orbis-v53['"]/);
 });
 
 test('sw.js: bypass は「別オリジン全部」＋ローカルの生スナップショット', () => {

@@ -1,6 +1,6 @@
 # ORBIS — 世界リアルタイム監視ダッシュボード
 
-無料OSINTで世界を近リアルタイム監視するダッシュボード。地球儀 + 地震(USGS) + 航空(OpenSky) + 紛争/抗議(GDELT) + 貿易ルート(静的)。
+無料OSINTで世界を近リアルタイム監視するダッシュボード。地球儀 + 地震(USGS) + 航空(adsb.fi) + 紛争/抗議(GDELT) + 貿易ルート(静的)。
 
 **Phase 3（操作性・分かりやすさ・動き）**: 引くと丸い地球が星空に浮かぶズームアウトビュー。左パネルでレイヤーをON/OFF＋件数表示（localStorage永続化・折りたたみ可）。マーカーにホバーで詳細ツールチップ（便名/高度・規模/場所・出典など）。右フィードで最新イベント（地震/紛争/抗議）を時系列表示＋クリックで地図がその地点へ移動。貿易ルートを流れる粒子と新規イベントの出現パルス（`prefers-reduced-motion` 尊重）。
 
@@ -16,7 +16,7 @@
 - データ源の切替: `?data=github`＝本番データ（`raw.githubusercontent.com/sg55555/orbis-data`・読み取りのみ）／`?data=local`＝`data/snapshots/`（ローカル収集が必要）。無指定なら localhost は local・それ以外は github。
 - e2e 用フック: `?e2e=1` を付けたときだけ `window.__orbis.e2e`（`applyDataStyles(document)` の適用数など）を公開する（受入 e2e が globe 投影や data-style の適用を確認するため。通常の導線では未定義）。
 - 収集: `python3 -m collectors.quakes`（USGS → data/snapshots/quakes.json + manifest.json）
-- 収集: `python3 -m collectors.flights`（OpenSky → data/snapshots/flights.json）
+- 収集: `python3 -m collectors.flights`（adsb.fi の 42 タイルを 1req/s で → data/snapshots/flights.json・約45秒）
 - 収集: `python3 -m collectors.gdelt_events`（GDELT → data/snapshots/conflict.json + protests.json）
 
 ## テスト
@@ -49,7 +49,7 @@ CSP_OVERRIDE="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ance
 
 ## ライセンス
 - **コード**: MIT License（[LICENSE](LICENSE) ・ Copyright (c) 2026 sg55555）
-- **データ**: 各上流の条件に従います（USGS / OpenSky Network / GDELT Project / AISStream / NASA FIRMS / Open-Meteo=CC BY 4.0 / OpenStreetMap・OpenMapTiles・OpenFreeMap=ODbL / Wikipedia 日本語版=CC BY-SA 4.0 / Wikidata=CC0）。層ごとの出典と条件は [attribution.html](attribution.html)（本番: https://orbis-beta.vercel.app/attribution ）に一覧があります。
+- **データ**: 各上流の条件に従います（USGS / adsb.fi=個人利用・非商用／出典表示とリンクが条件 / GDELT Project / AISStream / NASA FIRMS / Open-Meteo=CC BY 4.0 / OpenStreetMap・OpenMapTiles・OpenFreeMap=ODbL / Wikipedia 日本語版=CC BY-SA 4.0 / Wikidata=CC0）。層ごとの出典と条件は [attribution.html](attribution.html)（本番: https://orbis-beta.vercel.app/attribution ）に一覧があります。
 - **フォント/ライブラリ**: Orbitron・Saira=OFL 1.1 / MapLibre GL JS=BSD 3-Clause / deck.gl=MIT。
 - 運営: sg55555（個人・非商用）／連絡先: https://github.com/sg55555/orbis/issues
 - 公開ページ: [about](about.html) ・ [terms](terms.html) ・ [privacy](privacy.html) ・ [attribution](attribution.html)
