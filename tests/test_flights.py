@@ -16,7 +16,7 @@ import requests
 import collectors.flights as fl
 from collectors.flights import (
     transform, transform_aircraft, downsample, build_snapshot, tile_url,
-    merge_payload, points_from, collect_tiles, RateLimited,
+    merge_payload, points_from, collect_tiles, UpstreamRefused,
 )
 
 
@@ -167,8 +167,8 @@ def test_collect_tiles_does_not_sleep_when_fetch_was_already_slow():
     assert slept == [], "取得自体が1秒を超えたら追加で待つ必要はない"
 
 
-def test_collect_tiles_stops_immediately_on_rate_limit():
-    # 規約：400/401/403/404/429 の多発は一時 IP 制限。429 を受けてなお叩き続けるのは
+def test_collect_tiles_stops_immediately_when_upstream_refuses():
+    # 規約：400/401/403/404/429 の多発は一時 IP 制限。拒否されてなお叩き続けるのは
     # 自分で自分を締め出す行為なので、残りタイルを捨ててでも即やめる。
     tiles = [("a", 1, 1), ("b", 2, 2), ("c", 3, 3), ("d", 4, 4)]
     calls = []
@@ -176,13 +176,51 @@ def test_collect_tiles_stops_immediately_on_rate_limit():
     def fetch(lat, lon):
         calls.append(lat)
         if lat == 2:
-            raise RateLimited("429")
+            raise UpstreamRefused("HTTP 429")
         return payload(ac(hex="h%s" % lat))
 
-    pts, ok, total, limited = collect_tiles(tiles=tiles, fetch=fetch, sleep=lambda s: None,
+    pts, ok, total, refused = collect_tiles(tiles=tiles, fetch=fetch, sleep=lambda s: None,
                                             clock=lambda: 0.0)
-    assert calls == [1, 2], "429 の後は1つも叩かない"
-    assert limited is True and ok == 1 and total == 4
+    assert calls == [1, 2], "拒否の後は1つも叩かない"
+    assert refused is True and ok == 1 and total == 4
+
+
+def test_fetch_tile_refuses_on_every_blocking_status(monkeypatch):
+    # 429 だけでなく 404/403 も同じ扱い。API の形が変わって全タイルが 404 になった日に、
+    # 42回の無効リクエストを15分毎に出し続けて締め出されるのを防ぐ。
+    class Resp:
+        def __init__(self, code):
+            self.status_code = code
+
+        def raise_for_status(self):
+            raise AssertionError("BLOCKING_STATUSES はここへ来る前に落とす")
+
+        def json(self):
+            raise AssertionError("BLOCKING_STATUSES で本文を読んではいけない")
+
+    for code in sorted(fl.BLOCKING_STATUSES):
+        monkeypatch.setattr(fl.requests, "get", lambda *a, _c=code, **kw: Resp(_c))
+        with pytest.raises(UpstreamRefused):
+            fl.fetch_tile(1.0, 2.0)
+
+
+def test_collect_tiles_stops_when_deadline_passes():
+    # read timeout が連鎖すると 42タイル×30秒＝21分まで伸びうる。collect は concurrency group を
+    # collect-slow と共有し cancel-in-progress: false なので、長引くと外部cron（15分毎）の run が
+    # キューに積み上がる。予算を超えたらそこまでの結果で作る（半数未満なら main が書かない）。
+    tiles = [("a", 1, 1), ("b", 2, 2), ("c", 3, 3), ("d", 4, 4)]
+    calls, t = [], [0.0]
+
+    def fetch(lat, lon):
+        calls.append(lat)
+        t[0] += 100.0
+        return payload(ac(hex="h%s" % lat))
+
+    pts, ok, total, refused = collect_tiles(tiles=tiles, fetch=fetch, sleep=lambda s: None,
+                                            clock=lambda: t[0], deadline_s=250)
+    assert calls == [1, 2, 3], "予算を超えたら残りは叩かない"
+    assert ok == 3 and total == 4 and refused is False
+    assert len(pts) == 3
 
 
 def test_collect_tiles_continues_past_single_tile_failure():

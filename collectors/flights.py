@@ -40,6 +40,15 @@ PACE_S = 1.05           # 公開エンドポイントの上限 1 req/s を守る
 MIN_OK_RATIO = 0.5      # 成功タイルがこれを下回ったら書かずに前回を残す
 MAX_POINTS = 6000
 
+# 全タイルの取得に許す上限。通常は約45秒で終わる（実測 0.44s/タイル）が、read timeout が
+# 連鎖すると最悪 42×30秒＝21分まで伸びうる。collect は concurrency group を collect-slow と
+# 共有し cancel-in-progress: false なので、長引くと外部cron（15分毎）の run がキューに積み上がる。
+DEADLINE_S = 300
+
+# adsb.fi が規約で「多発させると一時 IP 制限」と名指ししている応答。
+# 1つでも受けたらその run は打ち切る＝叩き続けること自体が制限を招く。
+BLOCKING_STATUSES = frozenset({400, 401, 403, 404, 429})
+
 FT_TO_M = 0.3048        # alt_baro は ft（OpenSky の baro_altitude は m だった）
 KT_TO_MS = 0.514444     # gs は kt（OpenSky の velocity は m/s だった）
 
@@ -105,8 +114,12 @@ TILES = (
 SNAPSHOT_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "snapshots"))
 
 
-class RateLimited(Exception):
-    """429 を受けた。規約上ここで叩き続けると一時 IP 制限を招くので、その run は打ち切る。"""
+class UpstreamRefused(Exception):
+    """BLOCKING_STATUSES の応答を受けた。叩き続けると一時 IP 制限になるので run ごと打ち切る。
+
+    429（レート）だけでなく 404/403 も含むのは規約の文言どおり。API の形が変わって全タイルが
+    404 を返すような日に、42回の無効リクエストを15分毎に出し続けて締め出されるのを防ぐ。
+    """
 
 
 def tile_url(lat, lon, dist=TILE_DIST_NM):
@@ -203,21 +216,27 @@ def fetch_tile(lat, lon, timeout=(10, 30)):
     """1タイル取得。timeout=(connect, read)。"""
     resp = requests.get(tile_url(lat, lon), timeout=timeout,
                         headers={"User-Agent": USER_AGENT})
-    if resp.status_code == 429:
-        raise RateLimited("429 Too Many Requests")
+    if resp.status_code in BLOCKING_STATUSES:
+        raise UpstreamRefused("HTTP %d" % resp.status_code)
     resp.raise_for_status()
     return resp.json()
 
 
-def collect_tiles(tiles=TILES, fetch=fetch_tile, sleep=time.sleep, clock=time.monotonic):
-    """全タイルを 1req/s のペースで集める。→ (points, ok, total, rate_limited)
+def collect_tiles(tiles=TILES, fetch=fetch_tile, sleep=time.sleep, clock=time.monotonic,
+                  deadline_s=DEADLINE_S):
+    """全タイルを 1req/s のペースで集める。→ (points, ok, total, refused)
 
     タイル単位のリトライはしない。円が重なっているので1枚落ちても穴は小さく、
     再試行はその run の所要と先方への負荷を増やすだけになる。守りは
-    「半分以上落ちたら書かない」（main）と「429 で即やめる」の2つで足りる。
+    「半分以上落ちたら書かない」（main）と「拒否応答で即やめる」の2つで足りる。
     """
-    acc, ok, limited, last = {}, 0, False, None
+    acc, ok, refused, last = {}, 0, False, None
+    started = clock()
     for name, lat, lon in tiles:
+        if clock() - started > deadline_s:
+            print("[flights] deadline %ds exceeded after %d/%d tiles; using what we have"
+                  % (deadline_s, ok, len(tiles)))
+            break
         if last is not None:
             wait = PACE_S - (clock() - last)
             if wait > 0:
@@ -226,13 +245,13 @@ def collect_tiles(tiles=TILES, fetch=fetch_tile, sleep=time.sleep, clock=time.mo
         try:
             merge_payload(acc, fetch(lat, lon))
             ok += 1
-        except RateLimited as e:
-            print("[flights] rate limited at tile %s: %s; stopping this run early" % (name, e))
-            limited = True
+        except UpstreamRefused as e:
+            print("[flights] refused at tile %s: %s; stopping this run early" % (name, e))
+            refused = True
             break
         except Exception as e:
             print("[flights] tile %s failed: %s" % (name, e))
-    return points_from(acc), ok, len(tiles), limited
+    return points_from(acc), ok, len(tiles), refused
 
 
 def downsample(points, max_points=MAX_POINTS):
@@ -267,7 +286,7 @@ def main():
     manifest_path = os.path.join(SNAPSHOT_DIR, "manifest.json")
     now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     try:
-        points, ok, total, limited = collect_tiles()
+        points, ok, total, refused = collect_tiles()
     except Exception as e:
         print("[flights] collect failed: %s; keeping previous snapshot" % e)
         return 1
@@ -276,8 +295,8 @@ def main():
     # Layer2 鮮度モニタ（age ベース）にも引っかからない。書かずに前回を残す方が安全。
     need = math.ceil(total * MIN_OK_RATIO)
     if ok < need:
-        print("[flights] only %d/%d tiles succeeded (need %d, rate_limited=%s); keeping previous snapshot"
-              % (ok, total, need, limited))
+        print("[flights] only %d/%d tiles succeeded (need %d, refused=%s); keeping previous snapshot"
+              % (ok, total, need, refused))
         return 1
     if not points:
         print("[flights] %d/%d tiles succeeded but no aircraft; keeping previous snapshot" % (ok, total))
@@ -289,7 +308,7 @@ def main():
         json.dump(snap, f, ensure_ascii=False, separators=(",", ":"))
     update_manifest(manifest_path, "flights", now_iso, len(points))
     if ok < total:
-        print("[flights] %d/%d tiles failed (rate_limited=%s)" % (total - ok, total, limited))
+        print("[flights] %d/%d tiles failed (refused=%s)" % (total - ok, total, refused))
     print("[flights] wrote %d aircraft from %d/%d tiles -> %s" % (len(points), ok, total, snap_path))
     return 0
 
