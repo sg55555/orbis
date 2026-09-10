@@ -45,8 +45,8 @@ jobs:
         run: python -m collectors.quakes || python -m collectors.lib.mark_error quakes
       - name: Collect flights
         # 2026-09-10 に OpenSky → adsb.fi へ移行（理由は障害ではなく規約＝collectors/flights.py 冒頭）。
-        # adsb.fi は全球1発のエンドポイントが feeder 限定のため、42タイルを 1req/s で順に叩く＝
-        # このステップだけで約45秒かかる（collect 全体で約100秒・15分窓に対しては十分余裕がある）。
+        # adsb.fi は全球1発のエンドポイントが feeder 限定のため、45タイルを 1req/s で順に叩く＝
+        # このステップだけで約50秒かかる（collect 全体で約105秒・15分窓に対しては十分余裕がある）。
         # リトライは持たない：タイルの円は互いに重なっていて1枚落ちても穴は小さく、守りは
         # 「半分以上落ちたら書かずに前回を残す」と「429 を受けたら即中断」の2つで足りる。
         # FLIGHTS_RETRY_ATTEMPTS（OpenSky 時代の空振り抑制 env）はソース移行に伴い廃止した。

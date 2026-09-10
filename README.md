@@ -16,7 +16,7 @@
 - データ源の切替: `?data=github`＝本番データ（`raw.githubusercontent.com/sg55555/orbis-data`・読み取りのみ）／`?data=local`＝`data/snapshots/`（ローカル収集が必要）。無指定なら localhost は local・それ以外は github。
 - e2e 用フック: `?e2e=1` を付けたときだけ `window.__orbis.e2e`（`applyDataStyles(document)` の適用数など）を公開する（受入 e2e が globe 投影や data-style の適用を確認するため。通常の導線では未定義）。
 - 収集: `python3 -m collectors.quakes`（USGS → data/snapshots/quakes.json + manifest.json）
-- 収集: `python3 -m collectors.flights`（adsb.fi の 42 タイルを 1req/s で → data/snapshots/flights.json・約45秒）
+- 収集: `python3 -m collectors.flights`（adsb.fi の 45 タイルを 1req/s で → data/snapshots/flights.json・約50秒）
 - 収集: `python3 -m collectors.gdelt_events`（GDELT → data/snapshots/conflict.json + protests.json）
 
 ## テスト

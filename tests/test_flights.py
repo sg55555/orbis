@@ -283,6 +283,16 @@ def test_tiles_cover_every_populated_region():
         assert any(inside(la, lo) for _, la, lo in fl.TILES), "%s のタイルが無い" % region
 
 
+def test_tiles_reach_the_edges_of_the_map():
+    # 洋上・高緯度の3枚（アイスランド/ハワイ/オークランド）を落とすと収集範囲の経度が
+    # −125〜155 に収まり、地図の端（太平洋・北大西洋・アラスカ・NZ）が完全に無人に見える。
+    # 機数は 16〜19 と少ないが、外すと「世界を見ている」絵が壊れるので回帰として固定する。
+    lons = [lon for _, _, lon in fl.TILES]
+    assert min(lons) <= -150, "太平洋側（ハワイ）のタイルが無い"
+    assert max(lons) >= 170, "日付変更線側（NZ）のタイルが無い"
+    assert any(lat >= 60 for _, lat, _ in fl.TILES), "高緯度（アイスランド）のタイルが無い"
+
+
 # --- main（前回スナップショットを壊さないこと） ---
 
 def test_main_writes_snapshot_and_manifest(monkeypatch, tmp_path):
