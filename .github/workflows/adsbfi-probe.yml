@@ -1,0 +1,33 @@
+name: adsbfi-probe
+# Phase0 疎通確認（使い捨て・マージ前に削除する）。
+# 目的は1つ＝**GHA の egress から adsb.fi へ到達できるか**。候補ソースの実測（2026-07-23）は
+# すべて自宅回線から行っており、OpenSky と同じ罠（ローカルは 200・GHA からだけ ConnectTimeout/503）
+# を踏まないために、実装前にランナー側から実測する。対照として OpenSky も1回叩く。
+on:
+  push:
+    branches: [worktree-flights-adsbfi]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Probe adsb.fi v3 (3 tiles)
+        run: |
+          for t in "50.0 8.5" "40.7 -74.0" "35.6 139.7"; do
+            set -- $t
+            echo "=== tile lat=$1 lon=$2 ==="
+            curl -sS -o /tmp/out.json \
+              -w '  http=%{http_code} dns=%{time_namelookup} connect=%{time_connect} tls=%{time_appconnect} total=%{time_total} size=%{size_download}\n' \
+              --max-time 40 -H 'User-Agent: orbis-collector' \
+              "https://opendata.adsb.fi/api/v3/lat/$1/lon/$2/dist/250" || echo "  curl exit=$?"
+            python3 -c "import json;d=json.load(open('/tmp/out.json'));print('  ac=',len(d.get('ac') or []),'msg=',d.get('msg'),'ptime=',d.get('ptime'))" || echo "  (parse failed)"
+            sleep 2
+          done
+      - name: Probe OpenSky (control)
+        run: |
+          curl -sS -o /dev/null \
+            -w '  opensky http=%{http_code} connect=%{time_connect} total=%{time_total}\n' \
+            --max-time 40 -H 'User-Agent: orbis-collector' \
+            "https://opensky-network.org/api/states/all" || echo "  curl exit=$?"
